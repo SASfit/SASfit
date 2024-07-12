@@ -4217,7 +4217,7 @@ BindOp(graphPtr, interp, argc, argv)
 	return TCL_OK;
     }
     return Blt_ConfigureBindings(interp, graphPtr->bindTable,
-	Blt_MakeMarkerTag(graphPtr, argv[3]), argc - 4, argv + 4);
+	Blt_MakeMarkerTag(graphPtr, argv[3]), argc - 4, (CONST84 char **)(argv + 4));
 }
 
 /*
@@ -4401,7 +4401,7 @@ CreateOp(graphPtr, interp, argc, argv)
     markerPtr = CreateMarker(graphPtr, name, classUid);
     if (Blt_ConfigureWidgetComponent(interp, graphPtr->tkwin, name, 
 	     markerPtr->classUid, markerPtr->classPtr->configSpecs,
-	    argc - 4, argv + 4, (char *)markerPtr, 0) != TCL_OK) {
+	    argc - 4, (CONST84 char **)(argv + 4), (char *)markerPtr, 0) != TCL_OK) {
 	DestroyMarker(markerPtr);
 	return TCL_ERROR;
     }

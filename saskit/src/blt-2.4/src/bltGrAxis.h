@@ -106,7 +106,7 @@ typedef struct {
 
     Graph *graphPtr;		/* Graph widget of element*/
 
-    unsigned int flags;		/* Set bit field definitions below */
+    unsigned long flags;		/* Set bit field definitions below */
 
     /*
      * AXIS_DRAWN		Axis is designated as a logical axis

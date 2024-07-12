@@ -293,7 +293,7 @@ static Tk_ConfigSpec configSpecs[] =
 static void ComputeScrollbarGeometry _ANSI_ARGS_((
 	Scrollbar *scrollPtr));
 static int ConfigureScrollbar _ANSI_ARGS_((Tcl_Interp *interp,
-	Scrollbar *scrollPtr, int argc, char **argv,
+	Scrollbar *scrollPtr, int argc, CONST84 char **argv,
 	int flags));
 static void DestroyScrollbar _ANSI_ARGS_((DestroyData *memPtr));
 static void DisplayScrollbar _ANSI_ARGS_((ClientData clientData));
@@ -332,7 +332,7 @@ ScrollbarCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     register Scrollbar *scrollPtr;
     Tk_Window tkwin;

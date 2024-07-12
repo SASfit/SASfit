@@ -324,7 +324,7 @@ Blt_CreateCrosshairs(graphPtr)
     graphPtr->crosshairs = chPtr;
 
     if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin,
-	    "crosshairs", "Crosshairs", configSpecs, 0, (char **)NULL,
+	    "crosshairs", "Crosshairs", configSpecs, 0, (CONST84 char **)NULL,
 	    (char *)chPtr, 0) != TCL_OK) {
 	return TCL_ERROR;
     }

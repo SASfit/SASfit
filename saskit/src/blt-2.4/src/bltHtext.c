@@ -72,7 +72,7 @@ static int StringToWidth _ANSI_ARGS_((ClientData clientData,
 static int StringToHeight _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
-static char *WidthHeightToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *WidthHeightToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset, Tcl_FreeProc **freeProc));
 
 static Tk_CustomOption widthOption =
@@ -88,7 +88,7 @@ static Tk_CustomOption heightOption =
 static int StringToJustify _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *JustifyToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *JustifyToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
 
 static Tk_CustomOption justifyOption =
@@ -614,7 +614,7 @@ NameOfJustify(justify)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 JustifyToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -776,7 +776,7 @@ StringToWidth(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 WidthHeightToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -4170,7 +4170,8 @@ SearchOp(htPtr, interp, argc, argv)
     int argc;
     char **argv;
 {
-    char *startPtr, *endPtr;
+    char *startPtr;
+    char *endPtr;
     char saved;
     Tcl_RegExp regExpToken;
     int iFirst, iLast;
@@ -4207,7 +4208,7 @@ SearchOp(htPtr, interp, argc, argv)
     if (match < 0) {
 	return TCL_ERROR;
     } else if (match > 0) {
-	Tcl_RegExpRange(regExpToken, 0, &startPtr, &endPtr);
+	Tcl_RegExpRange(regExpToken, 0, (CONST84 char **)&startPtr, (CONST84 char **)&endPtr);
 	if ((startPtr != NULL) || (endPtr != NULL)) {
 	    matchStart = startPtr - htPtr->charArr;
 	    matchEnd = endPtr - htPtr->charArr - 1;
@@ -4408,7 +4409,7 @@ TextCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Main window associated with interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     HText *htPtr;
     Screen *screenPtr;

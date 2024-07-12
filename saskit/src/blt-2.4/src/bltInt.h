@@ -678,7 +678,7 @@ extern int Blt_CatromParametricSpline _ANSI_ARGS_((Point2D *origPts,
 extern int Blt_StringToFlag _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
-extern char *Blt_FlagToString _ANSI_ARGS_((ClientData clientData,
+extern CONST84_RETURN char *Blt_FlagToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *string, int offset, Tcl_FreeProc **freeProc));
 
 extern void Blt_InitHexTable _ANSI_ARGS_((char *table));
@@ -703,7 +703,7 @@ extern void Blt_RelinkWindow _ANSI_ARGS_((Tk_Window tkwin, Tk_Window newParent,
 extern Tk_Window Blt_Toplevel _ANSI_ARGS_((Tk_Window tkwin));
 
 extern int Blt_GetPixels _ANSI_ARGS_((Tcl_Interp *interp, Tk_Window tkwin,
-	char *string, int check, int *valuePtr));
+	CONST84 char *string, int check, int *valuePtr));
 extern int Blt_GetPosition _ANSI_ARGS_((Tcl_Interp *interp, char *string,
 	int *indexPtr));
 extern int Blt_GetCount _ANSI_ARGS_((Tcl_Interp *interp, char *string,
@@ -745,7 +745,7 @@ extern Point2D Blt_TranslatePoint _ANSI_ARGS_((Point2D *pointPtr, int width,
 
 extern int Blt_ConfigureWidgetComponent _ANSI_ARGS_((Tcl_Interp *interp,
 	Tk_Window tkwin, char *name, char *class, Tk_ConfigSpec *specs,
-	int argc, char **argv, char *widgRec, int flags));
+	int argc, CONST84 char **argv, char *widgRec, int flags));
 
 extern void Blt_HSV _ANSI_ARGS_((XColor *colorPtr, double *huePtr,
 	double *valPtr, double *satPtr));

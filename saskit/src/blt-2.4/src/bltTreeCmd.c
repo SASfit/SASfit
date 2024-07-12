@@ -1266,7 +1266,7 @@ GetNodePath(
  *---------------------------------------------------------------------- 
  */
 static Blt_TreeNode
-ParseNode5(TreeCmd *cmdPtr, char **argv, RestoreData *dataPtr)
+ParseNode5(TreeCmd *cmdPtr, CONST84 char **argv, RestoreData *dataPtr)
 {
     Blt_HashEntry *hPtr;
     Blt_TreeNode node, parent;
@@ -4133,7 +4133,7 @@ RestorefileOp(
 {
     Blt_TreeNode root;
     int nElem;
-    char **elemArr;
+    CONST84 char **elemArr;
     char *fileName;
     int result;
     Tcl_Channel channel;

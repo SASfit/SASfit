@@ -216,8 +216,7 @@
 static int StringToCursors _ANSI_ARGS_((ClientData clientData, 
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec, 
 	int offset));
-static char *CursorsToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
-	char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
+static CONST84_RETURN char *CursorsToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin, char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
 
 Tk_CustomOption cursorsOption =
 {
@@ -606,7 +605,7 @@ static Tk_ConfigSpec tokenConfigSpecs[] =
  *  Forward Declarations
  */
 static int DndCmd _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 static void TokenEventProc _ANSI_ARGS_((ClientData clientData, 
 	XEvent *eventPtr));
 static void MoveToken _ANSI_ARGS_((Dnd *dndPtr));
@@ -698,7 +697,7 @@ StringToCursors(clientData, interp, tkwin, string, widgRec, offset)
  * ----------------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 CursorsToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -727,10 +726,10 @@ CursorsToString(clientData, tkwin, widgRec, offset, freeProcPtr)
 
 
 static char *
-PrintList(CONST84 char *CONST list)
+PrintList(CONST84 char ** list)
 {
     int count;
-    CONST84 char *CONST p;
+    CONST84 char ** p;
 
     count = 0;
     for(p = list; *p != NULL; p++) {
@@ -4162,7 +4161,7 @@ GetdataOp(clientData, interp, argc, argv)
     for (i = 3; i < argc; i += 2) {
 	hPtr = Blt_CreateHashEntry(&(dndPtr->getDataTable), argv[i], &isNew);
 	if (!isNew) {
-	    cmd = (char **)Blt_GetHashValue(hPtr);
+	    cmd = (CONST84 char **)Blt_GetHashValue(hPtr);
 	    Blt_Free(cmd);
 	}
 	if (Tcl_SplitList(interp, argv[i + 1], &nElem, &cmd) != TCL_OK) {
@@ -4357,7 +4356,7 @@ SetdataOp(clientData, interp, argc, argv)
     Blt_HashEntry *hPtr;
     Blt_HashSearch cursor;
     int isNew, nElem;
-    char **cmd;
+    CONST84 char **cmd;
     int i;
 
     if (GetDnd(clientData, interp, argv[2], &dndPtr) != TCL_OK) {
@@ -4380,7 +4379,7 @@ SetdataOp(clientData, interp, argc, argv)
 	     (char *)NULL);
 	    return TCL_ERROR;
 	}
-	cmd = (char **)Blt_GetHashValue(hPtr);
+	cmd = (CONST84 char **)Blt_GetHashValue(hPtr);
 	if (cmd == NULL) {
 	    Tcl_SetResult(interp, "", TCL_STATIC);
 	} else {
@@ -4391,7 +4390,7 @@ SetdataOp(clientData, interp, argc, argv)
     for (i = 3; i < argc; i += 2) {
 	hPtr = Blt_CreateHashEntry(&(dndPtr->setDataTable), argv[i], &isNew);
 	if (!isNew) {
-	    cmd = (char **)Blt_GetHashValue(hPtr);
+	    cmd = (CONST84 char **)Blt_GetHashValue(hPtr);
 	    Blt_Free(cmd);
 	}
 	if (Tcl_SplitList(interp, argv[i + 1], &nElem, &cmd) != TCL_OK) {

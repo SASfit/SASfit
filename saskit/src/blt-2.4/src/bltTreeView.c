@@ -2467,7 +2467,7 @@ GetTags(
     TreeView *tvPtr;
     int nNames;
     CONST84 char **names;
-    register char **p;
+    register CONST84 char **p;
 
     tvPtr = Blt_GetBindingData(table);
     if (context == (ClientData)ITEM_ENTRY_BUTTON) {

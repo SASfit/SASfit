@@ -1218,7 +1218,7 @@ Blt_CreatePostScript(graphPtr)
     graphPtr->postscript = psPtr;
 
     if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin,
-	    "postscript", "Postscript", configSpecs, 0, (char **)NULL,
+	    "postscript", "Postscript", configSpecs, 0, (CONST84 char **)NULL,
 	    (char *)psPtr, 0) != TCL_OK) {
 	return TCL_ERROR;
     }

@@ -1996,7 +1996,7 @@ char *
 Blt_VectorVarTrace(clientData, interp, part1, part2, flags)
     ClientData clientData;	/* Vector object. */
     Tcl_Interp *interp;
-    char *part1, *part2;
+    CONST84 char *part1, *part2;
     int flags;
 {
     Blt_VectorIndexProc *indexProc;

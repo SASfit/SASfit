@@ -1279,7 +1279,7 @@ DoConfig(interp, tkwin, specPtr, objPtr, widgRec)
 		    != TCL_OK) {
 		    return TCL_ERROR;
 		}
-		*(char ***)ptr = argv;
+		*(CONST84 char ***)ptr = argv;
 	    }
 	    break;
 

@@ -37,7 +37,7 @@
 static int StringToFill _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
-static char *FillToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
+static CONST84_RETURN char *FillToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
 
 Tk_CustomOption bltFillOption =
@@ -48,7 +48,7 @@ Tk_CustomOption bltFillOption =
 static int StringToPad _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *PadToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
+static CONST84_RETURN char *PadToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
 	char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
 
 Tk_CustomOption bltPadOption =
@@ -59,7 +59,7 @@ Tk_CustomOption bltPadOption =
 static int StringToDistance _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
-static char *DistanceToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
+static CONST84_RETURN char *DistanceToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
 
 Tk_CustomOption bltDistanceOption =
@@ -80,7 +80,7 @@ Tk_CustomOption bltAnyDistanceOption =
 static int StringToCount _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
-static char *CountToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
+static CONST84_RETURN char *CountToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
 
 Tk_CustomOption bltCountOption =
@@ -95,7 +95,7 @@ Tk_CustomOption bltPositiveCountOption =
 
 static int StringToDashes _ANSI_ARGS_((ClientData, Tcl_Interp *, Tk_Window,
 	CONST84 char *, char *, int));
-static char *DashesToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
+static CONST84_RETURN char *DashesToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
 
 Tk_CustomOption bltDashesOption =
@@ -105,7 +105,7 @@ Tk_CustomOption bltDashesOption =
 
 static int StringToShadow _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp,
 	Tk_Window tkwin, CONST84 char *string, char *widgRec, int offset));
-static char *ShadowToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
+static CONST84_RETURN char *ShadowToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
 	char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
 
 Tk_CustomOption bltShadowOption =
@@ -116,7 +116,7 @@ Tk_CustomOption bltShadowOption =
 static int StringToUid _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
-static char *UidToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
+static CONST84_RETURN char *UidToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
 
 Tk_CustomOption bltUidOption =
@@ -127,7 +127,7 @@ Tk_CustomOption bltUidOption =
 static int StringToState _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int flags));
-static char *StateToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
+static CONST84_RETURN char *StateToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
 
 Tk_CustomOption bltStateOption =
@@ -137,7 +137,7 @@ Tk_CustomOption bltStateOption =
 
 static int StringToList _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp,
 	Tk_Window tkwin, CONST84 char *string, char *widgRec, int flags));
-static char *ListToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
+static CONST84_RETURN char *ListToString _ANSI_ARGS_((ClientData, Tk_Window, char *, int,
 	Tcl_FreeProc **));
 
 Tk_CustomOption bltListOption =
@@ -147,7 +147,7 @@ Tk_CustomOption bltListOption =
 
 static int StringToTile _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp,
 	Tk_Window tkwin, CONST84 char *value, char *widgRec, int flags));
-static char *TileToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
+static CONST84_RETURN char *TileToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
 	char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
 
 Tk_CustomOption bltTileOption =
@@ -243,7 +243,7 @@ StringToFill(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 FillToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -271,7 +271,7 @@ Blt_StringToFlag(clientData, interp, tkwin, string, widgRec, offset)
     ClientData clientData;	/* Bit mask to be tested in status word */
     Tcl_Interp *interp;		/* Interpreter to send results back to */
     Tk_Window tkwin;		/* Not used. */
-    char *string;		/* Fill style string */
+    CONST84 char *string;		/* Fill style string */
     char *widgRec;		/* Cubicle structure record */
     int offset;			/* Offset of style in record */
 {
@@ -303,7 +303,7 @@ Blt_StringToFlag(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-char *
+CONST84_RETURN char *
 Blt_FlagToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Bit mask to be test in status word */
     Tk_Window tkwin;		/* Not used. */
@@ -334,7 +334,7 @@ int
 Blt_GetPixels(interp, tkwin, string, check, valuePtr)
     Tcl_Interp *interp;
     Tk_Window tkwin;
-    char *string;
+    CONST84 char *string;
     int check;			/* Can be PIXELS_POSITIVE, PIXELS_NONNEGATIVE,
 				 * or PIXELS_ANY, */
     int *valuePtr;
@@ -408,7 +408,7 @@ StringToDistance(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 DistanceToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -497,7 +497,7 @@ StringToCount(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 CountToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -595,7 +595,7 @@ StringToPad(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 PadToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -708,7 +708,7 @@ StringToShadow(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ShadowToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -864,7 +864,7 @@ StringToDashes(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 DashesToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -939,7 +939,7 @@ StringToUid(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 UidToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1001,7 +1001,7 @@ StringToState(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 StateToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1038,11 +1038,11 @@ StringToList(clientData, interp, tkwin, string, widgRec, offset)
     ClientData clientData;	/* Not used. */
     Tcl_Interp *interp;		/* Interpreter to send results back to */
     Tk_Window tkwin;		/* Not used. */
-    char *string;		/* String representation of option value */
+    CONST84 char *string;		/* String representation of option value */
     char *widgRec;		/* Widget structure record */
     int offset;			/* Offset of field in record */
 {
-    char ***listPtr = (char ***)(widgRec + offset);
+    CONST84 char ***listPtr = (CONST84 char ***)(widgRec + offset);
     CONST84 char **elemArr;
     int nElem;
 
@@ -1075,7 +1075,7 @@ StringToList(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ListToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1156,7 +1156,7 @@ StringToTile(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 TileToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1299,7 +1299,7 @@ Blt_StringToEnum(clientData, interp, tkwin, string, widgRec, offset)
     ClientData clientData;	/* Vectors of valid strings. */
     Tcl_Interp *interp;		/* Interpreter to send results back to */
     Tk_Window tkwin;		/* Not used. */
-    char *string;		/* String to match. */
+    CONST84 char *string;		/* String to match. */
     char *widgRec;		/* Widget record. */
     int offset;			/* Offset of field in record */
 {
@@ -1345,7 +1345,7 @@ Blt_StringToEnum(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-char *
+CONST84_RETURN char *
 Blt_EnumToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* List of strings. */
     Tk_Window tkwin;		/* Not used. */

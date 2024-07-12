@@ -94,7 +94,7 @@ static int StringToLimits _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
 
-static char *LimitsToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *LimitsToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtr));
 
@@ -106,7 +106,7 @@ static Tk_CustomOption limitsOption =
 static int StringToResize _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *ResizeToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *ResizeToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtr));
 
@@ -118,7 +118,7 @@ static Tk_CustomOption resizeOption =
 static int StringToControl _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *ControlToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *ControlToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtr));
 
@@ -572,7 +572,7 @@ NameOfLimits(limitsPtr)
  * ----------------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 LimitsToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -671,7 +671,7 @@ NameOfResize(resize)
  * ----------------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ResizeToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -781,7 +781,7 @@ NameOfControl(control)
  * ----------------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ControlToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */

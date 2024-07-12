@@ -44,7 +44,7 @@
 #if (TCL_MAJOR_VERSION == 7)
 #define FILEHANDLER_USES_TCLFILES 1
 #else
-typedef int Tcl_File;
+typedef long int Tcl_File;
 #endif
 
 static Tcl_CmdProc BgexecCmd;

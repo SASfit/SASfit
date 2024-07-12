@@ -295,7 +295,7 @@ Blt_CreateGrid(graphPtr)
     graphPtr->gridPtr = gridPtr;
 
     if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin, "grid",
-	    "Grid", configSpecs, 0, (char **)NULL, (char *)gridPtr,
+	    "Grid", configSpecs, 0, (CONST84 char **)NULL, (char *)gridPtr,
 	    Blt_GraphType(graphPtr)) != TCL_OK) {
 	return TCL_ERROR;
     }

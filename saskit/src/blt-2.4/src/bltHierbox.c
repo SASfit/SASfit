@@ -1088,7 +1088,7 @@ static void SelectCmdProc _ANSI_ARGS_((ClientData clientData));
 static void EventuallyInvokeSelectCmd _ANSI_ARGS_((Hierbox *hboxPtr));
 static int ComputeVisibleEntries _ANSI_ARGS_((Hierbox *hboxPtr));
 static int ConfigureEntry _ANSI_ARGS_((Hierbox *hboxPtr, Entry * entryPtr,
-	int argc, char **argv, int flags));
+	int argc, CONST84 char **argv, int flags));
 static void ComputeLayout _ANSI_ARGS_((Hierbox *hboxPtr));
 
 static CompareProc ExactCompare, GlobCompare, RegexpCompare;
@@ -2064,7 +2064,7 @@ CreateNode(hboxPtr, parentPtr, position, name)
     }
     entryPtr->labelText = Blt_Strdup(name);
 
-    if (ConfigureEntry(hboxPtr, entryPtr, 0, (char **)NULL, 0) != TCL_OK) {
+    if (ConfigureEntry(hboxPtr, entryPtr, 0, (CONST84 char **)NULL, 0) != TCL_OK) {
 	DestroyEntry(entryPtr);
 	return NULL;
     }
@@ -3206,7 +3206,7 @@ GetTags(table, object, context, list)
     if (treePtr->entryPtr->tags != NULL) {
 	int nNames;
 	CONST84 char **names;
-	register char **p;
+	register CONST84 char **p;
 
 	if (Tcl_SplitList((Tcl_Interp *)NULL, treePtr->entryPtr->tags, &nNames, &names) == TCL_OK) {
 	    for (p = names; *p != NULL; p++) {
@@ -5155,7 +5155,7 @@ HierboxCmd(clientData, interp, argc, argv)
     hboxPtr = CreateHierbox(interp, tkwin);
 
     if (Blt_ConfigureWidgetComponent(interp, tkwin, "button", "Button",
-	    buttonConfigSpecs, 0, (char **)NULL, (char *)hboxPtr, 0) != TCL_OK) {
+	    buttonConfigSpecs, 0, (const char **)NULL, (char *)hboxPtr, 0) != TCL_OK) {
 	goto error;
     }
     if (ConfigureHierbox(interp, hboxPtr, argc - 2, argv + 2, 0) != TCL_OK) {
@@ -5442,7 +5442,7 @@ ButtonBindOp(hboxPtr, interp, argc, argv)
 	object = (ClientData)Tk_GetUid(argv[3]);
     }
     return Blt_ConfigureBindings(interp, hboxPtr->buttonBindTable, object,
-	argc - 4, argv + 4);
+	argc - 4, (CONST84 char **) argv + 4);
 }
 
 /*
@@ -5769,8 +5769,7 @@ BindOp(hboxPtr, interp, argc, argv)
     if (item == 0) {
 	item = (ClientData)Tk_GetUid(argv[2]);
     }
-    return Blt_ConfigureBindings(interp, hboxPtr->bindTable, item, argc - 3, 
-	argv + 3);
+    return Blt_ConfigureBindings(interp, hboxPtr->bindTable, item, argc - 3, (CONST84 char **) argv + 3);
 }
 
 /*
@@ -5827,7 +5826,7 @@ ConfigureOpOp(hboxPtr, interp, argc, argv)
     CONST84 char **argv;
 {
     int nIds, nOpts;
-    char **options;
+    CONST84 char **options;
     register int i;
     Tree *treePtr;
 
@@ -7202,7 +7201,7 @@ InsertOp(hboxPtr, interp, argc, argv)
     Tcl_DString dString;
     register int i, l;
     int nOpts;
-    char **options;
+    CONST84 char **options;
     CONST84 char **nameArr;
 
     rootPtr = hboxPtr->rootPtr;
@@ -7249,7 +7248,7 @@ InsertOp(hboxPtr, interp, argc, argv)
 	/*
 	 * Split the path and find the parent node of the path.
 	 */
-	nameArr = &path;
+	nameArr = (CONST84 char **) &path;
 	level = 1;
 	if (hboxPtr->separator == SEPARATOR_LIST) {
 	    if (Tcl_SplitList(interp, path, &level, &nameArr) != TCL_OK) {
@@ -7298,7 +7297,7 @@ InsertOp(hboxPtr, interp, argc, argv)
 		goto error;
 	    }
 	}
-	if (nameArr != &path) {
+	if (nameArr != (CONST84 char **) &path) {
 	    Blt_Free(nameArr);
 	}
     }
@@ -7307,7 +7306,7 @@ InsertOp(hboxPtr, interp, argc, argv)
     Tcl_DStringResult(hboxPtr->interp, &dString);
     return TCL_OK;
   error:
-    if (nameArr != &path) {
+    if (nameArr != (CONST84 char **) &path) {
 	Blt_Free(nameArr);
     }
     Tcl_DStringFree(&dString);

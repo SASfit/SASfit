@@ -155,7 +155,7 @@ SplitPath(tvPtr, path, depthPtr, compPtrPtr)
     char *sep;
 
     if (tvPtr->pathSep == SEPARATOR_LIST) {
-	if (Tcl_SplitList(tvPtr->interp, path, depthPtr, compPtrPtr) 
+	if (Tcl_SplitList(tvPtr->interp, path, depthPtr, (CONST84 char ***)compPtrPtr)
 	    != TCL_OK) {
 	    return TCL_ERROR;
 	}

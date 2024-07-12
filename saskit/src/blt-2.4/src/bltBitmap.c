@@ -514,14 +514,14 @@ ParseListData(interp, string, widthPtr, heightPtr, bitsPtr)
     unsigned char **bitsPtr;
 {
     register char *p;
-    CONST84 char **elemArr;
+    char **elemArr;
     int nElem;
     int width, height;
     int result;
     int arraySize;
 
     arraySize = -1;
-    if (Tcl_SplitList(interp, string, &nElem, &elemArr) != TCL_OK) {
+    if (Tcl_SplitList(interp, string, &nElem, (CONST84 char ***)&elemArr) != TCL_OK) {
 	return -1;
     }
     if (nElem == 2) {
@@ -622,7 +622,7 @@ ParseStructData(interp, string, widthPtr, heightPtr, bitsPtr)
 	if (Tcl_RegExpExec(interp, re, line, line)) {
 	    char *start, *end;
 
-	    Tcl_RegExpRange(re, 0, &start, &end);
+	    Tcl_RegExpRange(re, 0, (CONST84 char **)&start, (CONST84 char **)&end);
 	    name = strtok(end, " \t"); 
 	    value = strtok(NULL, " \t");
 	    if ((name == NULL) || (value == NULL)) {

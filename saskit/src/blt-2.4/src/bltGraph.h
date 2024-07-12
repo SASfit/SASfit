@@ -626,7 +626,7 @@ extern void Blt_FreePen _ANSI_ARGS_((Graph *graphPtr, Pen *penPtr));
 
 extern int Blt_VirtualAxisOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
 	int argc, CONST84 char **argv));
-extern int Blt_AxisOp _ANSI_ARGS_((Graph *graphPtr, int margin, int argc, 
+extern int Blt_AxisOp _ANSI_ARGS_((Graph *graphPtr, long margin, int argc, 
 	CONST84 char **argv));
 extern int Blt_ElementOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
 	int argc, CONST84 char **argv, Blt_Uid classUid));

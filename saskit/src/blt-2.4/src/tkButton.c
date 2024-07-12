@@ -497,7 +497,7 @@ static char *optionStrings[] =
 static void ButtonCmdDeletedProc _ANSI_ARGS_((
 	ClientData clientData));
 static int ButtonCreate _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, int argc, char **argv,
+	Tcl_Interp *interp, int argc, CONST84 char **argv,
 	int type));
 static void ButtonEventProc _ANSI_ARGS_((ClientData clientData,
 	XEvent *eventPtr));
@@ -517,7 +517,7 @@ static int ButtonWidgetCmd _ANSI_ARGS_((ClientData clientData,
 	Tcl_Interp *interp, int argc, CONST84 char **argv));
 static void ComputeButtonGeometry _ANSI_ARGS_((Button *butPtr));
 static int ConfigureButton _ANSI_ARGS_((Tcl_Interp *interp,
-	Button *butPtr, int argc, char **argv,
+	Button *butPtr, int argc, CONST84 char **argv,
 	int flags));
 static void DestroyButton _ANSI_ARGS_((Button *butPtr));
 static void DisplayButton _ANSI_ARGS_((ClientData clientData));
@@ -632,7 +632,7 @@ ButtonCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return ButtonCreate(clientData, interp, argc, argv, TYPE_BUTTON);
 }
@@ -643,7 +643,7 @@ CheckbuttonCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return ButtonCreate(clientData, interp, argc, argv, TYPE_CHECK_BUTTON);
 }
@@ -654,7 +654,7 @@ LabelCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return ButtonCreate(clientData, interp, argc, argv, TYPE_LABEL);
 }
@@ -665,7 +665,7 @@ RadiobuttonCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return ButtonCreate(clientData, interp, argc, argv, TYPE_RADIO_BUTTON);
 }
@@ -695,7 +695,7 @@ ButtonCreate(clientData, interp, argc, argv, type)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
     int type;			/* Type of button to create: TYPE_LABEL,
 				 * TYPE_BUTTON, TYPE_CHECK_BUTTON, or
 				 * TYPE_RADIO_BUTTON. */

@@ -669,7 +669,7 @@ StringToTicks(clientData, interp, tkwin, string, widgRec, offset)
     char *widgRec;		/* Pointer to structure record. */
     int offset;			/* Offset of field in structure. */
 {
-    unsigned int mask = (unsigned int)clientData;
+    unsigned long mask = (unsigned long)clientData;
     Axis *axisPtr = (Axis *)widgRec;
     Ticks **ticksPtrPtr = (Ticks **) (widgRec + offset);
     int nTicks;
@@ -3331,7 +3331,7 @@ Blt_DefaultAxes(graphPtr)
 	 * component and not the entire graph.
 	 */
 	if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin,
-		axisPtr->name, "Axis", configSpecs, 0, (char **)NULL,
+		axisPtr->name, "Axis", configSpecs, 0, (CONST84 char **)NULL,
 		(char *)axisPtr, flags) != TCL_OK) {
 	    return TCL_ERROR;
 	}
@@ -3363,7 +3363,7 @@ BindOp(graphPtr, axisPtr, argc, argv)
     Tcl_Interp *interp = graphPtr->interp;
 
     return Blt_ConfigureBindings(interp, graphPtr->bindTable,
-          Blt_MakeAxisTag(graphPtr, axisPtr->name), argc, argv);
+          Blt_MakeAxisTag(graphPtr, axisPtr->name), argc, (CONST84 char **)argv);
 }
           
 /*
@@ -3645,9 +3645,9 @@ UseOp(graphPtr, axisPtr, argc, argv)
     Blt_ChainLink *linkPtr;
     int i;
     Blt_Uid classUid;
-    int margin;
+    long margin;
 
-    margin = (int)argv[-1];
+    margin = (long)argv[-1];
     chainPtr = graphPtr->margins[margin].axes;
     if (argc == 0) {
 	for (linkPtr = Blt_ChainFirstLink(chainPtr); linkPtr!= NULL;
@@ -3737,7 +3737,7 @@ CreateVirtualOp(graphPtr, argc, argv)
     }
     flags = Blt_GraphType(graphPtr);
     if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin,
-	    axisPtr->name, "Axis", configSpecs, argc - 4, argv + 4,
+	    axisPtr->name, "Axis", configSpecs, argc - 4, (CONST84 char **)(argv + 4),
 	    (char *)axisPtr, flags) != TCL_OK) {
 	goto error;
     }
@@ -3781,7 +3781,7 @@ BindVirtualOp(graphPtr, argc, argv)
 	return TCL_OK;
     }
     return Blt_ConfigureBindings(interp, graphPtr->bindTable, 
-	 Blt_MakeAxisTag(graphPtr, argv[3]), argc - 4, argv + 4);
+	 Blt_MakeAxisTag(graphPtr, argv[3]), argc - 4, (CONST84 char **)(argv + 4));
 }
 
 
@@ -4166,7 +4166,7 @@ Blt_VirtualAxisOp(graphPtr, interp, argc, argv)
 int
 Blt_AxisOp(graphPtr, margin, argc, argv)
     Graph *graphPtr;
-    int margin;
+    long margin;
     int argc;
     CONST84 char **argv;
 {

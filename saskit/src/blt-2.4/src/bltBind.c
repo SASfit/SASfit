@@ -468,11 +468,11 @@ Blt_ConfigureBindings(interp, bindPtr, item, argc, argv)
     struct Blt_BindTableStruct *bindPtr;
     ClientData item;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
-    char *command;
+    CONST84 char *command;
     unsigned long mask;
-    char *seq;
+    CONST84 char *seq;
 
     if (argc == 0) {
 	Tk_GetAllBindings(interp, bindPtr->bindingTable, item);
@@ -526,10 +526,10 @@ Blt_ConfigureBindingsFromObj(interp, bindPtr, item, objc, objv)
     int objc;
     Tcl_Obj *CONST *objv;
 {
-    char *command;
+    CONST84 char *command;
     unsigned long mask;
-    char *seq;
-    char *string;
+    CONST84 char *seq;
+    CONST84 char *string;
 
     if (objc == 0) {
 	Tk_GetAllBindings(interp, bindPtr->bindingTable, item);

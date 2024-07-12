@@ -211,7 +211,7 @@ static Tk_ConfigSpec configSpecs[] =
  */
 
 static int ConfigureFrame _ANSI_ARGS_((Tcl_Interp *interp,
-	Frame * framePtr, int argc, char **argv,
+	Frame * framePtr, int argc, CONST84 char **argv,
 	int flags));
 static void DestroyFrame _ANSI_ARGS_((DestroyData *memPtr));
 static void DisplayFrame _ANSI_ARGS_((ClientData clientData));
@@ -232,7 +232,7 @@ EXTERN
 static
 #endif
 int TkCreateFrame _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, int argc, char **argv,
+	Tcl_Interp *interp, int argc, CONST84 char **argv,
 	int toplevel, char *appName));
 
 EXTERN void TkSetWindowMenuBar _ANSI_ARGS_((Tcl_Interp *interp, Tk_Window tkwin,
@@ -279,7 +279,7 @@ FrameCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return TkCreateFrame(clientData, interp, argc, argv, 0, (char *)NULL);
 }
@@ -290,7 +290,7 @@ ToplevelCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return TkCreateFrame(clientData, interp, argc, argv, 1, (char *)NULL);
 }
@@ -325,7 +325,7 @@ TkCreateFrame(clientData, interp, argc, argv, toplevel, appName)
 				 * new application, then this is NULL. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
     int toplevel;		/* Non-zero means create a toplevel window,
 				 * zero means create a frame. */
     char *appName;		/* Should only be non-NULL if clientData is
@@ -334,7 +334,7 @@ TkCreateFrame(clientData, interp, argc, argv, toplevel, appName)
 {
     Frame *framePtr;
     Tk_Window new;
-    char *className, *screenName, *visualName, *colormapName, *arg, *useOption;
+    CONST84 char *className, *screenName, *visualName, *colormapName, *arg, *useOption;
     int i, c, length, depth;
     unsigned int mask;
     Colormap colormap;

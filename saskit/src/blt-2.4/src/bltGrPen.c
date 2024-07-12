@@ -351,7 +351,7 @@ Blt_CreatePen(graphPtr, penName, classUid, nOpts, options)
 
     configFlags = (penPtr->flags & (ACTIVE_PEN | NORMAL_PEN));
     if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin,
-	    penPtr->name, "Pen", penPtr->configSpecs, nOpts, options,
+	    penPtr->name, "Pen", penPtr->configSpecs, nOpts, (CONST84 char **)options,
 	    (char *)penPtr, configFlags) != TCL_OK) {
 	if (isNew) {
 	    DestroyPen(graphPtr, penPtr);

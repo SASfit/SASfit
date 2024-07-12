@@ -556,12 +556,12 @@ CmdSearch(display, window, searchPtr)
 {
     Blt_Chain *chainPtr;
     int cmdArgc;
-    CONST84 char *CONST *cmdArgv;
+    char **cmdArgv;
 
     if (XGetCommand(display, window, &cmdArgv, &cmdArgc)) {
 	char *string;
 
-	string = Tcl_Merge(cmdArgc, cmdArgv);
+	string = Tcl_Merge(cmdArgc, (const char * const*)cmdArgv);
 	XFreeStringList(cmdArgv);
 	if (Tcl_StringMatch(string, searchPtr->pattern)) {
 	    if (searchPtr->saveNames) { /* Record names of matching windows. */
