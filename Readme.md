@@ -212,7 +212,7 @@ Install *GIT* first and get a copy of the latest SASfit source code:
 
 #### Optional: Prepare a podman container for building SASfit
 
-**Note:** This work for building from source only for now. Getting the appimagetool working in a container for packaging is not working yet. (would require `--device /dev/fuse --device /dev/snd` below, at least)
+**Note:** This works for building except packaging for now. Getting the appimagetool working in a container for packaging is not working yet. (would require `--device /dev/fuse --device /dev/snd` below, at least)
 
 Run container interactively:
 
