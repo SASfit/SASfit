@@ -25,7 +25,7 @@ clone_script:
 
 image:
   # Linux first since its faster and there is more time for source snapshot upload to zenodo later
-  - Ubuntu2204
+  - Ubuntu2404
   - Visual Studio 2019
   - macos-sonoma
 
