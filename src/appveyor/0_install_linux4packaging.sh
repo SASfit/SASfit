@@ -11,15 +11,12 @@ scriptdir="$(cd "$(dirname "$0")" && pwd -P)"
 # install ssh deploy key
 [ -z "${SF_DEPLOY_KEY}" ] || echo "${SF_DEPLOY_KEY}" | tr " " "\n" >> $HOME/.ssh/id_rsa
 # Install AppImage-Builder and requirements
-# https://appimage-builder.readthedocs.io/en/latest/intro/install.html#debian-ubuntu
-sudo apt-get -y install binutils coreutils pipx python3-pip python3-venv python3-setuptools python3-packaging patchelf desktop-file-utils libgdk-pixbuf2.0-dev fakeroot strace fuse appstream squashfs-tools util-linux zsync wget
+# https://appimage-builder.readthedocs.io/en/latest/intro/install.html
+
+sudo wget https://github.com/AppImageCrafters/appimage-builder/releases/download/Continuous/appimage-builder-1.1.1.dev32+g2709a3b-x86_64.AppImage -O /usr/local/bin/appimage-builder
+sudo chmod +x /usr/local/bin/appimage-builder
 # install docker possibly
 (dpkg -l | grep -q docker) || sudo apt-get -y install docker.io
-pipx install 'appimage-builder<1.1'
-echo "local bin: '$HOME/.local/bin'"
-ls -la $HOME/.local/bin
-sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
-sudo chmod +x /usr/local/bin/appimagetool
 # fix docker error about missing snd device:
 sudo ln /dev/null /dev/snd
 # pull docker img now, prevents errors later

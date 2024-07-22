@@ -355,12 +355,8 @@ if(CREATE_BINARY)
         # see also PCKG_DIR_NAME in cmake/create_package.cmake
         set(SASFIT_EXEC_FILENAME "${CMAKE_PROJECT_NAME}-${SASFIT_VERSION}-${CMAKE_SYSTEM_PROCESSOR}.AppImage")
         # build the AppImage at the end and set the AppImage file name
-        set(APPIMAGE_BUILDER_PATH $ENV{HOME}/.local/bin/appimage-builder)
-        if(NOT EXISTS APPIMAGE_BUILDER_PATH)
-            message(ERROR "${APPIMAGE_BUILDER_PATH} not found!")
-        endif()
         add_custom_target(sasfit_binary ALL
-            ${APPIMAGE_BUILDER_PATH} --recipe ${CMAKE_BINARY_DIR}/AppImageBuilder.yml
+            appimage-builder --recipe ${CMAKE_BINARY_DIR}/AppImageBuilder.yml
             DEPENDS sasfit ${SASFIT_PLUGINS_INCLUDED}
             BYPRODUCTS ${SASFIT_ROOT_DIR}/${SASFIT_EXEC_FILENAME}
             WORKING_DIRECTORY ${SASFIT_ROOT_DIR}
