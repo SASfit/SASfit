@@ -16,7 +16,8 @@ sudo apt-get -y install binutils coreutils pipx python3-pip python3-venv python3
 # install docker possibly
 (dpkg -l | grep -q docker) || sudo apt-get -y install docker.io
 pipx install 'appimage-builder<1.1'
-pipx ensurepath
+echo "local bin: '$HOME/.local/bin'"
+ls -la $HOME/.local/bin
 sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
 sudo chmod +x /usr/local/bin/appimagetool
 # fix docker error about missing snd device:

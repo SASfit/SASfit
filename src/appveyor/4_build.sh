@@ -29,7 +29,6 @@ else # macOS or Linux
         export CXX=$(which g++)
     else # on Linux
         NUM_LOGICAL_CORES="$(awk '/processor/' /proc/cpuinfo | wc -l)"
-        pipx ensurepath # make sure .local/bin is in PATH
     fi
     # find latest gcc and g++ compilers and set them as global variables
     [ -f "$CC" ]  || export CC="$( sh "$findCmdInPath" '/gcc(-(mp-)?[0-9]+)?$')"
