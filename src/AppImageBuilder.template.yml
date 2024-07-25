@@ -176,7 +176,7 @@ AppDir:
 #      use_host_x: False
     centos:
       image: appimagecrafters/tests-env:centos-7
-      before_command: sh -c 'yum install -y xorg-x11-server-Xvfb which'
+      before_command: sh -c 'sed -i -e "s/mirror.centos.org/vault.centos.org/g" -e "s/^#.*baseurl=http/baseurl=http/g" -e "s/^mirrorlist=http/#mirrorlist=http/g" /etc/yum.repos.d/*.repo; yum install -y xorg-x11-server-Xvfb which'
       command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
       use_host_x: False
 #    fedora:
