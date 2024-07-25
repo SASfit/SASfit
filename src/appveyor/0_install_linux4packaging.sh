@@ -28,5 +28,3 @@ for img in $(awk '/^[^#]*appimagecrafters/{print $2}' "$scriptdir/../AppImageBui
 do
     docker pull "$img";
 done
-
-# vim: set ts=4 sw=4 sts=4 tw=0 et:
