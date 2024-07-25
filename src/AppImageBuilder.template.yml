@@ -9,6 +9,8 @@
 # For cleanup during consecutive runs:
 #   (cd saskit && ./saskit_linux64 gen/buildkit cleanupall && rm saskit_linux64 && rm -Rf ../appdir ../appimage* ../*.AppImage)
 version: 1
+script: |
+  echo "  [1] main script"
 AppDir:
   # assuming this file resides in sasfit/src/,
   # addresses the package dir created by CMake previously
@@ -21,7 +23,7 @@ AppDir:
     exec: saskit
     exec_args: $APPDIR/sasfit.vfs/main.tcl $@
   before_bundle: |
-    echo "  [1] before_bundle, running appimage-build in '$(pwd)', appdir: '$APPDIR'"
+    echo "  [1] before_bundle"
   after_bundle: |
     [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [2] after_bundle '$APPDIR'"
