@@ -117,7 +117,7 @@ AppDir:
      $TCLSH gen/buildkit finalize $SF_DEBUG -tcl=*.* -tk=*.* -blt -compression=none -binary=all -resfile=current)
     #
     # copy the reassembled tcl interpreter back into the app dir
-    cp saskit/bin/*/dqkit-all.bin "$APPDIR"/saskit
+    cp saskit/bin/$(uname -n)-*/dqkit-all.bin "$APPDIR"/saskit
     find "$APPDIR" -type f
   apt:
     arch:
