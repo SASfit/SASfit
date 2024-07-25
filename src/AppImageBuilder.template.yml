@@ -25,7 +25,7 @@ AppDir:
   before_bundle: |
     echo "  [1] before_bundle"
   after_bundle: |
-    [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
+    export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [2] after_bundle '$APPDIR'"
     find "$APPDIR" -type f
     #
@@ -92,12 +92,12 @@ AppDir:
     appstreamcli validate "$METAINFO_PATH"
     find "$APPDIR" -type f
   before_runtime: |
-    [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
+    export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [3] before_runtime '$APPDIR'"
     find "$APPDIR" -type f
     # for debugging, show interpreter with 'patchelf --print-interpreter ...'
   after_runtime: |
-    [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
+    export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [4] after_runtime '$APPDIR'"
     find "$APPDIR" -type f
     #
