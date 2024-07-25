@@ -18,7 +18,7 @@ sudo chmod +x /usr/local/bin/appimage-builder
 # install docker possibly
 (dpkg -l | grep -q docker) || sudo apt-get -y install docker.io
 # give the current user access to docker socket (requires log out+in to activate)
-sudo adduser $(id -un) docker
+groups | grep -q docker || sudo adduser $(id -un) docker
 # fix docker error about missing snd device:
 [ -f /dev/snd ] || sudo ln /dev/null /dev/snd
 # pull docker img now, prevents errors later
