@@ -151,11 +151,11 @@ typedef struct {
  *	expression.  It's passed among the routines in this module.
  */
 typedef struct {
-    char *expr;			/* The entire right-hand side of the
+    CONST84 char *expr;			/* The entire right-hand side of the
 				 * expression, as originally passed to
 				 * Blt_ExprVector. */
 
-    char *nextPtr;		/* Position of the next character to
+    CONST84 char *nextPtr;		/* Position of the next character to
 				 * be scanned from the expression
 				 * string. */
 
@@ -984,7 +984,7 @@ NextToken(interp, parsePtr, valuePtr)
 				 * must have initialized pv field
 				 * correctly. */
 {
-    register char *p;
+    register CONST84 char *p;
     char *endPtr;
     CONST char *var;
     int result;
@@ -1032,7 +1032,7 @@ NextToken(interp, parsePtr, valuePtr)
     switch (*p) {
     case '$':
 	parsePtr->token = VALUE;
-	var = Tcl_ParseVar(interp, p, &endPtr);
+	var = Tcl_ParseVar(interp, p, (const char **)&endPtr);
 	if (var == NULL) {
 	    return TCL_ERROR;
 	}

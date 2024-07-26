@@ -478,7 +478,7 @@ StringToAxis(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 AxisToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -518,7 +518,7 @@ StringToFormat(clientData, interp, tkwin, string, widgRec, offset)
     int offset;			/* Offset of field in structure. */
 {
     Axis *axisPtr = (Axis *)(widgRec);
-    char **argv;
+    CONST84 char **argv;
     int argc;
 
     if (axisPtr->limitsFormats != NULL) {
@@ -557,7 +557,7 @@ StringToFormat(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 FormatToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -622,7 +622,7 @@ StringToLimit(clientData, interp, tkwin, string, widgRec, offset)
  * ----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 LimitToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Either LMIN or LMAX */
     Tk_Window tkwin;		/* Not used. */
@@ -669,7 +669,7 @@ StringToTicks(clientData, interp, tkwin, string, widgRec, offset)
     char *widgRec;		/* Pointer to structure record. */
     int offset;			/* Offset of field in structure. */
 {
-    unsigned int mask = (unsigned int)clientData;
+    unsigned long mask = (unsigned long)clientData;
     Axis *axisPtr = (Axis *)widgRec;
     Ticks **ticksPtrPtr = (Ticks **) (widgRec + offset);
     int nTicks;
@@ -679,7 +679,7 @@ StringToTicks(clientData, interp, tkwin, string, widgRec, offset)
     ticksPtr = NULL;
     if ((string != NULL) && (*string != '\0')) {
 	int nExprs;
-	char **exprArr;
+	CONST84 char **exprArr;
 
 	if (Tcl_SplitList(interp, string, &nExprs, &exprArr) != TCL_OK) {
 	    return TCL_ERROR;
@@ -730,7 +730,7 @@ StringToTicks(clientData, interp, tkwin, string, widgRec, offset)
  * ----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 TicksToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -789,7 +789,7 @@ StringToLoose(clientData, interp, tkwin, string, widgRec, offset)
     Axis *axisPtr = (Axis *)(widgRec);
     register int i;
     int argc;
-    char **argv;
+    CONST84 char **argv;
     int values[2];
 
     if (Tcl_SplitList(interp, string, &argc, &argv) != TCL_OK) {
@@ -832,7 +832,7 @@ StringToLoose(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 LooseToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -3331,7 +3331,7 @@ Blt_DefaultAxes(graphPtr)
 	 * component and not the entire graph.
 	 */
 	if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin,
-		axisPtr->name, "Axis", configSpecs, 0, (char **)NULL,
+		axisPtr->name, "Axis", configSpecs, 0, (CONST84 char **)NULL,
 		(char *)axisPtr, flags) != TCL_OK) {
 	    return TCL_ERROR;
 	}
@@ -3363,7 +3363,7 @@ BindOp(graphPtr, axisPtr, argc, argv)
     Tcl_Interp *interp = graphPtr->interp;
 
     return Blt_ConfigureBindings(interp, graphPtr->bindTable,
-          Blt_MakeAxisTag(graphPtr, axisPtr->name), argc, argv);
+          Blt_MakeAxisTag(graphPtr, axisPtr->name), argc, (CONST84 char **)argv);
 }
           
 /*
@@ -3413,7 +3413,7 @@ ConfigureOp(graphPtr, axisPtr, argc, argv)
     Graph *graphPtr;
     Axis *axisPtr;
     int argc;
-    char *argv[];
+    CONST84 char *argv[];
 {
     int flags;
 
@@ -3637,17 +3637,17 @@ UseOp(graphPtr, axisPtr, argc, argv)
     Graph *graphPtr;
     Axis *axisPtr;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Chain *chainPtr;
     int nNames;
-    char **names;
+    CONST84 char **names;
     Blt_ChainLink *linkPtr;
     int i;
     Blt_Uid classUid;
-    int margin;
+    long margin;
 
-    margin = (int)argv[-1];
+    margin = (long)argv[-1];
     chainPtr = graphPtr->margins[margin].axes;
     if (argc == 0) {
 	for (linkPtr = Blt_ChainFirstLink(chainPtr); linkPtr!= NULL;
@@ -3737,7 +3737,7 @@ CreateVirtualOp(graphPtr, argc, argv)
     }
     flags = Blt_GraphType(graphPtr);
     if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin,
-	    axisPtr->name, "Axis", configSpecs, argc - 4, argv + 4,
+	    axisPtr->name, "Axis", configSpecs, argc - 4, (CONST84 char **)(argv + 4),
 	    (char *)axisPtr, flags) != TCL_OK) {
 	goto error;
     }
@@ -3781,7 +3781,7 @@ BindVirtualOp(graphPtr, argc, argv)
 	return TCL_OK;
     }
     return Blt_ConfigureBindings(interp, graphPtr->bindTable, 
-	 Blt_MakeAxisTag(graphPtr, argv[3]), argc - 4, argv + 4);
+	 Blt_MakeAxisTag(graphPtr, argv[3]), argc - 4, (CONST84 char **)(argv + 4));
 }
 
 
@@ -3834,11 +3834,11 @@ static int
 ConfigureVirtualOp(graphPtr, argc, argv)
     Graph *graphPtr;
     int argc;
-    char *argv[];
+    CONST84 char *argv[];
 {
     Axis *axisPtr;
     int nNames, nOpts;
-    char **options;
+    CONST84 char **options;
     register int i;
 
     /* Figure out where the option value pairs begin */
@@ -4130,7 +4130,7 @@ Blt_VirtualAxisOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;
@@ -4166,9 +4166,9 @@ Blt_VirtualAxisOp(graphPtr, interp, argc, argv)
 int
 Blt_AxisOp(graphPtr, margin, argc, argv)
     Graph *graphPtr;
-    int margin;
+    long margin;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int result;
     Blt_Op proc;
@@ -4296,7 +4296,7 @@ Blt_DrawAxisLimits(graphPtr, drawable)
     Dim2D textDim;
     int isHoriz;
     char *minPtr, *maxPtr;
-    char *minFormat, *maxFormat;
+    CONST84 char *minFormat, *maxFormat;
     char minString[200], maxString[200];
     int vMin, hMin, vMax, hMax;
 
@@ -4373,7 +4373,7 @@ Blt_AxisLimitsToPostScript(graphPtr, psToken)
     double vMin, hMin, vMax, hMax;
     char string[200];
     int textWidth, textHeight;
-    char *minFmt, *maxFmt;
+    CONST84 char *minFmt, *maxFmt;
 
 #define SPACING 8
     vMin = vMax = graphPtr->left + graphPtr->padLeft + 2;

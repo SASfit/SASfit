@@ -233,30 +233,30 @@ extern Tk_CustomOption bltTileOption;
 extern Tk_CustomOption bltUidOption;
 
 static int StringToImage _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *ImageToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *ImageToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtrPtr));
 
 static int StringToWindow _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *WindowToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *WindowToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtrPtr));
 
 static int StringToSide _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *SideToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *SideToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtrPtr));
 
 static int StringToSlant _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *SlantToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *SlantToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtrPtr));
 
@@ -816,7 +816,7 @@ static void DisplayTabset _ANSI_ARGS_((ClientData clientData));
 static void DisplayTearoff _ANSI_ARGS_((ClientData clientData));
 static void TabsetInstDeletedCmd _ANSI_ARGS_((ClientData clientdata));
 static int TabsetInstCmd _ANSI_ARGS_((ClientData clientdata,
-	Tcl_Interp *interp, int argc, char **argv));
+	Tcl_Interp *interp, int argc, CONST84 char **argv));
 static void GetWindowRectangle _ANSI_ARGS_((Tab *tabPtr, Tk_Window parent,
 	int tearOff, XRectangle *rectPtr));
 static void ArrangeWindow _ANSI_ARGS_((Tk_Window tkwin, XRectangle *rectPtr,
@@ -1119,7 +1119,7 @@ StringToImage(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ImageToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Pointer to tabset containing image. */
     Tk_Window tkwin;		/* Not used. */
@@ -1228,7 +1228,7 @@ StringToWindow(clientData, interp, parent, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 WindowToString(clientData, parent, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window parent;		/* Not used. */
@@ -1304,7 +1304,7 @@ StringToSide(clientData, interp, parent, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 SideToString(clientData, parent, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window parent;		/* Not used. */
@@ -1389,7 +1389,7 @@ StringToSlant(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 SlantToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -2596,8 +2596,8 @@ GetTags(table, object, context, list)
 	Blt_ListAppend(list, MakeTag(setPtr, tabPtr->name), 0);
 	if (tabPtr->tags != NULL) {
 	    int nNames;
-	    char **names;
-	    register char **p;
+	    CONST84 char **names;
+	    register CONST84 char **p;
 	    
 	    /* 
 	     * This is a space/time trade-off in favor of space.  The tags
@@ -2605,8 +2605,7 @@ GetTags(table, object, context, list)
 	     * tabs can share the strings. It's likely that they will.  The
 	     * down side is that the same string is split over an over again. 
 	     */
-	    if (Tcl_SplitList((Tcl_Interp *)NULL, tabPtr->tags, &nNames, 
-		      &names) == TCL_OK) {
+	    if (Tcl_SplitList((Tcl_Interp *)NULL, tabPtr->tags, &nNames, &names) == TCL_OK) {
 		for (p = names; *p != NULL; p++) {
 		    Blt_ListAppend(list, MakeTag(setPtr, *p), 0);
 		}
@@ -2804,7 +2803,7 @@ ConfigureTabset(interp, setPtr, argc, argv, flags)
 			         * may not already have values for
 			         * some fields. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
     int flags;
 {
     XGCValues gcValues;
@@ -2991,7 +2990,7 @@ BindOp(setPtr, interp, argc, argv)
 	return TCL_OK;
     }
     return Blt_ConfigureBindings(interp, setPtr->bindTable,
-	MakeTag(setPtr, argv[2]), argc - 3, argv + 3);
+	MakeTag(setPtr, argv[2]), argc - 3, (CONST84 char **)argv + 3);
 }
 
 /*
@@ -3260,11 +3259,11 @@ InsertOp(setPtr, interp, argc, argv)
     Tabset *setPtr;
     Tcl_Interp *interp;
     int argc;			/* Not used. */
-    char **argv;
+    CONST84 char **argv;
 {
     Tab *tabPtr;
     register int i;
-    char **options;
+    CONST84 char **options;
     Blt_ChainLink *linkPtr, *beforeLinkPtr;
     int start, count;
     char c;
@@ -3785,10 +3784,10 @@ TabConfigureOp(setPtr, interp, argc, argv)
     Tabset *setPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int nTabs, nOpts, result;
-    char **options;
+    CONST84 char **options;
     register int i;
     Tab *tabPtr;
 
@@ -4034,7 +4033,7 @@ TabOp(setPtr, interp, argc, argv)
     Tabset *setPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;
@@ -4155,7 +4154,7 @@ PerforationOp(setPtr, interp, argc, argv)
     Tabset *setPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;
@@ -5729,7 +5728,7 @@ TabsetInstCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Information about the widget. */
     Tcl_Interp *interp;		/* Interpreter to report errors back to. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Vector of argument strings. */
+    CONST84 char **argv;		/* Vector of argument strings. */
 {
     Blt_Op proc;
     Tabset *setPtr = clientData;

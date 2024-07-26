@@ -42,7 +42,7 @@ Tcl_GetChannelHandle(channel, direction, clientDataPtr)
 }
 
 #else
-typedef int Tcl_File;
+typedef long int Tcl_File;
 #endif /* TCL_MAJOR_VERSION == 7 */
 
 /*

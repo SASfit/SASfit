@@ -11,6 +11,8 @@ part::create blt \
     -buildcommand {
         set cflags ""
         if {[info exists ::env(CFLAGS)]} { set cflags "$::env(CFLAGS)" }
+        # select older Tk API
+        set cflags "$cflags -DUSE_OLD_CANVAS"
         conf::norelnoacmainconfigure [part::srcdir blt] --disable-shared [conf::c_norelwith tcl] \
 	       [conf::c_norelwith tk] [conf::c_disen thread threads] \
 	       [conf::c_if debug "--with-cflags=-g $cflags" "--with-cflags=$cflags"]

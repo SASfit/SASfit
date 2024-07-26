@@ -432,7 +432,7 @@ Tk_CanvasTagsParseProc(clientData, interp, tkwin, value, widgRec, offset)
  *--------------------------------------------------------------
  */
 
-char *
+CONST84_RETURN char *
 Tk_CanvasTagsPrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;		/* Ignored. */
     Tk_Window tkwin;			/* Window containing canvas widget. */
@@ -514,7 +514,7 @@ TkCanvasDashParseProc(clientData, interp, tkwin, value, widgRec, offset)
  *--------------------------------------------------------------
  */
 
-char *
+CONST84_RETURN char *
 TkCanvasDashPrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;		/* Ignored. */
     Tk_Window tkwin;			/* Window containing canvas widget. */
@@ -742,7 +742,7 @@ TkSmoothParseProc(clientData, interp, tkwin, value, widgRec, offset)
  *--------------------------------------------------------------
  */
 
-char *
+CONST84_RETURN char *
 TkSmoothPrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;		/* Ignored. */
     Tk_Window tkwin;			/* Window containing canvas widget. */

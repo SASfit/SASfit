@@ -497,7 +497,7 @@ static char *optionStrings[] =
 static void ButtonCmdDeletedProc _ANSI_ARGS_((
 	ClientData clientData));
 static int ButtonCreate _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, int argc, char **argv,
+	Tcl_Interp *interp, int argc, CONST84 char **argv,
 	int type));
 static void ButtonEventProc _ANSI_ARGS_((ClientData clientData,
 	XEvent *eventPtr));
@@ -508,16 +508,16 @@ static void ButtonSelectImageProc _ANSI_ARGS_((
 	ClientData clientData, int x, int y, int width,
 	int height, int imgWidth, int imgHeight));
 static char *ButtonTextVarProc _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, char *name1, char *name2,
+	Tcl_Interp *interp, CONST84 char *name1, CONST84 char *name2,
 	int flags));
 static char *ButtonVarProc _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, char *name1, char *name2,
+	Tcl_Interp *interp, CONST84 char *name1, CONST84 char *name2,
 	int flags));
 static int ButtonWidgetCmd _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, int argc, char **argv));
+	Tcl_Interp *interp, int argc, CONST84 char **argv));
 static void ComputeButtonGeometry _ANSI_ARGS_((Button *butPtr));
 static int ConfigureButton _ANSI_ARGS_((Tcl_Interp *interp,
-	Button *butPtr, int argc, char **argv,
+	Button *butPtr, int argc, CONST84 char **argv,
 	int flags));
 static void DestroyButton _ANSI_ARGS_((Button *butPtr));
 static void DisplayButton _ANSI_ARGS_((ClientData clientData));
@@ -632,7 +632,7 @@ ButtonCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return ButtonCreate(clientData, interp, argc, argv, TYPE_BUTTON);
 }
@@ -643,7 +643,7 @@ CheckbuttonCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return ButtonCreate(clientData, interp, argc, argv, TYPE_CHECK_BUTTON);
 }
@@ -654,7 +654,7 @@ LabelCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return ButtonCreate(clientData, interp, argc, argv, TYPE_LABEL);
 }
@@ -665,7 +665,7 @@ RadiobuttonCmd(clientData, interp, argc, argv)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     return ButtonCreate(clientData, interp, argc, argv, TYPE_RADIO_BUTTON);
 }
@@ -695,7 +695,7 @@ ButtonCreate(clientData, interp, argc, argv, type)
 				 * interpreter. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
     int type;			/* Type of button to create: TYPE_LABEL,
 				 * TYPE_BUTTON, TYPE_CHECK_BUTTON, or
 				 * TYPE_RADIO_BUTTON. */
@@ -824,7 +824,7 @@ ButtonWidgetCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Information about button widget. */
     Tcl_Interp *interp;		/* Current interpreter. */
     int argc;			/* Number of arguments. */
-    char **argv;		/* Argument strings. */
+    CONST84 char **argv;		/* Argument strings. */
 {
     register Button *butPtr = clientData;
     int result = TCL_OK;
@@ -1082,7 +1082,7 @@ ConfigureButton(interp, butPtr, argc, argv, flags)
     register Button *butPtr;	/* Information about widget;  may or may
 				 * not already have values for some fields. */
     int argc;			/* Number of valid entries in argv. */
-    char **argv;		/* Arguments. */
+    CONST84 char **argv;		/* Arguments. */
     int flags;			/* Flags to pass to Tk_ConfigureWidget. */
 {
     XGCValues gcValues;
@@ -1919,8 +1919,8 @@ static char *
 ButtonVarProc(clientData, interp, name1, name2, flags)
     ClientData clientData;	/* Information about button. */
     Tcl_Interp *interp;		/* Interpreter containing variable. */
-    char *name1;		/* Name of variable. */
-    char *name2;		/* Second part of variable name. */
+    CONST84 char *name1;		/* Name of variable. */
+    CONST84 char *name2;		/* Second part of variable name. */
     int flags;			/* Information about what happened. */
 {
     register Button *butPtr = clientData;
@@ -1992,8 +1992,8 @@ static char *
 ButtonTextVarProc(clientData, interp, name1, name2, flags)
     ClientData clientData;	/* Information about button. */
     Tcl_Interp *interp;		/* Interpreter containing variable. */
-    char *name1;		/* Not used. */
-    char *name2;		/* Not used. */
+    CONST84 char *name1;		/* Not used. */
+    CONST84 char *name2;		/* Not used. */
     int flags;			/* Information about what happened. */
 {
     register Button *butPtr = clientData;

@@ -99,7 +99,8 @@ for:
   environment:
     CACHEID: linux64
   install:
-    - sh src/appveyor/0_install_linux.sh
+    - src/appveyor/0_install_linux4building.sh
+    - src/appveyor/0_install_linux4packaging.sh
   artifacts:
     # final SASfit package
     - path: SASfit*.AppImage

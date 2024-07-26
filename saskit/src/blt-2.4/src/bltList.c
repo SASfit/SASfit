@@ -155,7 +155,7 @@ Blt_ListCreateNode(listPtr, key)
 
     if (listPtr->type == BLT_STRING_KEYS) {
 	keySize = strlen(key) + 1;
-    } else if (listPtr->type == BLT_ONE_WORD_KEYS) {
+    } else if ((long int)listPtr->type == BLT_ONE_WORD_KEYS) {
 	keySize = sizeof(int);
     } else {
 	keySize = sizeof(int) * listPtr->type;
@@ -165,7 +165,7 @@ Blt_ListCreateNode(listPtr, key)
     nodePtr->clientData = NULL;
     nodePtr->nextPtr = nodePtr->prevPtr = NULL;
     nodePtr->listPtr = listPtr;
-    switch (listPtr->type) {
+    switch ((long int)listPtr->type) {
     case BLT_STRING_KEYS:
 	strcpy(nodePtr->key.string, key);
 	break;
@@ -403,7 +403,7 @@ Blt_ListGetNode(listPtr, key)
     CONST char *key;		/* Key to match */
 {
     if (listPtr != NULL) {
-	switch (listPtr->type) {
+	switch ((long int)listPtr->type) {
 	case BLT_STRING_KEYS:
 	    return FindString(listPtr, key);
 	case BLT_ONE_WORD_KEYS:

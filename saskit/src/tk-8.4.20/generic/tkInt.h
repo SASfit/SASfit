@@ -1147,7 +1147,7 @@ EXTERN int		TkCanvasDashParseProc _ANSI_ARGS_((
 			    ClientData clientData, Tcl_Interp *interp,
 			    Tk_Window tkwin, CONST char *value, char *widgRec,
 			    int offset));
-EXTERN char *		TkCanvasDashPrintProc _ANSI_ARGS_((
+EXTERN CONST84_RETURN char *		TkCanvasDashPrintProc _ANSI_ARGS_((
 			    ClientData clientData, Tk_Window tkwin,
 			    char *widgRec, int offset,
 			    Tcl_FreeProc **freeProcPtr));
@@ -1158,7 +1158,7 @@ EXTERN int		TkOffsetParseProc _ANSI_ARGS_((
 			    ClientData clientData, Tcl_Interp *interp,
 			    Tk_Window tkwin, CONST char *value, char *widgRec,
 			    int offset));
-EXTERN char *		TkOffsetPrintProc _ANSI_ARGS_((
+EXTERN CONST84_RETURN char *		TkOffsetPrintProc _ANSI_ARGS_((
 			    ClientData clientData, Tk_Window tkwin,
 			    char *widgRec, int offset,
 			    Tcl_FreeProc **freeProcPtr));
@@ -1166,7 +1166,7 @@ EXTERN int		TkOrientParseProc _ANSI_ARGS_((
 			    ClientData clientData, Tcl_Interp *interp,
 			    Tk_Window tkwin, CONST char *value,
 			    char *widgRec, int offset));
-EXTERN char *		TkOrientPrintProc _ANSI_ARGS_((
+EXTERN CONST84_RETURN char *		TkOrientPrintProc _ANSI_ARGS_((
 			    ClientData clientData, Tk_Window tkwin,
 			    char *widgRec, int offset,
 			    Tcl_FreeProc **freeProcPtr));
@@ -1174,7 +1174,7 @@ EXTERN int		TkPixelParseProc _ANSI_ARGS_((
 			    ClientData clientData, Tcl_Interp *interp,
 			    Tk_Window tkwin, CONST char *value, char *widgRec,
 			    int offset));
-EXTERN char *		TkPixelPrintProc _ANSI_ARGS_((
+EXTERN CONST84_RETURN char *		TkPixelPrintProc _ANSI_ARGS_((
 			    ClientData clientData, Tk_Window tkwin,
 			    char *widgRec, int offset,
 			    Tcl_FreeProc **freeProcPtr));
@@ -1185,14 +1185,14 @@ EXTERN int		TkPostscriptImage _ANSI_ARGS_((Tcl_Interp *interp,
 EXTERN int		TkSmoothParseProc _ANSI_ARGS_((ClientData clientData,
 			    Tcl_Interp *interp, Tk_Window tkwin,
 			    CONST char *value, char *recordPtr, int offset));
-EXTERN char *		TkSmoothPrintProc _ANSI_ARGS_((ClientData clientData,
+EXTERN CONST84_RETURN char *		TkSmoothPrintProc _ANSI_ARGS_((ClientData clientData,
 			    Tk_Window tkwin, char *recordPtr, int offset,
 			    Tcl_FreeProc **freeProcPtr));
 EXTERN int		TkStateParseProc _ANSI_ARGS_((
 			    ClientData clientData, Tcl_Interp *interp,
 			    Tk_Window tkwin, CONST char *value,
 			    char *widgRec, int offset));
-EXTERN char *		TkStatePrintProc _ANSI_ARGS_((
+EXTERN CONST84_RETURN char *		TkStatePrintProc _ANSI_ARGS_((
 			    ClientData clientData, Tk_Window tkwin,
 			    char *widgRec, int offset,
 			    Tcl_FreeProc **freeProcPtr));
@@ -1200,7 +1200,7 @@ EXTERN int		TkTileParseProc _ANSI_ARGS_((
 			    ClientData clientData, Tcl_Interp *interp,
 			    Tk_Window tkwin, CONST char *value, char *widgRec,
 			    int offset));
-EXTERN char *		TkTilePrintProc _ANSI_ARGS_((
+EXTERN CONST84_RETURN char *		TkTilePrintProc _ANSI_ARGS_((
 			    ClientData clientData, Tk_Window tkwin,
 			    char *widgRec, int offset,
 			    Tcl_FreeProc **freeProcPtr));

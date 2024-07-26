@@ -139,8 +139,7 @@ PreCmdProc(clientData, interp, level, command, cmdProc, cmdClientData,
     Tcl_CmdProc *cmdProc;	/* Not used. */
     ClientData cmdClientData;	/* Not used. */
     int argc;
-    char **argv;		/* Command after parsing, but before
-				 * evaluation */
+    CONST84 char *CONST *argv;	/* Command after parsing, but before evaluation */
 {
     Watch *watchPtr = clientData;
 
@@ -792,7 +791,7 @@ WatchCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Not used. */
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;

@@ -556,7 +556,7 @@ ConfigureMenuButton(interp, mbPtr, argc, argv, flags)
     register MenuButton *mbPtr;	/* Information about widget;  may or may
 				 * not already have values for some fields. */
     int argc;			/* Number of valid entries in argv. */
-    char **argv;		/* Arguments. */
+    CONST84 char **argv;		/* Arguments. */
     int flags;			/* Flags to pass to Tk_ConfigureWidget. */
 {
     XGCValues gcValues;

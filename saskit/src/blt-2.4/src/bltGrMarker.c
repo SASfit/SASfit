@@ -1279,7 +1279,7 @@ StringToCoordinates(clientData, interp, tkwin, string, widgRec, offset)
 {
     Marker *markerPtr = (Marker *)widgRec;
     int nExprs;
-    char **exprArr;
+    CONST84 char **exprArr;
     int result;
 
     nExprs = 0;
@@ -1313,7 +1313,7 @@ StringToCoordinates(clientData, interp, tkwin, string, widgRec, offset)
  * ----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 CoordinatesToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -4217,7 +4217,7 @@ BindOp(graphPtr, interp, argc, argv)
 	return TCL_OK;
     }
     return Blt_ConfigureBindings(interp, graphPtr->bindTable,
-	Blt_MakeMarkerTag(graphPtr, argv[3]), argc - 4, argv + 4);
+	Blt_MakeMarkerTag(graphPtr, argv[3]), argc - 4, (CONST84 char **)(argv + 4));
 }
 
 /*
@@ -4265,13 +4265,13 @@ ConfigureOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Marker *markerPtr;
     int flags = TK_CONFIG_ARGV_ONLY;
     char *oldName;
     int nNames, nOpts;
-    char **options;
+    CONST84 char **options;
     register int i;
     int under;
 
@@ -4401,7 +4401,7 @@ CreateOp(graphPtr, interp, argc, argv)
     markerPtr = CreateMarker(graphPtr, name, classUid);
     if (Blt_ConfigureWidgetComponent(interp, graphPtr->tkwin, name, 
 	     markerPtr->classUid, markerPtr->classPtr->configSpecs,
-	    argc - 4, argv + 4, (char *)markerPtr, 0) != TCL_OK) {
+	    argc - 4, (CONST84 char **)(argv + 4), (char *)markerPtr, 0) != TCL_OK) {
 	DestroyMarker(markerPtr);
 	return TCL_ERROR;
     }
@@ -4768,7 +4768,7 @@ Blt_MarkerOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;		/* Not used. */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;

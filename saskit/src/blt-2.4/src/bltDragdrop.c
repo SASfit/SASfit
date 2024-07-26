@@ -153,7 +153,7 @@ struct AnyWindowStruct {
     Blt_Chain *chainPtr;	/* List of this window's children. If NULL,
 				 * there are no children. */
 
-    char **targetInfo;		/* An array of target window drag&drop
+    CONST84 char **targetInfo;		/* An array of target window drag&drop
 				 * information: target interpreter,
 				 * pathname, and optionally possible
 				 * type matches. NULL if the window is
@@ -434,7 +434,7 @@ static Tk_ConfigSpec tokenConfigSpecs[] =
  *  Forward Declarations
  */
 static int DragDropCmd _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 static void TokenEventProc _ANSI_ARGS_((ClientData clientData, 
 	XEvent *eventPtr));
 static void TargetEventProc _ANSI_ARGS_((ClientData clientData, 
@@ -452,7 +452,7 @@ static void DestroySource _ANSI_ARGS_((Source * srcPtr));
 static void SourceEventProc _ANSI_ARGS_((ClientData clientData,
 	XEvent *eventPtr));
 static int ConfigureSource _ANSI_ARGS_((Tcl_Interp *interp, Source * srcPtr,
-	int argc, char **argv, int flags));
+	int argc, CONST84 char **argv, int flags));
 static int ConfigureToken _ANSI_ARGS_((Tcl_Interp *interp, Source * srcPtr,
 	int argc, char **argv));
 
@@ -1060,7 +1060,7 @@ ConfigureToken(interp, srcPtr, argc, argv)
     Tcl_Interp *interp;
     Source *srcPtr;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Token *tokenPtr;
 
@@ -1069,7 +1069,7 @@ ConfigureToken(interp, srcPtr, argc, argv)
 	    (char *)tokenPtr, TK_CONFIG_ARGV_ONLY) != TCL_OK) {
 	return TCL_ERROR;
     }
-    return ConfigureSource(interp, srcPtr, 0, (char **)NULL,
+    return ConfigureSource(interp, srcPtr, 0, (CONST84 char **)NULL,
 	TK_CONFIG_ARGV_ONLY);
 }
 
@@ -1161,7 +1161,7 @@ CreateSource(interp, pathName, newPtr)
     srcPtr->token.borderWidth = srcPtr->token.activeBorderWidth = 3;
     srcPtr->hashPtr = hPtr;
     Blt_InitHashTable(&(srcPtr->handlerTable), BLT_STRING_KEYS);
-    if (ConfigureSource(interp, srcPtr, 0, (char **)NULL, 0) != TCL_OK) {
+    if (ConfigureSource(interp, srcPtr, 0, (CONST84 char **)NULL, 0) != TCL_OK) {
 	DestroySource(srcPtr);
 	return NULL;
     }
@@ -1280,7 +1280,7 @@ ConfigureSource(interp, srcPtr, argc, argv, flags)
     Tcl_Interp *interp;		/* current interpreter */
     register Source *srcPtr;	/* drag&drop source widget record */
     int argc;			/* number of arguments */
-    char **argv;		/* argument strings */
+    CONST84 char **argv;		/* argument strings */
     int flags;			/* flags controlling interpretation */
 {
     unsigned long gcMask;
@@ -1537,7 +1537,7 @@ DndSend(srcPtr)
     Tcl_DString dString;
     Blt_HashEntry *hPtr;
     char *dataType;
-    char **targetInfo;
+    CONST84 char **targetInfo;
     char *cmd;
 
     /* See if current position is over drop point.  */
@@ -1744,7 +1744,7 @@ OverTarget(srcPtr, x, y)
     int virtX, virtY;
     int dummy;
     AnyWindow *newPtr, *oldPtr;
-    char **elemArr;
+    CONST84 char **elemArr;
     int nElems;
     char *data;
     int result;
@@ -2394,7 +2394,7 @@ HandlerOpOp(srcPtr, interp, argc, argv)
      *
      *    Create the new <data> type and set its command
      */
-    cmd = Tcl_Concat(argc - 5, argv + 5);
+    cmd = Tcl_Concat(argc - 5, (const char * const*)argv + 5);
     Blt_SetHashValue(hPtr, cmd);
     return TCL_OK;
 }
@@ -2453,7 +2453,7 @@ SourceOp(interp, argc, argv)
 		status = Tk_ConfigureInfo(interp, tokenPtr->tkwin, configSpecs,
 		    (char *)srcPtr, argv[3], 0);
 	    } else {
-		status = ConfigureSource(interp, srcPtr, argc - 3, argv + 3,
+		status = ConfigureSource(interp, srcPtr, argc - 3, (CONST84 char **)(argv + 3),
 		    TK_CONFIG_ARGV_ONLY);
 	    }
 	    if (status != TCL_OK) {
@@ -2539,7 +2539,7 @@ TargetOp(interp, argc, argv)
 	     */
 	    hPtr = Blt_CreateHashEntry(&(targetPtr->handlerTable), argv[4],
 		&isNew);
-	    cmd = Tcl_Concat(argc - 5, argv + 5);
+	    cmd = Tcl_Concat(argc - 5, (const char * const*)argv + 5);
 	    if (hPtr != NULL) {
 		char *oldCmd;
 
@@ -2635,7 +2635,7 @@ DragDropCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Not used. */
     Tcl_Interp *interp;		/* Current interpreter */
     int argc;			/* # of arguments */
-    char **argv;		/* Argument strings */
+    CONST84 char **argv;		/* Argument strings */
 {
     int length;
     char c;

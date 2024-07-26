@@ -579,7 +579,7 @@ Itcl_ChangeMemberFunc(interp, mfunc, arglist, body)
  */
 void
 Itcl_DeleteMemberFunc(cdata)
-    CONST char* cdata;  /* pointer to member function definition */
+    char* cdata;  /* pointer to member function definition */
 {
     ItclMemberFunc* mfunc = (ItclMemberFunc*)cdata;
 
@@ -746,7 +746,7 @@ Itcl_CreateMemberCode(interp, cdefn, arglist, body, mcodePtr)
  */
 void
 Itcl_DeleteMemberCode(cdata)
-    CONST char* cdata;  /* pointer to member function definition */
+    char* cdata;  /* pointer to member function definition */
 {
     ItclMemberCode* mcode = (ItclMemberCode*)cdata;
 
@@ -991,8 +991,8 @@ Itcl_EvalMemberCode(interp, mfunc, member, contextObj, objc, objv)
             interp, objc, objv);
     }
     else if ((mcode->flags & ITCL_IMPLEMENT_ARGCMD) != 0) {
-        char **argv;
-        argv = (char**)ckalloc( (unsigned)(objc*sizeof(char*)) );
+        CONST84 char **argv;
+        argv = (CONST84 char**)ckalloc( (unsigned)(objc*sizeof(char*)) );
         for (i=0; i < objc; i++) {
             argv[i] = Tcl_GetStringFromObj(objv[i], (int*)NULL);
         }
@@ -1060,7 +1060,7 @@ Itcl_CreateArgList(interp, decl, argcPtr, argPtr)
     int status = TCL_OK;  /* assume that this will succeed */
 
     int i, argc, fargc;
-    char **argv, **fargv;
+    CONST84 char **argv, **fargv;
     CompiledLocal *localPtr, *last;
 
     *argPtr = last = NULL;
@@ -1834,7 +1834,7 @@ Itcl_AssignArgs(interp, objc, objv, mfunc)
     int result = TCL_OK;
 
     int defargc;
-    char **defargv = NULL;
+    CONST84 char **defargv = NULL;
     Tcl_Obj **defobjv = NULL;
     int configc = 0;
     ItclVarDefn **configVars = NULL;

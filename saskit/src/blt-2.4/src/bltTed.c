@@ -819,7 +819,7 @@ static int
 ConfigureTed(tedPtr, argc, argv, flags)
     Ted *tedPtr;
     int argc;
-    char **argv;		/* Option-value pairs */
+    CONST84 char **argv;		/* Option-value pairs */
     int flags;
 {
     XGCValues gcValues;
@@ -1808,7 +1808,7 @@ TedCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Thread-specific data. */
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;

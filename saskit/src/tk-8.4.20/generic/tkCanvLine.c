@@ -112,13 +112,13 @@ static int		LineToPostscript _ANSI_ARGS_((Tcl_Interp *interp,
 static int		ArrowParseProc _ANSI_ARGS_((ClientData clientData,
 			    Tcl_Interp *interp, Tk_Window tkwin,
 			    CONST char *value, char *recordPtr, int offset));
-static char *		ArrowPrintProc _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *		ArrowPrintProc _ANSI_ARGS_((ClientData clientData,
 			    Tk_Window tkwin, char *recordPtr, int offset,
 			    Tcl_FreeProc **freeProcPtr));
 static int		ParseArrowShape _ANSI_ARGS_((ClientData clientData,
 			    Tcl_Interp *interp, Tk_Window tkwin,
 			    CONST char *value, char *recordPtr, int offset));
-static char *		PrintArrowShape _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *		PrintArrowShape _ANSI_ARGS_((ClientData clientData,
 			    Tk_Window tkwin, char *recordPtr, int offset,
 			    Tcl_FreeProc **freeProcPtr));
 static void		ScaleLine _ANSI_ARGS_((Tk_Canvas canvas,
@@ -1926,7 +1926,7 @@ ParseArrowShape(clientData, interp, tkwin, value, recordPtr, offset)
  */
 
     /* ARGSUSED */
-static char *
+static CONST84_RETURN char *
 PrintArrowShape(clientData, tkwin, recordPtr, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Window associated with linePtr's widget. */
@@ -2033,7 +2033,7 @@ ArrowParseProc(clientData, interp, tkwin, value, widgRec, offset)
  *--------------------------------------------------------------
  */
 
-static char *
+static CONST84_RETURN char *
 ArrowPrintProc(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;		/* Ignored. */
     Tk_Window tkwin;			/* Window containing canvas widget. */

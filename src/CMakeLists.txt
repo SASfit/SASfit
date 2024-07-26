@@ -85,7 +85,7 @@ if(CMAKE_HOST_APPLE)
         set(CMAKE_OSX_ARCHITECTURES x86_64)
     endif(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
     # disable some warnings for apples clang compiler
-    set(ENV{CFLAGS} -Wno-deprecated-non-prototype -Wno-implicit-function-declaration)
+    set(ENV{CFLAGS} "$ENV{CFLAGS} -Wno-deprecated-non-prototype -Wno-implicit-function-declaration")
     message(STATUS "Building on MacOS for: ${CMAKE_OSX_ARCHITECTURES}")
 endif()
 

@@ -212,8 +212,8 @@ Itcl_CreateClass(interp, path, info, rPtr)
      *  so that members are accessed according to the rules for
      *  [incr Tcl].
      */
-    Tcl_SetNamespaceResolvers(classNs, Itcl_ClassCmdResolver,
-        Itcl_ClassVarResolver, Itcl_ClassCompiledVarResolver);
+    Tcl_SetNamespaceResolvers(classNs, &Itcl_ClassCmdResolver,
+        &Itcl_ClassVarResolver, &Itcl_ClassCompiledVarResolver);
 
     /*
      *  Add the built-in "this" variable to the list of data members.
@@ -1613,7 +1613,7 @@ Itcl_CreateVarDefn(interp, cdefn, name, init, config, vdefnPtr)
             return TCL_ERROR;
         }
         Itcl_PreserveData((ClientData)mcode);
-        Itcl_EventuallyFree((ClientData)mcode, Itcl_DeleteMemberCode);
+        Itcl_EventuallyFree((ClientData)mcode, &Itcl_DeleteMemberCode);
     }
     else {
         mcode = NULL;

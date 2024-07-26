@@ -447,7 +447,7 @@ AsciiToData(interp, elemList, width, height, bitsPtr)
 	V10, V11
     } format;
     register int i;		/*  */
-    char **valueArr;
+    CONST84 char **valueArr;
     int nValues;
 
     /* First time through initialize the ascii->hex translation table */
@@ -521,11 +521,11 @@ ParseListData(interp, string, widthPtr, heightPtr, bitsPtr)
     int arraySize;
 
     arraySize = -1;
-    if (Tcl_SplitList(interp, string, &nElem, &elemArr) != TCL_OK) {
+    if (Tcl_SplitList(interp, string, &nElem, (CONST84 char ***)&elemArr) != TCL_OK) {
 	return -1;
     }
     if (nElem == 2) {
-	char **dimArr;
+	CONST84 char **dimArr;
 	int nDim;
 	
 	if (Tcl_SplitList(interp, elemArr[0], &nDim, &dimArr) != TCL_OK) {
@@ -622,7 +622,7 @@ ParseStructData(interp, string, widthPtr, heightPtr, bitsPtr)
 	if (Tcl_RegExpExec(interp, re, line, line)) {
 	    char *start, *end;
 
-	    Tcl_RegExpRange(re, 0, &start, &end);
+	    Tcl_RegExpRange(re, 0, (CONST84 char **)&start, (CONST84 char **)&end);
 	    name = strtok(end, " \t"); 
 	    value = strtok(NULL, " \t");
 	    if ((name == NULL) || (value == NULL)) {
@@ -887,7 +887,7 @@ ComposeOp(clientData, interp, argc, argv)
     ClientData clientData;	/* Thread-specific data for bitmaps. */
     Tcl_Interp *interp;		/* Interpreter to report results to */
     int argc;			/* Number of arguments */
-    char **argv;		/* Argument list */
+    CONST84 char **argv;		/* Argument list */
 {
     BitmapInterpData *dataPtr = clientData;
     int width, height;		/* Dimensions of bitmap */
@@ -1003,7 +1003,7 @@ DefineOp(clientData, interp, argc, argv)
     ClientData clientData;	/* Thread-specific data for bitmaps. */
     Tcl_Interp *interp;		/* Interpreter to report results to */
     int argc;			/* Number of arguments */
-    char **argv;		/* Argument list */
+    CONST84 char **argv;		/* Argument list */
 {
     BitmapInterpData *dataPtr = clientData;
     int width, height;		/* Dimensions of bitmap */
@@ -1292,7 +1292,7 @@ BitmapCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Thread-specific data for bitmaps. */
     Tcl_Interp *interp;		/* Interpreter to report results to */
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;

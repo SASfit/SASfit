@@ -138,7 +138,7 @@ INCLUDES	= @PKG_INCLUDES@ @TCL_INCLUDES@
 PKG_CFLAGS	= @PKG_CFLAGS@
 
 DEFS		= @DEFS@ $(PKG_CFLAGS) \
-		  -DITCL_LIBRARY=\"$(pkglibdir)\" -DUSE_NON_CONST
+		  -DITCL_LIBRARY=\"$(pkglibdir)\"
 
 CONFIG_CLEAN_FILES = @CONFIG_CLEAN_FILES@ Makefile itclConfig.sh pkgIndex.tcl
 

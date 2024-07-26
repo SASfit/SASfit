@@ -13,7 +13,7 @@ SYSTEM_ARCH="$(uname -m)";
 CMD_CC=gcc
 CMD_CXX=g++
 if [ "$SYSTEM_NAME" = "Darwin" ]; then
-    SYSTEM_ARCH="x86_64"
+    SYSTEM_ARCH="$(uname -m)"
     # find X11 headers and libs
     # make sure XQuartz is installed, e.g. 'brew cask install xquartz'
     CFLAGS="-arch $SYSTEM_ARCH"
@@ -34,9 +34,11 @@ fi;
 if [ ! -f "$CC" ] || [ ! -f "$CXX" ]; then
     CC=$(which $CMD_CC)
     CXX=$(which $CMD_CXX)
-    [ -f "$CC" ] && export CC
-    [ -f "$CXX" ] && export CXX
 fi
+[ -f "$CC" ] && export CC
+[ -f "$CXX" ] && export CXX
+echo "Using CC =$CC"
+echo "Using CXX=$CXX"
 
 # echo "CFLAGS: '$CFLAGS'"
 export CFLAGS="$CFLAGS"

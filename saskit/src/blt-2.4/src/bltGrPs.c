@@ -241,7 +241,7 @@ NameOfColorMode(colorMode)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ColorModeToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -332,7 +332,7 @@ StringToFormat(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 FormatToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -406,7 +406,7 @@ ConfigureOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;
     int argc;			/* Number of options in argv vector */
-    char **argv;		/* Option vector */
+    CONST84 char **argv;		/* Option vector */
 {
     int flags = TK_CONFIG_ARGV_ONLY;
     PostScript *psPtr = (PostScript *)graphPtr->postscript;
@@ -1110,7 +1110,7 @@ OutputOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;		/* Graph widget record */
     Tcl_Interp *interp;
     int argc;			/* Number of options in argv vector */
-    char **argv;		/* Option vector */
+    CONST84 char **argv;		/* Option vector */
 {
     PostScript *psPtr = (PostScript *)graphPtr->postscript;
     FILE *f = NULL;
@@ -1218,7 +1218,7 @@ Blt_CreatePostScript(graphPtr)
     graphPtr->postscript = psPtr;
 
     if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin,
-	    "postscript", "Postscript", configSpecs, 0, (char **)NULL,
+	    "postscript", "Postscript", configSpecs, 0, (CONST84 char **)NULL,
 	    (char *)psPtr, 0) != TCL_OK) {
 	return TCL_ERROR;
     }
@@ -1257,7 +1257,7 @@ Blt_PostScriptOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;		/* Graph widget record */
     Tcl_Interp *interp;
     int argc;			/* # arguments */
-    char **argv;		/* Argument list */
+    CONST84 char **argv;		/* Argument list */
 {
     Blt_Op proc;
     int result;

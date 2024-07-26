@@ -285,7 +285,7 @@ struct ElementStruct {
 extern double Blt_FindElemVectorMinimum _ANSI_ARGS_((ElemVector *vecPtr,
 	double minLimit));
 extern void Blt_ResizeStatusArray _ANSI_ARGS_((Element *elemPtr, int nPoints));
-extern int Blt_GetPenStyle _ANSI_ARGS_((Graph *graphPtr, char *name,
+extern int Blt_GetPenStyle _ANSI_ARGS_((Graph *graphPtr, CONST84 char *name,
 	Blt_Uid classUid, PenStyle *stylePtr));
 extern void Blt_FreePalette _ANSI_ARGS_((Graph *graphPtr, Blt_Chain *palette));
 extern PenStyle **Blt_StyleMap _ANSI_ARGS_((Element *elemPtr));

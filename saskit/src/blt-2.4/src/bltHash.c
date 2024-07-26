@@ -47,6 +47,10 @@
 /* The following header is required for LP64 compilation */
 #include <stdlib.h>
 
+#define XSTR(x) STR(x)
+#define STR(x) #x
+#pragma message "The value of SIZEOF_VOID_P: " XSTR(SIZEOF_VOID_P)
+
 #include "bltHash.h"
 
 /*

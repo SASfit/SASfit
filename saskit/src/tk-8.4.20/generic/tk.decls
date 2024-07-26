@@ -103,7 +103,7 @@ declare 18 {
 	    Tk_Window tkwin, const char *value, char *widgRec, int offset)
 }
 declare 19 {
-    char *Tk_CanvasTagsPrintProc(ClientData clientData, Tk_Window tkwin,
+    CONST84_RETURN char *Tk_CanvasTagsPrintProc(ClientData clientData, Tk_Window tkwin,
 	    char *widgRec, int offset, Tcl_FreeProc **freeProcPtr)
 }
 declare 20 {

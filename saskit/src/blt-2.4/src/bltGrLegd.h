@@ -43,7 +43,7 @@ extern void Blt_DrawLegend _ANSI_ARGS_((Legend *legendPtr, Drawable drawable));
 extern void Blt_MapLegend _ANSI_ARGS_((Legend *legendPtr, int width,
 	int height));
 extern int Blt_LegendOp _ANSI_ARGS_((Graph *graphPtr, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 extern int Blt_LegendSite _ANSI_ARGS_((Legend *legendPtr));
 extern int Blt_LegendWidth _ANSI_ARGS_((Legend *legendPtr));
 extern int Blt_LegendHeight _ANSI_ARGS_((Legend *legendPtr));

@@ -9,6 +9,8 @@
 # For cleanup during consecutive runs:
 #   (cd saskit && ./saskit_linux64 gen/buildkit cleanupall && rm saskit_linux64 && rm -Rf ../appdir ../appimage* ../*.AppImage)
 version: 1
+script: |
+  echo "  [1] main script"
 AppDir:
   # assuming this file resides in sasfit/src/,
   # addresses the package dir created by CMake previously
@@ -21,9 +23,9 @@ AppDir:
     exec: saskit
     exec_args: $APPDIR/sasfit.vfs/main.tcl $@
   before_bundle: |
-    echo "  [1] before_bundle, running appimage-build in '$(pwd)', appdir: '$APPDIR'"
+    echo "  [1] before_bundle"
   after_bundle: |
-    [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
+    export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [2] after_bundle '$APPDIR'"
     find "$APPDIR" -type f
     #
@@ -90,12 +92,12 @@ AppDir:
     appstreamcli validate "$METAINFO_PATH"
     find "$APPDIR" -type f
   before_runtime: |
-    [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
+    export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [3] before_runtime '$APPDIR'"
     find "$APPDIR" -type f
     # for debugging, show interpreter with 'patchelf --print-interpreter ...'
   after_runtime: |
-    [ -z "$APPDIR" ] && export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
+    export APPDIR="@SASFIT_APPIMAGE_APPDIR@"
     echo "  [4] after_runtime '$APPDIR'"
     find "$APPDIR" -type f
     #
@@ -115,7 +117,7 @@ AppDir:
      $TCLSH gen/buildkit finalize $SF_DEBUG -tcl=*.* -tk=*.* -blt -compression=none -binary=all -resfile=current)
     #
     # copy the reassembled tcl interpreter back into the app dir
-    cp saskit/bin/*/dqkit-all.bin "$APPDIR"/saskit
+    cp saskit/bin/$(uname -n)-*/dqkit-all.bin "$APPDIR"/saskit
     find "$APPDIR" -type f
   apt:
     arch:
@@ -174,7 +176,7 @@ AppDir:
 #      use_host_x: False
     centos:
       image: appimagecrafters/tests-env:centos-7
-      before_command: sh -c 'yum install -y xorg-x11-server-Xvfb which'
+      before_command: sh -c 'sed -i -e "s/mirror.centos.org/vault.centos.org/g" -e "s/^#.*baseurl=http/baseurl=http/g" -e "s/^mirrorlist=http/#mirrorlist=http/g" /etc/yum.repos.d/*.repo; yum install -y xorg-x11-server-Xvfb which'
       command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
       use_host_x: False
 #    fedora:

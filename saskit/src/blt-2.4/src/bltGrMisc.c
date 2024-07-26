@@ -158,7 +158,7 @@ StringToPoint(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 PointToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -260,12 +260,12 @@ StringToColorPair(clientData, interp, tkwin, string, widgRec, offset)
 {
     ColorPair *pairPtr = (ColorPair *)(widgRec + offset);
     ColorPair sample;
-    int allowDefault = (int)clientData;
+    long int allowDefault = (long int)clientData;
 
     sample.fgColor = sample.bgColor = NULL;
     if ((string != NULL) && (*string != '\0')) {
 	int nColors;
-	char **colors;
+	CONST84 char **colors;
 	int result;
 
 	if (Tcl_SplitList(interp, string, &nColors, &colors) != TCL_OK) {
@@ -276,12 +276,10 @@ StringToColorPair(clientData, interp, tkwin, string, widgRec, offset)
 	    result = TCL_OK;
 	    break;
 	case 1:
-	    result = GetColorPair(interp, tkwin, colors[0], "", &sample,
-		allowDefault);
+	    result = GetColorPair(interp, tkwin, colors[0], "", &sample, allowDefault);
 	    break;
 	case 2:
-	    result = GetColorPair(interp, tkwin, colors[0], colors[1],
-		&sample, allowDefault);
+	    result = GetColorPair(interp, tkwin, colors[0], colors[1], &sample, allowDefault);
 	    break;
 	default:
 	    result = TCL_ERROR;
@@ -310,7 +308,7 @@ StringToColorPair(clientData, interp, tkwin, string, widgRec, offset)
  *
  *----------------------------------------------------------------------
  */
-static char *
+static CONST84_RETURN char *
 NameOfColor(colorPtr)
     XColor *colorPtr;
 {
@@ -336,7 +334,7 @@ NameOfColor(colorPtr)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ColorPairToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1785,7 +1783,7 @@ Blt_Get3DBorder(interp, tkwin, borderName)
     Blt_HashEntry *hPtr;
     Blt_Tile tile;
     XColor *bgColorPtr;
-    char **argv;
+    CONST84 char **argv;
     char *colorName;
     int argc;
     int isNew;

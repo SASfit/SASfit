@@ -428,7 +428,7 @@ StringToPosition(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 PositionToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1182,7 +1182,7 @@ Blt_CreateLegend(graphPtr)
 	graphPtr->tkwin, graphPtr, PickLegendEntry, Blt_GraphTags);
 
     if (Blt_ConfigureWidgetComponent(graphPtr->interp, graphPtr->tkwin,
-	    "legend", "Legend", configSpecs, 0, (char **)NULL,
+	    "legend", "Legend", configSpecs, 0, (CONST84 char **)NULL,
 	    (char *)legendPtr, 0) != TCL_OK) {
 	return TCL_ERROR;
     }
@@ -1343,7 +1343,7 @@ BindOp(graphPtr, interp, argc, argv)
 	return TCL_OK;
     }
     return Blt_ConfigureBindings(interp, graphPtr->legend->bindTable,
-	Blt_MakeElementTag(graphPtr, argv[3]), argc - 4, argv + 4);
+	Blt_MakeElementTag(graphPtr, argv[3]), argc - 4, (CONST84 char **)(argv + 4));
 }
 
 /*
@@ -1393,7 +1393,7 @@ ConfigureOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     int flags = TK_CONFIG_ARGV_ONLY;
     Legend *legendPtr;
@@ -1444,7 +1444,7 @@ Blt_LegendOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;

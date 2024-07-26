@@ -1308,6 +1308,7 @@ WriteOp(
     Tcl_Obj *CONST *objv)
 {
     DWORD bytesLeft, nBytes;
+    int bytesLeftInt;
     DOC_INFO_1 di1;
     DWORD jobId;
     char *title;
@@ -1325,12 +1326,13 @@ WriteOp(
     }
     if (objc == 5) {
 	title = Tcl_GetString(objv[3]);
-	data = Tcl_GetStringFromObj(objv[4], &bytesLeft);
+	data = Tcl_GetStringFromObj(objv[4], &bytesLeftInt);
     } else {
 	sprintf(string, "Print Job #%d", nextJob++);
 	title = string;
-	data = Tcl_GetStringFromObj(objv[3], &bytesLeft);
+	data = Tcl_GetStringFromObj(objv[3], &bytesLeftInt);
     }
+    bytesLeft = (DWORD)bytesLeftInt;
     ZeroMemory(&di1, sizeof(DOC_INFO_1));
     di1.pDocName = title;
     if (queuePtr->fileName != NULL) {

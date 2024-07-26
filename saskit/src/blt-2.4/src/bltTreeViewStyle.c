@@ -417,6 +417,9 @@ static StyleFreeProc FreeTextBox, FreeCheckBox, FreeComboBox;
 static StyleMeasureProc MeasureTextBox, MeasureCheckBox, MeasureComboBox;
 static StylePickProc PickCheckBox, PickComboBox;
 
+// Forward Declarations
+int Blt_TreeViewTextbox _ANSI_ARGS_((TreeView *tvPtr, TreeViewEntry *entryPtr, TreeViewColumn *columnPtr));
+
 /*
  *----------------------------------------------------------------------
  *

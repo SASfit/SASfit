@@ -1266,11 +1266,11 @@ GetNodePath(
  *---------------------------------------------------------------------- 
  */
 static Blt_TreeNode
-ParseNode5(TreeCmd *cmdPtr, char **argv, RestoreData *dataPtr)
+ParseNode5(TreeCmd *cmdPtr, CONST84 char **argv, RestoreData *dataPtr)
 {
     Blt_HashEntry *hPtr;
     Blt_TreeNode node, parent;
-    char **names;
+    CONST84 char **names;
     int nNames, isNew;
     int parentId, nodeId;
 
@@ -1367,10 +1367,10 @@ ParseNode5(TreeCmd *cmdPtr, char **argv, RestoreData *dataPtr)
  *----------------------------------------------------------------------
  */
 static Blt_TreeNode
-ParseNode3(TreeCmd *cmdPtr, char **argv, RestoreData *dataPtr)
+ParseNode3(TreeCmd *cmdPtr, CONST84 char **argv, RestoreData *dataPtr)
 {
     Blt_TreeNode node, parent;
-    char **names;
+    CONST84 char **names;
     int i;
     int nNames;
     
@@ -1404,11 +1404,11 @@ ParseNode3(TreeCmd *cmdPtr, char **argv, RestoreData *dataPtr)
 }
 
 static int
-RestoreNode(TreeCmd *cmdPtr, int argc, char **argv, RestoreData *dataPtr)
+RestoreNode(TreeCmd *cmdPtr, int argc, CONST84 char **argv, RestoreData *dataPtr)
 {
     Blt_TreeNode node;
     Tcl_Obj *valueObjPtr;
-    char **elemArr;
+    CONST84 char **elemArr;
     int nElem, result;
     register int i;
 
@@ -1454,8 +1454,7 @@ RestoreNode(TreeCmd *cmdPtr, int argc, char **argv, RestoreData *dataPtr)
     Blt_Free(elemArr);
     if (!(dataPtr->flags & RESTORE_NO_TAGS)) {
 	/* Parse the tag list. */
-	if (Tcl_SplitList(cmdPtr->interp, argv[1], &nElem, &elemArr) 
-	    != TCL_OK) {
+	if (Tcl_SplitList(cmdPtr->interp, argv[1], &nElem, &elemArr) != TCL_OK) {
 	    return TCL_ERROR;
 	}
 	for (i = 0; i < nElem; i++) {
@@ -4057,7 +4056,7 @@ RestoreOp(
 	next = eol + 1;
 	nLines++;
 	if (Tcl_CommandComplete(entry)) {
-	    char **elemArr;
+	    CONST84 char **elemArr;
 	    int nElem;
 	    
 	    if (Tcl_SplitList(interp, entry, &nElem, &elemArr) != TCL_OK) {
@@ -4085,7 +4084,7 @@ ReadEntry(
     Tcl_Interp *interp,
     Tcl_Channel channel,
     int *argcPtr,
-    char ***argvPtr)
+    CONST84 char ***argvPtr)
 {
     Tcl_DString dString;
     int result;
@@ -4134,7 +4133,7 @@ RestorefileOp(
 {
     Blt_TreeNode root;
     int nElem;
-    char **elemArr;
+    CONST84 char **elemArr;
     char *fileName;
     int result;
     Tcl_Channel channel;

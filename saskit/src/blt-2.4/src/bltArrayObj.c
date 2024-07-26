@@ -55,7 +55,7 @@ SetArrayFromAny(interp, objPtr)
     Blt_HashTable *tablePtr;
     Tcl_Obj *elemObjPtr;
     Tcl_ObjType *oldTypePtr = objPtr->typePtr;
-    char **elemArr;
+    CONST84 char **elemArr;
     char *string;
     int isNew;
     int nElem;

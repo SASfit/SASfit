@@ -1238,7 +1238,7 @@ Itcl_DecodeScopedCommand(interp, name, rNsPtr, rCmdPtr)
     int len = strlen(name);
     CONST char *pos;
     int listc, result;
-    char **listv;
+    CONST84 char **listv;
 
     cmdName = ckalloc((unsigned)strlen(name)+1);
     strcpy(cmdName, name);

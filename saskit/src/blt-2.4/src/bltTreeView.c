@@ -2466,8 +2466,8 @@ GetTags(
 {
     TreeView *tvPtr;
     int nNames;
-    char **names;
-    register char **p;
+    CONST84 char **names;
+    register CONST84 char **p;
 
     tvPtr = Blt_GetBindingData(table);
     if (context == (ClientData)ITEM_ENTRY_BUTTON) {
@@ -2475,8 +2475,7 @@ GetTags(
 
 	Blt_ListAppend(ids, Blt_TreeViewButtonTag(tvPtr, "Button"), 0);
 	if (entryPtr->tagsUid != NULL) {
-	    if (Tcl_SplitList((Tcl_Interp *)NULL, entryPtr->tagsUid, &nNames,
-			      &names) == TCL_OK) {
+	    if (Tcl_SplitList((Tcl_Interp *)NULL, entryPtr->tagsUid, &nNames, &names) == TCL_OK) {
 		for (p = names; *p != NULL; p++) {
 		    Blt_ListAppend(ids, Blt_TreeViewButtonTag(tvPtr, *p), 0);
 		}
@@ -2491,8 +2490,7 @@ GetTags(
 
 	Blt_ListAppend(ids, (char *)columnPtr, 0);
 	if (columnPtr->tagsUid != NULL) {
-	    if (Tcl_SplitList((Tcl_Interp *)NULL, columnPtr->tagsUid, &nNames,
-		      &names) == TCL_OK) {
+	    if (Tcl_SplitList((Tcl_Interp *)NULL, columnPtr->tagsUid, &nNames, &names) == TCL_OK) {
 		for (p = names; *p != NULL; p++) {
 		    Blt_ListAppend(ids, Blt_TreeViewColumnTag(tvPtr, *p), 0);
 		}
@@ -2506,8 +2504,7 @@ GetTags(
 
 	Blt_ListAppend(ids, (char *)entryPtr, 0);
 	if (entryPtr->tagsUid != NULL) {
-	    if (Tcl_SplitList((Tcl_Interp *)NULL, entryPtr->tagsUid, &nNames,
-		      &names) == TCL_OK) {
+	    if (Tcl_SplitList((Tcl_Interp *)NULL, entryPtr->tagsUid, &nNames, &names) == TCL_OK) {
 		for (p = names; *p != NULL; p++) {
 		    Blt_ListAppend(ids, Blt_TreeViewEntryTag(tvPtr, *p), 0);
 		}

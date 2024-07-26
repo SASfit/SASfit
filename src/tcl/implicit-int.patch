@@ -1,0 +1,32 @@
+commit 51bd245dfab1a85c22234efc21c93de5fafb9cbe
+Author: Ingo Breßler <dev@ingobressler.net>
+Date:   Thu Jun 13 16:15:40 2024 +0200
+
+    fix implicit-int error with gcc-14
+
+diff --git a/unix/configure b/unix/configure
+index 403a49f..3d5e9f1 100755
+--- a/unix/configure
++++ b/unix/configure
+@@ -777,7 +777,7 @@ cat > conftest.$ac_ext << EOF
+ #line 778 "configure"
+ #include "confdefs.h"
+ 
+-main(){return(0);}
++int main(){return(0);}
+ EOF
+ if { (eval echo configure:783: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+   ac_cv_prog_cc_works=yes
+diff --git a/win/configure b/win/configure
+index 64e54b1..8a410e2 100755
+--- a/win/configure
++++ b/win/configure
+@@ -704,7 +704,7 @@ cat > conftest.$ac_ext << EOF
+ #line 705 "configure"
+ #include "confdefs.h"
+ 
+-main(){return(0);}
++int main(){return(0);}
+ EOF
+ if { (eval echo configure:710: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+   ac_cv_prog_cc_works=yes

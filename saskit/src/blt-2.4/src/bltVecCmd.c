@@ -179,7 +179,7 @@ AppendOp(vPtr, interp, argc, argv)
 	    result = AppendVector(vPtr, v2Ptr);
 	} else {
 	    int nElem;
-	    char **elemArr;
+	    CONST84 char **elemArr;
 
 	    if (Tcl_SplitList(interp, argv[i], &nElem, &elemArr) != TCL_OK) {
 		return TCL_ERROR;
@@ -1395,7 +1395,7 @@ SetOp(vPtr, interp, argc, argv)
     int result;
     VectorObject *v2Ptr;
     int nElem;
-    char **elemArr;
+    CONST84 char **elemArr;
 
     /* The source can be either a list of expressions of another
      * vector.  */
@@ -1818,7 +1818,7 @@ Blt_VectorInstCmd(clientData, interp, argc, argv)
     ClientData clientData;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     VectorObject *vPtr = clientData;

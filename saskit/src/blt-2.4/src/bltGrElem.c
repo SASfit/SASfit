@@ -70,13 +70,13 @@ EXTERN int Blt_VectorExists2 _ANSI_ARGS_((Tcl_Interp *interp, char *vecName));
 static int
 GetPenStyle(graphPtr, string, type, stylePtr)
     Graph *graphPtr;
-    char *string;
+    CONST84 char *string;
     Blt_Uid type;
     PenStyle *stylePtr;
 {
     Pen *penPtr;
     Tcl_Interp *interp = graphPtr->interp;
-    char **elemArr;
+    CONST84 char **elemArr;
     int nElem;
 
     elemArr = NULL;
@@ -283,7 +283,7 @@ EvalExprList(interp, list, nElemPtr, arrayPtr)
     double **arrayPtr;
 {
     int nElem;
-    char **elemArr;
+    CONST84 char **elemArr;
     double *array;
     int result;
 
@@ -396,7 +396,7 @@ StringToData(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 DataToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Type of axis vector to print */
     Tk_Window tkwin;		/* Not used. */
@@ -515,7 +515,7 @@ StringToDataPairs(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 DataPairsToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -613,7 +613,7 @@ StringToAlong(clientData, interp, tkwin, string, widgRec, offset)
  *----------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 AlongToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -685,7 +685,7 @@ Blt_StringToStyles(clientData, interp, tkwin, string, widgRec, offset)
     Blt_ChainLink *linkPtr;
     Element *elemPtr = (Element *)(widgRec);
     PenStyle *stylePtr;
-    char **elemArr;
+    CONST84 char **elemArr;
     int nStyles;
     register int i;
     size_t size = (size_t)clientData;
@@ -1169,7 +1169,7 @@ CreateElement(graphPtr, interp, argc, argv, classUid)
     Blt_SetHashValue(hPtr, elemPtr);
 
     if (Blt_ConfigureWidgetComponent(interp, graphPtr->tkwin, elemPtr->name,
-	    "Element", elemPtr->specsPtr, argc - 4, argv + 4, 
+	    "Element", elemPtr->specsPtr, argc - 4, (CONST84 char **)(argv + 4),
 		(char *)elemPtr, 0) != TCL_OK) {
 	DestroyElement(graphPtr, elemPtr);
 	return TCL_ERROR;
@@ -1214,7 +1214,7 @@ RebuildDisplayList(graphPtr, newList)
     char *newList;		/* Tcl list of element names */
 {
     int nNames;			/* Number of names found in Tcl name list */
-    char **nameArr;		/* Broken out array of element names */
+    CONST84 char **nameArr;		/* Broken out array of element names */
     register int i;
     Element *elemPtr;		/* Element information record */
 
@@ -1555,7 +1555,7 @@ BindOp(graphPtr, interp, argc, argv)
 	return TCL_OK;
     }
     return Blt_ConfigureBindings(interp, graphPtr->bindTable,
-	Blt_MakeElementTag(graphPtr, argv[3]), argc - 4, argv + 4);
+	Blt_MakeElementTag(graphPtr, argv[3]), argc - 4, (CONST84 char **)(argv + 4));
 }
 
 /*
@@ -1655,7 +1655,7 @@ ClosestOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;		/* Graph widget */
     Tcl_Interp *interp;		/* Interpreter to report results to */
     int argc;			/* Number of element names */
-    char **argv;		/* List of element names */
+    CONST84 char **argv;		/* List of element names */
 {
     Element *elemPtr;
     ClosestSearch search;
@@ -1817,12 +1817,12 @@ ConfigureOp(graphPtr, interp, argc, argv)
     Graph *graphPtr;
     Tcl_Interp *interp;
     int argc;
-    char *argv[];
+    CONST84 char *argv[];
 {
     Element *elemPtr;
     int flags;
     int numNames, numOpts;
-    char **options;
+    CONST84 char **options;
     register int i;
 
     /* Figure out where the option value pairs begin */
@@ -2182,7 +2182,7 @@ Blt_ElementOp(graphPtr, interp, argc, argv, type)
     Graph *graphPtr;		/* Graph widget record */
     Tcl_Interp *interp;
     int argc;			/* # arguments */
-    char **argv;		/* Argument list */
+    CONST84 char **argv;		/* Argument list */
     Blt_Uid type;
 {
     Blt_Op proc;

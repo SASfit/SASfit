@@ -92,7 +92,7 @@ EXTERN Blt_BindTable Blt_CreateBindingTable _ANSI_ARGS_((Tcl_Interp *interp,
 	Blt_BindTagProc *tagProc));
 
 EXTERN int Blt_ConfigureBindings _ANSI_ARGS_((Tcl_Interp *interp,
-	Blt_BindTable table, ClientData item, int argc, char **argv));
+	Blt_BindTable table, ClientData item, int argc, CONST84 char **argv));
 
 #if (TCL_MAJOR_VERSION >= 8)
 EXTERN int Blt_ConfigureBindingsFromObj _ANSI_ARGS_((Tcl_Interp *interp,

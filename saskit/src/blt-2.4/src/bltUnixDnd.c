@@ -214,10 +214,9 @@
 #define DEF_TOKEN_RELIEF		"raised"
 
 static int StringToCursors _ANSI_ARGS_((ClientData clientData, 
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec, 
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec, 
 	int offset));
-static char *CursorsToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin,
-	char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
+static CONST84_RETURN char *CursorsToString _ANSI_ARGS_((ClientData clientData, Tk_Window tkwin, char *widgRec, int offset, Tcl_FreeProc **freeProcPtr));
 
 Tk_CustomOption cursorsOption =
 {
@@ -606,7 +605,7 @@ static Tk_ConfigSpec tokenConfigSpecs[] =
  *  Forward Declarations
  */
 static int DndCmd _ANSI_ARGS_((ClientData clientData, Tcl_Interp *interp,
-	int argc, char **argv));
+	int argc, CONST84 char **argv));
 static void TokenEventProc _ANSI_ARGS_((ClientData clientData, 
 	XEvent *eventPtr));
 static void MoveToken _ANSI_ARGS_((Dnd *dndPtr));
@@ -654,7 +653,7 @@ StringToCursors(clientData, interp, tkwin, string, widgRec, offset)
     Tk_Cursor **cursorPtrPtr = (Tk_Cursor **)(widgRec + offset);
     int result = TCL_OK;
     int nElems;
-    char **elemArr;
+    CONST84 char **elemArr;
 
     if (*cursorPtrPtr != NULL) {
 	Blt_Free(*cursorPtrPtr);
@@ -698,7 +697,7 @@ StringToCursors(clientData, interp, tkwin, string, widgRec, offset)
  * ----------------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 CursorsToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -727,11 +726,10 @@ CursorsToString(clientData, tkwin, widgRec, offset, freeProcPtr)
 
 
 static char *
-PrintList(list)
-    char **list;
+PrintList(CONST84 char ** list)
 {
     int count;
-    char **p;
+    CONST84 char ** p;
 
     count = 0;
     for(p = list; *p != NULL; p++) {
@@ -1825,7 +1823,7 @@ ConfigureToken(interp, dndPtr, argc, argv, flags)
     Tcl_Interp *interp;		/* current interpreter */
     Dnd *dndPtr;		/* Drag&drop source widget record */
     int argc;			/* number of arguments */
-    char **argv;		/* argument strings */
+    CONST84 char **argv;		/* argument strings */
     int flags;			/* flags controlling interpretation */
 {
     GC newGC;
@@ -3323,7 +3321,7 @@ ParseProperty(interp, dndPtr, windowPtr, data)
     char *data;
 {
     int nElems;
-    char **elemArr;
+    CONST84 char **elemArr;
     int eventFlags;
     Tcl_DString dString;
     int count;
@@ -3761,7 +3759,7 @@ ConfigureOp(clientData, interp, argc, argv)
     ClientData clientData;	/* Thread-specific data. */
     Tcl_Interp *interp;		/* current interpreter */
     int argc;			/* number of arguments */
-    char **argv;		/* argument strings */
+    CONST84 char **argv;		/* argument strings */
 {
     Dnd *dndPtr;
     int flags;
@@ -4127,7 +4125,7 @@ GetdataOp(clientData, interp, argc, argv)
     Blt_HashEntry *hPtr;
     Blt_HashSearch cursor;
     int isNew, nElem;
-    char **cmd;
+    CONST84 char **cmd;
     register int i;
 
     if (GetDnd(clientData, interp, argv[2], &dndPtr) != TCL_OK) {
@@ -4151,7 +4149,7 @@ GetdataOp(clientData, interp, argc, argv)
 	     (char *)NULL);
 	    return TCL_ERROR;
 	}
-	cmd = (char **)Blt_GetHashValue(hPtr);
+	cmd = (CONST84 char **)Blt_GetHashValue(hPtr);
 	if (cmd == NULL) {
 	    Tcl_SetResult(interp, "", TCL_STATIC);
 	} else {
@@ -4163,7 +4161,7 @@ GetdataOp(clientData, interp, argc, argv)
     for (i = 3; i < argc; i += 2) {
 	hPtr = Blt_CreateHashEntry(&(dndPtr->getDataTable), argv[i], &isNew);
 	if (!isNew) {
-	    cmd = (char **)Blt_GetHashValue(hPtr);
+	    cmd = (CONST84 char **)Blt_GetHashValue(hPtr);
 	    Blt_Free(cmd);
 	}
 	if (Tcl_SplitList(interp, argv[i + 1], &nElem, &cmd) != TCL_OK) {
@@ -4358,7 +4356,7 @@ SetdataOp(clientData, interp, argc, argv)
     Blt_HashEntry *hPtr;
     Blt_HashSearch cursor;
     int isNew, nElem;
-    char **cmd;
+    CONST84 char **cmd;
     int i;
 
     if (GetDnd(clientData, interp, argv[2], &dndPtr) != TCL_OK) {
@@ -4381,7 +4379,7 @@ SetdataOp(clientData, interp, argc, argv)
 	     (char *)NULL);
 	    return TCL_ERROR;
 	}
-	cmd = (char **)Blt_GetHashValue(hPtr);
+	cmd = (CONST84 char **)Blt_GetHashValue(hPtr);
 	if (cmd == NULL) {
 	    Tcl_SetResult(interp, "", TCL_STATIC);
 	} else {
@@ -4392,7 +4390,7 @@ SetdataOp(clientData, interp, argc, argv)
     for (i = 3; i < argc; i += 2) {
 	hPtr = Blt_CreateHashEntry(&(dndPtr->setDataTable), argv[i], &isNew);
 	if (!isNew) {
-	    cmd = (char **)Blt_GetHashValue(hPtr);
+	    cmd = (CONST84 char **)Blt_GetHashValue(hPtr);
 	    Blt_Free(cmd);
 	}
 	if (Tcl_SplitList(interp, argv[i + 1], &nElem, &cmd) != TCL_OK) {
@@ -4418,7 +4416,7 @@ RegisterOp(clientData, interp, argc, argv)
     ClientData clientData;
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     DndInterpData *dataPtr = clientData;
     Tk_Window tkwin;
@@ -4578,7 +4576,7 @@ TokenOp(clientData, interp, argc, argv)
     ClientData clientData;	/* Thread-specific data. */
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Blt_Op proc;
     int result;
@@ -4628,7 +4626,7 @@ DndCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Thread-specific data. */
     Tcl_Interp *interp;		/* current interpreter */
     int argc;			/* number of arguments */
-    char **argv;		/* argument strings */
+    CONST84 char **argv;		/* argument strings */
 {
     Blt_Op proc;
     int result;

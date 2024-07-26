@@ -106,7 +106,7 @@ typedef struct {
 
     Graph *graphPtr;		/* Graph widget of element*/
 
-    unsigned int flags;		/* Set bit field definitions below */
+    unsigned long flags;		/* Set bit field definitions below */
 
     /*
      * AXIS_DRAWN		Axis is designated as a logical axis
@@ -169,7 +169,7 @@ typedef struct {
 				 * no axis lines or ticks are
 				 * drawn. */
 
-    char **limitsFormats;	/* One or two strings of sprintf-like
+    CONST84 char **limitsFormats;	/* One or two strings of sprintf-like
 				 * formats describing how to display
 				 * virtual axis limits. If NULL,
 				 * display no limits. */

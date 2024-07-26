@@ -203,37 +203,41 @@ Finally, build SASfit itself which should generate a binary package if it was su
 
 ### Linux
 
-*(Tested with Ubuntu 20.04 LTS)*
+*(Tested on Ubuntu 22+24)*
 
-On a fresh system, install the required development tools:
+Install *GIT* first and get a copy of the latest SASfit source code:
 
-    $ sudo apt install git build-essential cmake gcc
+    apt install git
+    git clone https://github.com/SASfit/SASfit.git sasfit
 
-Additionally install the X11 development packages:
+#### Optional: Prepare a podman container for building SASfit
 
-    $ sudo apt install libx11-dev 
+**Note:** This works for building except packaging for now. Getting the appimagetool working in a container for packaging is not working yet. (would require `--device /dev/fuse --device /dev/snd` below, at least)
 
-As well as gsl and fftw3 library
-	
-	$ sudo apt install libgsl-dev libfftw3-dev
+Run container interactively:
 
-Get a copy of the latest SASfit source code:
+    podman run -it -u 0 -v .:/sasfit --rm ubuntu:latest bash
 
-    $ git clone https://github.com/SASfit/SASfit.git sasfit
+In the container shell:
 
-Create a build directory:
+    apt update && apt install -y lsb-release sudo fuse-overlayfs
 
-    $ cd sasfit
-    sasfit $ mkdir build
-    sasfit $ cd build
+#### Install the required packages for building
 
-Configure the source with CMake which builds required packages on the way:
+Run this on your system natively or within the container started as described before.
+Use the scripts provided for continous integration (CI) in subfolder `src/appveyor`:
 
-    sasfit/build $ cmake ../src
+    cd <SASfit-path>
+    sh src/appveyor/0_install_linux4building.sh
 
-Finally, build SASfit itself which should generate a binary package if it was successful:
+#### Run the build script
 
-    sasfit/build $ make -j4
+For the compiler, the latest installed gcc is selected and indicated at the beginning of the output. To override this, export the **CC** and **CXX** environment variables with an absolute path to the compiler for *C* and *C++* respectively.
+
+    cd <SASfit-path>
+    sh src/appveyor/4_build.sh
+
+The resulting package can be found in the *src* directory while the assembled package directory structure is next to the SASfit directory one level up ('<SASfit-path>/../<SASfit-binary-package>').
 
 ### Common helpers
 

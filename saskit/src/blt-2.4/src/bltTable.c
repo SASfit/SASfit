@@ -91,10 +91,10 @@ static Tk_GeomMgr tableMgrInfo =
 };
 
 static int StringToLimits _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
 
-static char *LimitsToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *LimitsToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtr));
 
@@ -104,9 +104,9 @@ static Tk_CustomOption limitsOption =
 };
 
 static int StringToResize _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *ResizeToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *ResizeToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtr));
 
@@ -116,9 +116,9 @@ static Tk_CustomOption resizeOption =
 };
 
 static int StringToControl _ANSI_ARGS_((ClientData clientData,
-	Tcl_Interp *interp, Tk_Window tkwin, char *string, char *widgRec,
+	Tcl_Interp *interp, Tk_Window tkwin, CONST84 char *string, char *widgRec,
 	int offset));
-static char *ControlToString _ANSI_ARGS_((ClientData clientData,
+static CONST84_RETURN char *ControlToString _ANSI_ARGS_((ClientData clientData,
 	Tk_Window tkwin, char *widgRec, int offset,
 	Tcl_FreeProc **freeProcPtr));
 
@@ -292,7 +292,7 @@ StringToLimits(clientData, interp, tkwin, string, widgRec, offset)
     int offset;			/* Offset of limits */
 {
     Limits *limitsPtr = (Limits *)(widgRec + offset);
-    char **elemArr;
+    CONST84 char **elemArr;
     int nElem;
     int limArr[3];
     Tk_Window winArr[3];
@@ -572,7 +572,7 @@ NameOfLimits(limitsPtr)
  * ----------------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 LimitsToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -671,7 +671,7 @@ NameOfResize(resize)
  * ----------------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ResizeToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -781,7 +781,7 @@ NameOfControl(control)
  * ----------------------------------------------------------------------------
  */
 /*ARGSUSED*/
-static char *
+static CONST84_RETURN char *
 ControlToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     ClientData clientData;	/* Not used. */
     Tk_Window tkwin;		/* Not used. */
@@ -1181,7 +1181,7 @@ ConfigureEntry(tablePtr, interp, entryPtr, argc, argv)
     Tcl_Interp *interp;
     Entry *entryPtr;
     int argc;			/* Option-value arguments */
-    char **argv;
+    CONST84 char **argv;
 {
     int oldRowSpan, oldColSpan;
 
@@ -1533,7 +1533,7 @@ ConfigureRowColumn(tablePtr, infoPtr, pattern, argc, argv)
     PartitionInfo *infoPtr;
     char *pattern;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     RowColumn *rcPtr;
     register Blt_ChainLink *linkPtr;
@@ -1852,7 +1852,7 @@ ConfigureTable(tablePtr, interp, argc, argv)
     Table *tablePtr;		/* Table to be configured */
     Tcl_Interp *interp;		/* Interpreter to report results back to */
     int argc;
-    char **argv;		/* Option-value pairs */
+    CONST84 char **argv;		/* Option-value pairs */
 {
     if (argc == 0) {
 	return Tk_ConfigureInfo(interp, tablePtr->tkwin, tableConfigSpecs,
@@ -2179,7 +2179,7 @@ ManageEntry(interp, tablePtr, tkwin, row, column, argc, argv)
     Tk_Window tkwin;
     int row, column;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     Entry *entryPtr;
     int result = TCL_OK;
@@ -4848,7 +4848,7 @@ TableCmd(clientData, interp, argc, argv)
     ClientData clientData;	/* Interpreter-specific data. */
     Tcl_Interp *interp;
     int argc;
-    char **argv;
+    CONST84 char **argv;
 {
     TableInterpData *dataPtr = clientData;
     Blt_Op proc;
