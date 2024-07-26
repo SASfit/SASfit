@@ -34,7 +34,7 @@ scalar sasfit_sd_fgld__f(scalar x, sasfit_param * param)
 
 scalar sasfit_sd_fgld__v(scalar u, sasfit_param * param, int dist)
 {
-    scalar Qfgld,qfgld,delta,x,y;
+    scalar Qfgld,qfgld,delta,x,y,LQ, UQ, IQR, M,K;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
@@ -107,6 +107,17 @@ scalar sasfit_sd_fgld__v(scalar u, sasfit_param * param, int dist)
                                          +KAPPA/2.0*(1+KAPPA/6.0)
                                          +M_PI*M_PI/3.0*delta*(1-delta));
                 break;
+        case DISTRIBUTION_MEDIAN:
+                return sasfit_sd_fgld__v(0.5,param,DISTRIBUTION_QUANTILE);
+                break;
+        case DISTRIBUTION_SKEWNESS:
+                delta = (atan(DELTA)+M_PI_2)/M_PI;
+                return (2*delta-1)*log(4./3.)/(log(3)+KAPPA/2.);
+                break;
+        case DISTRIBUTION_EXCESS_KURTOSIS:
+                return (log(21./5.)+KAPPA/2)/(log(3)+KAPPA/2.);
+                break;
+        case DISTRIBUTION_MODE:
         default: sasfit_err("parameter distr=%d not defined",dist);
     }
 

@@ -19,7 +19,7 @@ scalar fgld_sphere(scalar y, sasfit_param *param) {
 	} else {
 		fsp = 3.0*(sin(u)-u*cos(u))/gsl_pow_3(u);
 	}
-	return N*pow(Rc,6-ALPHA)*gsl_pow_2(4./3.*M_PI* fsp);
+	return N*pow(Rc,6-DIM)*gsl_pow_2(4./3.*M_PI* fsp);
 }
 
 scalar sasfit_ff_fgld_sphere(scalar q, sasfit_param * param)

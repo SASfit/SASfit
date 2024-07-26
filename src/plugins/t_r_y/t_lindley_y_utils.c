@@ -9,39 +9,154 @@
 
 // define shortcuts for local parameters/variables
 
-scalar QY_Uniform(scalar p) {
-    return p;
+scalar Q_Uniform(scalar p) {
+    scalar a=0, b=1;
+    return a+p*(b-a);
 }
 
-scalar QY_Cauchy(scalar p) {
-    return tan(M_PI*(p-0.5));
+scalar F_Uniform(scalar x) {
+    scalar a=0, b=1;
+    if (x<a) return 0;
+    if (x>b) return 1;
+    return (x-a)/(b-a);
 }
 
-scalar QY_Weibull(scalar p, scalar alpha, scalar beta) {
+scalar f_Uniform(scalar x) {
+    scalar a=0, b=1;
+    if (x<a) return 0;
+    if (x>b) return 1;
+    return 1/(b-a);
+}
+
+scalar Q_Weibull(scalar p, scalar alpha, scalar beta) {
     return beta*pow(-log(1-p),1/alpha);
 }
-
-scalar QY_Exponential(scalar p, scalar b) {
-    // b > 0
-    return -b*log(1-p);
+scalar F_Weibull(scalar x, scalar alpha, scalar beta) {
+    if (x<0) return 0;
+    return 1-exp(-pow(x/beta,alpha));
+}
+scalar f_Weibull(scalar x, scalar alpha, scalar beta) {
+    if (x<0) return 0;
+    return alpha/beta*pow(x/beta,alpha-1)*exp(-pow(x/beta,alpha));
 }
 
-scalar QY_LogLogistic(scalar p, scalar a, scalar b) {
+scalar Q_Exponential(scalar p, scalar lambda) {
+    // lambda > 0
+    return -1/lambda*log(1-p);
+}
+scalar F_Exponential(scalar x, scalar lambda) {
+    // lambda,x > 0
+    return 1-exp(-x*lambda);
+}
+scalar f_Exponential(scalar x, scalar lambda) {
+    // lambda,x > 0
+    return lambda*exp(-lambda*x);
+}
+
+scalar Q_Lindley(scalar p, scalar theta) {
+    // theta,x > 0
+    return (1+theta-gsl_sf_lambert_Wm1(exp(1+theta)*(1+theta)*p))/theta;
+}
+scalar f_Lindley(scalar x, scalar theta) {
+    // theta,x > 0
+    return gsl_pow_2(theta)/(theta+1)*(1+x)*exp(-theta*x);
+}
+scalar F_Lindley(scalar x, scalar theta) {
+    // theta,x > 0
+    return -expm1(-theta*x)*(1+theta+theta*x)/(1+theta);
+}
+
+scalar Q_LogLogistic(scalar p, scalar a, scalar b) {
     // a,b > 0
     return a*pow(p/(1-p),1./b);
 }
-
-scalar QY_Logistic(scalar p, scalar a, scalar b) {
+scalar f_LogLogistic(scalar x, scalar a, scalar b) {
     // a,b > 0
-    return a+b*log(p/(1-p));
+    return b/a*pow(x/a,b-1)/gsl_pow_2(1+pow(x/a,b));
+}
+scalar F_LogLogistic(scalar x, scalar a, scalar b) {
+    // a,b > 0
+    return 1/(1+pow(x/a,-b));
 }
 
-scalar QY_ExtremeValue(scalar p) {
-    return log(-log(1-p));
+scalar Q_Logistic(scalar p, scalar mu, scalar sigma) {
+    // mu,sigma > 0
+    return mu+sigma*log(p/(1-p));
+}
+scalar f_Logistic(scalar x, scalar mu, scalar sigma) {
+    // mu,sigma > 0
+    return exp(-(x-mu)/sigma)/(sigma*gsl_pow_2(1+exp(-(x-mu)/sigma)));
+}
+scalar F_Logistic(scalar x, scalar mu, scalar sigma) {
+    // mu,sigma > 0
+    return 1./(1+exp(-(x-mu)/sigma));
 }
 
-scalar QY_Frechet(scalar p) {
-    return -1/log(1-p);
+scalar Q_Cauchy(scalar p) {
+    scalar gamma=1;
+    return gamma*tan(M_PI*(p-0.5));
+}
+scalar f_Cauchy(scalar x) {
+    scalar gamma=1;
+    return 1/(M_PI*gamma*(1+gsl_pow_2(x/gamma)));
+}
+scalar F_Cauchy(scalar x) {
+    scalar gamma=1;
+    return 1/M_PI*atan(x/gamma)+0.5;
+}
+
+scalar Q_Gumbel(scalar p) {
+    scalar sigma=1;
+//    return log(-log(1-p));
+    return -sigma*log(-log(p));
+}
+scalar f_Gumbel(scalar x) {
+    scalar sigma=1;
+    return exp(x/sigma-exp(x/sigma));
+}
+scalar F_Gumbel(scalar x) {
+    scalar sigma=1;
+    return exp(-exp(-x/sigma));
+}
+
+
+scalar Q_Frechet(scalar p, scalar k) {
+    scalar lambda=1;
+    return lambda*pow(-log(p),-1/k);
+}
+scalar f_Frechet(scalar x, scalar k) {
+    scalar lambda=1;
+    return exp(-pow(x/lambda,-k))*k/lambda*pow(x/lambda,-1-k);
+}
+scalar F_Frechet(scalar x, scalar k) {
+    scalar lambda=1;
+    return exp(-pow(x/lambda,-k));
+}
+
+scalar Q_Rayleigh(scalar p) {
+    scalar sigma=1;
+    return sigma*sqrt(-2*log(1-p));
+}
+scalar f_Rayleigh(scalar x) {
+    scalar sigma=1;
+    return x/gsl_pow_2(sigma) * exp(-0.5*gsl_pow_2(x/sigma));
+}
+scalar F_Rayleigh(scalar x) {
+    scalar sigma=1;
+    return 1-exp(-0.5*gsl_pow_2(x/sigma));
+}
+
+scalar Q_Pareto(scalar p, scalar alpha) {
+    scalar mu=1;
+    return mu*pow(1-p,-1/alpha);
+}
+scalar f_Pareto(scalar x, scalar alpha) {
+    scalar mu=1;
+    return alpha/x*pow(mu/x,alpha);
+}
+scalar F_Pareto(scalar x, scalar alpha) {
+    scalar mu=1;
+    return 1-pow(mu/x,alpha);
 }
 
 scalar KWm1(scalar Z, scalar theta) {

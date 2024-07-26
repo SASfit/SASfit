@@ -13,13 +13,18 @@ scalar sasfit_ff_egu_w_l_profile(scalar x, sasfit_param * param)
     scalar y;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-	SASFIT_CHECK_COND1((KAPPA < 0.0), param, "kappa(%lg) < 0",KAPPA); // modify condition to your needs
+	SASFIT_CHECK_COND1((DIM > 6.0), param, "dim(%lg) > 6",DIM); // modify condition to your needs
+	SASFIT_CHECK_COND1((DIM < 0.0), param, "dim(%lg) < 0",DIM); // modify condition to your needs
+	SASFIT_CHECK_COND1((ALPHA <= 0.0), param, "alpha(%lg) <= 0",ALPHA); // modify condition to your needs
 	SASFIT_CHECK_COND1((BETA <= 0.0), param, "beta(%lg) <= 0",BETA); // modify condition to your needs
+	SASFIT_CHECK_COND1((GAMMA <= 0.0), param, "c(%lg) <= 0",GAMMA); // modify condition to your needs
+	param->p[1]=0;
     SASFIT_CHECK_COND1((BU   <= 0.0), param, "bu(%lg) <= 0",BU);
 
 	// insert your code here
 
 	if (x>=BU) return 0;
+	if (x<=BL) return N;
 	return N-sasfit_sd_egu_w_l_v(x,param,DISTRIBUTION_CUMULATIVE);
 }
 

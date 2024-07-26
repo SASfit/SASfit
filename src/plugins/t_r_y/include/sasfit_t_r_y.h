@@ -294,7 +294,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_v(scalar q, sasfit_param * p, i
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dim</td>
+ *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b k</td>
@@ -357,7 +357,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_egu_w_l_v(scalar q, sasfit_param * p, int d
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dim</td>
+ *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b k</td>
@@ -420,7 +420,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_v(scalar q, sasfit_param * 
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dim</td>
+ *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b k</td>

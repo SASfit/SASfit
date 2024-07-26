@@ -72,9 +72,21 @@
 
 #define Q   param->p[MAXPAR-1]
 
+enum TRY_QY_fY_type {
+    Y_UNIFORM,
+    Y_FRECHET,
+    Y_LOGISTIC,
+    Y_LOGLOGISTIC,
+    Y_PARETO,
+    Y_RAYLEIGH,
+    Y_EXTREMEVALUE,
+    Y_CAUCHY,
+    Y_EXPONENTIAL,
+    Y_WEIBULL
+};
+
 scalar KWm1(scalar, scalar);
 scalar Lindley_f_R(scalar, scalar);
 scalar Lindley_F_R(scalar, scalar);
-
 #endif // end of file
 
