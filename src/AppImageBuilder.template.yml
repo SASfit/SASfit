@@ -166,7 +166,7 @@ AppDir:
     # - testing an old Ubuntu LTS and Redhat compatible CentOS only
     ubuntu:
       image: appimagecrafters/tests-env:ubuntu-bionic
-      before_command: sh -c 'apt-get update && apt-get install -y xvfb; (strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX)'
+      before_command: sh -c 'apt-get update && apt-get install -y xvfb binutils; (strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX)'
       command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
       use_host_x: False
 #    debian:
