@@ -28,3 +28,9 @@ for img in $(awk '/^[^#]*appimagecrafters/{print $2}' "$scriptdir/../AppImageBui
 do
     docker pull "$img";
 done
+
+echo
+echo "## GCC versions and libstdc++ installed:"
+echo
+sudo dpkg -l | grep -E '(gcc|libstdc)'
+ls -la /usr/lib/x86_64-linux-gnu | grep stdc
