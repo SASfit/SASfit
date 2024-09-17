@@ -165,7 +165,7 @@ AppDir:
     #   On failure, it would not start and return other errors and return codes.
     # - testing an old Ubuntu LTS and Redhat compatible CentOS only
     ubuntu:
-      image: appimagecrafters/tests-env:ubuntu-bionic
+      image: appimagecrafters/tests-env:ubuntu-focal
       before_command: sh -c 'apt-get update && apt-get install -y xvfb'
       command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
       use_host_x: False
