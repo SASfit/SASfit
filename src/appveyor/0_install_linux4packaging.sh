@@ -12,7 +12,7 @@ scriptdir="$(cd "$(dirname "$0")" && pwd -P)"
 [ -z "${SF_DEPLOY_KEY}" ] || echo "${SF_DEPLOY_KEY}" | tr " " "\n" >> $HOME/.ssh/id_rsa
 # Install AppImage-Builder and requirements
 # https://appimage-builder.readthedocs.io/en/latest/intro/install.html
-sudo apt-get -y install libfuse2 desktop-file-utils appstream binutils
+sudo apt-get -y install libfuse2 desktop-file-utils appstream
 # latest version: https://github.com/AppImageCrafters/appimage-builder/releases/download/Continuous/appimage-builder-1.1.1.dev32+g2709a3b-x86_64.AppImage
 # does not work yet, does not copy all specified files to local AppDir in the same way as before ...
 sudo wget https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.0.3/appimage-builder-1.0.3-x86_64.AppImage -O /usr/local/bin/appimage-builder
