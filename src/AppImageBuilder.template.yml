@@ -135,6 +135,7 @@ AppDir:
     - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted
     - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security universe
     - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security multiverse
+    - sourceline: deb https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu/ jammy main
     include:
     - libgcc-s1
     - libstdc++6
@@ -143,7 +144,7 @@ AppDir:
     - libfftw3-3
   files:
     include:
-    - usr/lib/x86_64-linux-gnu/libstdc++.*
+    - /usr/lib/x86_64-linux-gnu/libstdc++.*
     - sasfit.vfs/**
     - @SASFIT_BIN_FILE_LIST_FORMATTED@
     exclude:
