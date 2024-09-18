@@ -23,6 +23,8 @@ echo "## Update the package database"
 echo
 set -x
 sudo apt-get update
+# show source of a package
+apt-cache showpkg gcc-13
 set +x
 echo
 echo "## Install extra development packages"
