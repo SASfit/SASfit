@@ -15,17 +15,13 @@ set +x
 echo
 echo "## Show all apt sources installed"
 echo
-set -x
 for fn in $(find /etc/apt -type f -path '*source*' ); do echo "## $fn:"; grep -v '^\(\([# ]\+\)\|$\)' $fn; done
-set +x
 echo
 echo "## Update the package database"
 echo
-set -x
 sudo apt-get update
 # show source of a package
 apt-cache showpkg gcc-13
-set +x
 echo
 echo "## Install extra development packages"
 echo
