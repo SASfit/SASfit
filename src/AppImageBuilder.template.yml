@@ -136,7 +136,7 @@ AppDir:
     - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security universe
     - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security multiverse
     - sourceline: deb https://ppa.launchpadcontent.net/ubuntu-toolchain-r/test/ubuntu/ jammy main
-      keyurl: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x1E9377A2BA9EF27F
+      key_url: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x1E9377A2BA9EF27F
     include:
     - libgcc-s1
     - libstdc++6
