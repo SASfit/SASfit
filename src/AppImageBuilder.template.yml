@@ -136,7 +136,6 @@ AppDir:
     - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security universe
     - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security multiverse
     include:
-    - gcc-13
     - libgcc-s1
     - libstdc++6
     - libc6
@@ -144,6 +143,7 @@ AppDir:
     - libfftw3-3
   files:
     include:
+    - usr/lib/x86_64-linux-gnu/libstdc++.*
     - sasfit.vfs/**
     - @SASFIT_BIN_FILE_LIST_FORMATTED@
     exclude:
