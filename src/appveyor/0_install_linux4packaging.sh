@@ -23,10 +23,14 @@ sudo chmod +x /usr/local/bin/appimage-builder
 groups | grep -q docker || sudo adduser $(id -un) docker
 # fix docker error about missing snd device:
 [ -e /dev/snd ] || sudo ln /dev/null /dev/snd
-# pull docker img now, prevents errors later
-#docker pull appimagecrafters/tests-env:ubuntu-bionic
-#docker pull appimagecrafters/tests-env:centos-7
+# pull docker img now, based on AppImage template, prevents pull errors later
 for img in $(awk '/^[^#]*appimagecrafters/{print $2}' "$scriptdir/../AppImageBuilder.template.yml");
 do
     docker pull "$img";
 done
+
+echo
+echo "## GCC versions and libstdc++ installed:"
+echo
+sudo dpkg -l | grep -E '(gcc|libstdc)'
+ls -la /usr/lib/x86_64-linux-gnu | grep stdc
