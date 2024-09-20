@@ -37,7 +37,7 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_boucher_sphere ################ */
-/** 
+/**
  * \defgroup ff_boucher_sphere Boucher Sphere
  * \ingroup ff_plugins_fuzzy_sph
  *
@@ -83,9 +83,9 @@ sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_sphere_v(scalar q, sasfit_
 /* ################ stop ff_boucher_sphere ################ */
 
 /* ################ start ff_boucher_profiles ################ */
-/** 
+/**
  * \defgroup ff_boucher_profiles Boucher profiles
- * \ingroup ff_plugins_fuzzy_sph
+ * \ingroup ff_plugins_fuzzy_profiles
  *
  * \brief \<some brief description of Boucher profiles function\>
  *
@@ -109,28 +109,28 @@ sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_sphere_v(scalar q, sasfit_
 /**
  * \ingroup ff_boucher_profiles
  *
- * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_profiles
  */
 sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_profiles(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_boucher_profiles
  *
- * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_profiles
  */
 sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_profiles_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_boucher_profiles
  *
- * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_profiles
  */
 sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_profiles_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_boucher_profiles ################ */
 
 
 /* ################ start ff_boucher_sphere2 ################ */
-/** 
+/**
  * \defgroup ff_boucher_sphere2 Boucher Sphere2
  * \ingroup ff_plugins_fuzzy_sph
  *
@@ -176,9 +176,9 @@ sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_sphere2_v(scalar q, sasfit
 /* ################ stop ff_boucher_sphere ################ */
 
 /* ################ start ff_boucher_profiles2 ################ */
-/** 
+/**
  * \defgroup ff_boucher_profiles2 Boucher profiles2
- * \ingroup ff_plugins_fuzzy_sph
+ * \ingroup ff_plugins_fuzzy_profiles
  *
  * \brief \<some brief description of Boucher profiles2 function\>
  *
@@ -202,21 +202,21 @@ sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_sphere2_v(scalar q, sasfit
 /**
  * \ingroup ff_boucher_profiles2
  *
- * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_profiles
  */
 sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_profiles2(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_boucher_profiles2
  *
- * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_profiles
  */
 sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_profiles2_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_boucher_profiles2
  *
- * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_boucherprofile.h, ff_plugins_fuzzy_profiles
  */
 sasfit_boucherprofile_DLLEXP scalar sasfit_ff_boucher_profiles2_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_boucher_profiles2 ################ */

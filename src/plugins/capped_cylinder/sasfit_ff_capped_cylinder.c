@@ -54,10 +54,20 @@ scalar sasfit_ff_capped_cylinder(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_capped_cylinder_f(scalar q, sasfit_param * param)
 {
+	scalar Rcap;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
+	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
+	SASFIT_CHECK_COND1((R < 0.0), param, "r(%lg) < 0",R); // modify condition to your needs
+	SASFIT_CHECK_COND1((L < 0.0), param, "L(%lg) < 0",L); // modify condition to your needs
+
 	// insert your code here
-	return 0.0;
+	RCAP = gsl_hypot(H,R);
+	Q=q;
+	P=1;
+	ALPHA=0;
+	if (R==0 && L==0 && RCAP==0) return 0.0;
+	return sasfit_integrate(0,M_PI_2,&Acapped, param);
 }
 
 scalar sasfit_ff_capped_cylinder_v(scalar q, sasfit_param * param, int dist)

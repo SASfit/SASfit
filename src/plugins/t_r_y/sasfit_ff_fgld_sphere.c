@@ -28,11 +28,10 @@ scalar sasfit_ff_fgld_sphere(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((ALPHA > 6.0), param, "alpha(%lg) > 6",ALPHA); // modify condition to your needs
 	SASFIT_CHECK_COND1((KAPPA < 0.0), param, "kappa(%lg) < 0",KAPPA); // modify condition to your needs
 	SASFIT_CHECK_COND1((BETA <= 0.0), param, "beta(%lg) <= 0",BETA); // modify condition to your needs
     SASFIT_CHECK_COND1((BU   <= 0.0), param, "bu(%lg) <= 0",BU);
-    SASFIT_CHECK_COND1((BL   <= 0.0), param, "bl(%lg) <= 0",BL);
+    SASFIT_CHECK_COND1((BL   < 0.0), param, "bl(%lg) < 0",BL);
 
 	// insert your code here
 

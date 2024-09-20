@@ -39,7 +39,7 @@
 /* ################ start ff_profile__power_law ################ */
 /**
  * \defgroup ff_profile__power_law profile: power law Sphere
- * \ingroup ff_plugins_fuzzy_sph
+ * \ingroup ff_plugins_fuzzy_profiles
  *
  * \brief \<some brief description of profile: power law function\>
  *
@@ -63,21 +63,21 @@
 /**
  * \ingroup ff_profile__power_law
  *
- * \sa sasfit_powerlaw.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_powerlaw.h, ff_plugins_fuzzy_sph_profiles
  */
 sasfit_powerlaw_DLLEXP scalar sasfit_ff_profile__power_law(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_profile__power_law
  *
- * \sa sasfit_powerlaw.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_powerlaw.h, ff_plugins_fuzzy_sph_profiles
  */
 sasfit_powerlaw_DLLEXP scalar sasfit_ff_profile__power_law_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_profile__power_law
  *
- * \sa sasfit_powerlaw.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_powerlaw.h, ff_plugins_fuzzy_sph_profiles
  */
 sasfit_powerlaw_DLLEXP scalar sasfit_ff_profile__power_law_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_profile__power_law ################ */

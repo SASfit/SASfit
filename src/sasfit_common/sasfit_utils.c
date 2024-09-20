@@ -35,6 +35,7 @@ scalar sasfit_gammaincinv(scalar a, scalar y) {
     scalar x, x0, p, q;
     int ierr;
     x0=0;
+    x= x0;
     p = y;
     q=1-y;
     gamma_inc_inv(&a, &x, &x0, &p, &q, &ierr);

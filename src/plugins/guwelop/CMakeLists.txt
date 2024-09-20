@@ -12,6 +12,8 @@ set(LIBS_EXT
 set(SOURCE_${PRJ_NAME}
 	sasfit_sd_p_guwelop.c
 	sasfit_ff_guwelop_sphere.c
+	sasfit_ff_guwelop_cyl_Pcs.c
+	sasfit_ff_guwelop_planar_Pcs.c
 	sasfit_ff_guwelop_profile.c
 	interface.c
 )

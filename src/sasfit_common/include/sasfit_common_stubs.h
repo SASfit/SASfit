@@ -234,6 +234,7 @@ typedef struct
 	void (*sasfit_set_rootalg) (int value); /* 155 */
 	int (*sasfit_get_rootalg) (void); /* 156 */
 	scalar (*sasfit_invert_func_v) (scalar, sasfit_func_vol_t *, int, scalar, scalar, sasfit_param *);  /* 157 */
+	scalar (*sasfit_gammaincinv) (scalar, scalar); /* 158 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -847,7 +848,10 @@ typedef struct
 #define sasfit_invert_func_v \
 	(SASFIT_COMMON_STUBS()->sasfit_invert_func_v) /* 157 */
 #endif
-
+#ifndef sasfit_gammaincinv
+#define sasfit_gammaincinv \
+	(SASFIT_COMMON_STUBS()->sasfit_gammaincinv) /* 158 */
+#endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */

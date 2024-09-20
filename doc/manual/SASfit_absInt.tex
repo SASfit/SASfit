@@ -452,7 +452,7 @@ to be implemented.
 
 \section{How to use quantile distribution function in SAS}
 
-The quantile distribution and quantile density distribution are typically named $Q(y)$ and $q(y)$. To not mix them with the scattering vector the character for the scattering vector in this section will be $h$.
+The quantile distribution and quantile density distribution are typically named $Q(y)$ and $q(y)$. To not mix them with the scattering vector, the character for the scattering vector in this section will be named $h$.
 \begin{figure}[htb]
 \begin{center}
 \begin{tikzpicture}[->,>=stealth,shorten >=5pt,auto,node distance=1cm,
@@ -486,7 +486,7 @@ The quantile distribution and quantile density distribution are typically named 
 \caption{Transformation cycle between $p(x)$, $F(x)$, $Q(y)$ and $q(Y)$.}\label{fig:pFQqcycle}
 \end{figure}
 
-In this chapter we discuss briefly how the concept of quantile distribution function can be used in small angle scattering. The quantile function $Q(p)$ is used in statistics and is directly related to the probability $p(x)$ and cumulative distribution $F(x)$. The probability distribution function is a non-negative Lebesgue-integrable function and its integral over its entire domain $\mathfrak{D}$ is 1.
+In this chapter we discuss briefly how the concept of quantile distribution function can be used in small angle scattering. The quantile function $Q(y)$ is used in statistics and is directly related to the probability $p(x)$ and cumulative distribution $F(x)$. The probability distribution function is a non-negative Lebesgue-integrable function and its integral over its entire domain $\mathfrak{D}$ is 1.
 \begin{align}\label{eq:pdf}
   p(x) & \geq 0 \quad \forall x \in \mathfrak{D} \\
   \int_{\mathfrak{D}} p(x) \, \mathrm{d}x &= 1
@@ -514,38 +514,39 @@ If $A(h;\B{a}_i,x))$ is the scattering amplitude of a model, $\B{a}_i$ its param
   \left\langle A(h;\B{a}_i,x)\right\rangle & = N \int_0^\infty p(x) A(h;\B{a}_i,x))\, \mathrm{d}x \\
   \left\langle A^2(h;\B{a}_i,x)\right\rangle & = N \int_0^\infty p(x) A^2(h;\B{a}_i,x))\, \mathrm{d}x  \label{eq:polydispersity}
 \end{align}
-$N$ is the overall scaling factor and describes for standards form factor the overall number density of particles. At the moment \SASfit is actually performing the integration over the probability distribution function. Initial test have shown an issues for cases with a very narrow size distribution. Numerical integrals over the semi-infinite interval $(a,\infty)$ can be mapped onto the semi-open interval $(0,1]$ using the transformation $x = a + (1-t)/t$,so that
+$N$ is the overall scaling factor and describes for standard form factor the overall number density of particles. At the moment \SASfit is actually performing the integration over the probability distribution function. Initial test have shown an issues for cases with a very narrow size distribution. Numerical integrals over the semi-infinite interval $(a,\infty)$ can be mapped onto the semi-open interval $(0,1]$ using the transformation $x = a + (1-t)/t$,so that
 \begin{align}
 \int_{a}^{\infty}  f(x) \, \mathrm{d}x= \int_0^1  f(a + (1-t)/t)/t^2 \, \mathrm{d}x
 \end{align}
-which than can be solved efficiently with adaptive quadrature algorithms. However, if the probability distribution is very narrow the algorithms might miss the range for which the probability distribution $p(x)$ is significantly larger than 0.
-On the other side the chose a meaningful integration range requires both a knowledge about the behaviour of the chosen probability function as well as of the form factor itself. The scattering intensity of spherical objects scales with their squared volume, i.e. with $R^6$ in case of solid spheres with radius $R$, or with $R^4$ for thin hollow spheres or even $L^2$ for long cylinders of length $L$. \SASfit has internally a routine, which calculates the mode of $p(x)x^6$, i.e. the most probable size $x_{m_6}$ in the intensity distribution $D_I(x)=x^6 p(x)$ and then calculates those size values $[a;b]$ below and above $x_{x_6}$, where the intensity distribution drops below $10^{-6}$.
+which then can be solved efficiently with adaptive quadrature algorithms. However, if the probability distribution is very narrow the algorithms might miss the range for which the probability distribution $p(x)$ is significantly larger than 0.
+On the other side choosing a meaningful integration range requires both knowledge about the behaviour of the chosen probability function as well as of the form factor itself. The scattering intensity of spherical objects scales with their squared volume, i.e. with $R^6$ in case of solid spheres with radius $R$, or with $R^4$ for thin hollow spheres or even $L^2$ for long cylinders of length $L$. \SASfit has internally a routine, which calculates the mode of $p(x)x^\alpha$, i.e. the most probable size $x_{m_\alpha}$ in the distribution $D_\alpha(x)=x^\alpha p(x)$ and then calculates those size values $[a;b]$ below and above $x_{x_\alpha}$, where the intensity distribution drops below $10^{-6}$.
 \begin{align}\label{eq:findintegrationrange}
-x_{m_6} &= \underset{x\in \mathbb{R}^+}{\arg\max} \left(x^6p(x)\right)=\left\{x\in\mathbb{R}^+: s^6 p(s) \leq x^6 p(x) \mbox{ for all } s\in \mathbb{R}^+\right\} \\
-  a &= \max\left\{\inf\left\{x\in \mathbb{R}^+:x_{m_6}^6 p(x_{m_6})10^{-6}=x^6 p(x) \wedge x<x_{m_6}\right\};0\right\}\\
-  b &= \sup\left\{x\in \mathbb{R}^+:x_{m_6}^6 p(x_{m_6})10^{-6}=x^6 p(x)\right\}
+x_{m_\alpha} &= \underset{x\in \mathbb{R}^+}{\arg\max} \left(x^\alpha p(x)\right)=\left\{x\in\mathbb{R}^+: s^\alpha p(s) \leq x^\alpha p(x) \mbox{ for all } s\in \mathbb{R}^+\right\} \\
+  a &= \max\left\{\inf\left\{x\in \mathbb{R}^+:x_{m_\alpha}^\alpha p(x_{m_\alpha})10^{-6}=x^\alpha p(x) \wedge x<x_{m_\alpha}\right\};0\right\}\\
+  b &= \sup\left\{x\in \mathbb{R}^+:x_{m_\alpha}^\alpha p(x_{m_\alpha})10^{-6}=x^\alpha p(x)\right\}
 \end{align}
-As the scattering intensities of objects scale with up to the sixth power of its length $A^2(q;\B{a}_i,x) \propto x^6$ all distribution functions $p(x)$ needs to decay faster than the $7^\mathrm{th}$ power otherwise the integral in \ref{eq:polydispersity} becomes improper and diverges. Alternatively the size distribution needs to be artificially clipped by an upper bound.
+As the scattering intensities of objects scale with up to the sixth power of its length $A^2(q;\B{a}_i,x) \propto x^\alpha$ with $\alpha=6$ all distribution functions $p(x)$ needs to decay faster than the $(\alpha+1)^\mathrm{th}$ power otherwise the integral in \ref{eq:polydispersity} becomes improper and diverges. Alternatively the size distribution needs to be artificially clipped by an upper bound.
 
 A work-around to avoid the calculation of the lower and upper integration bound would be the use of quantile distribution function, if they are known analytically for the used probability distribution function. Using quantile distribution functions the integral can be rewritten as
 \begin{align}\label{eq:SDwQDF}
   N \int_0^\infty p(x) A^n(h;\B{a}_i,x)\, \mathrm{d}x & = N \int_0^\infty p(Q(y)) A^n(h;\B{a}_i,Q(y)) \, \mathrm{d}x \\
    & = N \int_0^1 A^n(h;\B{a}_i,Q(y)) \, \mathrm{d}y
 \end{align}
-by a change of variables using $\mathrm{d}x/\mathrm{d}y=\mathrm{d}Q(y)/\mathrm{d}y=1/q(y)$ and $F(x)=y$. $n=[1,2]$ depending if the average scattering amplitude $(n=1)$ or the average scattering intensity $(n=2)$ needs to be calculated. The change of variable like above has the additional side effect that now the integration over semi-infinite interval for the size distribution becomes an integral with finite limits over the cumulative  distribution $y$ from  0  to  1. Furthermore, by doing this transformation the quadrature behaves numerically well for both very sharp and very broad distributions for all distribution functions decaying fast enough so that the integral in eq.\ \ref{eq:SDwQDF} stays finite. In \SASfit only those size distribution are supplied, which fulfill this condition for any form factor. The reason, that for some distribution functions  the integral diverges is, that the form factor scale typically with the squared volume of the particle, i.e. with up to the 6-th power of its size parameter. Therefore, already in the past it was suggested to use instead of the number density distribution $p(x)$ the volume $D_v(x)=p(x)x^3$ or intensity distribution $D_v(x)=p(x)x^6$ \cite{Glatter1980}. The third and sixth power have been chosen due to the assumption, that the volume scales with the third power of its size parameter which, however, would need an adjustment in case of objects with different scaling behaviour.
-Applying this strategy using quantile distribution functions would in combination of a distribution proportional to $p_\alpha(x) = c_\alpha x^\alpha p(x)$ then reads as
+by a change of variables using $\mathrm{d}x/\mathrm{d}y=\mathrm{d}Q(y)/\mathrm{d}y=1/q(y)$ and $F(x)=y$. $n=[1,2]$ depending if the average scattering amplitude $(n=1)$ or the average scattering intensity $(n=2)$ needs to be calculated. The change of variable like above has the additional side effect that now the integration over semi-infinite interval for the size distribution becomes an integral with finite limits over the cumulative  distribution $y$ from  0  to  1. Furthermore, by doing this transformation the quadrature behaves numerically well for both very sharp and very broad distributions for all distribution functions decaying fast enough so that the integral in eq.\ \ref{eq:SDwQDF} stays finite. In \SASfit only those size distribution are supplied, which fulfill this condition for any form factor. The reason, that for some distribution functions  the integral diverges is, that the form factor scale typically with the squared volume of the particle, i.e. with up to the 6-th power of its size parameter. Therefore, already in the past it was suggested to use instead of the number density distribution $p(x)$ the volume $D_v(x)=p(x)x^3$ ($\alpha=3$) or intensity distribution $D_i(x)=p(x)x^6$ ($\alpha=6$) \cite{Glatter1980}. The third and sixth power have been chosen due to the assumption, that the volume scales with the third power of its size parameter which, however, would need an adjustment in case of objects with different scaling behaviour.
+Applying this strategy using quantile distribution functions would in combination of a distribution proportional to $p_\alpha(x) = c_\alpha x^\alpha p(x)$ result in
 \begin{align}\label{eq:intensity_alpha_quantile}
 N  \int_0^\infty p(x) A^n(h;\B{a}_i,x)\, \mathrm{d}x & = N \int_0^\infty \underbrace{p(x) x^\alpha}_{=p_\alpha(x)/c_\alpha} x^{-\alpha} A^n(h;\B{a}_i,x)\, \mathrm{d}x & = \\
    &= \frac{N}{c_\alpha}\int_0^\infty p_\alpha(Q_\alpha(y)) Q^{-\alpha}_\alpha(y) A^n(h;\B{a}_i,Q_\alpha(y))\, \mathrm{d}x\\
-   &= \frac{N}{c_\alpha} \int_0^1 Q^{-\alpha}_\alpha(y) A^n(h;\B{a}_i,Q_\alpha(y))\, \mathrm{d}y
+   &= \frac{N}{c_\alpha} \int_0^1 Q^{-\alpha}_\alpha(y) A^n(h;\B{a}_i,Q_\alpha(y))\, \mathrm{d}y \label{eq:QDFsd}
 \end{align}
-with  $\mathrm{d}x/\mathrm{d}y=\mathrm{d}Q_\alpha(y)/\mathrm{d}y=q_\alpha$, $1/q_\alpha(y)=p_\alpha(Q_\alpha(y))$, and $x=Q_\alpha(y)$. $c_\alpha$ is needed so that $p_\alpha(x)$ is again a probability distribution function is normalized to 1, but on the other side the overall scaling factor $N$ stays the same. For this one needs to define $c_\alpha$ as
+with  $\mathrm{d}x/\mathrm{d}y=\mathrm{d}Q_\alpha(y)/\mathrm{d}y=q_\alpha$, $1/q_\alpha(y)=p_\alpha(Q_\alpha(y))$, and $x=Q_\alpha(y)$. $c_\alpha$ is needed so that $p_\alpha(x)$ is again a probability distribution function and normalized to 1, but on the other side the overall scaling factor $N$ should keep its definition. For this one needs to define $c_\alpha$ as
 \begin{align}
                    & p_\alpha(x) = c_\alpha x^\alpha p(x) \\
 \Rightarrow \qquad & \int_0^\infty p_\alpha(x) x^{-\alpha}\, \mathrm{d}x = c_\alpha \int_0^\infty p(x)\, \mathrm{d}x \\
-\Leftrightarrow \qquad & c_\alpha = \int_0^1 Q_\alpha^{-\alpha}(y) \, \mathrm{d}y
+\Leftrightarrow \qquad & c_\alpha = \int_0^1 Q_\alpha^{-\alpha}(y) \, \mathrm{d}y \label{eq:calpha}
 \end{align}
 
+The problem with convergence in eq.\ \ref{eq:QDFsd} seems to be easing, but it has only shifted to the calculation of $c_\alpha$ in eq.\ \ref{eq:calpha}.
 
 \subsection{highly flexible quantile distribution function used as scattering length distribution profiles} ~\\
 
@@ -556,7 +557,8 @@ As described in \ref{sec:very_anisotropic_particles} the scattering intensity fo
 \label{eq:PprimePcs}
 I(h) &=P'(h) P_{cs}(h).
 \end{align}
-The cross-section form factors can be easily calculated if the
+$P'(h)$ for 3D objects is 1, for local cylindrical (2D) objects several cases are listed in paragraph \ref{plugin:Pprime4cylindrical} and for local planar objects (1D) in paragraph \ref{plugin:Pprime4planar}.
+The cross-section form factors $P_{cs}(h)$ can be easily calculated if the
 scattering length density contrast profile
 $\Delta\eta_\textrm{cs}(x)$ is known. For structures with a local
 planar geometry and a symmetric cross-section the form factor is
@@ -578,7 +580,7 @@ The form factor of spherical symmetric objects the scattering intensity reads as
   P_\textrm{cs}^\mathrm{3D}(h) & = \abs{ \int_0^\infty \Delta\eta_\textrm{cs}(x)4\pi x^2 \frac{\sin (hx)}{hx}\,\mathrm{d}x }^2
 \label{Pcs:3D}
 \end{align}
-We assume now, that the scattering length density distribution of a typically multi-shell model with boundary between phase $i$ and $i+1$ at position $x_i$ is smoothed by a falling transition function from 1 to 0 in phase $i$ and a raising transition function in phase $i+1$ from 0 to 1 multiplied by the corresponding scattering  length density differences to the solvent, i.e.
+We assume now, that the scattering length density distribution of a typically multi-shell model with boundary between phase $i$ and $i+1$ at position $x_i$ is smoothed by a decreasing transition function from 1 to 0 in phase $i$ and a raising transition function in phase $i+1$ from 0 to 1 multiplied by the corresponding scattering  length density differences to the solvent, i.e.
 \begin{align}\label{eq:smoothedDetaCS}
   \Delta\eta_\textrm{cs}(x) &= \sum_i \Delta\eta_i (1-F_i(x,\mu_i)) + \Delta\eta_{i+1} F_i(x,\mu_i)
 \end{align}
@@ -594,7 +596,6 @@ In those case where not the cumulative distribution is known analytically but th
   P_\textrm{cs}^\mathrm{2D}(h) & = \abs{\sum_i  \int_0^1 \left[\Delta\eta_i\left(1-y_i\right) +\Delta\eta_{i+1} y_i\right] 2\pi Q_i(y_i) \textrm{J}_0(hQ_i(y_i))q_i(y_i)\,\mathrm{d}y_i }^2 \\
   P_\textrm{cs}^\mathrm{3D}(h) & = \abs{\sum_i  \int_0^1 \left[\Delta\eta_i\left(1-y_i\right) +\Delta\eta_{i+1} y_i\right] 4\pi Q_i^2(y_i)\frac{\sin hQ_i(y_i)}{hQ_i(y_i)}q_i(y_i)\,\mathrm{d}y_i }^2
 \end{align}
-where $\mu_i=Q_i\left(\frac12\right)$.
 
 
 \subsection{List of some selected quantile distribution function to describe size distributions} ~\\
@@ -642,7 +643,48 @@ where $I_{x}(\alpha ,\beta )$ is the regularized incomplete beta function. The b
 Q_\mathrm{beta}(y) &= I^{-1}_{y}(\alpha ,\beta )
 \end{align}
 \item[uniform]
+\begin{align}
+p_\mathrm{uniform}(x) &= \begin{cases}
+                           0, & \mbox{if } x<a \\
+                           0, & \mbox{if } x>b \\
+                           \frac{1}{b-a}, & \mbox{otherwise}.
+                         \end{cases}
+\end{align}
+
+\begin{align}
+F_\mathrm{uniform}(x) &= \begin{cases}
+                           0, & \mbox{if } x<a \\
+                           1, & \mbox{if } x>b \\
+                           \frac{x-a}{b-a}, & \mbox{otherwise}.
+                         \end{cases}
+\end{align}
+
+\begin{align}
+Q_\mathrm{uniform}(y) &= b y+a(1-y)
+\end{align}
+
 \item[triangular]
+\begin{align}
+p_\mathrm{triangular}(x) &= \begin{cases}
+                           \frac{2(x-a)}{(b-a)(c-a)}, & \mbox{if } a\leq x \leq c \\
+                           \frac{2(b-x)}{(b-a)(b-c)}, & \mbox{if } c <   x \leq b \\
+                           0, & \mbox{otherwise}.
+                         \end{cases}
+\end{align}
+\begin{align}
+F_\mathrm{triangular}(x) &= \begin{cases}
+                           \frac{(x-a)^2}{(b-a)(c-a)}, & \mbox{if } a\leq x \leq c \\
+                           1-\frac{(b-x)^2}{(b-a)(b-c)}, & \mbox{if } c <   x \leq b \\
+                           1, & \mbox{if } x > b \\
+                           0, & \mbox{otherwise}.
+                         \end{cases}
+\end{align}
+\begin{align}
+Q_\mathrm{triangular}(y) &= \begin{cases}
+                           a+\sqrt{(b-a)(c-a)y}, & \mbox{if } 0\leq y \leq \frac{c-a}{b-a} \\
+                           b-\sqrt{(b-a)(b-c)(1-y)}, & \mbox{if } 1 \geq   x > \frac{c-a}{b-a} 
+                         \end{cases}
+\end{align}
 \end{itemize}
 
 \subsection{MetaLog distribution} ~\\

@@ -7,9 +7,11 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(3)
+SASFIT_PLUGIN_EXP_BEGIN(5)
 SASFIT_PLUGIN_EXP_ADD( sd_p_guwelop )
 SASFIT_PLUGIN_EXP_ADD( ff_guwelop_sphere )
+SASFIT_PLUGIN_EXP_ADD( ff_guwelop_cyl_Pcs )
+SASFIT_PLUGIN_EXP_ADD( ff_guwelop_planar_Pcs )
 SASFIT_PLUGIN_EXP_ADD( ff_guwelop_profile )
 
 SASFIT_PLUGIN_EXP_END

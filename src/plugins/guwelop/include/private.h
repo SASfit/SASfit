@@ -36,6 +36,19 @@
 // add local defines here:
 // #define P0 param->p[0]
 //
+#define N	param->p[0]
+
+#define BL	GSL_MIN(param->p[1],param->p[2])
+#define BU	GSL_MAX(param->p[1],param->p[2])
+#define DIM	param->p[3]
+
+#define THETA	param->p[4]
+#define ALPHA	fabs(param->p[5])
+#define BETA	fabs(param->p[6])
+#define GAMMA	fabs(param->p[7])
+#define LAMBDA 	fabs(param->p[8])
+
+#define Q       param->p[MAXPAR-1]
 
 #endif // end of file
 

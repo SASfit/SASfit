@@ -49,7 +49,6 @@ scalar sasfit_sd_fgld__v(scalar u, sasfit_param * param, int dist)
 		// case 8: skewness
 		// case 9: excess kurtosis
 
-	// case 1: not yet defined (mode?, median?, ....)
 	switch (dist) {
 	    case DISTRIBUTION_TYPE: return DISTRIBUTION_QUANTILE;
         case DISTRIBUTION_QUANTILE:

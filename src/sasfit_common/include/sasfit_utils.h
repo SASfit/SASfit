@@ -127,6 +127,7 @@ sasfit_common_DLLEXP scalar sasfit_gauss_fc(scalar Q, scalar R);
 sasfit_common_DLLEXP scalar sasfit_g(scalar fp, scalar a);
 sasfit_common_DLLEXP scalar sasfit_jinc(scalar x);
 sasfit_common_DLLEXP scalar sasfit_erfinv(scalar y);
+sasfit_common_DLLEXP scalar sasfit_gammaincinv(scalar a, scalar y);
 sasfit_common_DLLEXP int sasfit_available_table ( int rule );
 sasfit_common_DLLEXP int sasfit_order_table ( int rule );
 sasfit_common_DLLEXP void sasfit_ld_by_order ( int order, double *x, double *y, double *z, double *w );

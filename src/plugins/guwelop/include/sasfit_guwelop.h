@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef SASFIT_PLUGIN_GUWELOP_H
@@ -38,10 +38,10 @@
 
 /* ################ start sd_p_guwelop ################ */
 /**
- * \defgroup sd_p_guwelop p_GUWELOP
- * \ingroup sd_plugins_quantile
+ * \defgroup sd_p_guwelop GUWELOP
+ * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of p_GUWELOP function\>
+ * \brief some brief description of GUWELOP function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -49,9 +49,15 @@
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b N</td>
- *       <td></td>
+ *       <td>scaling factor</td>
  *      </tr><tr>
- *       <td>\b lambda</td>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b theta</td>
@@ -64,6 +70,9 @@
  *       <td></td>
  *      </tr><tr>
  *       <td>\b gamma</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
  *       <td></td>
  *      </tr></table>
  */
@@ -92,10 +101,10 @@ sasfit_guwelop_DLLEXP scalar sasfit_sd_p_guwelop_v(scalar q, sasfit_param * p, i
 
 /* ################ start ff_guwelop_sphere ################ */
 /**
- * \defgroup ff_guwelop_sphere GUWELOP sphere
- * \ingroup ff_plugins_spheres_shells
+ * \defgroup ff_guwelop_sphere GUWELOP sph-xs
+ * \ingroup ff_plugins_fuzzy_sph
  *
- * \brief \<some brief description of GUWELOP sphere function\>
+ * \brief some brief description of GUWELOP sph-xs function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -104,9 +113,15 @@ sasfit_guwelop_DLLEXP scalar sasfit_sd_p_guwelop_v(scalar q, sasfit_param * p, i
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b eta</td>
+ *       <td>scaling factor</td>
+ *      </tr><tr>
+ *       <td>\b dummy </td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b lambda</td>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b theta</td>
@@ -120,35 +135,166 @@ sasfit_guwelop_DLLEXP scalar sasfit_sd_p_guwelop_v(scalar q, sasfit_param * p, i
  *      </tr><tr>
  *       <td>\b gamma</td>
  *       <td></td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td></td>
  *      </tr></table>
  */
 
 /**
  * \ingroup ff_guwelop_sphere
  *
- * \sa sasfit_guwelop.h, ff_plugins_spheres_shells
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_sph
  */
 sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_guwelop_sphere
  *
- * \sa sasfit_guwelop.h, ff_plugins_spheres_shells
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_sph
  */
 sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_guwelop_sphere
  *
- * \sa sasfit_guwelop.h, ff_plugins_spheres_shells
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_sph
  */
 sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_guwelop_sphere ################ */
 
+/* ################ start ff_guwelop_cyl_Pcs ################ */
+/**
+ * \defgroup ff_guwelop_cyl_Pcs GUWELOP cyl-xs
+ * \ingroup ff_plugins_fuzzy_cyl
+ *
+ * \brief some brief description of GUWELOP cyl-xs function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b eta</td>
+ *       <td>scaling factor</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_guwelop_cyl_Pcs
+ *
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_cyl_Pcs(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_guwelop_cyl_Pcs
+ *
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_cyl_Pcs_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_guwelop_cyl_Pcs
+ *
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_cyl_Pcs_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_guwelop_cyl_Pcs ################ */
+
+/* ################ start ff_guwelop_planar_Pcs ################ */
+/**
+ * \defgroup ff_guwelop_planar_Pcs GUWELOP planar-xs
+ * \ingroup ff_plugins_fuzzy_planar
+ *
+ * \brief some brief description of GUWELOP planar-xs function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b eta</td>
+ *       <td>scaling factor</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_guwelop_planar_Pcs
+ *
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_planar
+ */
+sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_planar_Pcs(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_guwelop_planar_Pcs
+ *
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_planar
+ */
+sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_planar_Pcs_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_guwelop_planar_Pcs
+ *
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_planar
+ */
+sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_planar_Pcs_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_guwelop_planar_Pcs ################ */
+
 /* ################ start ff_guwelop_profile ################ */
 /**
  * \defgroup ff_guwelop_profile GUWELOP profile
- * \ingroup ff_plugins_spheres_shells
+ * \ingroup ff_plugins_fuzzy_profiles
  *
  * \brief \<some brief description of GUWELOP profile function\>
  *
@@ -159,9 +305,15 @@ sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_sphere_v(scalar q, sasfit_param *
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b eta</td>
+ *       <td>scaling factor</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b lambda</td>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b theta</td>
@@ -175,27 +327,30 @@ sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_sphere_v(scalar q, sasfit_param *
  *      </tr><tr>
  *       <td>\b gamma</td>
  *       <td></td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td></td>
  *      </tr></table>
  */
 
 /**
  * \ingroup ff_guwelop_profile
  *
- * \sa sasfit_guwelop.h, ff_plugins_spheres_shells
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_profiles
  */
 sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_profile(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_guwelop_profile
  *
- * \sa sasfit_guwelop.h, ff_plugins_spheres_shells
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_profiles
  */
 sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_profile_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_guwelop_profile
  *
- * \sa sasfit_guwelop.h, ff_plugins_spheres_shells
+ * \sa sasfit_guwelop.h, ff_plugins_fuzzy_profiles
  */
 sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_profile_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_guwelop_profile ################ */

@@ -53,6 +53,11 @@ scalar f_Exponential(scalar x, scalar lambda) {
     return lambda*exp(-lambda*x);
 }
 
+scalar Q_ExtremeValue(scalar p, scalar a, scalar b) {
+    // b > 0
+    return a+b*log(-log(1-p));
+}
+
 scalar Q_Lindley(scalar p, scalar theta) {
     // theta,x > 0
     return (1+theta-gsl_sf_lambert_Wm1(exp(1+theta)*(1+theta)*p))/theta;
@@ -106,19 +111,28 @@ scalar F_Cauchy(scalar x) {
 }
 
 scalar Q_Gumbel(scalar p) {
-    scalar sigma=1;
+    scalar sigma=1, mu=0;
 //    return log(-log(1-p));
-    return -sigma*log(-log(p));
+    return mu-sigma*log(-log(p));
 }
 scalar f_Gumbel(scalar x) {
-    scalar sigma=1;
-    return exp(x/sigma-exp(x/sigma));
+    scalar sigma=1, mu=0;;
+    return exp((x-mu)/sigma-exp((x-mu)/sigma));
 }
 scalar F_Gumbel(scalar x) {
-    scalar sigma=1;
-    return exp(-exp(-x/sigma));
+    scalar sigma=1, mu=0;;
+    return exp(-exp(-(x-mu)/sigma));
 }
 
+scalar Q_Gamma(scalar y, scalar alpha, scalar beta) {
+    return gsl_sf_gamma(alpha)*sasfit_gammaincinv(alpha,y)/beta;
+}
+scalar f_Gamma(scalar x, scalar alpha, scalar beta) {
+    return beta/gsl_sf_gamma(alpha)*pow(x*beta,alpha-1)*exp(-x*beta);
+}
+scalar F_Gamma(scalar x, scalar alpha, scalar beta) {
+    return gsl_sf_gamma_inc_P(alpha,beta*x);
+}
 
 scalar Q_Frechet(scalar p, scalar k) {
     scalar lambda=1;

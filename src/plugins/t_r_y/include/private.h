@@ -66,9 +66,6 @@
 
 
 
-// #define LAMBDA3	fabs(param->p[5])
-// #define LAMBDA4	fabs(param->p[6])
-// #define THETA	param->p[4]
 
 #define Q   param->p[MAXPAR-1]
 
@@ -82,11 +79,14 @@ enum TRY_QY_fY_type {
     Y_EXTREMEVALUE,
     Y_CAUCHY,
     Y_EXPONENTIAL,
-    Y_WEIBULL
+    Y_WEIBULL,
+    Y_GAMMA
 };
 
 scalar KWm1(scalar, scalar);
 scalar Lindley_f_R(scalar, scalar);
 scalar Lindley_F_R(scalar, scalar);
+scalar f_Gamma(scalar, scalar, scalar);
+scalar F_Gamma(scalar, scalar, scalar);
 #endif // end of file
 

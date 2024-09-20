@@ -82,7 +82,7 @@ scalar sasfit_sd_egu_w_l_v(scalar u, sasfit_param * param, int dist)
         case DISTRIBUTION_PROBABILITY:
                 x = u;
                 if (x<=0) return 0;
-                return (fabs(ALPHA)*fabs(BETA)*exp(-(exp(KAPPA/fabs(GAMMA))/
+                return N*(fabs(ALPHA)*fabs(BETA)*exp(-(exp(KAPPA/fabs(GAMMA))/
                         pow(-1 + exp(pow(x/fabs(LAMBDA),fabs(ALPHA))),1/fabs(GAMMA))) +
                         KAPPA/fabs(GAMMA) + pow(x/fabs(LAMBDA),fabs(ALPHA)))*
                         pow(1 - exp(-(exp(KAPPA/fabs(GAMMA))/
@@ -126,8 +126,8 @@ scalar sasfit_sd_egu_w_l_v(scalar u, sasfit_param * param, int dist)
                 IQR = UQ - LQ;
                 return K/IQR;
                 break;
-        case DISTRIBUTION_MODE:
         case DISTRIBUTION_MEAN:
+        case DISTRIBUTION_MODE:
         case DISTRIBUTION_VARIANCE:
         default: sasfit_err("parameter distr=%d not defined",dist);
     }

@@ -19,6 +19,7 @@ scalar sasfit_sd_w_l_e_(scalar x, sasfit_param * param)
 
 	// insert your code here
 
+	if (x<BL || x>BU) return 0;
 	return sasfit_sd_w_l_e__v(x,param,DISTRIBUTION_PROBABILITY);
 }
 

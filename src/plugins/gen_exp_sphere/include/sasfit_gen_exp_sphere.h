@@ -39,7 +39,7 @@
 /* ################ start ff_profile__gen__exp__sphere ################ */
 /**
  * \defgroup ff_profile__gen__exp__sphere profile: Gen. Exp. Sphere
- * \ingroup ff_plugins_fuzzy_sph
+ * \ingroup ff_plugins_fuzzy_profiles
  *
  * \brief \<some brief description of profile: Gen. Exp. Sphere function\>
  *
@@ -63,21 +63,21 @@
 /**
  * \ingroup ff_profile__gen__exp__sphere
  *
- * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_profiles
  */
 sasfit_gen_exp_sphere_DLLEXP scalar sasfit_ff_profile__gen__exp__sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_profile__gen__exp__sphere
  *
- * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_profiles
  */
 sasfit_gen_exp_sphere_DLLEXP scalar sasfit_ff_profile__gen__exp__sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_profile__gen__exp__sphere
  *
- * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_profiles
  */
 sasfit_gen_exp_sphere_DLLEXP scalar sasfit_ff_profile__gen__exp__sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_profile__gen__exp__sphere ################ */
@@ -129,39 +129,10 @@ sasfit_gen_exp_sphere_DLLEXP scalar sasfit_ff_gen__exp__sphere_v(scalar q, sasfi
 /* ################ stop ff_gen__exp__sphere ################ */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ################ start ff_profile__gen__gauss__sphere ################ */
 /**
  * \defgroup ff_profile__gen__gauss__sphere profile: Gen. Gauss Sphere
- * \ingroup ff_plugins_fuzzy_sph
+ * \ingroup ff_plugins_fuzzy_profiles
  *
  * \brief \<some brief description of profile: Gen. Gauss Sphere function\>
  *
@@ -185,21 +156,21 @@ sasfit_gen_exp_sphere_DLLEXP scalar sasfit_ff_gen__exp__sphere_v(scalar q, sasfi
 /**
  * \ingroup ff_profile__gen__gauss__sphere
  *
- * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_profiles
  */
 sasfit_gen_exp_sphere_DLLEXP scalar sasfit_ff_profile__gen__gauss__sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_profile__gen__gauss__sphere
  *
- * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_profiles
  */
 sasfit_gen_exp_sphere_DLLEXP scalar sasfit_ff_profile__gen__gauss__sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_profile__gen__gauss__sphere
  *
- * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_sph
+ * \sa sasfit_gen_exp_sphere.h, ff_plugins_fuzzy_profiles
  */
 sasfit_gen_exp_sphere_DLLEXP scalar sasfit_ff_profile__gen__gauss__sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_profile__gen__gauss__sphere ################ */

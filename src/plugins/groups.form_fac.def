@@ -61,12 +61,48 @@
  */
 
  /** 
- * \defgroup ff_plugins_fuzzy_sph Fuzzy Spheres
- * \ingroup ff_plugins_spheres_shells
+ * \defgroup ff_plugins_fuzzy_obj fuzzy obj.
+ * \ingroup ff_plugins
  *
- * This group contains form factors for spheres and spherical shells with special radial profiles.
+ * This group contains form factors with many different fuzzy cross-sectional profiles.
+ *
+ * \modname{ff_plugins_fuzzy_obj}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_fuzzy_sph Fuzzy Spheres
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains spherical form factor with a radial fuzzy profiles.
  *
  * \modname{ff_plugins_fuzzy_sph}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_fuzzy_cyl Fuzzy Cylinders
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains Cylindrical form factor with a radial fuzzy profiles.
+ *
+ * \modname{ff_plugins_fuzzy_cyl}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_fuzzy_planar Fuzzy XS of Planar Obj.
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains form factor of planar or local planar opjects with a fuzzy cross-section profiles.
+ *
+ * \modname{ff_plugins_fuzzy}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_fuzzy_profiles fuzzy cross-section profiles
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains fuzzy cross-section profiles.
+ *
+ * \modname{ff_plugins_fuzzy_profiles}
  */
  
  /** 

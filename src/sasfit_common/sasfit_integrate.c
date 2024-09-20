@@ -812,7 +812,7 @@ scalar sasfit_integrate_ctm(scalar int_start,
                 cubxmin[0] = int_start;
                 cubxmax[0] = int_end;
                 err=hcubature(1, &Kernel_cub_1D,&cubstruct,1, cubxmin, cubxmax,
-                        limit, epsabs, epsrel, ERROR_PAIRED,
+                        limit, epsabs, epsrel, ERROR_L2,
                         fval, ferr);
                 res = fval[0];
                 break;
@@ -821,7 +821,7 @@ scalar sasfit_integrate_ctm(scalar int_start,
                 cubxmin[0] = int_start;
                 cubxmax[0] = int_end;
                 err=pcubature(1, &Kernel_cub_1D,&cubstruct,1, cubxmin, cubxmax,
-                        limit, epsabs, epsrel, ERROR_PAIRED,
+                        limit, epsabs, epsrel, ERROR_L2,
                         fval, ferr);
                 res = fval[0];
                 break;

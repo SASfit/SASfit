@@ -26,6 +26,13 @@ g(t)=\int _{a}^{b}s^{-\alpha} K(t,s) \, s^{\alpha}f(s)\,\mathrm {d} s
 \end{align}
 where now the continuous kernel function is defined as $s^{-\alpha}K(t,s)$ and the function to be determined $s^{\alpha} f(s)$.
 
+The above Fredholm equation is one dimensional. There are several cases where the physical problem to solve is described by a multi-dimensional Fredholm integral of the form
+\begin{align}
+\label{eq:Fredholm}
+g(\mathbf{t})=\underset{\mathds{R}^n}{\iint\cdots\int} K(\mathbf{t},\mathbf{s})f(\mathbf{s})\,\,\mathrm{d}s_1\,\mathrm{d}s_2\,\cdots \mathrm{d}s_n
+\end{align}
+where $\mathbf{s} \in \mathds{R}^n$ and $\mathbf{t} \in \mathds{R}^{3m}$
+
 One simple example is the smearing of the signal by a known resolution function. These folding integrals can in principle be solved in Fourier space. However, also the signal without any smearing are often described by a known or assumed function with one parameter having a distribution. The resulting signal is than an integral of the product of the known function and the probability distribution which one likes to determine. In both cases these integrals belongs to Fredholm integrals of first kind.
 
 In small angle scattering the measured intensity $I_m$ is given as a function of the scattering vector $q=4\pi\sin(\theta)/\lambda$, with $\theta$ being the scattering vector and $\lambda$ the wavelength of the probing radiation. The smearing by limited resolution resolution for a pinhole came can be written as
@@ -71,7 +78,21 @@ A_{i,j} &= \Delta s_j \int_0^\infty R_{av}\left(Q,\langle Q\rangle_i,\sigma_i\ri
 \end{align}
 $R_{av}\left(Q,\langle Q\rangle_i,\sigma_i\right)$ and $s_j^{-\alpha}\abs{F(Q,s_j)}^2$ are known functions, so that the integral only has to be calculated once for each pair of $(\langle Q\rangle_i,s_j)$.
 
+\subsection{Orientation distribution $p_\mathrm{ODF}()$} ~\\
+\label{sec:pODF}
 
+Another case described by Fredholm integrals of first kind are scattering patterns from anisotropic objects with an orientation distribution. As the orientation distribution in its most general case depends on three angles, e.g. defined by Euler angles, the problem is described by a three dimensional Fredholm integral equation (see e.g.\ eq.\ \ref{eq:HPshearCyl} and \ref{eq:HPshearEll})
+\begin{align}\label{eq:FE4ODF_3D}
+  I(\mathbf{Q}) &=  \iiint\limits_{\mathbf{R}(\alpha,\beta,\gamma)} p_\mathrm{ODF}(\alpha,\beta,\gamma) \abs{F(\mathbf{Q},}^2\,\, \mathrm{d}\alpha\, \mathrm{d}\beta\, \mathrm{d}\gamma
+\end{align}
+Often the studied samples are model systems with at least a cylindrical symmetry. In those cases two angles like spherical polar angles $\varphi$ and $\theta$ are needed
+\begin{align}\label{eq:FE4ODF_2D}
+  I(\mathbf{Q}) &=  \iint\limits_{\mathbf{R}(\varphi,\theta)} p_\mathrm{ODF}(\varphi,\theta) \abs{F(\mathbf{Q},\varphi,\theta)}^2\,\, \mathrm{d}\varphi\, \mathrm{d}\theta
+\end{align}
+If the most probable orientation is known experimentally this direction is often chosen to be perpendicular to the beam (section \ref{sect:partlyalignedCylShell}). For many practical applications only the angle between the direction of the particle symmetry axis (cylindrical symmetry) to the most probable direction matters. As this direction has been chosen to be parallel to one of the coordinate system axis the scattering intensity further simplifies to a single dimensional Fredholm integral (e.g. \cite{Beck2010})
+\begin{align}\label{eq:FE4ODF_1D}
+  I(\mathbf{Q}) &=  \int  p_\mathrm{ODF}(\theta) \abs{F(\mathbf{Q},\theta)}^2\,\, \mathrm{d}\theta
+\end{align}
 \subsection{Pair distance distribution function $p(r)$}~\\
 \label{sec:p(r)}
 
@@ -107,10 +128,11 @@ A_{i,j}^\mathrm{sp} &= \Delta r_j \frac{\sin(Q_i r_j)}{Q_i r_j}\\
 x_j &= p(r_j) r_j^{\alpha}\\
 b_i &= I(\langle Q\rangle_i) \\
 \end{align}
-Also here the resolution function can be easily include likewise as in \ref{eq:AijFF}. In this case normally no resclaing is done and $\alpha=0$ is chosen.
+Also here the resolution function can be easily include likewise as in \ref{eq:AijFF}. In this case normally no rescaling is done and $\alpha=0$ is chosen.
 
 \subsection{Size distribution $N_h(R_h)$ from dynamic light scattering}~\\
 \label{sec:DLS}
+
 In dynamic light scattering (DLS) the scattering intensity is measured as a function of time. With a coherent lase beam one obtains a speckle pattern from the sample which is fluctuating due to Brownian motions. The intensity autocorrelation function $g_{(2)}(q,\tau)=\int  I(q,t) I(q,t+\tau)\,\mathrm{d}t/\left(\int  I^2(q,t)\,\mathrm{d}t\right)$. The Siegert equation relates the second-order autocorrelation function $g_{(2)}(q,\tau)$ (intensity autocorrelation) with the first-order autocorrelation function $g_{(1)}(q,\tau)$ (amplitude autocorrelation) as follows:
 \begin{align}
     \label{eq:siegert}
@@ -320,6 +342,7 @@ The proper choice of the parameter $h$ arises and its selection might follow sim
 ~\\
 
 \subsection{EM with maximum entropy regularization}~\\
+
 The Lucy\hyp{}Richardson method \cite{Richardson1972,Lucy1974} has been extended by an additional penalty function,
 namely the entropy, by Lucy \cite{Lucy1994}. He introduces two variants, how the maximum entropy penalty can be introduced in the iteration algorithm by knowing either a fixed or assuming an adaptive prior for the solution vector. The entropy $S$ is given by
 \begin{align}
@@ -369,6 +392,7 @@ The optimum regularization parameter $\lambda$ can be determined similar to the 
 
 
 \subsection{Acceleration of EM iteration scheme} ~\\
+
 There exist several very efficient algorithms to increase the convergence rate of contractive fixed point operators. A few of them are listed below.
 
  Lewitt et al.\ \cite{Lewitt1986} have suggested to increase the convergence rate by introducing an overrelaxation parameter in the iteration loop
@@ -573,7 +597,7 @@ right one or  vice versa.
 The non-negative linear least square solver used here is taken from \cite{Lawson1995a} and are also available at netlib under
 \url{http://www.netlib.org/lawson-hanson/} as Fortran source code which has been translated to C by \hyperref[https://www.netlib.org/f2c/]{f2c}. \SASfit is using this routine to solves the same ill-posed problems including a regularization term as in eq.\ \ref{eq:LLSreg} of section \ref{sec:LLS} just with an additional constrain of non-negativity.
 
-
+\begin{comment}
 \clearpage
 \section{Maximum entropy method (MEM)}
 entropy $S$:
@@ -613,9 +637,9 @@ Hessian of entropy $S$:
     0 & 0 & \dots & -\frac{1}{x_{N-1}}
   \end{pmatrix}
 \end{align}
-
+\end{comment}
 
 \section{Chahine inversion scheme}
 Obtaining particle size distributions from forward scattered light using the Chahine inversion scheme has been introduced by \cite{Santer1983} and later on applied to SANS by \cite{Sen2014}.
 
-\section{Inverse Rayleigh transform} 
+% \section{Inverse Rayleigh transform} 

@@ -41,7 +41,7 @@
  * \defgroup sd_fgld_ FGLD
  * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of FGLD function\>
+ * \brief doi:10.1007/s40745-021-00322-3
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -51,11 +51,14 @@
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
  *      </tr><tr>
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
  *      </tr><tr>
  *       <td>\b alpha</td>
  *       <td></td>
@@ -96,7 +99,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_fgld__v(scalar q, sasfit_param * p, int dis
 /* ################ start ff_fgld_profile ################ */
 /**
  * \defgroup ff_fgld_profile FGLD profile
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_profiles
  *
  * \brief \< some brief description of FGLD profile function \>
  *
@@ -114,6 +117,9 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_fgld__v(scalar q, sasfit_param * p, int dis
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
  *       <td>\b kappa</td>
  *       <td></td>
  *      </tr><tr>
@@ -134,31 +140,31 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_fgld__v(scalar q, sasfit_param * p, int dis
 /**
  * \ingroup ff_fgld_profile
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_profile
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_profile
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_fgld_profile ################ */
 
 /* ################ start ff_fgld_profile_sphere ################ */
 /**
- * \defgroup ff_fgld_profile_sphere FGLD profile sphere
- * \ingroup ff_plugins
+ * \defgroup ff_fgld_profile_sphere FGLD sph-xs
+ * \ingroup ff_plugins_fuzzy_sph
  *
- * \brief \< some brief description of FGLD profile sphere function \>
+ * \brief \< some brief description of FGLD sph-xs function \>
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -174,6 +180,9 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_v(scalar q, sasfit_param * p, 
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
  *       <td>\b kappa</td>
  *       <td></td>
  *      </tr><tr>
@@ -194,21 +203,21 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_v(scalar q, sasfit_param * p, 
 /**
  * \ingroup ff_fgld_profile_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_profile_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_profile_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_fgld_profile_sphere ################ */
@@ -233,6 +242,9 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_sphere_v(scalar q, sasfit_para
  *      </tr><tr>
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dim</td>
+ *       <td></td>
  *      </tr><tr>
  *       <td>\b kappa</td>
  *       <td></td>
@@ -278,7 +290,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_v(scalar q, sasfit_param * p, i
  * \defgroup sd_egu_w_l EGu-W{L}
  * \ingroup sd_plugins_try
  *
- * \brief \< exponentiated Gumbel–Weibull {logistic} distribution \>
+ * \brief exponentiated Gumbel–Weibull {logistic} distribution
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -288,8 +300,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_v(scalar q, sasfit_param * p, i
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
  *      </tr><tr>
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
@@ -540,13 +552,22 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_sphere_v(scalar q, sasfit_param * p
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
  *       <td>\b alpha</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b beta</td>
- *       <td></td>
- *      </tr><tr>
- *       <td>\b theta</td>
  *       <td></td>
  *      </tr></table>
  */
@@ -586,6 +607,16 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_g_c_e___v(scalar q, sasfit_param * p, int d
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *       <td></td>
+ *       <td>\b dummy</td>
+ *       <td></td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b mu</td>
@@ -792,11 +823,11 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_u_e_gl___v(scalar q, sasfit_param * p, int 
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
@@ -849,11 +880,11 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_w_l_e__v(scalar q, sasfit_param * p, int di
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
