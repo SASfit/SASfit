@@ -145,7 +145,6 @@ AppDir:
     - libfftw3-3
   files:
     include:
-    - /usr/lib/x86_64-linux-gnu/libstdc++.*
     - sasfit.vfs/**
     - @SASFIT_BIN_FILE_LIST_FORMATTED@
     exclude:
@@ -169,7 +168,7 @@ AppDir:
     # - testing an old Ubuntu LTS and Redhat compatible CentOS only
     ubuntu:
       image: appimagecrafters/tests-env:ubuntu-bionic
-      before_command: sh -c 'apt-get update && apt-get install -y xvfb binutils; ls -la /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /app/runtime/compat/usr/lib/x86_64-linux-gnu/libstdc++.so.6; (strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX); (strings /app/runtime/compat/usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX)'
+      before_command: sh -c 'apt-get update && apt-get install -y xvfb'
       command: sh -c 'date; timeout 10 xvfb-run ./AppRun; [ "$?" -eq 124 ]'
       use_host_x: False
 #    debian:
