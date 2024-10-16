@@ -21,7 +21,7 @@ echo "## Update the package database"
 echo
 sudo apt-get update
 # show source of a package
-apt-cache showpkg gcc-13
+# apt-cache showpkg gcc-13
 echo
 echo "## Install extra development packages"
 echo
