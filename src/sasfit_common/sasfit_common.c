@@ -199,6 +199,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_set_rootalg, /* 155 */
 	sasfit_get_rootalg, /* 156 */
 	sasfit_invert_func_v, /* 157 */
+	sasfit_gammaincinv, /* 158 */
+	sasfit_erfcinv, /* 159 */
 };
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
 

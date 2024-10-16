@@ -59,8 +59,10 @@ scalar Q_ExtremeValue(scalar p, scalar a, scalar b) {
 }
 
 scalar Q_Lindley(scalar p, scalar theta) {
-    // theta,x > 0
-    return (1+theta-gsl_sf_lambert_Wm1(exp(1+theta)*(1+theta)*p))/theta;
+    // theta > 0
+    if (p==0) return 0;
+    if (p==1) return 0;
+    return -(1+theta+gsl_sf_lambert_Wm1(exp(-(1+theta))*(1+theta)*(p-1)))/theta;
 }
 scalar f_Lindley(scalar x, scalar theta) {
     // theta,x > 0
@@ -68,7 +70,7 @@ scalar f_Lindley(scalar x, scalar theta) {
 }
 scalar F_Lindley(scalar x, scalar theta) {
     // theta,x > 0
-    return -expm1(-theta*x)*(1+theta+theta*x)/(1+theta);
+    return 1-exp(-theta*x)*(1+theta+theta*x)/(1+theta);
 }
 
 scalar Q_LogLogistic(scalar p, scalar a, scalar b) {

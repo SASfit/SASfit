@@ -69,6 +69,42 @@
 
 #define Q   param->p[MAXPAR-1]
 
+
+#define Power(x, y)	(pow((scalar)(x), (scalar)(y)))
+#define Sqrt(x)		(sqrt((scalar)(x)))
+#define Sqrtl(x)        (sqrt((scalar)(x)))
+
+#define Abs(x)		(fabs((scalar)(x)))
+
+#define Exp(x)		(exp((scalar)(x)))
+#define Log(x)		(log((scalar)(x)))
+
+#define Sin(x)		(sin((scalar)(x)))
+#define Cos(x)		(cos((scalar)(x)))
+#define Tan(x)		(tan((scalar)(x)))
+
+#define ArcSin(x)       (asin((scalar)(x)))
+#define ArcCos(x)       (acos((scalar)(x)))
+#define ArcTan(x)       (atan((scalar)(x)))
+#define ArcCot(x)       (atan((scalar)(1/x)))
+
+#define Sinh(x)          (sinh((scalar)(x)))
+#define Cosh(x)          (cosh((scalar)(x)))
+#define Tanh(x)          (tanh((scalar)(x)))
+
+#define Cot(x)          (1./tan((scalar)(x)))
+#define Csc(x)          (1./sin((scalar)(x)))
+#define Sec(x)          (1./cos((scalar)(x)))
+
+#define E       2.71828182845904523536029
+#define Pi      3.14159265358979323846264
+#define Degree      0.01745329251994329576924
+
+#define GSLPOWN(x,y)    (gsl_pow_int(x,y))
+#define InverseErfc(x)  (sasfit_erfcinv(x))
+#define ProductLog(x)   (gsl_sf_lambert_Wm1(x))
+
+
 enum TRY_QY_fY_type {
     Y_UNIFORM,
     Y_FRECHET,

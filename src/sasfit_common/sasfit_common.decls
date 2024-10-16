@@ -517,3 +517,9 @@ declare 156 generic {
 declare 157 generic {
     scalar sasfit_invert_func_v(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, scalar bu, sasfit_param *param)
 }
+declare 158 generic {
+    scalar sasfit_gammaincinv(scalar a, scalar y)
+}
+declare 159 generic {
+    scalar sasfit_erfcinv(scalar y)
+}

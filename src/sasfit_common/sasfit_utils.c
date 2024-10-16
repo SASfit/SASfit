@@ -29,6 +29,12 @@
 #include <gsl/gsl_sf.h>
 #include "include/sasfit_common.h"
 #include "../sasfit_jburkardt/include/cdflib.h"
+#include "libcerf_1.5/cerf.h"
+
+
+scalar sasfit_erfcinv(scalar y) {
+    return erfcxinv(y);
+}
 
 // sasfit_gammaincinv computes the inverse lower incomplete gamma function using cdflib from John Burkardt.
 scalar sasfit_gammaincinv(scalar a, scalar y) {
