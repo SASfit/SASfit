@@ -21,7 +21,7 @@ scalar sasfit_sq_solid_angle_correction(scalar q, sasfit_param * param)
 
 	// insert your code here
 	TwoTheta = 2*asin(q*LAMBDA/(4*M_PI));
-	return gsl_pow_3(cos(TwoTheta))*pow(T0,0.5+0.5/cos(TwoTheta))/T0;
+	return gsl_pow_3(cos(TwoTheta))* ((T0*log(T0)*(-1 + 1./cos(TwoTheta)))/(-T0 + pow(T0,1./cos(TwoTheta))));
 }
 
 scalar sasfit_sq_solid_angle_correction_f(scalar q, sasfit_param * param)

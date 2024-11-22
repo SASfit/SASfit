@@ -948,28 +948,28 @@ In \cite{Hofstadter1956} the form factor of a variety of spherical profiles have
 \end{align}
 The corresponding scattering amplitude is then calculated as
 \begin{align}
-  F_\mathrm{genGauss}(Q,R_g) &= 4\pi R_g^3 \, _1F_1\left(\frac{\alpha+3}{2},\frac{3}{2},-\frac{Rg^2Q^2}{2(\alpha+3)}\right)
+  F_\mathrm{genGauss}(Q,R_g) &= 4\pi R_g^3 \, _1F_1\left(\frac{\alpha+3}{2},\frac{3}{2},-\frac{R_g^2Q^2}{2(\alpha+3)}\right)
 \end{align}
 \begin{align}
-  I_\mathrm{genGauss}(Q,R,\alpha) &= F^2_\mathrm{genGauss}(Q,R,\alpha)
+  I_\mathrm{genGauss}(Q,R_g,\alpha) &= F^2_\mathrm{genGauss}(Q,R_g,\alpha)
 \end{align}
 The scattering intensity decays for large $q$-values  and for positive and not even integer values of $\alpha$ as
 \begin{align}
-\lim_{Q\rightarrow\infty} I_\mathrm{genGauss}(Q,R,\alpha) \propto Q^{-2(3+\alpha)}
+\lim_{Q\rightarrow\infty} I_\mathrm{genGauss}(Q,R_g,\alpha) \propto Q^{-2(3+\alpha)}
 \end{align}
 For positive and even integer values of $\alpha$ the decay at large $Q$-values is
 \begin{align}
-\lim_{Q\rightarrow\infty} I_\mathrm{genGauss}(Q,R,\alpha) \propto e^{-R_g^2Q^22/(6+2\alpha)}Q^{2\alpha}
+\lim_{Q\rightarrow\infty} I_\mathrm{genGauss}(Q,R_g,\alpha) \propto e^{-R_g^2Q^22/(6+2\alpha)}Q^{2\alpha}
 \end{align}
 A decay of $Q^{-4}$  therefore occurs for $\alpha=-1$.
 For certain values of $\alpha$ the form factor can be expressed with simple functions. A few examples are
 \begin{align}
- I_\mathrm{genGauss}(Q,R,\alpha=-2) &= \Delta\eta^2V^2\frac{\pi \operatorname{erf^2\left(\frac{RgQ}{\sqrt{2}}\right)}}{2R_g^2Q^2}\\
- I_\mathrm{genGauss}(Q,R,\alpha=-1) &= \Delta\eta^2V^2 \frac{4\operatorname{D_F}^2\left(\frac{R_gQ}{2}\right)}{R_g^2Q^2} \\
- I_\mathrm{genGauss}(Q,R,\alpha=0) &= \Delta\eta^2V^2e^{-\frac13Rg^2Q^2} \\
- I_\mathrm{genGauss}(Q,R,\alpha=1) &= \Delta\eta^2V^2 \frac{\left(\sqrt{2}(R_g^2Q^2-4)4\operatorname{D_F}\left(\frac{R_gQ}{2}\right)-2R_gQ\right)^2}{16R_g^2Q^2} \\
- I_\mathrm{genGauss}(Q,R,\alpha=2) &= e^{-\frac15Rg^2Q^2}\left(1-\frac{Rg^2Q^2}{15}\right)^2\\
- I_\mathrm{genGauss}(Q,R,\alpha=4) &= e^{-\frac17Rg^2Q^2}\left(1+\frac{1}{175}Rg^2Q^2(R_g^2Q^2-70)\right)^2
+ I_\mathrm{genGauss}(Q,R_g,\alpha=-2) &= \Delta\eta^2V^2\frac{\pi \operatorname{erf^2\left(\frac{R_gQ}{\sqrt{2}}\right)}}{2R_g^2Q^2}\\
+ I_\mathrm{genGauss}(Q,R_g,\alpha=-1) &= \Delta\eta^2V^2 \frac{4\operatorname{D_F}^2\left(\frac{R_gQ}{2}\right)}{R_g^2Q^2} \\
+ I_\mathrm{genGauss}(Q,R_g,\alpha=0) &= \Delta\eta^2V^2e^{-\frac13Rg^2Q^2} \\
+ I_\mathrm{genGauss}(Q,R_g,\alpha=1) &= \Delta\eta^2V^2 \frac{\left(\sqrt{2}(R_g^2Q^2-4)4\operatorname{D_F}\left(\frac{R_gQ}{2}\right)-2R_gQ\right)^2}{16R_g^2Q^2} \\
+ I_\mathrm{genGauss}(Q,R_g,\alpha=2) &= e^{-\frac15R_g^2Q^2}\left(1-\frac{R_g^2Q^2}{15}\right)^2\\
+ I_\mathrm{genGauss}(Q,R_g,\alpha=4) &= e^{-\frac17R_g^2Q^2}\left(1+\frac{1}{175}R_g^2Q^2(R_g^2Q^2-70)\right)^2
 \end{align}
 where $\operatorname{D_F}(x)$ is the Dawson integral.
 \begin{figure}[htb]

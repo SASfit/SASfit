@@ -37,7 +37,7 @@
 // - description of parameters in HTML table-style
 
 /* ################ start sq_solid_angle_correction ################ */
-/** 
+/**
  * \defgroup sq_solid_angle_correction solid angle correction
  * \ingroup sq_plugins_devel
  *
@@ -79,7 +79,7 @@ sasfit_solid_angle_DLLEXP scalar sasfit_sq_solid_angle_correction_v(scalar q, sa
 /* ################ stop sq_solid_angle_correction ################ */
 
 /* ################ start sq_flat_panel_correction ################ */
-/** 
+/**
  * \defgroup sq_flat_panel_correction flat panel correction
  * \ingroup sq_plugins_devel
  *
@@ -91,13 +91,19 @@ sasfit_solid_angle_DLLEXP scalar sasfit_sq_solid_angle_correction_v(scalar q, sa
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b lambda</td>
- *       <td>wave lengtn</td>
+ *       <td>wavelength</td>
  *      </tr><tr>
  *       <td>\b T0sample</td>
  *       <td>transmission of sample</td>
  *      </tr><tr>
  *       <td>\b T0flat</td>
- *       <td>transmiss of flat scatterer</td>
+ *       <td>transmission of flat scatterer</td>
+ *      </tr><tr>
+ *       <td>\b D_sample</td>
+ *       <td>sample thickness</td>
+ *      </tr><tr>
+ *       <td>\b D_flat</td>
+ *       <td>thickness of flat scatterer</td>
  *      </tr></table>
  */
 

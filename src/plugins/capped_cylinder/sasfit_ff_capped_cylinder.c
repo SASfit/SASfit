@@ -16,6 +16,10 @@
 #define P       param->p[MAXPAR-3]
 #define ALPHA   param->p[MAXPAR-4]
 
+scalar AcaptQ0(scalar t, sasfit_param *param) {
+    return (1-t*t)/2;
+}
+
 scalar Acapt(scalar t, sasfit_param *param) {
     return cos(Q*cos(ALPHA)*(RCAP*t+H+L/2.))*(1-t*t)*sasfit_jinc(Q*RCAP*sin(ALPHA)*sqrt(1-t*t));
 }
@@ -75,6 +79,6 @@ scalar sasfit_ff_capped_cylinder_v(scalar q, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+	return M_PI*R*R*L+4*M_PI*gsl_pow_3(RCAP)*(1./3.-gsl_pow_3(H/RCAP)/6.+H/RCAP/2.);
 }
 
