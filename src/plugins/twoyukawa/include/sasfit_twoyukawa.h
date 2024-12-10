@@ -52,13 +52,13 @@
  *       <td>radius</td>
  *      </tr><tr>
  *       <td>\b K1</td>
- *       <td>Potential strength in units kT, K>1 attraction, K<1 repulsion</td>
+ *       <td>Potential strength in units kT, K>0 attraction, K<0 repulsion</td>
  *      </tr><tr>
  *       <td>\b lambda1</td>
  *       <td>Screening length in nm. The inverse screening length is Z1=1/lambda1</td>
  *      </tr><tr>
  *       <td>\b K2</td>
- *       <td>Potential strength in units kT, K>1 attraction, K<1 repulsion</td>
+ *       <td>Potential strength in units kT, K>0 attraction, K<0 repulsion</td>
  *      </tr><tr>
  *       <td>\b lambda2</td>
  *       <td>Screening length in nm. The inverse screening length is Z2=1/lambda2</td>
@@ -110,13 +110,13 @@ sasfit_twoyukawa_DLLEXP scalar sasfit_sq_two_yukawa_v(scalar q, sasfit_param * p
  *       <td>radius</td>
  *      </tr><tr>
  *       <td>\b K1</td>
- *       <td>Potential strength in units kT, K>1 attraction, K<1 repulsion</td>
+ *       <td>Potential strength in units kT, K>0 attraction, K<0 repulsion</td>
  *      </tr><tr>
  *       <td>\b lambda1</td>
  *       <td>Screening length in nm. The inverse screening length is Z1=1/lambda1</td>
  *      </tr><tr>
  *       <td>\b K2</td>
- *       <td>Potential strength in units kT, K>1 attraction, K<1 repulsion</td>
+ *       <td>Potential strength in units kT, K>0 attraction, K<0 repulsion</td>
  *      </tr><tr>
  *       <td>\b lambda2</td>
  *       <td>Screening length in nm. The inverse screening length is Z2=1/lambda2</td>
@@ -167,13 +167,13 @@ sasfit_twoyukawa_DLLEXP scalar sasfit_sq_two_yukawa_potential_v(scalar q, sasfit
  *       <td>radius</td>
  *      </tr><tr>
  *       <td>\b K1</td>
- *       <td>Potential strength in units kT, K>1 attraction, K<1 repulsion</td>
+ *       <td>Potential strength in units kT, K>0 attraction, K<0 repulsion</td>
  *      </tr><tr>
  *       <td>\b lambda1</td>
  *       <td>Screening length in nm. The inverse screening length is Z1=1/lambda1</td>
  *      </tr><tr>
  *       <td>\b K2</td>
- *       <td>Potential strength in units kT, K>1 attraction, K<1 repulsion</td>
+ *       <td>Potential strength in units kT, K>0 attraction, K<0 repulsion</td>
  *      </tr><tr>
  *       <td>\b lambda2</td>
  *       <td>Screening length in nm. The inverse screening length is Z2=1/lambda2</td>
@@ -224,7 +224,7 @@ sasfit_twoyukawa_DLLEXP scalar sasfit_sq_two_yukawa_gr_v(scalar q, sasfit_param 
  *       <td>radius</td>
  *      </tr><tr>
  *       <td>\b K</td>
- *       <td>Potential strength in units kT, K>1 attraction, K<1 repulsion</td>
+ *       <td>Potential strength in units kT, K>0 attraction, K<0 repulsion</td>
  *      </tr><tr>
  *       <td>\b lambda</td>
  *       <td>Screening length in nm. The inverse screening length is Z=1/lambda</td>

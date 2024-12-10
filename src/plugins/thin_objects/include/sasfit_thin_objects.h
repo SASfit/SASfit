@@ -1873,8 +1873,11 @@ sasfit_thin_objects_DLLEXP scalar sasfit_ff_worm_ps3_sd_ellcylsh_v(scalar q, sas
  *       <td>\b epsilon</td>
  *       <td>stretching factor of elliptical cross-section</td>
  *      </tr><tr>
- *       <td>\b t</td>
+ *       <td>\b t0</td>
  *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b sigma_t0</td>
+ *       <td>width of thickness distribution (LogNorm)</td>
  *      </tr><tr>
  *       <td>\b lb</td>
  *       <td>Kuhn length</td>

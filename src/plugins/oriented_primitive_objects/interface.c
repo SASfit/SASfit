@@ -7,9 +7,10 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(34)
+SASFIT_PLUGIN_EXP_BEGIN(35)
 SASFIT_PLUGIN_EXP_ADD( ff_cylinder_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_cylinder_opo_random )
+SASFIT_PLUGIN_EXP_ADD( ff_cylinder_opo_azimuthal_avg )
 SASFIT_PLUGIN_EXP_ADD( ff_parallelepiped_opo )
 SASFIT_PLUGIN_EXP_ADD( ff_parallelepiped_opo_random )
 SASFIT_PLUGIN_EXP_ADD( ff_ellipsoid_opo )

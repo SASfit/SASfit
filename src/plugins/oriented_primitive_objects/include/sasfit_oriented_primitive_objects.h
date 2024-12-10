@@ -128,6 +128,97 @@ sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_f(scalar 
 sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_cylinder_opo ################ */
 
+/* ################ start ff_cylinder_opo_azimuthal_avg ################ */
+/**
+ * \defgroup ff_cylinder_opo_azimuthal_avg cylinder (OPO, azimuth. avg)
+ * \ingroup ff_plugins_oriented_primitive_objects
+ *
+ * \brief \<some brief description of cylinder (OPO, azimuth. avg) function\>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b a</td>
+ *       <td>length of first half axis</td>
+ *      </tr><tr>
+ *       <td>\b ea_x</td>
+ *       <td>x component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_y</td>
+ *       <td>y component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ea_z</td>
+ *       <td>z component of first axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b b</td>
+ *       <td>length of second half axis</td>
+ *      </tr><tr>
+ *       <td>\b eb_x</td>
+ *       <td>x component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_y</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eb_z</td>
+ *       <td>z component of second axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td>length of third half axis</td>
+ *      </tr><tr>
+ *       <td>\b ec_x</td>
+ *       <td>x component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_y</td>
+ *       <td>y component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b ec_z</td>
+ *       <td>z component of third axis (will be normalized to 1)</td>
+ *      </tr><tr>
+ *       <td>\b eta_p</td>
+ *       <td>scattering length density of particle</td>
+ *      </tr><tr>
+ *       <td>\b eta_m</td>
+ *       <td>scattering length density of matrix</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>first Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td>second Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b gamma</td>
+ *       <td>third Euler angle</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_cylinder_opo_azimuthal_avg
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_azimuthal_avg(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_cylinder_opo_azimuthal_avg
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_azimuthal_avg_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_cylinder_opo_azimuthal_avg
+ *
+ * \sa sasfit_oriented_primitive_objects.h, ff_plugins_oriented_primitive_objects
+ */
+sasfit_oriented_primitive_objects_DLLEXP scalar sasfit_ff_cylinder_opo_azimuthal_avg_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_cylinder_opo_azimuthal_avg ################ */
+
 /* ################ start ff_cylinder_opo_random ################ */
 /**
  * \defgroup ff_cylinder_opo_random cylinder (OPO,random)

@@ -14,6 +14,7 @@ set(SOURCE_${PRJ_NAME}
     sasfit_polyhedra_utils.c
 	sasfit_ff_cylinder_opo.c
 	sasfit_ff_cylinder_opo_random.c
+	sasfit_ff_cylinder_opo_azimuthal_avg.c
 	sasfit_ff_parallelepiped_opo.c
 	sasfit_ff_parallelepiped_opo_random.c
 	sasfit_ff_ellipsoid_opo.c

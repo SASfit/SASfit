@@ -982,10 +982,10 @@ double intQAWF_FBT(double x, void *FBTparams) {
             / cos(x*FBT_param->Q);
     } else {
         return (x+phi0/FBT_param->Q)*FBT_param->function((x+phi0/FBT_param->Q),FBT_param->fparams)
-            * ( gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*x+phi0+1e-3)
-                    / cos(x*FBT_param->Q+1e-3) +
-                gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*x+phi0-1e-3)
-                    / cos(x*FBT_param->Q-1e-3) )/2.;
+            * ( gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*x+phi0+1e-6)
+                    / cos(x*FBT_param->Q+1e-6) +
+                gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*x+phi0-1e-6)
+                    / cos(x*FBT_param->Q-1e-6) )/2.;
     }
     return (x+phi0/FBT_param->Q)*sqrt(M_2_PI/((x+phi0/FBT_param->Q)*FBT_param->Q))* FBT_param->function((x+phi0/FBT_param->Q),FBT_param->fparams);
 }
@@ -1121,6 +1121,7 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
     FBTparam.nu=nu;
     FBTparam.Q=x;
     FBTparams_static = &FBTparam;
+
     switch (sasfit_get_hankel_strategy()) {
         case HANKEL_OOURA_DEO: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -1191,6 +1192,71 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             gsl_integration_workspace_free(w);
             gsl_integration_workspace_free(w_cycle);
             res = res+res0;
+            break;
+        }
+        case HANKEL_SINC_SEO: {
+            scalar seta, sK, sh, sc, sni, sw, sH, st, sF0, sF1, stau, sq, sder, rN, rN0, rN1;
+            int v, sM, sN, sN0, sN1, nval, k, kmax, l, lmax;
+            seta = sasfit_eps_get_nriq();
+            sM   = lround(ceil(-5*log10(seta)));
+            sni  = FBTparam.nu;
+            sw = FBTparam.Q;
+            sK = pow(M_PI,(sni+2)) /( sw*sw*pow(2,sni) * gsl_sf_gamma(sni+1) *(sni+2) ) ;
+            sh = 1.0/((sni +2) * sM) * log(sK * pow(sM,(sni +2))/seta ) ;
+            sc = sqrt(2)/16.0/(sw*sw)*fabs(4*sni*sni-1);
+            #define FUN(X) sc * f(fabs(M_PI/sw*X) , fparams) / sqrt(X)
+            #define PHI(X) (X/(1 - exp(-X)))
+            #define PHIP(X) ((1 - exp(-X)-X*exp(-X))/(1-exp(-X)))
+            #define F(t) f(fabs(stau/sw *PHI(t-sq)),fparams) *gsl_pow_2(stau/sw)*PHI(st-sq) * gsl_sf_bessel_Jnu(sni, stau*PHI(t-sq)) * PHIP(t-sq)
+            stau = M_PI / sh ;
+            sq = M_PI /(4*stau) *(1-2*sni) ;
+            sN0=5;
+            rN0=5;
+            sder = 0;
+            lmax = 8;
+            l=0;
+            while (sder >= 0 && l<lmax) {
+                rN0 *= 2;
+                rN = rN0;
+                rN1= rN0+1;
+                st = 1;
+                kmax = 100;
+                sF0 = FUN(rN);
+                sF1 = FUN(rN1);
+                k = 1;
+                while (st > seta && k < kmax && fabs(sF1) >= seta) {
+                    sder = (sF1-sF0)/(rN1-rN0);
+                    if (sder >= 0) {
+                        sasfit_out("solution not found , increase N0=%lg\n",rN0);
+                        break;
+                    }
+                    rN  = rN - (sF1 - seta)/sder ;
+                    rN0 = rN1;
+                    sF0 = sF1;
+                    rN1 = rN;
+                    sF1 = FUN(rN) ;
+                    st  = fabs (sF1 - seta);
+                    k++;
+                }
+            }
+            sH = 0;
+            sN = lround(rN);
+            for (v=-sM;v<=sN;v++) {
+                sH+= F(v*sh);
+            }
+            sH *= sh;
+            res = sH;
+            err = seta;
+            nval = sM+sN+k+1;
+            sasfit_out("needed %d function evaluations.\n",nval);
+            /*
+            phi0 = M_PI_4*(1.+FBT_param->nu*2.);
+            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
+            eps_nriq=sasfit_eps_get_nriq();
+            sasfit_intdeoini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
+            sasfit_intdeo(&intDEO_FBT,-phi0/FBTparam.Q, FBTparam.Q, aw, &res, &err, &FBTparam);
+            free(aw);
+            */
             break;
         }
         case HANKEL_GUPTASARMA_97_FAST: {

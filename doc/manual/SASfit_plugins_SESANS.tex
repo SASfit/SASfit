@@ -32,7 +32,7 @@ There are several possible definitions of a Hankel transform $\mathcal{H}_\nu\le
 \item $F_\nu(k) = 2\pi \int_0^\infty f(r) J_\nu(2\pi kr) r \,\mathrm{d}r$ and its inverse $f(r)=2\pi \int_0^\infty F_\nu(q)J_\nu(2\pi kr) k \,\mathrm{d}k$
 \end{enumerate}
 }
-Experimentally the differential cross-section is only measured up to a maximum scattering angle $\Theta_\mathrm{max}$. Because of this \SASfit supplies is clipping the Hankel transform of the model of the differential cross-section if the experimental data supplied with a fourth column containing the maximum scattering vector for each spin echo length $Q_\mathrm{max}=\frac{4\pi}{\lambda}\sin \Theta_\mathrm{max}/2$. This clipping is activated by activating the resolution option.
+Experimentally the differential cross-section is only measured up to a maximum scattering angle $\Theta_\mathrm{max}$. Because of this \SASfit supplies is clipping the Hankel transform of the model of the differential cross-section if the experimental data supplied with a fourth column containing the maximum scattering vector for each spin echo length $Q_\mathrm{max}=\frac{4\pi}{\lambda}\sin (\Theta_\mathrm{max}/2)$. This clipping is activated by activating the resolution option.
 
 The instrument independent projected sample correlation function $\tilde{G}(\delta)$ can also be calculated via the Abel transform $\mathcal{A}$ of the scattering length density autocorrelation function $\tilde{\gamma}(\mathbf{r})=\int \rho(\mathbf{r'})\rho(\mathbf{r'-r})\mathrm{d}\mathbf{r'}$.
 \begin{align}
@@ -59,7 +59,7 @@ and
 \int_0^\infty \tilde{\gamma}(r) 4\pi r^2 \, \mathrm{d}r =\Delta\eta^2 V_P^2 \quad \mbox{or} \quad  \int_0^\infty \gamma_0(r) 4\pi r^2 \, \mathrm{d}r = V_P
 \end{align}
 where in case of spherical particle $V_P=\frac43 \pi R^3$
-In Fig.\ \ref{fig:FAHcycle} it is shown how the functions $\tilde{\gamma}(r)$, $\tilde{G}(\delta)$ and $IQ)$ are related to each other. However, the cycle is mathematically only exact for a one-dimensional Fourier transformation on a radial symmetric function. Such a transformation cycle is called the projection-slice theorem which is a standard analysis in imaging \cite{Bracewell2003, Bracewell1956}. The projection-slice theorem makes use of the fact that
+In Fig.\ \ref{fig:FAHcycle} it is shown how the functions $\tilde{\gamma}(r)$, $\tilde{G}(\delta)$ and $I(Q)$ are related to each other. However, the cycle is mathematically only exact for a one-dimensional Fourier transformation on a radial symmetric function. Such a transformation cycle is called the projection-slice theorem which is a standard analysis in imaging \cite{Bracewell2003, Bracewell1956}. The projection-slice theorem makes use of the fact that
 \begin{align}
 \mathcal{H}\circ \mathcal{F}_{1D}\circ \mathcal{A} &
               =\mathcal{F}_{1D} \circ \mathcal{A}\circ \mathcal{H}

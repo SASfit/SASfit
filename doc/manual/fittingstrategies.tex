@@ -230,11 +230,135 @@ The given value for the confidence interval of the fit parameters should not be 
 
 \clearpage
 \section{references to numerical strategies \SASfit make use of}
+In small angle scattering analysis numerical integrations tools are used regularly. To get the scattering amplitude a 3D Fourier transform needs to be calculated, which simplifies to lower dimensional integrals in case of point symmetric, spherical symmetric, cylindrical symmetric or planar objects. For non-spherical symmetric shapes typically an average over the orientation distribution needs to be performed. Furthermore for systems with a size distribution an additional smearing over those distributions are essential. For SESANS data a Hankel transformation is required. In case of multiple scattering both a forward and as well as inverse Hankel transform are necessary. It has turned out, that each of these tasks might require a specialized integration routine to be efficient. Efficiency or parallelization becomes in the end essential if several of these integrations have to be solved numerically.
 
-\subsection{integration or quadrature strategies} ~\\
+\subsection{Integrals for Form Factors} ~\\
 
-In \SASfit several tasks require specialized integration routines. At the moment \SASfit supplies the function \texttt{sasfit\_integrate()}, \texttt{sasfit\_cubature()},
-\texttt{sasfit\_orient\_avg()}, and \texttt{sasfit\_hankel()}.
+To calculate the general case of a form factor of an object a 3D Fourier transform needs to be performed. When $\eta(\mathbf{r})$ is the scattering length density distribution of the scatterer the scattering amplitude $F(\mathbf{Q})$ is
+\begin{align}
+F(\mathbf{Q}) &= \int\!\! \int\!\! \int \eta(\mathbf{r}) e^{\imath \mathbf{Q}\mathbf{r}}\,\mathrm{d}\mathbf{r}
+\end{align}
+For objects with a point symmetric shape the integral simplifies to $\cos$ transform, which is real valued and not anymore complex and for which specialized algorithms are available \cite{Burkardt,Ooura1996,Chase1969,Ooura_1991,Team2024,Team2024a}
+\begin{align}
+F(\mathbf{Q}) &= \int\!\! \int\!\! \int \eta(\mathbf{r}) \cos\left( \mathbf{Q}\mathbf{r} \right)\,\mathrm{d}\mathbf{r}
+\end{align}
+For higher symmetric shapes the 3D Fourier transform simplifies further to lower dimensional integrals.
+
+For spherical symmetric shapes one just needs to calculate
+\begin{align}
+F(Q) &= \int_0^\infty 4\pi r^2 \eta(r) \frac{\sin \left(Qr \right)}{Qr} \, \mathrm{d}r
+\end{align}
+which now only depend on the modulus of $Q$ and $r$. In this case a $\sin$ transform needs to be calculated. In all cases the integral has to be performed over an oscillating $\cos$ or $\sin$ function, which in the above two cases also have a constant oscillation frequency. Efficient algorithms can be found e.g. at \cite{Burkardt,Ooura1996,Chase1969,Ooura_1991,Team2024,Team2024a}
+
+For cylindrical and point symmetric objects the Fourier transform reads as
+\begin{align}
+F(\mathbf{Q}) &= 2\pi\int_{-\infty}^{\infty}\cos(Q_zz) \int_0^\infty
+\Delta\eta_\textrm{cyl}(r,z) \textrm{J}_0(Q_rr)r \,
+\textrm{d}r \textrm{d}z
+\end{align}
+The integration over $z$ is still a $\cos$ transform, whereas the integration over the other two direction turn into a Hankel transform. The Bessel function also oscillates around zero but not with a fixed frequency. The roots are not analytically known which means some additional efforts for numerically evaluating them. The form factor of a homogeneous cylinder of length $L$ and radius $R$ oriented with the cylinder axis in $z$-direction therefore reads as
+\begin{subequations}
+\begin{align}
+F_\mathrm{cyl}(\mathbf{Q}) &= 2\pi\int_{-L/2}^{L/2}\cos(Q_zz) \int_0^R
+ \textrm{J}_0(Q_rr)r \,
+\textrm{d}r \textrm{d}z \label{eq:FcosHankel}\\
+&= \frac{\sin(Q_zL/2)}{Q_zL/2} \pi R^2L\frac{2\textrm{J}_1(Q_rR)}{Q_rR}  \label{eq:FcylOriented}
+\end{align}
+with
+\begin{align}
+\mathbf{Q} &= \begin{pmatrix}
+                 Q_r \cos(\phi) \\
+                 Q_r \sin(\phi) \\
+                 Q_z \\
+               \end{pmatrix}
+\end{align}
+\end{subequations}
+In case of a homogeneous cylinder the $\cos$ and Hankel transform can be calculated analytically. For other more realistic models the integrations needs to be performed numerically. Algorithms for the $\cos$ transform already have been mentioned. For the Hankel transform several strategies have been discussed and used \cite{Chave1983,Anderson1989,Ooura_1991,Guptasarma1997,Ogata2005,Kong2007,Key2012,Kang2021}
+From these algorithms especially the one from \cite{Ooura_1991} and \cite{Chave1983} are those which  both are fast as well as able to perform the transform with a given precision. The integral in eq.\ \ref{eq:FcosHankel} likely would gain using different quadrature strategies for $\int\mathrm{d}r$ (optimized Hankel transform quadrature \cite{Chave1983}) and $\int\mathrm{d}z$ (e.g.\ double exponential quadrature \cite{Mori2001,Mori1990}), i.e.\ a quadrature rule from a product of distinct optimum 1D quadrature rules needs to be investigated.
+
+\subsection{Orientational and Size Distribution} ~\\
+
+To calculate scattering pattern of particles with orientational (o) and size distribution (s) the scattering intensity $I=\langle \vert F\vert^2\rangle_\mathrm{o,s}$ has to averaged in case of non interacting particles. $\langle \rangle_\mathrm{o,s}$ denotes a multiple quadrature over the orientation and size probability function. In case of interacting particles both the averages of scattering intensities $I=\langle \vert F\vert^2\rangle_\mathrm{o,s}$ of a single particle  as well as the averages of the scattering amplitude $\vert\langle F\rangle_\mathrm{o,s}\vert^2$ of them are typically required.
+
+In case of an averaged amplitude $\langle F\rangle_\mathrm{o,s}$ the integrals over a 3D hyper cube can be extended to the required $n$-dimensional hypercube including orientational as well size distribution. The orientational distribution increases the dimension of the hyper cube by maximal 3 dimensions namely the three Euler angles. Distributions of the size can in principle have any number of dimensions depending on the parametrization. A three dimensional rectangular cuboidal multi shell can have many size parameters in its form factor, each having a distribution.
+
+In contrast to the calculation of the average amplitude the calculating of the averaged intensity first needs a $\vert F(\mathbf{Q})\vert^2$ operation which avoids extending directly the strategies  for quadrature algorithms over a hyper cube to higher dimensions.
+Size distribution and orientation distributions over $m$ parameters $a_i$ (with $\mathbf{a}=(a_1, \ldots, a_m)^T$) and over the Euler angles  $(\alpha,\beta,\gamma)$ with a common distribution $p(\mathbf{a},\alpha,\beta,\gamma)$ of the form factor are simply calculated by
+\begin{multline} \label{eq:Fredholm}
+ \frac{d\sigma(\mathbf{Q})}{d\Omega} = I(Q) = \left\langle \vert F(\mathbf{Q},\mathbf{a},\alpha,\beta,\gamma)\vert^2\right\rangle_{\mathrm{o},\mathrm{s}} = \\
+ \idotsint  p(\mathbf{a},\alpha,\beta,\gamma) \vert F(\mathbf{Q},\mathbf{a},\alpha,\beta,\gamma)\vert^2 \, \mathrm{d}\mathbf{a} \, \mathrm{d}\alpha \, \mathrm{d}\beta \, \mathrm{d}\gamma
+\end{multline}
+The determination of the distribution function $p(\mathbf{a},\alpha,\beta,\gamma)$ is one of the core tasks in small angle scattering analysis. The integral in eq.\ \ref{eq:Fredholm} is a multidimensional Fredholm integral. The SASview as well SASfit packages try to solve this (ill-posed) integral equation by assuming analytical parametrized distribution functions to obtain the orientation and size distribution information. In many typical cases discussed in literature a size and  orientation distributions are assumed to be factorizable as
+\begin{align}
+p(\mathbf{a},\alpha,\beta,\gamma) &= p_\mathrm{o}(\alpha,\beta,\gamma)\prod_{i=1}^m p_{\mathrm{s},i}(a_i)
+\end{align}
+where the size distribution $p_{\mathrm{s},i}(a_i)$ is described in first approximation by a simple distribution function like a normal, lognorm, gamma, ... distribution and $p_\mathrm{o}(\alpha,\beta,\gamma)$ is describing the orientation distribution function in terms of Euler angles.
+
+
+For cylindrical symmetric objects due to symmetry one integration around the symmetry axis can be done analytically, whereas the other two over the polar angles still might need to be performed numerically.
+For integration over polar angles, i.e. over the surface of a unit sphere special algorithms are available like Lebedev quadrature \cite{Lebedev1975,Lebedev1976,Lebedev1977,Lebedev2003}, spherical designs \cite{Graef2011,Hardin1996}, or spherical Fibonacci point sets \cite{Marques_2013,Swinbank2006}. However, these methods have the disadvantage of having no error estimate of the integral, but on the other side they might be easily adapted for parallelization due to the known grid points.
+
+A special case of orientation distribution is the fully random orientation distribution. For this case all direction between the scattering object and the vector $\mathbf{Q}$ are equal probable and an average over all direction of $\mathbf{Q}$ is equivalent to averaging over all 3 Euler angles. This means, that a random orientational average requires again an integration over a unit sphere. A symmetry constrain like a cylindrical symmetry of the particles would reduce the orientation average to a single integral. In case of a random oriented cylinder like in eq.\ \ref{eq:FcylOriented} the average reads as
+\begin{multline}\label{eq.Fcyl_rndODF}
+\vert\left\langle F_\mathrm{cyl}(\mathbf{Q})\vert^2\right\rangle_{\mathrm{rnd-o}} = \\
+\int_0^{\pi/2} \left\vert \pi R^2L \frac{\sin(QL/2\cos(\theta))}{QL/2\cos(\theta)} \frac{2\textrm{J}_1(QR\sin(\theta))}{QR\sin(\theta)}\right\vert^2 \sin(\theta) \, \mathrm{d}\theta  \end{multline}
+The kernel of this integral is an oscillating function, but it does not oscillate around zero as the kernel is strictly positive. Therefore certain integration strategies for oscillating functions can not be applied directly. We also have two oscillations, one depending on the length $QL/2$ and the other on $QR$. If the cylinder has additional size distributions in $L$ and $R$ the final multidimensional integral to be solved is
+\begin{multline}\label{eq.Fcyl_rndODF}
+\frac{d\sigma_{\mathrm{cyl},\mathrm{rnd-o},\mathrm{s}}(Q)}{d\Omega}=\left\langle \vert F_\mathrm{cyl}(\mathbf{Q})\vert^2\right\rangle_{\mathrm{rnd-o},\mathrm{s}} = \int_0^\infty \!\int_0^\infty \!\int_0^{\pi/2} p_\mathrm{s}(L,R) \quad \times\\
+ \left\vert \pi R^2L \frac{\sin(QL/2\cos(\theta))}{QL/2\cos(\theta)} \frac{2\textrm{J}_1(QR\sin(\theta))}{QR\sin(\theta)}\right\vert^2 \sin(\theta) \, \mathrm{d}\theta  \, \mathrm{d}R\, \mathrm{d}L
+\end{multline}
+The integral kernel behaves well enough so that the order of the integrals can be changed. If the orientational average is done first, the resulting function in this case for $2R\approx L$ does not has anymore many oscillations and the outer integrations over $L$ and $R$ might be done easily with standard strategies for quadratures over hypercubes. However, for extreme aspect ratios this is not anymore valid.
+
+\subsection{SESANS - MSAS - resolution function} ~\\
+\subsubsection{SESANS} ~\\
+In case of an isotropic scatterer the SESANS signal $\tilde{G}(\delta)$ is directly related to the SANS differential cross-section $\frac{d\sigma(Q)}{d\Omega}$ via a zero order Hankel transform \cite{Krouglov2003,Andersson2008,Kohlbrecher2017}which reads as
+\begin{align}
+\tilde{G}(\delta) &= \frac{1}{2\pi}\mathcal{H}_0\left[\frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega}\right](\delta)
+= \frac{1}{2\pi} \int_{0}^{\infty} Q J_0(Q\delta) \frac{\mathrm{d}\sigma(Q)}{\mathrm{d}\Omega} \, \mathrm{d}Q
+\end{align}
+Coming back to the example of random oriented cylinders with size distributions for the length and radius we finally end up with
+\begin{multline}  \label{eq.Fcyl_rndODF_SESANS}
+\tilde{G}_{\mathrm{cyl},\mathrm{rnd-o},\mathrm{s}}(\delta) = \frac{1}{2\pi} \int_{0}^{q_\mathrm{max}} \! \int_0^\infty \!\int_0^\infty \!\int_0^{\pi/2} Q J_0(Q\delta) \, p_\mathrm{s}(L,R) \quad \times\\
+ \left\vert \pi R^2L \frac{\sin(QL/2\cos(\theta))}{QL/2\cos(\theta)} \frac{2\textrm{J}_1(QR\sin(\theta))}{QR\sin(\theta)}\right\vert^2 \sin(\theta) \, \mathrm{d}\theta  \, \mathrm{d}R\, \mathrm{d}L \, \mathrm{d}Q
+\end{multline}
+As experimentally SESANS signals are only measured with a detector probing the polarization to a maximum value of $q_\mathrm{max}$, the Hankel transform might be significantly truncated. If in this case $\int_{0}^{q_\mathrm{max}} \mathrm{d}Q$ can be replaced by $\int_{0}^{\infty} \mathrm{d}Q-\int_{q_\mathrm{max}}^\infty \mathrm{d}Q$ or if a another routine preferable directly evaluates the integral  $\int_{0}^{q_\mathrm{max}} \mathrm{d}Q$ might depend on how many roots of the Bessel function are within the domain $[0,q_\mathrm{max}]$.
+
+\subsubsection{Multiple Small Angle Scattering (MSAS)} ~\\
+
+According to \cite{Schelten1980,Jensen2018} multiple  small angle scattering can be computed from the single scattering approximation via the intermediate function $i_1(r)$.
+\begin{align}\label{eq:MSAS_SchmatzSchelten}
+ i_1(r) &= 2\pi t \int_0^\infty J_0(qr) \frac{\mathrm{d}\sigma_1}{\mathrm{d}\Omega}(q) q \mathrm{d}q \\
+ &=2\pi t \mathcal{H}_0\left[\frac{\mathrm{d}\sigma_1}{\mathrm{d}\Omega}(q)\right](r)= 4\pi^2 t \tilde{G}(r)\\
+ i_m(r) &= e^{-i_1(0)/k_0^2}k_0^2\left(\exp\left(i_1(r)/k_0^2\right)-1\right) \\
+        &= k_0^2\left[\exp\left(\frac{t}{k_0^2}\left(\tilde{G}(r)-\tilde{G}(0)\right)\right)-\exp\left(-\frac{t}{k_0^2}\tilde{G}(0)\right)\right] \label{eq:MSASim}\\
+ \frac{\mathrm{d}\sigma_m}{\mathrm{d}\Omega}(q)&= \frac{1}{2\pi t} \int_0^\infty J_0(qr) i_m(r) r \mathrm{d}r = \frac{1}{2\pi t} \mathcal{H}_0\left[i_m(r)\right](q) \label{eq:MSAS}\\
+ k_0 &= \frac{2\pi}{\lambda}
+\end{align}
+where $\frac{\mathrm{d}\sigma_m}{\mathrm{d}\Omega}(q)$ is the measured scattering cross-section including multiple scattering contributions normalized on the sample volume and  corrected for absorption and incoherent scattering, i.e. corrected for all beam attenuation effects except coherent small angle scattering. $\frac{\mathrm{d}\sigma_1}{\mathrm{d}\Omega}(q)$ is the corresponding single scattering cross-section per volume.
+It can be seen, that the intermediate function $i_1(r)$ is except a pre-factor identical to the projected correlation function $\tilde{G}(r)$ used in the theory of  SESANS analysis,
+$i_1(r)=\tilde{G}(r)\left(2\pi\right)^2t$.
+
+What does this mean for the case of random oriented cylinders with a size distribution for the length and radius? Here we consider a system which would scatter that strong, that multiple scattering has to be considered. In this case first the correlation function in eq.\ \ref{eq.Fcyl_rndODF_SESANS} and afterwards the intermediate function including multiple scattering $i_m(r)$ is calculated. This functions then needs to be Hankel transformed again according to eq.\ \ref{eq:MSAS}. In total 5 nested numerical integration are required for the example of polydisperse random oriented cylinders.
+
+%In the \texttt{SASfit} C-source code a function \texttt{sasfit\_hankel()} is supplied to perform a
+%Hankel transform. It can be configured to use several different algorithms:
+%\cite{Chave1983,Anderson1989,Ooura_1991,Guptasarma1997,Ogata2005,Kong2007,Key2012,Kang2021}
+%From these algorithms especially the one from \cite{Ooura_1991} and \cite{Chave1983} are those which
+%are both fast as well as able to perform the transform with a given precision.
+
+%It would be interesting to compare those algorithm against newer ones, e.g.
+%\cite{Liu2024,Xu2019,Diehl2024,Diehl2024a} for converting SANS cross sections into a SESANS intensity.
+
+\subsubsection{Resolution Function} ~\\
+If the resolution function needs to be included in the analysis eq.\ \ref{eq:MSAS} or eq.\ \ref{eq.Fcyl_rndODF} would need to be convoluted by a resolution function which would add another integral to the formula.
+
+\subsection{Summary} ~\\
+
+Already for a simple model of a polydisperse random oriented cylinder several nested integrals needs to be solved numerically.
+A part of the integrals, like over a combined orientation and size distribution are calculated over a hyper cube. Adaptive algorithms have been discussed and supplied in \cite{Johnson2017,Genz1980,Berntsen1991,Bull1995}. However, in the present case integrals in certain dimensions might profit if they would be treated with different strategies, like Hankel transforms, integrals over oscillating but positive functions, or orientational averages over a unit sphere. The question would be, if quadrature rules with mixed strategies for the different dimensions can be developed. Ideally they should also be vectorizable for optional parallelization. For the given example of polydisperse random oriented cylinder performance test at the beginning using optimized one dimensional quadrature rules like for the Hankel transform or over strictly positive but oscillating functions might be useful, as those could immediately improve existing codes in SASview and SASfit.
+
+To access in \SASfit the specialized integration routines the functions \texttt{sasfit\_integrate()}, \texttt{sasfit\_cubature()},
+\texttt{sasfit\_orient\_avg()}, and \texttt{sasfit\_hankel()} are supplied.
 \texttt{sasfit\_integrate()} performs one-dimensional integrations and \texttt{sasfit\_cubature()} multidimensional integrations over multi-dimensional cubes. \texttt{sasfit\_orient\_avg()} performs efficient integrations over the surface of a sphere to perform orientational averages. \texttt{sasfit\_hankel()} supplies highly optimized routines for Bessel or Hankel transforms containing oscillatory Bessel functions in the integrand. The window for fitting or simulating data (fig.\ \ref{fig:CustomizeIntGUI}) has a menu option under \texttt{[Options|Customize...]} opening a window to configure the internal integration routines.
 \begin{figure}[htb]
 \begin{center}
@@ -244,10 +368,15 @@ In \SASfit several tasks require specialized integration routines. At the moment
 \label{fig:CustomizeIntGUI}
 \end{figure}
 
-\texttt{sasfit\_integrate()}  and \texttt{sasfit\_cubature()} have the same configuration options. For multidimensional integrations either specialized algorithms or nested calls of one dimensional integration routines are used. Possible options for them are
-\begin{description}
-   \item[\texttt{OOURA\_DE}] This is an implementation of an double-exponential quadrature algorithm from \cite{Mori1990,Mori2001}
-   \item[\texttt{OOURA\_CC}] Clenshaw-Curtis-Quadrature using Chebyshev Series Expansion (\url{https://www.kurims.kyoto-u.ac.jp/~ooura/intcc.html})
+\subsection{Integration algorithms in SASfit for normal one- or multi-dimensional integration}  ~\\
+
+Within \texttt{SASfit} a configurable one dimensional integration routine as well as a multidimensional one  with a common interface for the different algorithms is supplied. Depending on the mathematical behaviour of the integrant it has turned out that the different algorithms might differ a lot in terms of efficiency. For multidimensional quadrature algorithm so far the same strategy is used for all dimensions. The routines \texttt{sasfit\_integrate()}  and \texttt{sasfit\_cubature()} have the same configuration options. For multidimensional integrations either by itself specialized multidimensional algorithms or nested calls of one-dimensional integration routines are used. \\
+
+\noindent Possible options for them are:\\
+\begin{description}[font=\sffamily\bfseries, leftmargin=2.5cm,style=nextline,
+                  nosep]
+   \item[\texttt{OOURA\_DE}] double-exponential quadrature algorithm from \cite{Mori1990,Mori2001}
+   \item[\texttt{OOURA\_CC}] Clenshaw-Curtis-quadrature using Chebyshev series expansion (\url{https://www.kurims.kyoto-u.ac.jp/~ooura/intcc.html})
    \item[\texttt{TANHSINH\_1}] TanhSinh quadrature \cite{Engelen2021,Engelen}
    \item[\texttt{TANHSINH\_2}] TanhSinh quadrature \cite{Engelen2021,Engelena}
    \item[\texttt{GSL\_QUAD}] quad integration routine from gsl \cite{Galassi2021}
@@ -269,49 +398,45 @@ In \SASfit several tasks require specialized integration routines. At the moment
    \item[\texttt{RQMC\_LAINE\_KARRAS}] randomized quasi Monte Carlo integration using Laine-Karras hash method mentioned in \cite{Burley2020Scrambling} and given as C source code in its supplement information.
 \end{description}
 
-\texttt{sasfit\_orient\_avg()}
+\section{orientation average} ~\\
+
+Orientational averaging is a two dimensional integration over a unit sphere (\texttt{sasfit\_orient\_avg()}). In \texttt{SASfit} a specialized function for this is supplied. As the problem in principle can be handles with \texttt{sasfit\_cubature} it include all strategies from that function plus a few specialized one especially efficient for quadrature over a the surface of unit sphere. These are
 \begin{description}
-\item[\texttt{GSL\_2D\_GAUSSLEGENDRE}]
-\item[\texttt{Lebedev}]
-\item[\texttt{FIBONACCI}]
-\item[\texttt{HCUBATURE}]
-\item[\texttt{PCUBATURE}]
-\item[\texttt{spherical\_t\_design}]
-\item[\texttt{OOURA\_DE}]
-\item[\texttt{OOURA\_CC}]
-\item[\texttt{GSL\_CQUAD}]
-\item[\texttt{TANHSINH\_1}]
-\item[\texttt{TANHSINH\_2}]
-\item[\texttt{MC\_VEGAS}]
-\item[\texttt{MC\_MISER}]
-\item[\texttt{MC\_PLAIN}]
-\item[\texttt{QMC\_NIEDERREITER\_2}]
-\item[\texttt{QMC\_SOBOL}]
-\item[\texttt{QMC\_HALTON}]
-\item[\texttt{QMC\_REVERSEHALTON}]
-\item[\texttt{RQMC\_SOBOL\_RDS}]
-\item[\texttt{RQMC\_SOBOL\_OWEN}]
-\item[\texttt{RQMC\_FAURE05\_OWEN}]
-\item[\texttt{RQMC\_LAINE\_KARRAS}]
+\item[\texttt{Lebedev}] Lebedev quadrature \cite{WikiLebedevQuad2024,Lebedev1975,Lebedev1976,Lebedev1977,Lebedev2003} is an approximation to the surface integral of a function over a three-dimensional sphere. The number and location of the grid points together with a corresponding set of integration weights are determined by enforcing the exact integration of polynomials (or equivalently, spherical harmonics) up to a given order.
+\item[\texttt{FIBONACCI}]  Almost equally spaced points can be easily generated by a Fibonacci on different surfaces, like square, disk, cylinder surface, spherical surface \cite{Marques_2013,Swinbank2006}.
+\item[\texttt{spherical\_t\_design}] The spherical t-design \cite{WikipediaSphericalDesign2024,Graef2011,Hardin1996} has been used to generate equally spaced points on a spherical surface leading to a quadrature formula with equal weights.
 \end{description}
 
- \texttt{sasfit\_hankel()} \cite{Chave1983,Anderson1989,Ooura_1991,Guptasarma1997,Ogata2005,Kong2007,Key2012,Kang2021}
-\begin{description} 
-\item[\texttt{OOURA\_DEO}]
-\item[\texttt{OGATA\_2005}]
-\item[\texttt{FBT0}]
-\item[\texttt{FBT1}]
-\item[\texttt{FBT2}]
-\item[\texttt{GSL\_QAWF}]
-\item[\texttt{GUPTASARMA\_97}]
-\item[\texttt{GUPTASARMA\_97\_FAST}]
-\item[\texttt{KEY\_51}]
-\item[\texttt{KEY\_101}]
-\item[\texttt{KEY\_201}]
-\item[\texttt{ANDERSON\_801}]
-\item[\texttt{QWE}]
-\item[\texttt{CHAVE}]
+\subsection{Hankel transform} ~\\
+
+The Hankel transform calculated by \texttt{sasfit\_hankel()} is defined by
+\begin{align}\label{eq:HT}
+F(q) &= \mathcal{H}_n\left[f(q)\right](r)  = \int_0^\infty \mathrm{J}_n(qr) f(r) r \mathrm{d}r
+\end{align}
+This means an upper unbounded integral over the oscillating Bessel function $\mathrm{J}_n()$ has to be solved numerically.
+Thos strategies already available for functions with an strictly periodic $\cos()$ or $\sin()$ term (Fourier type) can not be directly been used as only for large arguments of the bessel function in behaves as $\mathrm{J}_n(x)\approx \sqrt{\frac{2}{\pi x}}\cos\left(x-\frac{\pi}{2}n-\frac{\pi}{4}\right)$.
+\begin{description}
+\item[\texttt{QWE}] Quadrature With Extrapolation computes an
+infinite integral using the partial sum of quadrature terms
+accelerated by sequence extrapolation using the Shanks transformation
+implemented with Wynn's epsilon algorithm \cite{Key2012}.
+\item[\texttt{CHAVE}]  This algorithm performs the integration of the product of the kernel and Bessel functions between the asymptotic zero crossings of the latter and sums the series of partial integrations using a continued fraction expansion, equivalent to an analytic continuation of the series \cite{Chave1983}.
+\item[\texttt{OOURA\_DEO}] As for large arguments $x$ the Bessel function asymptotically behaves as
+$\mathrm{J}_n\approx \sqrt{\frac{2}{\pi x}}\cos\left(x-\frac{\pi}{2}n-\frac{\pi}{4}\right)$ the double exponential formula of \cite{Ooura_1991} for oscillatory functions over the half infinite interval is used directly.
+\item[\texttt{GSL\_QAWF}] This options tries to make use of the adaptive integration of Fourier integrals available in the gsl library (\texttt{gsl\_integration\_qawf()}). This function attempts to compute a Fourier integral of the function $g$ over the semi-infinite interval $[a,+\infty)$ as
+$I = \int_a^{+\infty} \mathrm{d}x g(x)
+\left\{
+\begin{array}{c}
+\sin{(\omega x)} \\
+\cos{(\omega x)}
+\end{array}
+\right\}$
+By defining $g(r)= f(r) \frac{\mathrm{J}_n(qr)}{\cos\left(qr-\frac{\pi}{2}n-\frac{\pi}{4}\right)}$ we convert the Hankel transform in \ref{eq:HT} into a $\cos$-Fourier type transform after an additional substitutions of $r'=r-\frac{\pi}{2}\frac{n}{q}-\frac{1}{q}\frac{\pi}{4}$.
 \end{description}
+Next to the quadrature algorithms above also fast digital filters for Hankel transform have been developed. A few of these have been supplied in SASfit for testing \cite{Anderson1989,Guptasarma1997,Ogata2005,Kong2007,Key2012,Kang2021}: \\
+\texttt{OGATA\_2005}, \texttt{FBT0}, \texttt{FBT1}, \texttt{FBT2}, \texttt{GUPTASARMA\_97}, \texttt{GUPTASARMA\_97\_FAST}, \texttt{KEY\_51}, \texttt{KEY\_101}, \texttt{KEY\_201}, \texttt{ANDERSON\_801}
+
+
 
 \clearpage
 \section{Fitting strategies}

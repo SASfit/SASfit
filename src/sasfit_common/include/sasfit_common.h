@@ -1,3 +1,6 @@
+#ifndef HEADER_95A236AB69DDF689
+#define HEADER_95A236AB69DDF689
+
 /*
  * src/sasfit_common/include/sasfit_common.h
  *
@@ -119,6 +122,7 @@
 #define HANKEL_ANDERSON_801 11
 #define HANKEL_QWE 12
 #define HANKEL_CHAVE 13
+#define HANKEL_SINC_SEO 14
 
 #define ROOTALG_BISECTION       0
 #define ROOTALG_FALSE_POSITION  1
@@ -173,3 +177,5 @@ sasfit_common_DLLEXP
 const sasfit_common_stubs_t * sasfit_common_stubs_ptr();
 
 #endif // file
+#endif // header guard
+
