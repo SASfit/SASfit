@@ -1,0 +1,42 @@
+/*
+ * Author(s) of this file:
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ */
+
+#include "include/private.h"
+#include <sasfit_error_sd.h>
+
+// define shortcuts for local parameters/variables
+
+scalar metalog_logit_profile_PcsPlanar(scalar y, sasfit_param *param) {
+	scalar u,fsp,qmod,Qc, qc;
+	qmod = Q;
+	Qc = MLogit(10 , y ,&param->p[4] , 10, BL, BU, param);
+	qc = mLogit(10 , y ,&param->p[4] , 10, BL, BU, param);
+	u=qmod*Qc;
+	fsp = N*(1-y)*2*qc*cos(u);
+	return fsp;
+}
+scalar sasfit_ff_metalog_logit_profile_PcsPlanar(scalar q, sasfit_param * param)
+{
+    return gsl_pow_2(sasfit_ff_metalog_logit_profile_PcsPlanar_f(q,param));
+}
+
+scalar sasfit_ff_metalog_logit_profile_PcsPlanar_f(scalar q, sasfit_param * param)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
+	Q = q;
+	param->p[1]=0;
+	return sasfit_integrate(0,1,&metalog_logit_profile_PcsPlanar,param);
+}
+
+scalar sasfit_ff_metalog_logit_profile_PcsPlanar_v(scalar q, sasfit_param * param, int dist)
+{
+	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
+
+	// insert your code here
+	return 0.0;
+}
+
