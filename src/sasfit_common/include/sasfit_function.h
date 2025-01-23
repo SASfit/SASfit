@@ -1,3 +1,6 @@
+#ifndef HEADER_6A8975C923532C3
+#define HEADER_6A8975C923532C3
+
 /*
  * src/sasfit_common/include/sasfit_function.h
  *
@@ -371,6 +374,7 @@ typedef struct {
         int dist;
         scalar u;
         scalar vguess;
+        scalar median;
         scalar bl;
         scalar bu;
         gsl_function F;
@@ -393,4 +397,6 @@ sasfit_common_DLLEXP  scalar sasfit_invert_func_v(scalar u, sasfit_func_vol_t * 
 /*@}*/
 #endif // MAKE_SASFIT_PLUGIN
 #endif // file
+
+#endif // header guard
 

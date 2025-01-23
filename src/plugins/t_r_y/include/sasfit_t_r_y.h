@@ -227,7 +227,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_sphere_v(scalar q, sasfit_para
  * \defgroup ff_fgld_sphere FGLD-sd of spheres
  * \ingroup ff_plugins
  *
- * \brief \< some brief description of FGLD sphere function \>
+ * \brief FGLD-sd of spheres
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -284,6 +284,132 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_f(scalar q, sasfit_param * p);
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_fgld_sphere ################ */
+
+/* ################ start ff_fgld_profile_PcsCyl ################ */
+/**
+ * \defgroup ff_fgld_profile_PcsCyl Pcs: FGLD cyl-xs
+ * \ingroup ff_plugins
+ *
+ * \brief FGLD profile for PcsCyl
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b delta</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_fgld_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fgld_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fgld_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_fgld_profile_PcsCyl ################ */
+
+/* ################ start ff_fgld_profile_PcsPlanar ################ */
+/**
+ * \defgroup ff_fgld_profile_PcsPlanar Pcs: FGLD planar-xs
+ * \ingroup ff_plugins
+ *
+ * \brief FGLD profile for PcsPlanar
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b kappa</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b delta</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_fgld_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsPlanar(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fgld_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsPlanar_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_fgld_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_fgld_profile_PcsPlanar ################ */
 
 /* ################ start sd_egu_w_l ################ */
 /**
@@ -413,7 +539,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_v(scalar q, sasfit_param * 
 
 /* ################ start ff_egu_w_l_profile_sphere ################ */
 /**
- * \defgroup ff_egu_w_l_profile_sphere EGu-W{L} profile sphere
+ * \defgroup ff_egu_w_l_profile_sphere  EGu-W{L} sph-xs
  * \ingroup ff_plugins
  *
  * \brief \< some brief description of EGu-W{L} profile sphere function \>
@@ -473,6 +599,132 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_sphere_f(scalar q, sasfit_p
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_egu_w_l_profile_sphere ################ */
+
+/* ################ start ff_egu_w_l_profile_PcsCyl ################ */
+/**
+ * \defgroup ff_egu_w_l_profile_PcsCyl Pcs: EGu-W{L} cyl-xs
+ * \ingroup ff_plugins
+ *
+ * \brief EGu-W{L} profile for PcsCyl
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b k</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_egu_w_l_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsCyl(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_egu_w_l_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsCyl_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_egu_w_l_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_egu_w_l_profile_PcsCyl ################ */
+
+/* ################ start ff_egu_w_l_profile_PcsPlanar ################ */
+/**
+ * \defgroup ff_egu_w_l_profile_PcsPlanar Pcs: EGu-W{L} planar-xs
+ * \ingroup ff_plugins
+ *
+ * \brief EGu-W{L} profile for PcsPlanar
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b k</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b c</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_egu_w_l_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsPlanar(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_egu_w_l_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsPlanar_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_egu_w_l_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_egu_w_l_profile_PcsPlanar ################ */
 
 /* ################ start ff_egu_w_l_sphere ################ */
 /**

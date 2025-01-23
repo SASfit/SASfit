@@ -1006,8 +1006,8 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
     scalar zeros_PI, phi_dot,y_k,w_nv_k,J_nv, sum,nv,h;
     unsigned int i;
     int lenaw=4000;
-    int status;
-    scalar a, abserr, phi0, res0;
+    int status, na;
+    scalar a, abserr, phi0, res0, err0;
     size_t limit = 4000;
     scalar lambda;
     static const scalar WJ0Fast[61] = {
@@ -1124,11 +1124,20 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
 
     switch (sasfit_get_hankel_strategy()) {
         case HANKEL_OOURA_DEO: {
+
+            na = lround(sasfit_get_N_Ogata());
+            a=gsl_sf_bessel_zero_Jnu(nv,(na<10?na:10))/FBTparam.Q;
+
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             eps_nriq=sasfit_eps_get_nriq();
+            sasfit_intdeini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
+            sasfit_intde(&intdeo_FBT,0, a, aw, &res0, &err0, &FBTparam);
+
             sasfit_intdeoini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
-            sasfit_intdeo(&intdeo_FBT,0, FBTparam.Q, aw, &res, &err, &FBTparam);
+            sasfit_intdeo(&intdeo_FBT,a, FBTparam.Q, aw, &res, &err, &FBTparam);
             free(aw);
+            res += res0;
+            err += err0;
             break;
         }
         case HANKEL_OGATA_2005: {
@@ -1171,8 +1180,8 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
         }
         case HANKEL_GSL_QAWF: {
             phi0 = M_PI/4.*(1.+nu*2.);
-
-            a=gsl_sf_bessel_zero_Jnu(nv,lround(sasfit_get_N_Ogata()))/FBTparam.Q;
+            na = lround(sasfit_get_N_Ogata());
+            a=gsl_sf_bessel_zero_Jnu(nv,(na<10?na:10))/FBTparam.Q;
 
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             eps_nriq=sasfit_eps_get_nriq();
@@ -1201,15 +1210,15 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             sM   = lround(ceil(-5*log10(seta)));
             sni  = FBTparam.nu;
             sw = FBTparam.Q;
-            sK = pow(M_PI,(sni+2)) /( sw*sw*pow(2,sni) * gsl_sf_gamma(sni+1) *(sni+2) ) ;
-            sh = 1.0/((sni +2) * sM) * log(sK * pow(sM,(sni +2))/seta ) ;
+            sK = pow(M_PI,(sni+2)) /( sw*sw*pow(2,sni) * gsl_sf_gamma(sni+1) *(sni+2) );
+            sh = 1.0/((sni +2) * sM) * log(sK * pow(sM,(sni +2))/seta );
             sc = sqrt(2)/16.0/(sw*sw)*fabs(4*sni*sni-1);
-            #define FUN(X) sc * f(fabs(M_PI/sw*X) , fparams) / sqrt(X)
+            #define FUN(X) (sc * f(fabs(X*M_PI/sw) , fparams) / sqrt(X))
             #define PHI(X) (X/(1 - exp(-X)))
             #define PHIP(X) ((1 - exp(-X)-X*exp(-X))/(1-exp(-X)))
             #define F(t) f(fabs(stau/sw *PHI(t-sq)),fparams) *gsl_pow_2(stau/sw)*PHI(st-sq) * gsl_sf_bessel_Jnu(sni, stau*PHI(t-sq)) * PHIP(t-sq)
-            stau = M_PI / sh ;
-            sq = M_PI /(4*stau) *(1-2*sni) ;
+            stau = M_PI / sh;
+            sq = M_PI /(4*stau) *(1-2*sni);
             sN0=5;
             rN0=5;
             sder = 0;
@@ -1249,14 +1258,6 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             err = seta;
             nval = sM+sN+k+1;
             sasfit_out("needed %d function evaluations.\n",nval);
-            /*
-            phi0 = M_PI_4*(1.+FBT_param->nu*2.);
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            eps_nriq=sasfit_eps_get_nriq();
-            sasfit_intdeoini(lenaw, GSL_DBL_MIN, eps_nriq, aw);
-            sasfit_intdeo(&intDEO_FBT,-phi0/FBTparam.Q, FBTparam.Q, aw, &res, &err, &FBTparam);
-            free(aw);
-            */
             break;
         }
         case HANKEL_GUPTASARMA_97_FAST: {
@@ -1380,11 +1381,11 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             break;
         }
         case HANKEL_QWE: {
-            res = sasfit_qwe(0, f, x, fparams, 200, sasfit_eps_get_nriq()*10, DBL_MIN);
+            res = sasfit_qwe(0, f, x, fparams, 2000, sasfit_eps_get_nriq()*10, DBL_MIN);
             break;
         }
         case HANKEL_CHAVE: {
-            res = sasfit_HankelChave(0, f,x, fparams, 200, sasfit_eps_get_nriq()*10, DBL_MIN);
+            res = sasfit_HankelChave(0, f,x, fparams, 2000, sasfit_eps_get_nriq()*10, DBL_MIN);
             break;
         }
         default:{

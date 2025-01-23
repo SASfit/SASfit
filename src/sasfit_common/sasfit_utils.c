@@ -270,11 +270,11 @@ scalar sasfit_rwbrush_w(scalar Q, scalar R)
 }
 
 scalar sasfit_jinc(scalar x) {
+//PadeApproximant {3,4}
+/*
     scalar x2, x4;
     x2=x*x;
     x4=x2*x2;
-//PadeApproximant {3,4}
-/*
     if (fabs(x) <= 1e-6) {
 		return (0.5-23*x2/480.+11*x4/11520.)
 		       /(1+7/240.*x2+x4/2880.);

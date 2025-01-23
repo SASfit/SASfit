@@ -115,8 +115,8 @@ ENDIF() # for Windows
 
 # for Unix/Linux
 IF(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-#    ADD_DEFINITIONS(-DINTEGER_STAR_8 -fopenmp) # see f2c/f2c.h
-    ADD_DEFINITIONS(-DINTEGER_STAR_8 ) # see f2c/f2c.h
+    ADD_DEFINITIONS(-DINTEGER_STAR_8 -fopenmp) # see f2c/f2c.h
+#    ADD_DEFINITIONS(-DINTEGER_STAR_8 ) # see f2c/f2c.h
     add_definitions(-UNO_LONGLONG_AND_NO_LONGINT)
 ENDIF()
 
@@ -178,30 +178,7 @@ add_definitions(
 find_package(ZLIB QUIET REQUIRED)
 
 # openMP
-#find_package(OpenMP QUIET)
-
-#if(OPENMP_FOUND)
-#    message(STATUS "Enabling OpenMP support")
-#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-#    message(STATUS "OpenMP_C_FLAGS: '${OpenMP_C_FLAGS}'")
-#    message(STATUS "OpenMP_CXX_FLAGS: '${OpenMP_CXX_FLAGS}'")
-#    message(STATUS "OpenMP_EXE_LINKER_FLAGS: '${OpenMP_EXE_LINKER_FLAGS}'")
-#    set(OpenMP_LIB)
-#    if(WIN32)
-#        # gather required libraries
-#        execute_process(COMMAND ${CMAKE_C_COMPILER} -print-file-name=libgomp.a
-#                        OUTPUT_VARIABLE OpenMP_LIB)
-#        string(STRIP "${OpenMP_LIB}" OpenMP_LIB)
-#        get_filename_component(OpenMP_LIB "${OpenMP_LIB}" REALPATH)
-#        find_library(pthread_LIB pthread)
-#        list(APPEND OpenMP_LIB "${pthread_LIB}")
-#    endif()
-#    message(STATUS "OpenMP LIBRARIES: '${OpenMP_LIB}'")
-#else()
-#    message(STATUS "Disabling OpenMP support")
-#endif()
+find_package(OpenMP)
 
 # get a list of all source files and prepare include dirs
 set(SRC_FILES "")
@@ -238,7 +215,7 @@ target_link_libraries(sasfit
     ${FFTW3_fftw3_LIBRARY}
     ${sundials_LIBRARIES}
 	${ZLIB_LIBRARIES}
-#    ${OpenMP_LIB}
+    ${OpenMP_LIB}
 )
 if(FALSE) # CMAKE_HOST_APPLE
     # seems to be needed on macOS

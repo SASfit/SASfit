@@ -5,11 +5,14 @@
 
 #include "include/private.h"
 #include <sasfit_error_sd.h>
+#include <float.h>
 
 scalar mk(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     SASFIT_CHECK_COND2((n < k), param, "n(%d) < k(%d)",n,k);
     SASFIT_CHECK_COND1((k < 2), param, "k(%d) < 2(%d)",k);
     scalar logity,y1my;
+    if (y<=0) return DBL_MAX;
+    if (y>=1) return DBL_MAX;
     logity = log(y/(1-y));
     y1my = (y*(1-y));
     switch (k) {
@@ -32,6 +35,8 @@ scalar Mk(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     SASFIT_CHECK_COND2((n < k), param, "n(%d) < k(%d)",n,k);
     SASFIT_CHECK_COND1((k < 2), param, "k(%d) < 2(%d)",k);
     scalar logity;
+    if (y<=0) return DBL_MIN;
+    if (y>=1) return DBL_MAX;
     logity = log(y/(1-y));
     switch (k) {
     case 2: return a[0]+a[1]*logity;

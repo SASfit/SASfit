@@ -13,10 +13,14 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sd_fgld_.c
 	sasfit_ff_fgld_profile.c
 	sasfit_ff_fgld_profile_sphere.c
+	sasfit_ff_fgld_profile_PcsCyl.c
+	sasfit_ff_fgld_profile_PcsPlanar.c
 	sasfit_ff_fgld_sphere.c
 	sasfit_sd_egu_w_l.c
 	sasfit_ff_egu_w_l_profile.c
 	sasfit_ff_egu_w_l_profile_sphere.c
+	sasfit_ff_egu_w_l_profile_PcsCyl.c
+	sasfit_ff_egu_w_l_profile_PcsPlanar.c
 	sasfit_ff_egu_w_l_sphere.c
 	sasfit_sd_g_c_e__.c
 	sasfit_sd_ll_l_gl__.c

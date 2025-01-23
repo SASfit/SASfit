@@ -30,6 +30,7 @@
 
 #include "sasfit_common_shared_exports.h"
 #include <gsl/gsl_integration.h>
+#include <f2c.h>
 #include "cubature.h"
 /**
  * \file sasfit_utils.h
@@ -114,6 +115,8 @@ sasfit_common_DLLEXP scalar sasfit_dgammaln_dx(scalar x);
 sasfit_common_DLLEXP scalar sasfit_dgamma_dx(scalar x);
 sasfit_common_DLLEXP scalar sasfit_erf_pure(scalar x);
 sasfit_common_DLLEXP scalar sasfit_si(scalar x);
+sasfit_common_DLLEXP doublereal sasfit_struve_h0 (doublereal * xvalue);
+sasfit_common_DLLEXP doublereal sasfit_struve_h1 (doublereal * xvalue);
 sasfit_common_DLLEXP scalar sasfit_log1p(const scalar x);
 sasfit_common_DLLEXP void sasfit_polint(scalar xa[], scalar ya[], int n, scalar x, scalar * y, scalar * dy);
 sasfit_common_DLLEXP scalar sasfit_qromb(scalar a, scalar b, sasfit_func_one_t * trapzd_fct, sasfit_param * param);

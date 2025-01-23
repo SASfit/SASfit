@@ -54,8 +54,7 @@ scalar pcs_ellcylsh(sasfit_param *param)
 	return gsl_pow_int(A,lround(P));
 }
 
-int pcs_ellcylsh_cubature(unsigned ndim, const double *x, void *pam,
-      unsigned fdim, double *fval) {
+double pcs_ellcylsh_cubature(const double *x, size_t ndim,  void *pam) {
 	sasfit_param subParam;
 	sasfit_init_param( &subParam );
 	sasfit_param *param;
@@ -64,11 +63,10 @@ int pcs_ellcylsh_cubature(unsigned ndim, const double *x, void *pam,
 	param = cparam->param;
 	int ndimtest;
 
-	if ((ndim < 1) || (fdim < 1)) {
-		sasfit_out("false dimensions fdim:%d ndim:%d\n",fdim,ndim);
+	if ((ndim < 1)) {
+		sasfit_out("false dimensions ndim:%d\n",ndim);
 		return 1;
 	}
-	fval[0] = 0;
 	ndimtest=0;
 
     if (EPSILON != 1) {
@@ -129,14 +127,12 @@ int pcs_ellcylsh_cubature(unsigned ndim, const double *x, void *pam,
         sasfit_out("false dimensions ndim:%d\n",ndim);
         return 1;
     }
-    fval[0] = LNDISTR1*LNDISTR2*(cparam->func)(param);
-    return 0;
+    return LNDISTR1*LNDISTR2*(cparam->func)(param);
 }
 scalar sasfit_ff_pcs_ellcylsh(scalar q, sasfit_param * param)
 {
-    scalar err,sum;
-    scalar cubxmin[3], cubxmax[3], fval[1], ferr[1];
-    int intstrategy, ndim;
+    scalar cubxmin[3], cubxmax[3], fval, ferr;
+    int ndim;
 	cubature_param cparam;
 
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -178,38 +174,13 @@ scalar sasfit_ff_pcs_ellcylsh(scalar q, sasfit_param * param)
 	cparam.ndim=ndim;
 	cparam.func = &pcs_ellcylsh;
     cparam.param = param;
-    intstrategy = sasfit_get_int_strategy();
 
-    if (ndim>=3) {
-        intstrategy=H_CUBATURE;
-    } else {
-        intstrategy=P_CUBATURE;
-    }
-
-	switch(intstrategy) {
-    case H_CUBATURE: {
-			hcubature(1, &pcs_ellcylsh_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-			pcubature(1, &pcs_ellcylsh_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    default: {
-			pcubature(1, &pcs_ellcylsh_cubature,&cparam,ndim, cubxmin, cubxmax,
-				100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-				fval, ferr);
-			sum = fval[0];
-            break;
-            }
-    }
-    return sum;
+    sasfit_cubature(ndim, cubxmin, cubxmax,
+			pcs_ellcylsh_cubature,
+			&cparam,
+			sasfit_eps_get_nriq(),
+			&fval, &ferr);
+    return fval;
 }
 
 scalar sasfit_ff_pcs_ellcylsh_f(scalar q, sasfit_param * param)
@@ -218,8 +189,6 @@ scalar sasfit_ff_pcs_ellcylsh_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	Q=q;
-    P=1;
 
 	return 0;
 }

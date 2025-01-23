@@ -26,4 +26,4 @@ echo
 echo "## Install extra development packages"
 echo
 set -x
-sudo apt-get -y install build-essential cmake zlib1g-dev libgsl-dev libfftw3-dev libx11-dev #gcc-14 g++-14 # for testing
+sudo apt-get -y install build-essential cmake zlib1g-dev libgsl-dev libfftw3-dev libx11-dev libboost-all-dev #gcc-14 g++-14 # for testing

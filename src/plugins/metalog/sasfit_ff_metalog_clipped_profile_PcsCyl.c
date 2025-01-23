@@ -30,6 +30,7 @@ scalar sasfit_ff_metalog_clipped_profile_PcsCyl_f(scalar q, sasfit_param * param
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	Q = q;
 	param->p[1]=0;
+	param->p[3]=0;
 	ystart = sasfit_invert_func_v(BL,&sasfit_sd_metalog_clipped_v,DISTRIBUTION_QUANTILE,0,1,param);
 	yend   = sasfit_invert_func_v(BU,&sasfit_sd_metalog_clipped_v,DISTRIBUTION_QUANTILE,0,1,param);
 

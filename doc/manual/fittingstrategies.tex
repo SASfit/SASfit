@@ -396,7 +396,17 @@ Within \texttt{SASfit} a configurable one dimensional integration routine as wel
    \item[\texttt{RQMC\_SOBOL\_OWEN}] randomized quasi Monte Carlo integration using the quasi random using Owen-scrambled Sobol sequence \cite{Burley2020Scrambling,Owen1995}
    \item[\texttt{RQMC\_FAURE05}] randomized quasi Monte Carlo integration using Owen-scrambled Faure (0,5) sequence \cite{Burley2020Scrambling,Owen1995}.
    \item[\texttt{RQMC\_LAINE\_KARRAS}] randomized quasi Monte Carlo integration using Laine-Karras hash method mentioned in \cite{Burley2020Scrambling} and given as C source code in its supplement information.
+   \item[\texttt{SG\_SMOLYAK}] A sparse grid is used, based on a "delayed" Clenshaw Curtis quadrature rule, using the Smolyak method \cite{Petras2003,Burkardt2019}.
+   \item[\texttt{SG\_CC\_SMOLYAK}] A sparse grid is used, based on a Clenshaw Curtis quadrature rule, using the Smolyak method \cite{Petras2003,Burkardt2019}.
+   \item[\texttt{SG\_SMOLYAK\_CLENSHAW\_CURTIS}] The quadrature rule is associated with a sparse grid derived from a Smolyak construction using a closed 1D quadrature rule \cite{Nobile2008,Burkardt2019}.
+   \item[\texttt{SG\_CLENSHAW\_CURTIS\_LINEAR}] sparse grid based on Clenshaw Curtis quadrature rule \cite{Heiss2008,Heiss2025,Burkardt2019a}
+   \item[\texttt{SG\_CLENSHAW\_CURTIS\_SLOW}] sparse grid based on "slow growth" Clenshaw Curtis quadrature rule \cite{Heiss2008,Heiss2025,Burkardt2019a}
+   \item[\texttt{SG\_CLENSHAW\_CURTIS\_EXP}] sparse grid based on Clenshaw-Curtis Exponential quadrature rule \cite{Heiss2008,Heiss2025,Burkardt2019a}
+   \item[\texttt{SG\_GAUSS\_LEGENDRE}] sparse grids based on Gauss-Legendre rules\cite{Heiss2008,Heiss2025,Burkardt2019a}
+   \item[\texttt{SG\_KONROD\_PATTERSON}]sparse grids based on \ Gauss-Patterson rules\cite{Heiss2008,Heiss2025,Burkardt2019a}
+   \item[\texttt{SG\_FROLOV}]  sparse grids using optimized Frolov lattices \cite{Kacwin2020,InstitutfuerNumerischeSimulation2025}
 \end{description}
+
 
 \section{orientation average} ~\\
 

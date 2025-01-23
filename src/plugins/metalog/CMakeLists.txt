@@ -17,8 +17,14 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_metaloglog_sphere.c
 	sasfit_ff_metaloglogit_sphere.c
 	sasfit_ff_metalog_log_profile_sphere.c
+	sasfit_ff_metalog_log_profile_PcsCyl.c
+	sasfit_ff_metalog_log_profile_PcsPlanar.c
 	sasfit_ff_metalog_logit_profile_sphere.c
+	sasfit_ff_metalog_logit_profile_PcsCyl.c
+	sasfit_ff_metalog_logit_profile_PcsPlanar.c
 	sasfit_ff_metalog_clipped_profile_sphere.c
+	sasfit_ff_metalog_clipped_profile_PcsCyl.c
+	sasfit_ff_metalog_clipped_profile_PcsPlanar.c
 	sasfit_ff_metalog_log_profile.c
 	sasfit_ff_metalog_logit_profile.c
 	sasfit_ff_metalog_clipped_profile.c

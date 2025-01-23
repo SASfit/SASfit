@@ -413,8 +413,8 @@ set FitPrecision(epsNRIQ)         1e-10
 set FitPrecision(epsanisotropic)  1e-5
 set FitPrecision(epsresolution)   1e-5
 set FitPrecision(h)               1e-5
-set FitPrecision(rootalg)         Steffensen
-set FitPrecision(rootalg_int)     5
+set FitPrecision(rootalg)         "Brent-Dekker"
+set FitPrecision(rootalg_int)     2
 set FitPrecision(JMAXNRIQ)        18
 set FitPrecision(JMAXanisotropic) 18
 set FitPrecision(JMAXresolution)  18

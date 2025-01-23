@@ -1,3 +1,6 @@
+#ifndef HEADER_769512F2DA484E52
+#define HEADER_769512F2DA484E52
+
 /*
  * Author(s) of this file:
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
@@ -507,7 +510,7 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit_v(scalar q, sasfit_param * 
 
 /* ################ start ff_metalog_clipped_profile_sphere ################ */
 /**
- * \defgroup ff_metalog_clipped_profile_sphere metalog_clipped profile4Sphere
+ * \defgroup ff_metalog_clipped_profile_sphere Pcs:metalog (clipped) sph-xs
  * \ingroup ff_plugins
  *
  * \brief some brief description of metalog_clipped profile for Sphere function
@@ -583,10 +586,166 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_sphere_f(scalar q
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_clipped_profile_sphere ################ */
 
+/* ################ start ff_metalog_clipped_profile_PcsCyl ################ */
+/**
+ * \defgroup ff_metalog_clipped_profile_PcsCyl Pcs:metalog (clipped) cyl-xs
+ * \ingroup ff_plugins
+ *
+ * \brief some brief description of Pcs:metalog_clipped profile for cylindrical xs
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metalog_clipped_profile_PcsCyl
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsCyl(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_clipped_profile_PcsCyl
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsCyl_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_clipped_profile_PcsCyl
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metalog_clipped_profile_PcsCyl ################ */
+
+/* ################ start ff_metalog_clipped_profile_PcsPlanar ################ */
+/**
+ * \defgroup ff_metalog_clipped_profile_PcsPlanar Pcs:metalog (clipped) Planar-xs
+ * \ingroup ff_plugins
+ *
+ * \brief some brief description of Pcs:metalog_clipped profile for cylinder xs
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metalog_clipped_profile_PcsPlanar
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsPlanar(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_clipped_profile_PcsPlanar
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsPlanar_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_clipped_profile_PcsPlanar
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metalog_clipped_profile_PcsPlanar ################ */
+
 
 /* ################ start ff_metalog_logit_profile_sphere ################ */
 /**
- * \defgroup ff_metalog_logit_profile_sphere metalog_logit profile4Sphere
+ * \defgroup ff_metalog_logit_profile_sphere metalog_logit sph-xs
  * \ingroup ff_plugins
  *
  * \brief some brief description of metalog_logit profile for Sphere function
@@ -662,10 +821,166 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_sphere_f(scalar q, 
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_logit_profile_sphere ################ */
 
+/* ################ start ff_metalog_logit_profile_PcsCyl ################ */
+/**
+ * \defgroup ff_metalog_logit_profile_PcsCyl Pcs:metalog_logit cyl-xs
+ * \ingroup ff_plugins
+ *
+ * \brief metalog_logit profile for cyl-xs
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metalog_logit_profile_PcsCyl
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsCyl(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_logit_profile_PcsCyl
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsCyl_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_logit_profile_PcsCyl
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metalog_logit_profile_PcsCyl ################ */
+
+/* ################ start ff_metalog_logit_profile_PcsPlanar################ */
+/**
+ * \defgroup ff_metalog_logit_profile_PcsPlanar Pcs:metalog_logit planar-xs
+ * \ingroup ff_plugins
+ *
+ * \brief metalog_logit PcsPlanar
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metalog_logit_profile_PcsPlanar
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsPlanar(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_logit_profile_PcsPlanar
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsPlanar_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_logit_profile_PcsPlanar
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metalog_logit_profile_PcsPlanar ################ */
+
 
 /* ################ start ff_metalog_log_profile_sphere ################ */
 /**
- * \defgroup ff_metalog_log_profile_sphere metalog_log profile4Sphere
+ * \defgroup ff_metalog_log_profile_sphere metalog_log sph-xs
  * \ingroup ff_plugins
  *
  * \brief some brief description of metalog_log profile for Sphere function
@@ -740,6 +1055,162 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_sphere_f(scalar q, sa
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_log_profile_sphere ################ */
+
+/* ################ start ff_metalog_log_profile_PcsCyl ################ */
+/**
+ * \defgroup ff_metalog_log_profile_PcsCyl Pcs:metalog_log cyl-xs
+ * \ingroup ff_plugins
+ *
+ * \brief some brief description of metalog_log profile for Sphere function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metalog_log_profile_PcsCyl
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsCyl(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_log_profile_PcsCyl
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsCyl_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_log_profile_PcsCyl
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metalog_log_profile_PcsCyl ################ */
+
+/* ################ start ff_metalog_log_profile_PcsPlanar ################ */
+/**
+ * \defgroup ff_metalog_log_profile_PcsPlanar Pcs:metalog_log Planar-xs
+ * \ingroup ff_plugins
+ *
+ * \brief some brief description of metalog_log profile for PcsPlanar function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper limit</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>dummy</td>
+ *      </tr><tr>
+ *       <td>\b a1</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a2</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a3</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a4</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a5</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a6</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a7</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a8</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a9</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b a10</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_metalog_log_profile_PcsPlanar
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsPlanar(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_log_profile_PcsPlanar
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsPlanar_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_metalog_log_profile_PcsPlanar
+ *
+ * \sa sasfit_metalog.h, ff_plugins
+ */
+sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_metalog_log_profile_PcsPlanar ################ */
 
 
 /* ################ start ff_metalog_clipped_profile ################ */
@@ -981,4 +1452,6 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_v(scalar q, sasfit_pa
 
 
 #endif // this file
+
+#endif // header guard
 
