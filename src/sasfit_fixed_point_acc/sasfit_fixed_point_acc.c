@@ -2081,20 +2081,18 @@ scalar logit(scalar x) {
     return 1/(1+exp(-x));
 }
 
-scalar f01 (scalar y, void *pam) {
-    return (ipar.bu-ipar.bl)*logit(y)+ipar.bl;
-    return (ipar.bu-ipar.bl)*(sin(M_PI*y)+1.0)/2.+ipar.bl;
-}
-scalar f01inv (scalar x, void *pam) {
-    scalar u;
-    u = (x-ipar.bl)/(ipar.bu-ipar.bl);
-    return log(u/(u-1));
-    return asin((2*x-ipar.bu-ipar.bl)/(ipar.bu-ipar.bl))/M_PI;
+scalar f01 (scalar v, void *pam) {
+    return (ipar.bu-ipar.bl)*logit(v)+ipar.bl;
 }
 
-scalar df01 (scalar y, void *pam) {
-    return (ipar.bu-ipar.bl)*exp(-y)/gsl_pow_2(1+exp(-y));
-    return (ipar.bu-ipar.bl)*M_PI*cos(M_PI*y)/2.;
+scalar f01inv (scalar x, void *pam) {
+    if (x<=ipar.bl) return -1/DBL_EPSILON;
+    if (x>=ipar.bu) return 1/DBL_EPSILON;
+    return log((x-ipar.bl)/(ipar.bu-x));
+}
+
+scalar df01 (scalar v, void *pam) {
+    return (ipar.bu-ipar.bl)*exp(-fabs(v))/gsl_pow_2(1+exp(-fabs(v)));
 }
 
 double root_invert_f(double v, void *rootp) {
@@ -2109,11 +2107,22 @@ double root_invert_df(double v, void *rootp) {
     scalar vt,vtp,vtm,Dvt;
     sasfit_param *param;
     param = (sasfit_param *) rootp;
+
+    if (v!=0) {
+        vtp = (ipar.f_trans)(v*(1+sasfit_eps_get_h()),rootp);
+        vtm = (ipar.f_trans)(v*(1-sasfit_eps_get_h()),rootp);
+        Dvt = (vtp-vtm);
+    } else {
+        vtp = (ipar.f_trans)(+sasfit_eps_get_h(),rootp);
+        vtm = (ipar.f_trans)(-sasfit_eps_get_h(),rootp);
+        Dvt = (vtp-vtm);
+    }
+        return (root_invert_f(vtp,rootp)-root_invert_f(vtm,rootp))/Dvt/(ipar.df_trans)(v,rootp);
+
+    vt = (ipar.f_trans)(v,rootp);
     if (ipar.dist == DISTRIBUTION_CUMULATIVE) {
-        vt = (ipar.f_trans)(v,rootp);
         return (ipar.func)(vt,param,DISTRIBUTION_PROBABILITY)/(ipar.df_trans)(v,rootp);
     } else if (ipar.dist == DISTRIBUTION_QUANTILE) {
-        vt = (ipar.f_trans)(v,rootp);
         return (ipar.func)(vt,param,DISTRIBUTION_QUANTILE_DENS)/(ipar.df_trans)(v,rootp);
     } else {
         if (v!=0) {
@@ -2141,9 +2150,44 @@ void sasfit_invert_free(void) {
     ipar.sd = NULL;
 }
 
+scalar help_set(sasfit_param *param) {
+    scalar Delta, tvgl, tvgu;
+    int status, i;
+    i = 0;
+    Delta = DBL_MIN;
+    do {
+        tvgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta*gsl_pow_int(10,i))
+                        :Delta*gsl_pow_int(10,i);
+        ipar.vgl = (*ipar.f_inv)(tvgl,param);
+        ipar.vl = (*ipar.F.function)(ipar.vgl,param);
+        i++;
+    } while (Delta*gsl_pow_int(10,i)<sasfit_eps_get_h() && (gsl_isnan(ipar.vl) || gsl_isinf(ipar.vl)));
+    i = 0;
+    do {
+        tvgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta*gsl_pow_int(10,i))
+                        :-Delta*gsl_pow_int(10,i);
+        ipar.vgu = (*ipar.f_inv)(tvgu,param);
+        ipar.vu = (*ipar.F.function)(ipar.vgu,param);
+        i++;
+    } while (Delta*gsl_pow_int(10,i)<sasfit_eps_get_h() && (gsl_isnan(ipar.vu) || gsl_isinf(ipar.vu)));
+    return (*ipar.f_inv)((tvgu-tvgl)/2.0,param);
+}
+int help_diagnose_set(int status,sasfit_param *param){
+    ipar.vl = (*ipar.F.function)(ipar.vgl,param);
+    ipar.vu = (*ipar.F.function)(ipar.vgu,param);
+    if ((ipar.vl<0 && ipar.vu <0) || (ipar.vu==0)) {
+        ipar.vguess = (*ipar.f_inv)(ipar.bl,param);
+        status = GSL_EOVRFLW;
+    } else if ((ipar.vl>0 && ipar.vu >0) || (ipar.vl==0)) {
+        ipar.vguess = (*ipar.f_inv)(ipar.bu,param);
+        status = GSL_EUNDRFLW;
+    }
+    sasfit_out("x:%lg: yl:%lg, yu:%lg, Q(yl)-x: %lg, Q(yu)-x: %lg\n",ipar.u,ipar.vgl,ipar.vgu,ipar.vl,ipar.vu);
+    sasfit_err("could not initialize root solver\n%s\n",gsl_strerror (status));
+}
+
 int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, scalar bu, scalar *vguess, sasfit_param *param) {
-    scalar Delta, vl, vu, vgl, vgu;
-    int status;
+    int status, i;
     ipar.u=u;
     ipar.bu=gsl_max(bu,bl);
     ipar.bl=gsl_min(bl,bu);
@@ -2155,8 +2199,6 @@ int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, s
     }
     ipar.func=func;
     ipar.dist=dist;
-    Delta = 2*gsl_max(DBL_EPSILON,gsl_pow_2(sasfit_eps_get_h()));
-    ipar.vguess = (ipar.bu-ipar.bl)/2.0;
 
     ipar.F.function  = &root_invert_f;
     ipar.F.params    = param;
@@ -2176,26 +2218,13 @@ int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, s
                                 ipar.T = gsl_root_fsolver_brent;
                                 ipar.s = gsl_root_fsolver_alloc (ipar.T);
                                 ipar.sd = NULL;
-                                vgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta)
-                                                    :Delta;
-                                vgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta)
-                                                    :-Delta;
-                                vgl = (*ipar.f_inv)(vgl,param);
-                                vgu = (*ipar.f_inv)(vgu,param);
-                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F), vgl, vgu);
-                                if (status != GSL_SUCCESS) {
-                                        vl = (*ipar.F.function)(vgl,param);
 
-                                        vu = (*ipar.F.function)(vgu,param);
-                                        if ((vl<0 && vu <0) || (vu==0)) {
-                                            *vguess = (*ipar.f_inv)(bl,param);
-                                            status = GSL_EOVRFLW;
-                                        } else if ((vl>0 && vu >0) || (vl==0)) {
-                                            *vguess = (*ipar.f_inv)(bu,param);;
-                                            status = GSL_EUNDRFLW;
-                                        }
-                                        sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,vgl,vgu,vl,vu,param);
-                                        sasfit_err("%s\n",gsl_strerror (status));
+                                ipar.vguess = 0*help_set(param);
+                                *vguess =  ipar.vguess;
+
+                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F), ipar.vgl, ipar.vgu);
+                                if (status != GSL_SUCCESS) {
+                                    status = help_diagnose_set(status,param);
                                 }
                                 break;
         case ROOTALG_FALSE_POSITION:
@@ -2205,26 +2234,13 @@ int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, s
                                 ipar.T = gsl_root_fsolver_falsepos;
                                 ipar.s = gsl_root_fsolver_alloc (ipar.T);
                                 ipar.sd = NULL;
-                                vgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta)
-                                                    :Delta;
-                                vgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta)
-                                                    :-Delta;
-                                vgl = (*ipar.f_inv)(vgl,param);
-                                vgu = (*ipar.f_inv)(vgu,param);
-                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F), vgl, vgu);
-                                if (status != GSL_SUCCESS) {
-                                        vl = (*ipar.F.function)(vgl,param);
 
-                                        vu = (*ipar.F.function)(vgu,param);
-                                        if ((vl<0 && vu <0) || (vu==0)) {
-                                            *vguess = bu;
-                                            status = GSL_EOVRFLW;
-                                        } else if ((vl>0 && vu >0) || (vl==0)) {
-                                            *vguess = bl;
-                                            status = GSL_EUNDRFLW;
-                                        }
-                                        sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,vgl,vgu,vl,vu,param);
-                                        sasfit_err("%s\n",gsl_strerror (status));
+                                ipar.vguess = 0*help_set(param);
+                                *vguess =  ipar.vguess;
+
+                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F), ipar.vgl, ipar.vgu);
+                                if (status != GSL_SUCCESS) {
+                                    status = help_diagnose_set(status,param);
                                 }
                                 break;
         case ROOTALG_BISECTION:
@@ -2234,72 +2250,56 @@ int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, s
                                 ipar.T = gsl_root_fsolver_bisection;
                                 ipar.s = gsl_root_fsolver_alloc (ipar.T);
                                 ipar.sd = NULL;
-                                vgl = (ipar.bl!=0.0)?ipar.bl*(1+GSL_SIGN(ipar.bl)*Delta)
-                                                    :Delta;
-                                vgu = (ipar.bu!=0.0)?ipar.bu*(1-GSL_SIGN(ipar.bu)*Delta)
-                                                    :-Delta;
-                                vgl = (*ipar.f_inv)(vgl,param);
-                                vgu = (*ipar.f_inv)(vgu,param);
-                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F), vgl, vgu);
-                                if (status != GSL_SUCCESS) {
-                                        vl = (*ipar.F.function)(vgl,param);
 
-                                        vu = (*ipar.F.function)(vgu,param);
-                                        if ((vl<0 && vu <0) || (vu==0)) {
-                                            *vguess = bu;
-                                            status = GSL_EOVRFLW;
-                                        } else if ((vl>0 && vu >0) || (vl==0)) {
-                                            *vguess = bl;
-                                            status = GSL_EUNDRFLW;
-                                        }
-                                        sasfit_out("x:%lf: yl:%lf, yu:%lf, Q(yl)-x: %lf, Q(yu)-x: %lf\n",u,vgl,vgu,vl,vu);
-                                        sasfit_err("%s\n",gsl_strerror (status));
+                                ipar.vguess = 0*help_set(param);
+                                *vguess =  ipar.vguess;
+
+                                status = gsl_root_fsolver_set(ipar.s, &(ipar.F), ipar.vgl, ipar.vgu);
+                                if (status != GSL_SUCCESS) {
+                                    status = help_diagnose_set(status,param);
                                 }
                                 break;
         case ROOTALG_SECANT:
-                                ipar.f_trans = &flin;
-                                ipar.f_inv = &flin;
-                                ipar.df_trans = &dflin;
                                 ipar.f_trans = &f01;
                                 ipar.f_inv = &f01inv;
                                 ipar.df_trans = &df01;
                                 ipar.Td = gsl_root_fdfsolver_secant;
                                 ipar.sd = gsl_root_fdfsolver_alloc (ipar.Td);
                                 ipar.s = NULL;
+                                ipar.vguess = 0*(*ipar.f_inv)((bu-bl)/2.0,param);
+                                *vguess =  ipar.vguess;
                                 status = gsl_root_fdfsolver_set(ipar.sd, &(ipar.FDF), ipar.vguess);
                                 if (status != GSL_SUCCESS) {
-                                    sasfit_err("%s\n",gsl_strerror (status));
+                                    sasfit_err("could not initialize root solver\n%s\n",gsl_strerror (status));
                                 }
                                 break;
         case ROOTALG_NEWTON:
-                                ipar.f_trans = &flin;
-                                ipar.f_inv = &flin;
-                                ipar.df_trans = &dflin;
                                 ipar.f_trans = &f01;
                                 ipar.f_inv = &f01inv;
                                 ipar.df_trans = &df01;
                                 ipar.Td = gsl_root_fdfsolver_newton;
                                 ipar.sd = gsl_root_fdfsolver_alloc (ipar.Td);
                                 ipar.s = NULL;
+                                ipar.vguess = 0*(*ipar.f_inv)((bu-bl)/2.0,param);
+                                *vguess =  ipar.vguess;
                                 status = gsl_root_fdfsolver_set(ipar.sd, &(ipar.FDF), ipar.vguess);
                                 if (status != GSL_SUCCESS) {
-                                    sasfit_err("%s\n",gsl_strerror (status));
+                                    sasfit_err("could not initialize root solver\n%s\n",gsl_strerror (status));
                                 }
                                 break;
         case ROOTALG_STEFFENSON:
         default:
-                                ipar.f_trans = &flin;
-                                ipar.f_inv = &flin;
-                                ipar.df_trans = &dflin;
                                 ipar.f_trans = &f01;
                                 ipar.f_inv = &f01inv;
                                 ipar.df_trans = &df01;
                                 ipar.Td = gsl_root_fdfsolver_steffenson;
                                 ipar.sd = gsl_root_fdfsolver_alloc (ipar.Td);
                                 ipar.s = NULL;
+                                ipar.vguess = 0*(*ipar.f_inv)((bu-bl)/2.0,param);
+                                *vguess =  ipar.vguess;
                                 status = gsl_root_fdfsolver_set(ipar.sd, &(ipar.FDF), ipar.vguess);
                                 if (status != GSL_SUCCESS) {
-                                    sasfit_err("%s\n",gsl_strerror (status));
+                                    sasfit_err("could not initialize root solver\n%s\n",gsl_strerror (status));
                                 }
     }
     ipar.vguess = (*ipar.f_inv)(ipar.vguess,param);
@@ -2317,7 +2317,7 @@ void sasfit_invert_step() {
                     y_lo = gsl_root_fsolver_x_lower (ipar.s);
                     y_hi = gsl_root_fsolver_x_upper (ipar.s);
                     ipar.status = gsl_root_fsolver_iterate (ipar.s);
-                    if (ipar.status == GSL_EBADFUNC) sasfit_err("\nroot function or its derivative value are not finite\n");
+                    if (ipar.status == GSL_EBADFUNC) sasfit_err("\nroot function is not finite\n");
                     ipar.vguess = gsl_root_fsolver_root (ipar.s);
                     y_lo = gsl_root_fsolver_x_lower (ipar.s);
                     y_hi = gsl_root_fsolver_x_upper (ipar.s);
@@ -2348,12 +2348,13 @@ scalar sasfit_invert_func_v(scalar u, sasfit_func_vol_t * func, int dist, scalar
         return 0;
     }
     gsl_set_error_handler_off ();
+/*
     if (dist == DISTRIBUTION_QUANTILE) {
         median=(*func)(0.5,param,DISTRIBUTION_QUANTILE);
     } else {
         median=(ipar.f_trans)(ipar.vguess,param);
     }
-
+*/
     do {
         sasfit_invert_step();
     } while (ipar.status == GSL_CONTINUE && ipar.iter < MAXROOTITER);

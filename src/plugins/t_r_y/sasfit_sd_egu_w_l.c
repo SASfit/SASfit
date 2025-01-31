@@ -100,10 +100,10 @@ scalar sasfit_sd_egu_w_l_v(scalar u, sasfit_param * param, int dist)
                     if (x<sasfit_sd_egu_w_l_v(0.5,param,DISTRIBUTION_QUANTILE)) {
                         return 0;
                     } else {
-                        return 1;
+                        return N;
                     }
                 } else {
-                    return Fegu_w_l;
+                    return N*Fegu_w_l;
                 }
                 break;
         case DISTRIBUTION_MEDIAN:

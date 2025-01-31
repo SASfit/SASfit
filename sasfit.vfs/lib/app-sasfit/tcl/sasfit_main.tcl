@@ -467,6 +467,7 @@ set EMOptions(chi2) 1.0
 set EMOptions(dim) 3
 set EMOptions(lambda) 1
 set EMOptions(method) "EM (smoothing)"
+set EMOptions(objtype) "sphere"
 set EMOptions(LMatrix) "second deriv. (D-D)"
 set EMOptions(optimumLagrange)  "L-corner"
 set EMOptions(LLSmethod)  "LLS"

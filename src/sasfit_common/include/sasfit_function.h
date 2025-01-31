@@ -377,6 +377,7 @@ typedef struct {
         scalar median;
         scalar bl;
         scalar bu;
+        scalar vl, vu, vgl, vgu;
         gsl_function F;
         gsl_function_fdf FDF;
         sasfit_func_vol_t * func;

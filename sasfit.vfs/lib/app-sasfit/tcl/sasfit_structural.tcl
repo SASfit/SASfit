@@ -579,7 +579,7 @@ radiobutton $w.guinierrange.lowQ.radio.zimm -text "Zimm" \
 	    } \
             -highlightthickness 0
 			
-button $w.guinierrange.lowQ.nr -text "calculate N(R) using:" \
+button $w.guinierrange.lowQ.nr -text "calc." \
             -command {
                 global StructParData IQGraph SDGraph EMOptions
                 RefreshStructParFit
@@ -642,10 +642,16 @@ ComboBox $w.guinierrange.lowQ.method -values {"MuCh" "EM (smoothing)" \
 				-width 18 \
 				-textvariable ::EMOptions(method) 
 				
-	
+ComboBox $w.guinierrange.lowQ.objtype -values {"sphere" "local cyl." \
+    		         "local planar"}  \
+				-width 10 \
+				-textvariable ::EMOptions(objtype) 	
+				
 pack $w.guinierrange.lowQ.radio.guinier \
      $w.guinierrange.lowQ.radio.zimm \
-	 $w.guinierrange.lowQ.nr $w.guinierrange.lowQ.method\
+	 $w.guinierrange.lowQ.nr \
+	 $w.guinierrange.lowQ.method \
+	 $w.guinierrange.lowQ.objtype\
      -padx 2m  -pady 1m \
      -fill both -expand yes -side left -anchor w
 #pack $w.guinierrange.lowQ.radio2.debye \

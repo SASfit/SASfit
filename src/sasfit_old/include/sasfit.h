@@ -168,6 +168,9 @@ typedef struct
 	double  maxslope;
 	int     maxKrylov;
 	scalar  dim;
+    char  EMmethod[132];
+    char  EMobjtype[132];
+    int   iEMmethod, iEMobjtype;
 	int     nh, nR;
 	scalar  C4, C0;
 	double *in, *out, *xwork, **A, **Ared, **Awork, **S, **T3, *Ih4mC4, *prior;

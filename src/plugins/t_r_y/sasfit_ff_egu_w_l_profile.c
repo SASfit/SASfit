@@ -25,7 +25,7 @@ scalar sasfit_ff_egu_w_l_profile(scalar x, sasfit_param * param)
 
 	if (x>=BU) return 0;
 	if (x<=BL) return N;
-	return N-sasfit_sd_egu_w_l_v(x,param,DISTRIBUTION_CUMULATIVE);
+	return N*(1-sasfit_sd_egu_w_l_v(x,param,DISTRIBUTION_CUMULATIVE));
 }
 
 scalar sasfit_ff_egu_w_l_profile_f(scalar x, sasfit_param * param)

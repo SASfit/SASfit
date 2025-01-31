@@ -1242,7 +1242,25 @@ int get_EM(clientData,interp,EM)
     if (strcmp(varstr,"on")==0) (*EM).em_weight = 1;
     sasfit_out("em_weight:%d\n",(*EM).em_weight);
 
-
+/*
+ * read dimension of object
+ */
+    varstr = Tcl_GetVar2(interp,"::EMOptions","objtype",0);
+    if (NULL == varstr) {
+       sasfit_err("could not read ::EMOptions(objtype)\n");
+       return TCL_ERROR;
+    }
+    strcpy((*EM).EMobjtype,varstr);
+    if (strcmp(varstr,"sphere") == 0) {
+       (*EM).iEMobjtype = 3;
+    } else if (strcmp(varstr,"local cyl.") == 0) {
+       (*EM).iEMobjtype = 2;
+    } else if (strcmp(varstr,"local planar") == 0) {
+       (*EM).iEMobjtype = 1;
+    } else {
+       sasfit_out("\n%s\n",varstr);
+       return TCL_ERROR;
+    }
 /*
  * read the string smooth_type
  */
@@ -1482,6 +1500,18 @@ int get_EP(clientData,interp,argv,EP,Q,IQ,DIQ)
        return TCL_ERROR;
     }
     strcpy((*EP).order,Buffer);
+
+/*
+ * read the index of the first point to be fitted
+ */
+    if (TCL_ERROR == Tcl_GetInt(interp,
+                             Tcl_GetVar2(interp,argv[1],"first",0),
+                             &first) ) {
+       sasfit_err("could not read first\n");
+       return TCL_ERROR;
+    }
+    (*EP).first = first;
+
 
 /*
  * read the index of the first point to be fitted
@@ -4595,8 +4625,16 @@ void EM_DR_Init (void *FPd) {
     for (i=0;i<nh;i++){
         for (j=0;j<nr;j++) {
             QR=EMparam->h[i]*EMparam->r[j];
- //       A[i][j] = gsl_sf_bessel_j0(h[i]*r[j]);
-            EMparam->A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(EMparam->r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(EMparam->r[j],-EMparam->dim);
+            switch (EMparam->iEMobjtype) {
+                case 1:
+                    EMparam->A[i][j] = gsl_pow_2(EMparam->r[j]*gsl_sf_bessel_j0(QR))/gsl_pow_2(EMparam->h[i])*pow(EMparam->r[j],-EMparam->dim);
+                    break;
+                case 2:
+                    EMparam->A[i][j] = gsl_pow_2(M_PI*gsl_pow_2(EMparam->r[j])*(2*gsl_sf_bessel_J1(QR)/(QR)))/EMparam->h[i]*pow(EMparam->r[j],-EMparam->dim);
+                    break;
+                case 3:
+                default: EMparam->A[i][j] = gsl_pow_2(4*M_PI*gsl_pow_3(EMparam->r[j])*(sin(QR)-QR*cos(QR))/gsl_pow_3(QR))*pow(EMparam->r[j],-EMparam->dim);
+            }
             EMparam->Ared[i][j] = EMparam->A[i][j]/EMparam->DIh[i];
             gsl_matrix_set(EMparam->gsl_A,i,j,EMparam->dr[j]*EMparam->Ared[i][j]);
         }

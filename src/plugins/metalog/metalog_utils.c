@@ -11,10 +11,18 @@ scalar mk(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     SASFIT_CHECK_COND2((n < k), param, "n(%d) < k(%d)",n,k);
     SASFIT_CHECK_COND1((k < 2), param, "k(%d) < 2(%d)",k);
     scalar logity,y1my;
-    if (y<=0) return DBL_MAX;
-    if (y>=1) return DBL_MAX;
-    logity = log(y/(1-y));
-    y1my = (y*(1-y));
+    if (y<=0) {
+        return DBL_MAX;
+        logity = -DBL_MAX;
+        y1my = DBL_MIN;
+    } else if (y>=1){
+        return DBL_MAX;
+        logity = DBL_MAX;
+        y1my = DBL_MIN;
+    } else {
+        logity = log(y/(1-y));
+        y1my = (y*(1-y));
+    }
     switch (k) {
     case 2: return (y*(1-y))/a[1];
             break;
@@ -35,9 +43,13 @@ scalar Mk(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     SASFIT_CHECK_COND2((n < k), param, "n(%d) < k(%d)",n,k);
     SASFIT_CHECK_COND1((k < 2), param, "k(%d) < 2(%d)",k);
     scalar logity;
-    if (y<=0) return DBL_MIN;
-    if (y>=1) return DBL_MAX;
-    logity = log(y/(1-y));
+    if (y<=0) {
+        logity = -DBL_MAX;
+    } else if (y>=1){
+        logity = DBL_MAX;
+    } else {
+        logity = log(y/(1-y));
+    }
     switch (k) {
     case 2: return a[0]+a[1]*logity;
             break;
@@ -69,48 +81,62 @@ scalar MLogit(int k, scalar y, scalar *a, size_t n,scalar bl, scalar bu, sasfit_
 
 scalar MLog(int k, scalar y, scalar *a, size_t n, scalar bl, sasfit_param * param) {
     scalar expM,yt;
-    if (y==0) return bl;
+    if (y<=0) return bl;
     expM = exp(Mk(k,y,a,n,param));
-    return bl+expM;
+    if (gsl_finite(expM)) {
+        return bl+expM;
+    } else {
+        return DBL_MAX;
+    }
 
 }
 
 scalar MNLog(int k, scalar y, scalar *a, size_t n, scalar bu, sasfit_param * param) {
-    scalar expmM,yt;
+    scalar expmM;
     if (y==1) return bu;
     expmM = exp(-Mk(k,y,a,n,param));
-    return bu-expmM;
-
+    if (gsl_finite(expmM)) {
+        return bu-expmM;
+    } else {
+        return -DBL_MAX;
+    }
 }
 
 scalar mLogit(int k, scalar y, scalar *a, size_t n, scalar bl, scalar bu, sasfit_param * param) {
-    scalar expM, yt;
+    scalar expM;
     if (y<=0) return bl;
     if (y>=1) return bu;
     expM = exp(Mk(k,y,a,n,param));
+    expM = mk(k,y,a,n,param)*gsl_pow_2(1+expM)/((bu-bl)*expM);
     if (gsl_finite(expM)) {
-        return mk(k,y,a,n,param)*gsl_pow_2(1+expM)/((bu-bl)*expM);
+        return expM;
     } else {
-        return 0;
+        return DBL_MAX;
     }
 
 }
 
 scalar mLog(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
-    scalar expmM, yt;
+    scalar expmM;
     if (y<=0) return 0;
     expmM = exp(-Mk(k,y,a,n,param));
-    return mk(k,y,a,n,param)*expmM;
+    expmM = mk(k,y,a,n,param)*expmM;
+    if (gsl_finite(expmM)) {
+        return expmM;
+    } else {
+        return DBL_MAX;
+    }
 }
 
 scalar mNLog(int k, scalar y, scalar *a, size_t n, sasfit_param * param) {
     scalar expM, yt;
-    if (y>=1) return 0;
+    if (y>=1) return DBL_MAX;
     expM = exp(Mk(k,y,a,n,param));
+    expM = mk(k,y,a,n,param)*expM;
     if (gsl_finite(expM)) {
-        return mk(k,y,a,n,param)*expM;
+        return expM;
     } else {
-        return 0;
+        return DBL_MAX;
     }
 
 }
