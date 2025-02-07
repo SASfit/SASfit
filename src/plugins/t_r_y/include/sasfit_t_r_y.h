@@ -98,7 +98,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_fgld__v(scalar q, sasfit_param * p, int dis
 
 /* ################ start ff_fgld_profile ################ */
 /**
- * \defgroup ff_fgld_profile FGLD profile
+ * \defgroup ff_fgld_profile FGLD SLD-profile
  * \ingroup ff_plugins_fuzzy_profiles
  *
  * \brief \< some brief description of FGLD profile function \>
@@ -224,8 +224,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_sphere_v(scalar q, sasfit_para
 
 /* ################ start ff_fgld_sphere ################ */
 /**
- * \defgroup ff_fgld_sphere FGLD-sd of spheres
- * \ingroup ff_plugins
+ * \defgroup ff_fgld_sphere FGLD-sd of sph.
+ * \ingroup ff_plugins_sd_spheres
  *
  * \brief FGLD-sd of spheres
  *
@@ -266,29 +266,29 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_sphere_v(scalar q, sasfit_para
 /**
  * \ingroup ff_fgld_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_sd_spheres
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_sd_spheres
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_sd_spheres
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_fgld_sphere ################ */
 
 /* ################ start ff_fgld_profile_PcsCyl ################ */
 /**
- * \defgroup ff_fgld_profile_PcsCyl Pcs: FGLD cyl-xs
- * \ingroup ff_plugins
+ * \defgroup ff_fgld_profile_PcsCyl Pcs:FGLD cyl-xs
+ * \ingroup ff_plugins_fuzzy_cyl
  *
  * \brief FGLD profile for PcsCyl
  *
@@ -329,21 +329,21 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_v(scalar q, sasfit_param * p, i
 /**
  * \ingroup ff_fgld_profile_PcsCyl
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_profile_PcsCyl
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_profile_PcsCyl
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_fgld_profile_PcsCyl ################ */
@@ -351,7 +351,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl_v(scalar q, sasfit_para
 /* ################ start ff_fgld_profile_PcsPlanar ################ */
 /**
  * \defgroup ff_fgld_profile_PcsPlanar Pcs: FGLD planar-xs
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_planar
  *
  * \brief FGLD profile for PcsPlanar
  *
@@ -392,21 +392,21 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl_v(scalar q, sasfit_para
 /**
  * \ingroup ff_fgld_profile_PcsPlanar
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsPlanar(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_profile_PcsPlanar
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsPlanar_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_profile_PcsPlanar
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_fgld_profile_PcsPlanar ################ */
@@ -476,8 +476,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_egu_w_l_v(scalar q, sasfit_param * p, int d
 
 /* ################ start ff_egu_w_l_profile ################ */
 /**
- * \defgroup ff_egu_w_l_profile EGu-W{L} profile
- * \ingroup ff_plugins
+ * \defgroup ff_egu_w_l_profile EGu-W{L} SLD-profile
+ * \ingroup ff_plugins_fuzzy_profiles
  *
  * \brief \< some brief description of EGu-W{L} profile function \>
  *
@@ -518,21 +518,21 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_egu_w_l_v(scalar q, sasfit_param * p, int d
 /**
  * \ingroup ff_egu_w_l_profile
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_egu_w_l_profile
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_fgld_profile
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_egu_w_l_profile ################ */
@@ -540,7 +540,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_v(scalar q, sasfit_param * 
 /* ################ start ff_egu_w_l_profile_sphere ################ */
 /**
  * \defgroup ff_egu_w_l_profile_sphere  EGu-W{L} sph-xs
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief \< some brief description of EGu-W{L} profile sphere function \>
  *
@@ -581,29 +581,29 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_v(scalar q, sasfit_param * 
 /**
  * \ingroup ff_egu_w_l_profile_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_egu_w_l_profile_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_egu_w_l_profile_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_egu_w_l_profile_sphere ################ */
 
 /* ################ start ff_egu_w_l_profile_PcsCyl ################ */
 /**
- * \defgroup ff_egu_w_l_profile_PcsCyl Pcs: EGu-W{L} cyl-xs
- * \ingroup ff_plugins
+ * \defgroup ff_egu_w_l_profile_PcsCyl Pcs:EGu-W{L} cyl-xs
+ * \ingroup ff_plugins_fuzzy_cyl
  *
  * \brief EGu-W{L} profile for PcsCyl
  *
@@ -644,29 +644,29 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_sphere_v(scalar q, sasfit_p
 /**
  * \ingroup ff_egu_w_l_profile_PcsCyl
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsCyl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_egu_w_l_profile_PcsCyl
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsCyl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_egu_w_l_profile_PcsCyl
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_egu_w_l_profile_PcsCyl ################ */
 
 /* ################ start ff_egu_w_l_profile_PcsPlanar ################ */
 /**
- * \defgroup ff_egu_w_l_profile_PcsPlanar Pcs: EGu-W{L} planar-xs
- * \ingroup ff_plugins
+ * \defgroup ff_egu_w_l_profile_PcsPlanar Pcs:EGu-W{L} planar-xs
+ * \ingroup ff_plugins_fuzzy_planar
  *
  * \brief EGu-W{L} profile for PcsPlanar
  *
@@ -707,29 +707,29 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsCyl_v(scalar q, sasfit_p
 /**
  * \ingroup ff_egu_w_l_profile_PcsPlanar
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsPlanar(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_egu_w_l_profile_PcsPlanar
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsPlanar_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_egu_w_l_profile_PcsPlanar
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_egu_w_l_profile_PcsPlanar ################ */
 
 /* ################ start ff_egu_w_l_sphere ################ */
 /**
- * \defgroup ff_egu_w_l_sphere EGu-W{L}-sd of spheres
- * \ingroup ff_plugins
+ * \defgroup ff_egu_w_l_sphere EGu-W{L}-sd of sph
+ * \ingroup ff_plugins_sd_spheres
  *
  * \brief \< some brief description of EGu-W{L} sphere function \>
  *
@@ -770,21 +770,21 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsPlanar_v(scalar q, sasfi
 /**
  * \ingroup ff_egu_w_l_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_sd_spheres
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_egu_w_l_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_sd_spheres
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_egu_w_l_sphere
  *
- * \sa sasfit_t_r_y.h, ff_plugins
+ * \sa sasfit_t_r_y.h, ff_plugins_sd_spheres
  */
 sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_egu_w_l_sphere ################ */

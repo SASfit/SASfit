@@ -3197,7 +3197,7 @@ proc analyticalGlobalSDCmd {simorfit
 			    }
 			 }
 			 set alambda $::GlobalAnalytPar(alambda)
-			 puts "alambda = $alambda,  chisq = $::stepfit(chisq)"
+			 puts "alambda = $alambda,  chisq = $::stepfit(chisq), red chisq = $::GlobalAnalytPar(reducedchisq)"
 			 set tmp $::tmpGlobalAnalytPar(actual_SD)
 			 cp_arr ::GlobalAnalytPar ::tmpGlobalAnalytPar
 			 GlobalAPindex ::tmpGlobalAnalytPar ::actualGlobalAnalytPar $tmp
@@ -3322,7 +3322,7 @@ proc analyticalGlobalSDCmd {simorfit
 						::stepfit \
 					]
 			     }
-			     sasfit_timer_stop "0. iteration" "iteration finished" "\nalambda = $::GlobalAnalytPar(alambda),  chisq = $::stepfit(chisq)"
+			     sasfit_timer_stop "0. iteration" "iteration finished" "\nalambda = $::GlobalAnalytPar(alambda),  chisq = $::stepfit(chisq), red chisq = $::GlobalAnalytPar(reducedchisq)"
 			 } msg] } {
 			     set_GlobalalambdaCmd 1 1 1
 			     bgerror $msg
@@ -3331,7 +3331,7 @@ proc analyticalGlobalSDCmd {simorfit
 			     return
 			 }
 			  set alambda $::GlobalAnalytPar(alambda)
-			  puts "alambda = $alambda,  chisq = $::stepfit(chisq)"
+			  puts "alambda = $alambda,  chisq = $::stepfit(chisq), red chisq = $::GlobalAnalytPar(reducedchisq)"
 			  set tmp $::tmpGlobalAnalytPar(actual_SD)
 			  if { $::sasfit(update_menu_during_fit) } {
 			      cp_arr ::GlobalAnalytPar ::tmpGlobalAnalytPar
@@ -3382,7 +3382,7 @@ proc analyticalGlobalSDCmd {simorfit
 					     ::stepfit \
 					     ]
 				 }
-				 sasfit_timer_stop "$::stepfit(k). iteration" "iteration finished" "\nalambda = $::GlobalAnalytPar(alambda),  chisq = $::stepfit(chisq)"
+				 sasfit_timer_stop "$::stepfit(k). iteration" "iteration finished" "\nalambda = $::GlobalAnalytPar(alambda),  chisq = $::stepfit(chisq), red chisq = $::GlobalAnalytPar(reducedchisq)"
 			     } msg] } {
 				 set_GlobalalambdaCmd 1 1 1
 				 bgerror $msg 
@@ -3460,7 +3460,7 @@ proc analyticalGlobalSDCmd {simorfit
 				return
 			    }
 			    set alambda $::GlobalAnalytPar(alambda)
-			    puts "alambda = $alambda,  chisq = $::stepfit(chisq)"
+			    puts "alambda = $alambda,  chisq = $::stepfit(chisq), red chisq = $::GlobalAnalytPar(reducedchisq)"
 			    set tmp $::tmpGlobalAnalytPar(actual_SD)
 			    if { $::sasfit(update_menu_during_fit) } {
 				cp_arr ::GlobalAnalytPar ::tmpGlobalAnalytPar

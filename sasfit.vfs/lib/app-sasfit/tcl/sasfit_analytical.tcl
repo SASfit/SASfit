@@ -7778,7 +7778,7 @@ if {[winfo exists $w.adj.step]} {
                     set ::stepfit(chisq) $::AnalytPar(chisq)
                  }
                  set alambda $::AnalytPar(alambda)
-                 puts "alambda = $alambda,  chisq = $::stepfit(chisq)"
+                 puts "alambda = $alambda,  chisq = $::stepfit(chisq), red chisq = $::AnalytPar(reducedchisq)"
                  set tmp $::tmpAnalytPar(actual_SD)
                  cp_arr ::AnalytPar ::tmpAnalytPar
                  APindex ::tmpAnalytPar ::actualAnalytPar $tmp
@@ -7891,7 +7891,7 @@ if {[winfo exists $w.adj.run]} {
 			  set IthIres [sasfit_iqfit ::AnalytPar  \
 				  [list $Q $I $DI] ::stepfit ]
 		      }
-                      sasfit_timer_stop "0. iteration" "iteration finished" "\nalambda = $::AnalytPar(alambda),  chisq = $::stepfit(chisq)"
+                      sasfit_timer_stop "0. iteration" "iteration finished" "\nalambda = $::AnalytPar(alambda),  chisq = $::stepfit(chisq), red chisq = $::AnalytPar(reducedchisq)"
 	          } msg] } {
 		     set_alambdaCmd 1 1 1
 		     bgerror $msg
@@ -7901,7 +7901,7 @@ if {[winfo exists $w.adj.run]} {
 		  }
 
                   set alambda $::AnalytPar(alambda)
-                  puts "alambda = $alambda,  chisq = $::stepfit(chisq)"
+                  puts "alambda = $alambda,  chisq = $::stepfit(chisq), red chisq = $::AnalytPar(reducedchisq)"
                   set tmp $::tmpAnalytPar(actual_SD)
 	          if { $::sasfit(update_menu_during_fit) } {
                       cp_arr ::AnalytPar ::tmpAnalytPar
@@ -7943,7 +7943,7 @@ if {[winfo exists $w.adj.run]} {
 				     ::stepfit \
                                      ]
 			 }
-                         sasfit_timer_stop "$::stepfit(k). iteration" "iteration finished" "\nalambda = $::AnalytPar(alambda),  chisq = $::stepfit(chisq)"
+                         sasfit_timer_stop "$::stepfit(k). iteration" "iteration finished" "\nalambda = $::AnalytPar(alambda),  chisq = $::stepfit(chisq), red chisq = $::AnalytPar(reducedchisq)"
 		     } msg] } {
 			 set_alambdaCmd 1 1 1
 			 bgerror $msg
@@ -7953,7 +7953,7 @@ if {[winfo exists $w.adj.run]} {
 		     }
 
                      set alambda $::AnalytPar(alambda)
-                     puts "alambda = $alambda,  chisq = $::stepfit(chisq)"
+                     puts "alambda = $alambda,  chisq = $::stepfit(chisq), red chisq = $::AnalytPar(reducedchisq)"
                      set tmp $::tmpAnalytPar(actual_SD)
 	             if { $::sasfit(update_menu_during_fit) } {
                          cp_arr ::AnalytPar ::tmpAnalytPar
@@ -7999,7 +7999,7 @@ if {[winfo exists $w.adj.run]} {
                                    ]
 		    }
                     set alambda $::AnalytPar(alambda)
-                    puts "alambda = $alambda,  chisq = $::stepfit(chisq)"
+                    puts "alambda = $alambda,  chisq = $::stepfit(chisq), red chisq = $::AnalytPar(reducedchisq)"
                     set tmp $::tmpAnalytPar(actual_SD)
 	            if { $::sasfit(update_menu_during_fit) } {
                         cp_arr ::AnalytPar ::tmpAnalytPar

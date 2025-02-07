@@ -36,18 +36,29 @@ scalar sasfit_sq_sticky_hard_sphere(scalar q, sasfit_param * param)
     if (epsi*epsi-gama>=0) {
         lamb = 6.0/FP*(epsi-sqrt(epsi*epsi-gama));
     } else {
-        lamb = 6.0/FP*(epsi);
+        sasfit_err("\nCan not calculate structure factor. Try to increase the value for tau>%lg\n",TAU);
     }
 	mu = lamb*FP*(1-FP);
 	beta = -(3.*FP*pow(2.+FP,2.0)-2.*mu*(1.+7.*FP+FP*FP)+mu*mu*(2.+FP)) / (2.*pow(1.-FP,4.));
 	alpha = pow(1.+2.*FP-mu,2.)/pow(1-FP,4.);
-	CQ = -24.*FP*pow(kappa,-6.)*
+	if (kappa>1e-2) {
+        CQ = -24.*FP*pow(kappa,-6.)*
 			  ( alpha*pow(kappa,3.)*(sin(kappa)-kappa*cos(kappa))
 			 +beta*pow(kappa,2.)*(2.*kappa*sin(kappa)-(pow(kappa,2.)-2.)*cos(kappa)-2.)
 			 +0.5*FP*alpha*((4.*pow(kappa,3.)-24.*kappa)*sin(kappa)-(pow(kappa,4.)-12.*pow(kappa,2.)+24)*cos(kappa)+24)
 			)
-		-2*pow(FP*lamb,2.)*(1.-cos(kappa))*pow(kappa,-2.)
-		+2.*FP*lamb/kappa*sin(kappa);
+            -2*pow(FP*lamb,2.)*(1.-cos(kappa))*pow(kappa,-2.)
+            +2.*FP*lamb/kappa*sin(kappa);
+	} else {
+	    scalar eta;
+	    eta = FP;
+	    CQ=1/(1 - 2*eta*(4*alpha + 3*beta + alpha*eta) - 2*eta*lamb -
+            gsl_pow_int(eta,2)*gsl_pow_int(lamb,2)) -
+            (gsl_pow_int(kappa,2)*(48*alpha*eta + 40*beta*eta + 15*alpha*gsl_pow_int(eta,2) +
+            20*eta*lamb + 5*gsl_pow_int(eta,2)*gsl_pow_int(lamb,2)))/
+            (60.*gsl_pow_int(1 - 2*eta*(4*alpha + 3*beta + alpha*eta) - 2*eta*lamb -
+            gsl_pow_int(eta,2)*gsl_pow_int(lamb,2),2));
+	}
 	SQ = 1. / (1.-CQ);
 
 	return SQ;

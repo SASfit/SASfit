@@ -165,10 +165,10 @@ sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_sphere_v(scalar q, sasfit_param *
 
 /* ################ start ff_guwelop_cyl_Pcs ################ */
 /**
- * \defgroup ff_guwelop_cyl_Pcs GUWELOP cyl-xs
+ * \defgroup ff_guwelop_cyl_Pcs Pcs:GUWELOP cyl-xs
  * \ingroup ff_plugins_fuzzy_cyl
  *
- * \brief some brief description of GUWELOP cyl-xs function
+ * \brief some brief description of Pcs:GUWELOP cyl-xs function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -229,7 +229,7 @@ sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_cyl_Pcs_v(scalar q, sasfit_param 
 
 /* ################ start ff_guwelop_planar_Pcs ################ */
 /**
- * \defgroup ff_guwelop_planar_Pcs GUWELOP planar-xs
+ * \defgroup ff_guwelop_planar_Pcs Pcs:GUWELOP planar-xs
  * \ingroup ff_plugins_fuzzy_planar
  *
  * \brief some brief description of GUWELOP planar-xs function
@@ -293,10 +293,10 @@ sasfit_guwelop_DLLEXP scalar sasfit_ff_guwelop_planar_Pcs_v(scalar q, sasfit_par
 
 /* ################ start ff_guwelop_profile ################ */
 /**
- * \defgroup ff_guwelop_profile GUWELOP profile
+ * \defgroup ff_guwelop_profile GUWELOP SLD-profile
  * \ingroup ff_plugins_fuzzy_profiles
  *
- * \brief \<some brief description of GUWELOP profile function\>
+ * \brief GUWELOP SLD-profile
  *
  * <more detailed documentation, see 'doxygen' docs>
  *

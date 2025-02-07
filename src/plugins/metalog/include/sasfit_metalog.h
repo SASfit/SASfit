@@ -41,8 +41,8 @@
 
 /* ################ start ff_metalog_sphere ################ */
 /**
- * \defgroup ff_metalog_sphere metalog (clipped) Sphere
- * \ingroup ff_plugins
+ * \defgroup ff_metalog_sphere metalog (clipped) sd of sph
+ * \ingroup ff_plugins_sd_spheres
  *
  * \brief \<some brief description of metalog Sphere function\>
  *
@@ -98,29 +98,29 @@
 /**
  * \ingroup ff_metalog_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_sd_spheres
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_sd_spheres
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_sd_spheres
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_sphere ################ */
 
 /* ################ start ff_metaloglog_sphere ################ */
 /**
- * \defgroup ff_metaloglog_sphere metalogLog Sphere
- * \ingroup ff_plugins
+ * \defgroup ff_metaloglog_sphere metalogLog sd of sph
+ * \ingroup ff_plugins_sd_spheres
  *
  * \brief \<some brief description of metalogLog Sphere function\>
  *
@@ -176,21 +176,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_sphere_v(scalar q, sasfit_param *
 /**
  * \ingroup ff_metaloglog_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_sd_spheres
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metaloglog_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_sd_spheres
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metaloglog_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_sd_spheres
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metaloglog_sphere ################ */
@@ -198,8 +198,8 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_sphere_v(scalar q, sasfit_para
 
 /* ################ start ff_metaloglogit_sphere ################ */
 /**
- * \defgroup ff_metaloglogit_sphere metalogLogit Sphere
- * \ingroup ff_plugins
+ * \defgroup ff_metaloglogit_sphere metalogLogit sd of sph
+ * \ingroup ff_plugins_sd_spheres
  *
  * \brief \<some brief description of metalogLogit Sphere function\>
  *
@@ -255,21 +255,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglog_sphere_v(scalar q, sasfit_para
 /**
  * \ingroup ff_metaloglogit_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_sd_spheres
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metaloglogit_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_sd_spheres
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metaloglogit_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_sd_spheres
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metaloglogit_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metaloglogit_sphere ################ */
@@ -510,8 +510,8 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit_v(scalar q, sasfit_param * 
 
 /* ################ start ff_metalog_clipped_profile_sphere ################ */
 /**
- * \defgroup ff_metalog_clipped_profile_sphere Pcs:metalog (clipped) sph-xs
- * \ingroup ff_plugins
+ * \defgroup ff_metalog_clipped_profile_sphere metalog (clipped) sph-xs
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief some brief description of metalog_clipped profile for Sphere function
  *
@@ -567,21 +567,21 @@ sasfit_metalog_DLLEXP scalar sasfit_sd_metalog_logit_v(scalar q, sasfit_param * 
 /**
  * \ingroup ff_metalog_clipped_profile_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_sph
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_clipped_profile_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_sph
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_clipped_profile_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_sph
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_clipped_profile_sphere ################ */
@@ -589,7 +589,7 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_sphere_v(scalar q
 /* ################ start ff_metalog_clipped_profile_PcsCyl ################ */
 /**
  * \defgroup ff_metalog_clipped_profile_PcsCyl Pcs:metalog (clipped) cyl-xs
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_cyl
  *
  * \brief some brief description of Pcs:metalog_clipped profile for cylindrical xs
  *
@@ -645,31 +645,31 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_sphere_v(scalar q
 /**
  * \ingroup ff_metalog_clipped_profile_PcsCyl
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_cyl
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsCyl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_clipped_profile_PcsCyl
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_cyl
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsCyl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_clipped_profile_PcsCyl
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_cyl
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_clipped_profile_PcsCyl ################ */
 
 /* ################ start ff_metalog_clipped_profile_PcsPlanar ################ */
 /**
- * \defgroup ff_metalog_clipped_profile_PcsPlanar Pcs:metalog (clipped) Planar-xs
- * \ingroup ff_plugins
+ * \defgroup ff_metalog_clipped_profile_PcsPlanar Pcs:metalog (clipped) planar-xs
+ * \ingroup ff_plugins_fuzzy_planar
  *
- * \brief some brief description of Pcs:metalog_clipped profile for cylinder xs
+ * \brief some brief description of Pcs:metalog_clipped profile for planar x-section
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -723,21 +723,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsCyl_v(scalar q
 /**
  * \ingroup ff_metalog_clipped_profile_PcsPlanar
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_planar
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsPlanar(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_clipped_profile_PcsPlanar
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_planar
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsPlanar_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_clipped_profile_PcsPlanar
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_planar
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_clipped_profile_PcsPlanar ################ */
@@ -746,9 +746,9 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsPlanar_v(scala
 /* ################ start ff_metalog_logit_profile_sphere ################ */
 /**
  * \defgroup ff_metalog_logit_profile_sphere metalog_logit sph-xs
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_sph
  *
- * \brief some brief description of metalog_logit profile for Sphere function
+ * \brief metalog_logit x-section profile for fuzzy spheres
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -802,21 +802,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_PcsPlanar_v(scala
 /**
  * \ingroup ff_metalog_logit_profile_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_sph
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_logit_profile_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_sph
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_logit_profile_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_sph
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_logit_profile_sphere ################ */
@@ -824,7 +824,7 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_sphere_v(scalar q, 
 /* ################ start ff_metalog_logit_profile_PcsCyl ################ */
 /**
  * \defgroup ff_metalog_logit_profile_PcsCyl Pcs:metalog_logit cyl-xs
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_cyl
  *
  * \brief metalog_logit profile for cyl-xs
  *
@@ -880,21 +880,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_sphere_v(scalar q, 
 /**
  * \ingroup ff_metalog_logit_profile_PcsCyl
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_cyl
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsCyl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_logit_profile_PcsCyl
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_cyl
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsCyl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_logit_profile_PcsCyl
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_cyl
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_logit_profile_PcsCyl ################ */
@@ -902,7 +902,7 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsCyl_v(scalar q, 
 /* ################ start ff_metalog_logit_profile_PcsPlanar################ */
 /**
  * \defgroup ff_metalog_logit_profile_PcsPlanar Pcs:metalog_logit planar-xs
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_planar
  *
  * \brief metalog_logit PcsPlanar
  *
@@ -958,21 +958,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsCyl_v(scalar q, 
 /**
  * \ingroup ff_metalog_logit_profile_PcsPlanar
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_planar
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsPlanar(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_logit_profile_PcsPlanar
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_planar
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsPlanar_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_logit_profile_PcsPlanar
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_planar
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_logit_profile_PcsPlanar ################ */
@@ -981,7 +981,7 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsPlanar_v(scalar 
 /* ################ start ff_metalog_log_profile_sphere ################ */
 /**
  * \defgroup ff_metalog_log_profile_sphere metalog_log sph-xs
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_sph
  *
  * \brief some brief description of metalog_log profile for Sphere function
  *
@@ -1037,21 +1037,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_PcsPlanar_v(scalar 
 /**
  * \ingroup ff_metalog_log_profile_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_sph
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_sphere(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_log_profile_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_sph
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_sphere_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_log_profile_sphere
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_sph
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_sphere_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_log_profile_sphere ################ */
@@ -1059,7 +1059,7 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_sphere_v(scalar q, sa
 /* ################ start ff_metalog_log_profile_PcsCyl ################ */
 /**
  * \defgroup ff_metalog_log_profile_PcsCyl Pcs:metalog_log cyl-xs
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_cyl
  *
  * \brief some brief description of metalog_log profile for Sphere function
  *
@@ -1115,21 +1115,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_sphere_v(scalar q, sa
 /**
  * \ingroup ff_metalog_log_profile_PcsCyl
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_cyl
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsCyl(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_log_profile_PcsCyl
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_cyl
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsCyl_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_log_profile_PcsCyl
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_cyl
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_log_profile_PcsCyl ################ */
@@ -1137,7 +1137,7 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsCyl_v(scalar q, sa
 /* ################ start ff_metalog_log_profile_PcsPlanar ################ */
 /**
  * \defgroup ff_metalog_log_profile_PcsPlanar Pcs:metalog_log Planar-xs
- * \ingroup ff_plugins
+ * \ingroup ff_plugins_fuzzy_planar
  *
  * \brief some brief description of metalog_log profile for PcsPlanar function
  *
@@ -1193,21 +1193,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsCyl_v(scalar q, sa
 /**
  * \ingroup ff_metalog_log_profile_PcsPlanar
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_planar
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsPlanar(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_log_profile_PcsPlanar
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_planar
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsPlanar_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_log_profile_PcsPlanar
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_planar
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_log_profile_PcsPlanar ################ */
@@ -1215,10 +1215,10 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsPlanar_v(scalar q,
 
 /* ################ start ff_metalog_clipped_profile ################ */
 /**
- * \defgroup ff_metalog_clipped_profile metalog_clipped profile
- * \ingroup ff_plugins
+ * \defgroup ff_metalog_clipped_profile metalog_clipped SLD-profile
+ * \ingroup ff_plugins_fuzzy_profiles
  *
- * \brief some brief description of metalog_clipped profile function
+ * \brief some brief description of metalog_clipped SLD-profile function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1272,21 +1272,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_PcsPlanar_v(scalar q,
 /**
  * \ingroup ff_metalog_clipped_profile
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_profiles
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_clipped_profile
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_profiles
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_clipped_profile
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_profiles
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_clipped_profile_sphere ################ */
@@ -1294,10 +1294,10 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_v(scalar q, sasfi
 
 /* ################ start ff_metalog_logit_profile ################ */
 /**
- * \defgroup ff_metalog_logit_profile metalog_logit profile
- * \ingroup ff_plugins
+ * \defgroup ff_metalog_logit_profile metalog_logit SLD-profile
+ * \ingroup ff_plugins_fuzzy_profiles
  *
- * \brief some brief description of metalog_logit profile function
+ * \brief some brief description of metalog_logit SLD-profile function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1351,21 +1351,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_clipped_profile_v(scalar q, sasfi
 /**
  * \ingroup ff_metalog_logit_profile
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_profiles
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_logit_profile
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_profiles
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_logit_profile
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_profiles
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_logit_profile ################ */
@@ -1373,10 +1373,10 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_v(scalar q, sasfit_
 
 /* ################ start ff_metalog_log_profile ################ */
 /**
- * \defgroup ff_metalog_log_profile metalog_log profile
- * \ingroup ff_plugins
+ * \defgroup ff_metalog_log_profile metalog_log SLD-profile
+ * \ingroup ff_plugins_fuzzy_profiles
  *
- * \brief some brief description of metalog_log profile function
+ * \brief some brief description of metalog_log SLD-profile function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1430,21 +1430,21 @@ sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_logit_profile_v(scalar q, sasfit_
 /**
  * \ingroup ff_metalog_log_profile
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_profiles
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_log_profile
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_profiles
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup ff_metalog_log_profile_
  *
- * \sa sasfit_metalog.h, ff_plugins
+ * \sa sasfit_metalog.h, ff_plugins_fuzzy_profiles
  */
 sasfit_metalog_DLLEXP scalar sasfit_ff_metalog_log_profile_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_metalog_log_profile ################ */

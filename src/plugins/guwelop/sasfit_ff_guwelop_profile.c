@@ -19,6 +19,7 @@ scalar sasfit_ff_guwelop_profile(scalar x, sasfit_param * param)
 	SASFIT_CHECK_COND1((GAMMA < 0.0), param, "gamma(%lg) < 0",GAMMA); // modify condition to your needs
 
 	// insert your code here
+	if (x>BU) return 0;
 	return N*(1-sasfit_sd_p_guwelop_f(x, param));
 }
 

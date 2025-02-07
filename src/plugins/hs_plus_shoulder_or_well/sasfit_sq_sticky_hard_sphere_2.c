@@ -42,13 +42,13 @@ scalar sasfit_sq_sticky_hard_sphere_2(scalar q, sasfit_param * param)
 
 	ltmp = 6.0*(TAU/phi+1.0/(1.0-phi));
 	SASFIT_CHECK_COND1((gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi) < 0),param,"tau(%lg) is too small",TAU);
-if (gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi) >= 0) {
-	l1 = ltmp + sqrt(gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi));
-	l2 = ltmp - sqrt(gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi));
-} else {
-    l1 = ltmp;
-    l2 = ltmp;
-}
+    if (gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi) >= 0) {
+        l1 = ltmp + sqrt(gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi));
+        l2 = ltmp - sqrt(gsl_pow_2(ltmp) - 12.0/phi*(1.0+0.5*phi)/gsl_pow_2(1-phi));
+    } else {
+        l1 = ltmp;
+        l2 = ltmp;
+    }
 	if (fabs(l1) < fabs(l2))
 	{
 		lambda = l1;

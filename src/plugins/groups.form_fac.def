@@ -97,13 +97,22 @@
  */
  
 /** 
- * \defgroup ff_plugins_fuzzy_profiles fuzzy cross-section profiles
+ * \defgroup ff_plugins_fuzzy_profiles Fuzzy SLD cross-section profiles
  * \ingroup ff_plugins_fuzzy_obj
  *
- * This group contains fuzzy cross-section profiles.
+ * This group contains fuzzy scattering length density cross-section profiles.
  *
  * \modname{ff_plugins_fuzzy_profiles}
  */
+ 
+/** 
+ * \defgroup ff_plugins_sd_spheres homog. sph. with SD
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains FF of homogeneous spheres with a size distribution.
+ *
+ * \modname{ff_plugins_fuzzy_profiles}
+ */ 
  
  /** 
  * \defgroup ff_plugins_mie Mie Scattering
@@ -359,7 +368,7 @@
  */
 
 /** 
- * \defgroup ff_local_planar_micelles local planar micelles (sheets, ULV) 
+ * \defgroup ff_local_planar_micelles local planar micelles 
  * \ingroup ff_polymer_micelles
  *
  * This group contains form factors for micelles with local planar geometry.
