@@ -1602,6 +1602,7 @@ scalar IQ4HT(scalar Q, sasfit_param *param) {
 scalar IQ4HT_Hankel(scalar Q, sasfit_param *param) {
         sasfit_param4int *param4int;
         param4int = ( sasfit_param4int *) param->moreparam;
+        if (Q==0) return 0;
         return IQ4HT(Q,param)*Q*bessj0(Q*param4int->z);
 }
 
@@ -1701,7 +1702,7 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
                 param4int.z = 0;
                 Xi = sasfit_integrate(0,Qres,&IQ4HT_Hankel,&param)/(2*M_PI);
                 param4int.z = Q;
-                Gz = sasfit_integrate(GSL_DBL_MIN,Qres,&IQ4HT_Hankel,&param)/(2*M_PI);
+                Gz = sasfit_integrate(0,Qres,&IQ4HT_Hankel,&param)/(2*M_PI);
             }
             *error = param4int.error;
 //            sasfit_out("Gz(%lg)-Xi(%lg)\n",Gz,Xi);

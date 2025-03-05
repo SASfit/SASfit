@@ -389,6 +389,7 @@ set(SOURCE_sasfit_jburkardt
 	sparse_grid_cc.c
 	sparse_grid_hw.c
 	smolyak.c
+	filon_rule.c
 	jburkardt_utils.c
 	cdflib.c
 )

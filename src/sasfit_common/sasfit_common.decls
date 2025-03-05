@@ -523,3 +523,9 @@ declare 158 generic {
 declare 159 generic {
     scalar sasfit_erfcinv(scalar y)
 }
+declare 160 generic {
+    scalar sasfit_clipped_sinc_quad(double a, double b, double (*f)(double, void *), double x, void *fparams)
+}
+declare 161 generic {
+    scalar sasfit_clipped_cos_quad(double a, double b, double (*f)(double, void *), double x, void *fparams)
+}

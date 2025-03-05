@@ -277,6 +277,12 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
 
+scalar ZerojCos(int nzero, int sincos) {
+    return M_PI_2+(nzero-1)*M_PI;
+}
+scalar ZerojSin(int nzero) {
+    return (nzero)*M_PI;
+}
 scalar Zeroj(int nzero,scalar order) {
 //%Computes the approximate zero of bessel function of the first kind of
 //%order 0 or 1

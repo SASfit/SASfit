@@ -1,3 +1,6 @@
+#ifndef HEADER_A3D26D5E7CF690B5
+#define HEADER_A3D26D5E7CF690B5
+
 /*
  * src/sasfit_common/include/sasfit_utils.h
  *
@@ -167,6 +170,8 @@ sasfit_common_DLLEXP void sasfit_intdei(double (*f)(double, void *), double a, d
 sasfit_common_DLLEXP void sasfit_intdeiini(int lenaw, double tiny, double eps, double *aw);
 sasfit_common_DLLEXP void sasfit_intde(double (*f)(double, void *), double a, double b, double *aw, double *i, double *err, void *fparams);
 sasfit_common_DLLEXP void sasfit_intdeini(int lenaw, double tiny, double eps, double *aw);
+sasfit_common_DLLEXP scalar sasfit_clipped_sinc_quad(double a, double b, double (*f)(double, void *), double x, void *fparams);
+sasfit_common_DLLEXP scalar sasfit_clipped_cos_quad(double a, double b, double (*f)(double, void *), double x, void *fparams);
 sasfit_common_DLLEXP int sasfit_cubature(size_t ndim,
 			scalar *int_start,
 			scalar *int_end,
@@ -241,4 +246,6 @@ sasfit_common_DLLEXP void sasfit_int_ws_init(void);
 /*@}*/
 #endif // MAKE_SASFIT_PLUGIN
 #endif // file
+
+#endif // header guard
 

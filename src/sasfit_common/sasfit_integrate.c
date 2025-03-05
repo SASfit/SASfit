@@ -51,6 +51,7 @@
 #include "multidiminte/src/tanhsinh/tanhsinh.h"
 #include "quasimontecarlo/quasimontecarlo.h"
 #include "quasimontecarlo/Burley2020Scrambling/genpoints.h"
+#include "../sasfit_jburkardt/include/filon_rule.h"
 
 typedef struct {
     sasfit_param *param;
@@ -968,6 +969,7 @@ double f_FBT(double Qr,void *FBT_param_void) {
 double intdeo_FBT(double r, void *FBTparams) {
     sasfit_param_FBT *FBT_param;
     FBT_param = (sasfit_param_FBT *) FBTparams;
+    if (r==0) return 0;
     return r*gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*r) * FBT_param->function(r,FBT_param->fparams);
 }
 
@@ -1381,11 +1383,11 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             break;
         }
         case HANKEL_QWE: {
-            res = sasfit_qwe(0, f, x, fparams, 2000, sasfit_eps_get_nriq()*10, DBL_MIN);
+            res = sasfit_qwe(0, f, x, fparams, lenaw, sasfit_eps_get_nriq()*10, DBL_MIN);
             break;
         }
         case HANKEL_CHAVE: {
-            res = sasfit_HankelChave(0, f,x, fparams, 2000, sasfit_eps_get_nriq()*10, DBL_MIN);
+            res = sasfit_HankelChave(0, f,x, fparams, lenaw, sasfit_eps_get_nriq()*10, DBL_MIN);
             break;
         }
         default:{
@@ -1397,5 +1399,71 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
                 break;
         }
     }
+    return res;
+}
+
+scalar sasfit_clipped_hankel(double nu, double a, double b, double (*f)(double, void *), double x, void *fparams) {
+    return 0;
+}
+
+scalar FrSincTinyQ(scalar r, sasfit_param * param) {
+    scalar Q;
+    Q  = param->more_p[1];
+    return 4*M_PI*r*r*gsl_sf_bessel_j0(Q*r)*param->function(r,param->moreparam);
+}
+
+scalar FrSinc(scalar r, sasfit_param * param) {
+    scalar Q;
+    Q  = param->more_p[1];
+    return 4*M_PI*r/Q*param->function(r,param->moreparam);
+}
+
+scalar sasfit_clipped_sinc_quad(double a, double b, double (*f)(double, void *), double x, void *fparams) {
+    sasfit_param param;
+    double res,abserr,eps_nriq;
+    int limit=4000, status;
+
+	param.function = f;
+	param.more_p[1] = x;
+    param.moreparam=fparams;
+    eps_nriq=sasfit_eps_get_nriq();
+    if (fabs(x*b) < 2*M_PI) return sasfit_integrate(a,b,&FrSincTinyQ,&param);
+
+    gsl_set_error_handler_off();
+    gsl_function F;
+    F.params = &param;
+    F.function = (double (*) (double, void*)) &FrSinc;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (limit);
+    gsl_integration_qawo_table * wf=gsl_integration_qawo_table_alloc (x, b-a, GSL_INTEG_SINE, limit);
+    status = gsl_integration_qawo (&F,b-a,0,eps_nriq*3,limit,w, wf, &res, &abserr);
+    if (status != GSL_SUCCESS) {
+        sasfit_err("integration failed for Q=%lf\n gsl_strerror(%d)\n",x,status);
+    }
+    gsl_integration_qawo_table_free (wf);
+    gsl_integration_workspace_free(w);
+    return res;
+}
+
+scalar sasfit_clipped_cos_quad(double a, double b, double (*f)(double, void *), double x, void *fparams) {
+    sasfit_param param;
+    double res,abserr,eps_nriq;
+    int limit=4000, status;
+
+	param.function = f;
+	param.more_p[1] = x;
+    param.moreparam=fparams;
+    eps_nriq=sasfit_eps_get_nriq();
+    gsl_set_error_handler_off();
+    gsl_function F;
+    F.params = fparams;
+    F.function = f;
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (limit);
+    gsl_integration_qawo_table * wf=gsl_integration_qawo_table_alloc (x, b-a, GSL_INTEG_COSINE, limit);
+    status = gsl_integration_qawo (&F,b-a,0,eps_nriq*3,limit,w, wf, &res, &abserr);
+    if (status != GSL_SUCCESS) {
+        sasfit_err("integration failed for Q=%lf\n gsl_strerror(%d)\n",x,status);
+    }
+    gsl_integration_qawo_table_free (wf);
+    gsl_integration_workspace_free(w);
     return res;
 }

@@ -124,6 +124,11 @@
 #define HANKEL_CHAVE 13
 #define HANKEL_SINC_SEO 14
 
+#define QUAD_OSC_SINC_A_B 0
+#define QUAD_OSC_SIN_A_B 1
+#define QUAD_OSC_COS_A_B 2
+#define QUAD_OSC_JN_A_B 3
+
 #define ROOTALG_BISECTION       0
 #define ROOTALG_FALSE_POSITION  1
 #define ROOTALG_BRENT           2

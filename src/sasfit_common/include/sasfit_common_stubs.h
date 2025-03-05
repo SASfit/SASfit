@@ -1,3 +1,6 @@
+#ifndef HEADER_BA6733629E40A061
+#define HEADER_BA6733629E40A061
+
 /*
  * src/sasfit_common/include/sasfit_common_stubs.h
  *
@@ -236,6 +239,8 @@ typedef struct
 	scalar (*sasfit_invert_func_v) (scalar, sasfit_func_vol_t *, int, scalar, scalar, sasfit_param *);  /* 157 */
 	scalar (*sasfit_gammaincinv) (scalar, scalar); /* 158 */
 	scalar (*sasfit_erfcinv) (scalar); /* 159 */
+	scalar (*sasfit_clipped_sinc_quad) (double, double, sasfit_func_int_t, double, void *); /* 160 */
+	scalar (*sasfit_clipped_cos_quad)  (double, double, sasfit_func_int_t, double, void *); /* 161 */
 } sasfit_common_stubs_t;
 
 #if defined(MAKE_SASFIT_PLUGIN)
@@ -857,8 +862,18 @@ typedef struct
 #define sasfit_erfcinv \
 	(SASFIT_COMMON_STUBS()->sasfit_erfcinv) /* 159 */
 #endif
+#ifndef sasfit_clipped_sinc_quad
+#define sasfit_clipped_sinc_quad \
+	(SASFIT_COMMON_STUBS()->sasfit_clipped_sinc_quad) /* 160 */
+#endif
+#ifndef sasfit_clipped_cos_quad
+#define sasfit_clipped_cos_quad \
+	(SASFIT_COMMON_STUBS()->sasfit_clipped_cos_quad) /* 161 */
+#endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
 
 #endif // file
+#endif // header guard
+
