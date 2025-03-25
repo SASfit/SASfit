@@ -59,7 +59,7 @@
 #include "tanhsinh/tanhsinh.h"
 #include <sys/time.h>
 #include "../../include/sasfit_common.h"
-#include "../../include/Lobatto.h"
+#include "../../include/lobatto.h"
 #include "../../quasimontecarlo/quasimontecarlo.h"
 #include "../../quasimontecarlo/Burley2020Scrambling/genpoints.h"
 #include "gmdi.h"
