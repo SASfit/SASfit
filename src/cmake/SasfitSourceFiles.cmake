@@ -55,6 +55,7 @@ set(SOURCE_sasfit_common
 	sasfit_plugin_api.c
 	sasfit_common.c
 	sasfit_qwe.c
+	sasfit_lobatto.c
 	f2c_utils/sasfit_dmilay.c
 	f2c_utils/sasfit_struve_h0h1.c
 	f2c_utils/sasfit_robertus_utils.c

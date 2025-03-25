@@ -1,3 +1,6 @@
+#ifndef HEADER_644A515AEDB574B2
+#define HEADER_644A515AEDB574B2
+
 /*
  * Author(s) of this file:
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
@@ -111,8 +114,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_fgld__v(scalar q, sasfit_param * p, int dis
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
  *      </tr><tr>
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
@@ -174,8 +177,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_v(scalar q, sasfit_param * p, 
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
  *      </tr><tr>
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
@@ -300,14 +303,14 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_v(scalar q, sasfit_param * p, i
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
  *      </tr><tr>
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r scale</td>
+ *       <td>radius scale</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
  *       <td></td>
@@ -363,8 +366,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl_v(scalar q, sasfit_para
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
  *      </tr><tr>
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
@@ -1237,4 +1240,6 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_e_l_ll__f(scalar q, sasfit_param * p);
 sasfit_t_r_y_DLLEXP scalar sasfit_sd_e_l_ll__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_e_l_ll_ ################ */
 #endif // this file
+
+#endif // header guard
 

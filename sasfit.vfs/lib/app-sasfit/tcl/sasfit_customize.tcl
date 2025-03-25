@@ -33,6 +33,16 @@ proc setRootAlg2int {} {
 	}
 }
 
+proc setSinCosQuad2int {} {
+	puts $::FitPrecision(sincosquad)
+	switch $::FitPrecision(sincosquad) {
+		"GSL_QAWO" {set ::FitPrecision(sincosquad_int) 0}
+		"OOURA_DEO"  {set ::FitPrecision(sincosquad_int) 1}
+		"FILON" {set ::FitPrecision(sincosquad_int) 2}
+		default {set ::FitPrecision(sincosquad_int) 0}
+	}
+}
+
 proc setSphAvgStrategy2int {} {
 	puts $::FitPrecision(SphAvgStrategy)
 	switch $::FitPrecision(SphAvgStrategy) {
@@ -112,6 +122,7 @@ proc setIntStrategy2int {} {
 		"SG_GAUSS_LEGENDRE" {set ::FitPrecision(IntStrategy_int) 38}
 		"SG_KONROD_PATTERSON" {set ::FitPrecision(IntStrategy_int) 39}
 		"SG_FROLOV" {set ::FitPrecision(IntStrategy_int) 40}
+		"LOBATTO" {set ::FitPrecision(IntStrategy_int) 41}
 		default {set ::FitPrecision(IntStrategy_int) 0}
 	}
 }
@@ -206,7 +217,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	
 	label $w.intStrat_label -text "integration strategy"
 	ComboBox $w.intStrat_value -values {"OOURA_DE" "OOURA_CC" "TANHSINH_1" "TANHSINH_2" \
-										"GSL_CQUAD" "GSL_QAG" "GSL_QNG"\
+										"GSL_CQUAD" "GSL_QAG" "GSL_QNG" "LOBATTO"\
 										"H_CUBATURE" "P_CUBATURE" "NR_QROMB" \
 										"GSL_GAUSSLEGENDRE" "GSL_CHEBYSHEV1" "GSL_CHEBYSHEV2"\
 										"GSL_GEGENBAUER" "GSL_EXPONENTIAL" "GSL_JACOBI"\
@@ -243,6 +254,16 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	grid $w.hankelStrat_label -row 6 -column 0 -sticky e
 	grid $w.hankelStrat_value -row 6 -column 1 -sticky w
 	
+	label $w.sincosQuad_label -text "sin(wx)/cos(wx) quadrature"
+	ComboBox $w.sincosQuad_value -values {"GSL_QAWO" "FILON" "OOURA_DEO"} \
+				-width 25 \
+				-textvariable ::FitPrecision(sincosquad) \
+				-modifycmd setSinCosQuad2int
+	grid $w.sincosQuad_label -row 6 -column 2 -sticky e
+	grid $w.sincosQuad_value -row 6 -column 3 -sticky w
+	
+
+
 	label $w.gsl_GL_label -text "GSL_GAUSSLEGENDRE points:"
 	entry $w.gsl_GL_value -textvariable FitPrecision(GSL_GAUSSLEGENDRE) -width $entrywidth
 	grid $w.gsl_GL_label -row 8 -column 0 -sticky e

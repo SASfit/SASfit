@@ -28,6 +28,7 @@
 #include <math.h>
 #include <sasfit.h>
 #include "../sasfit_common/multidiminte/src/tanhsinh/tanhsinh.h"
+#include "../sasfit_common/include/lobatto.h"
 #include "include/SASFIT_nr.h"
 #include <gsl/gsl_integration.h>
 #include <gsl/gsl_math.h>
@@ -232,6 +233,14 @@ void SASfitNRIQSQintcore(sasfit_param4int *param4int, scalar *res, scalar *err) 
 	    }
 	}
     switch(sasfit_get_int_strategy()) {
+    case LOBATTO: {
+	            *res = sasfit_GaussLobattoInt(&IQ_IntdLen,
+                            ((sasfit_param4int *)param4int)->Rstart,
+                            ((sasfit_param4int *)param4int)->Rend,
+                            0, sasfit_eps_get_nriq(),
+                            lenaw*lenaw,err,param4int);
+                break;
+	        }
     case OOURA_DOUBLE_EXP_QUADRATURE: {
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);

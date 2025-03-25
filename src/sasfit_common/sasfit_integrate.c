@@ -48,6 +48,7 @@
 #include "include/kk101CosSin.h"
 #include "include/kk201CosSin.h"
 #include "include/sasfit_hankel.h"
+#include "include/lobatto.h"
 #include "multidiminte/src/tanhsinh/tanhsinh.h"
 #include "quasimontecarlo/quasimontecarlo.h"
 #include "quasimontecarlo/Burley2020Scrambling/genpoints.h"
@@ -788,10 +789,15 @@ scalar sasfit_integrate_ctm(scalar int_start,
             }
 	    }
 	}
-	else if ( gsl_finite(int_start) && gsl_finite(int_end) ) // adaptive integration with singularities
-	                                                         // on well defined interval (a,b)
+	else if ( gsl_finite(int_start) && gsl_finite(int_end) ) // adaptive integration
+                                                             // on well defined interval (a,b)
 	{
+//	    sasfit_out("int strategy:%d\n",sasfit_get_int_strategy());
 	    switch (sasfit_get_int_strategy()) {
+	        case LOBATTO: {
+	            res = sasfit_GaussLobattoInt(&Kernel_1D,
+                            int_start,int_end,epsabs,epsrel, limit,&ferr[0],&cubstruct);
+	        }
 	        case TANHSINH_1: {
 	            res = TanhSinhQuad(&Kernel_1D, &cubstruct,
                             int_start,int_end,7,epsrel,&ferr[0]);

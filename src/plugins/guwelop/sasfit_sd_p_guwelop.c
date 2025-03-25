@@ -31,7 +31,6 @@ scalar sasfit_sd_p_guwelop_v(scalar u, sasfit_param * param, int dist)
     scalar x, y, QGUWELOP,FGUWELOP,qGUWELOP,pGUWELOP, LQ, UQ, IQR, M,K;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
-	SASFIT_CHECK_COND1((x < 0.0), param, "x(%lg) < 0",x);
 	SASFIT_CHECK_COND1((LAMBDA <= 0.0), param, "lambda(%lg) <= 0",LAMBDA); // modify condition to your needs
 	SASFIT_CHECK_COND1((ALPHA <= 0.0), param, "alpha(%lg) <= 0",ALPHA); // modify condition to your needs
 	SASFIT_CHECK_COND1((BETA <= 0.0), param, "beta(%lg) <= 0",BETA); // modify condition to your needs

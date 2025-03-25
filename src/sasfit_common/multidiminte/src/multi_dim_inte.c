@@ -59,6 +59,7 @@
 #include "tanhsinh/tanhsinh.h"
 #include <sys/time.h>
 #include "../../include/sasfit_common.h"
+#include "../../include/Lobatto.h"
 #include "../../quasimontecarlo/quasimontecarlo.h"
 #include "../../quasimontecarlo/Burley2020Scrambling/genpoints.h"
 #include "gmdi.h"
@@ -219,7 +220,11 @@ static int call_integration_func(gmdi_multi_dim_inte_param* params)
     case GDMI_INTE_FUNCTIONS_GSL_JACOBI:
         ret = gsl_integration_fixed(&gf, params->intern.results + params->intern.dim, oip->intern.gfw);
         break;
-
+    case GDMI_INTE_FUNCTIONS_LOBATTO:
+        *(params->intern.results + params->intern.dim) = sasfit_GaussLobattoInt(big_g,
+                            inte_limit_low,inte_limit_low,oip->epsabs, oip->epsrel, 4000,params->intern.abserrs + params->intern.dim,params);
+        //ret = gsl_integration_fixed(&gf, params->intern.results + params->intern.dim, oip->intern.gfw);
+        break;
     default: /* No proper inte_func is found */
         GSL_ERROR("Invalid inte_func is specified", GSL_EINVAL);
     }
@@ -1101,6 +1106,9 @@ int sasfit_cubature(size_t ndim,
                 break;
         case OOURA_CLENSHAW_CURTIS_QUADRATURE :
                 integration_strategy = GDMI_INTE_FUNCTIONS_OOURA_CC;
+                break;
+        case LOBATTO:
+                integration_strategy = GDMI_INTE_FUNCTIONS_LOBATTO;
                 break;
         case GSL_CQUAD :
                 integration_strategy = GDMI_INTE_FUNCTIONS_CQUAD;

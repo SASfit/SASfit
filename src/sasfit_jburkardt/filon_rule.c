@@ -7,7 +7,7 @@
 
 /******************************************************************************/
 
-double filon_fun_cos ( int n, double *f ( int n, double x[] ), double a, 
+double filon_fun_cos ( int n, double *f ( int n, double x[] ), double a,
   double b, double t )
 
 /******************************************************************************/
@@ -70,7 +70,7 @@ double filon_fun_cos ( int n, double *f ( int n, double x[] ), double a,
     Input, int N, the number of data points.
     N must be odd, and greater than 1.
 
-    Input, double *F ( int n, double x[] ), the function which evaluates the 
+    Input, double *F ( int n, double x[] ), the function which evaluates the
     integrand.
 
     Input, double A, B, the limits of integration.
@@ -99,7 +99,7 @@ double filon_fun_cos ( int n, double *f ( int n, double x[] ), double a,
     value = 0.0;
     return value;
   }
- 
+
   if ( n <= 1 )
   {
 /*
@@ -111,7 +111,7 @@ double filon_fun_cos ( int n, double *f ( int n, double x[] ), double a,
 */
 	n=3;
   }
- 
+
   if ( ( n % 2 ) != 1 )
   {
 /*
@@ -129,8 +129,8 @@ double filon_fun_cos ( int n, double *f ( int n, double x[] ), double a,
   x = ( double * ) malloc ( n * sizeof ( double ) );
   for ( i = 0; i < n; i++ )
   {
-    x[i] = ( ( double ) ( n - i - 1 ) * a   
-           + ( double ) (     i     ) * b ) 
+    x[i] = ( ( double ) ( n - i - 1 ) * a
+           + ( double ) (     i     ) * b )
            / ( double ) ( n     - 1 );
   }
 
@@ -141,24 +141,24 @@ double filon_fun_cos ( int n, double *f ( int n, double x[] ), double a,
 
   if ( 6.0 * fabs ( theta ) <= 1.0 )
   {
-    alpha = 2.0 * pow ( theta, 3 ) /   45.0 
-          - 2.0 * pow ( theta, 5 ) /  315.0 
+    alpha = 2.0 * pow ( theta, 3 ) /   45.0
+          - 2.0 * pow ( theta, 5 ) /  315.0
           + 2.0 * pow ( theta, 7 ) / 4725.0;
-  
-    beta =  2.0                    /     3.0 
-          + 2.0 * pow ( theta, 2 ) /    15.0 
-          - 4.0 * pow ( theta, 4 ) /   105.0 
-          + 2.0 * pow ( theta, 6 ) /   567.0 
+
+    beta =  2.0                    /     3.0
+          + 2.0 * pow ( theta, 2 ) /    15.0
+          - 4.0 * pow ( theta, 4 ) /   105.0
+          + 2.0 * pow ( theta, 6 ) /   567.0
           - 4.0 * pow ( theta, 8 ) / 22275.0;
 
-    gamma = 4.0                    /      3.0 
-          - 2.0 * pow ( theta, 2 ) /     15.0 
-          +       pow ( theta, 4 ) /    210.0 
+    gamma = 4.0                    /      3.0
+          - 2.0 * pow ( theta, 2 ) /     15.0
+          +       pow ( theta, 4 ) /    210.0
           -       pow ( theta, 6 ) /  11340.0;
   }
   else
   {
-    alpha = ( pow ( theta, 2 ) + theta * sint * cost - 2.0 * sint * sint ) 
+    alpha = ( pow ( theta, 2 ) + theta * sint * cost - 2.0 * sint * sint )
       / pow ( theta, 3 );
 
     beta = ( 2.0 * theta + 2.0 * theta * cost * cost
@@ -184,10 +184,10 @@ double filon_fun_cos ( int n, double *f ( int n, double x[] ), double a,
     c2nm1 = c2nm1 + ftab[i] * cos ( t * x[i] );
   }
 
-  value = h * ( 
-      alpha * ( ftab[n-1] * sin ( t * x[n-1] )  
-              - ftab[0]   * sin ( t * x[0] ) ) 
-    + beta * c2n 
+  value = h * (
+      alpha * ( ftab[n-1] * sin ( t * x[n-1] )
+              - ftab[0]   * sin ( t * x[0] ) )
+    + beta * c2n
     + gamma * c2nm1 );
 
   free ( ftab );
@@ -287,23 +287,29 @@ double filon_tab_cos ( int n, double ftab[], double a, double b, double t )
     value = 0.0;
     return value;
   }
- 
+
   if ( n <= 1 )
   {
+/*
     fprintf ( stderr, "\n" );
-    fprintf ( stderr, "FILON_TAB_COS - Fatal error!\n" );
+    fprintf ( stderr, "FILON_FUN_COS - Fatal error!\n" );
     fprintf ( stderr, "  N < 2\n" );
     fprintf ( stderr, "  N = %d\n", n );
     exit ( 1 );
+*/
+	n=3;
   }
- 
+
   if ( ( n % 2 ) != 1 )
   {
+/*
     fprintf ( stderr, "\n" );
-    fprintf ( stderr, "FILON_TAB_COS - Fatal error!\n" );
+    fprintf ( stderr, "FILON_FUN_COS - Fatal error!\n" );
     fprintf ( stderr, "  N must be odd.\n" );
     fprintf ( stderr, "  N = %d\n", n );
     exit ( 1 );
+*/
+	n++;
   }
 /*
   Set the X values.
@@ -311,8 +317,8 @@ double filon_tab_cos ( int n, double ftab[], double a, double b, double t )
   x = ( double * ) malloc ( n * sizeof ( double ) );
   for ( i = 0; i < n; i++ )
   {
-    x[i] = ( ( double ) ( n - i - 1 ) * a   
-           + ( double ) (     i     ) * b ) 
+    x[i] = ( ( double ) ( n - i - 1 ) * a
+           + ( double ) (     i     ) * b )
            / ( double ) ( n     - 1 );
   }
 
@@ -323,27 +329,27 @@ double filon_tab_cos ( int n, double ftab[], double a, double b, double t )
 
   if ( 6.0 * fabs ( theta ) <= 1.0 )
   {
-    alpha = 2.0 * pow ( theta, 3 ) /   45.0 
-          - 2.0 * pow ( theta, 5 ) /  315.0 
+    alpha = 2.0 * pow ( theta, 3 ) /   45.0
+          - 2.0 * pow ( theta, 5 ) /  315.0
           + 2.0 * pow ( theta, 7 ) / 4725.0;
-  
-    beta =  2.0                    /     3.0 
-          + 2.0 * pow ( theta, 2 ) /    15.0 
-          - 4.0 * pow ( theta, 4 ) /   105.0 
-          + 2.0 * pow ( theta, 6 ) /   567.0 
+
+    beta =  2.0                    /     3.0
+          + 2.0 * pow ( theta, 2 ) /    15.0
+          - 4.0 * pow ( theta, 4 ) /   105.0
+          + 2.0 * pow ( theta, 6 ) /   567.0
           - 4.0 * pow ( theta, 8 ) / 22275.0;
 
-    gamma = 4.0                    /      3.0 
-          - 2.0 * pow ( theta, 2 ) /     15.0 
-          +       pow ( theta, 4 ) /    210.0 
+    gamma = 4.0                    /      3.0
+          - 2.0 * pow ( theta, 2 ) /     15.0
+          +       pow ( theta, 4 ) /    210.0
           -       pow ( theta, 6 ) /  11340.0;
   }
   else
   {
-    alpha = ( pow ( theta, 2 ) + theta * sint * cost - 2.0 * sint * sint ) 
+    alpha = ( pow ( theta, 2 ) + theta * sint * cost - 2.0 * sint * sint )
       / pow ( theta, 3 );
 
-    beta = ( 2.0 * theta + 2.0 * theta * cost * cost 
+    beta = ( 2.0 * theta + 2.0 * theta * cost * cost
       - 4.0 * sint * cost ) / pow ( theta, 3 );
 
     gamma = 4.0 * ( sint - theta * cost ) / pow ( theta, 3 );
@@ -362,10 +368,10 @@ double filon_tab_cos ( int n, double ftab[], double a, double b, double t )
     c2nm1 = c2nm1 + ftab[i] * cos ( t * x[i] );
   }
 
-  value = h * ( 
-      alpha * ( ftab[n-1] * sin ( t * x[n-1] )  
-              - ftab[0]   * sin ( t * x[0] ) ) 
-    + beta * c2n 
+  value = h * (
+      alpha * ( ftab[n-1] * sin ( t * x[n-1] )
+              - ftab[0]   * sin ( t * x[0] ) )
+    + beta * c2n
     + gamma * c2nm1 );
 
   free ( x );
@@ -374,7 +380,7 @@ double filon_tab_cos ( int n, double ftab[], double a, double b, double t )
 }
 /******************************************************************************/
 
-double filon_fun_sin ( int n, double *f ( int n, double x[] ), double a, 
+double filon_fun_sin ( int n, double *f ( int n, double x[] ), double a,
   double b, double t )
 
 /******************************************************************************/
@@ -434,7 +440,7 @@ double filon_fun_sin ( int n, double *f ( int n, double x[] ), double a,
 
   Parameters:
 
-    Input, int N, the number of data points, 
+    Input, int N, the number of data points,
     including the endpoints.  N must be odd, and greater than 1.
 
     Input, external F, the subroutine which evaluates the integrand,
@@ -466,23 +472,29 @@ double filon_fun_sin ( int n, double *f ( int n, double x[] ), double a,
     value = 0.0;
     return value;
   }
- 
+
   if ( n <= 1 )
   {
+/*
     fprintf ( stderr, "\n" );
-    fprintf ( stderr, "FILON_FUN_SIN - Fatal error!\n" );
+    fprintf ( stderr, "FILON_FUN_COS - Fatal error!\n" );
     fprintf ( stderr, "  N < 2\n" );
     fprintf ( stderr, "  N = %d\n", n );
     exit ( 1 );
+*/
+	n=3;
   }
- 
+
   if ( ( n % 2 ) != 1 )
   {
+/*
     fprintf ( stderr, "\n" );
-    fprintf ( stderr, "FILON_FUN_SIN - Fatal error!\n" );
+    fprintf ( stderr, "FILON_FUN_COS - Fatal error!\n" );
     fprintf ( stderr, "  N must be odd.\n" );
     fprintf ( stderr, "  N = %d\n", n );
     exit ( 1 );
+*/
+	n++;
   }
 /*
   Set the X values.
@@ -490,8 +502,8 @@ double filon_fun_sin ( int n, double *f ( int n, double x[] ), double a,
   x = ( double * ) malloc ( n * sizeof ( double ) );
   for ( i = 0; i < n; i++ )
   {
-    x[i] = ( ( double ) ( n - i - 1 ) * a   
-           + ( double ) (     i     ) * b ) 
+    x[i] = ( ( double ) ( n - i - 1 ) * a
+           + ( double ) (     i     ) * b )
            / ( double ) ( n     - 1 );
   }
 
@@ -502,24 +514,24 @@ double filon_fun_sin ( int n, double *f ( int n, double x[] ), double a,
 
   if ( 6.0 * fabs ( theta ) <= 1.0 )
   {
-    alpha = 2.0 * pow ( theta, 3 ) /   45.0 
-          - 2.0 * pow ( theta, 5 ) /  315.0 
+    alpha = 2.0 * pow ( theta, 3 ) /   45.0
+          - 2.0 * pow ( theta, 5 ) /  315.0
           + 2.0 * pow ( theta, 7 ) / 4725.0;
-  
-    beta =  2.0                    /     3.0 
-          + 2.0 * pow ( theta, 2 ) /    15.0 
-          - 4.0 * pow ( theta, 4 ) /   105.0 
-          + 2.0 * pow ( theta, 6 ) /   567.0 
+
+    beta =  2.0                    /     3.0
+          + 2.0 * pow ( theta, 2 ) /    15.0
+          - 4.0 * pow ( theta, 4 ) /   105.0
+          + 2.0 * pow ( theta, 6 ) /   567.0
           - 4.0 * pow ( theta, 8 ) / 22275.0;
 
-    gamma = 4.0                    /      3.0 
-          - 2.0 * pow ( theta, 2 ) /     15.0 
-          +       pow ( theta, 4 ) /    210.0 
+    gamma = 4.0                    /      3.0
+          - 2.0 * pow ( theta, 2 ) /     15.0
+          +       pow ( theta, 4 ) /    210.0
           -       pow ( theta, 6 ) /  11340.0;
   }
   else
   {
-    alpha = ( pow ( theta, 2 ) + theta * sint * cost 
+    alpha = ( pow ( theta, 2 ) + theta * sint * cost
       - 2.0 * sint * sint ) / pow ( theta, 3 );
 
     beta = ( 2.0 * theta + 2.0 * theta * cost * cost
@@ -545,12 +557,12 @@ double filon_fun_sin ( int n, double *f ( int n, double x[] ), double a,
     s2nm1 = s2nm1 + ftab[i] * sin ( t * x[i] );
   }
 
-  value = h * ( 
-      alpha * ( ftab[0]   * cos ( t * x[0] ) 
+  value = h * (
+      alpha * ( ftab[0]   * cos ( t * x[0] )
               - ftab[n-1] * cos ( t * x[n-1] ) )
-    + beta * s2n 
+    + beta * s2n
     + gamma * s2nm1 );
- 
+
   free ( ftab );
   free ( x );
 
@@ -617,7 +629,7 @@ double filon_tab_sin ( int n, double ftab[], double a, double b, double t )
 
   Parameters:
 
-    Input, int N, the number of data points, 
+    Input, int N, the number of data points,
     including the endpoints.  N must be odd, and greater than 1.
 
     Input, double FTAB[N], contains the value of the function
@@ -648,23 +660,29 @@ double filon_tab_sin ( int n, double ftab[], double a, double b, double t )
     value = 0.0;
     return value;
   }
- 
+
   if ( n <= 1 )
   {
+/*
     fprintf ( stderr, "\n" );
-    fprintf ( stderr, "FILON_TAB_SIN - Fatal error!\n" );
+    fprintf ( stderr, "FILON_FUN_COS - Fatal error!\n" );
     fprintf ( stderr, "  N < 2\n" );
     fprintf ( stderr, "  N = %d\n", n );
     exit ( 1 );
+*/
+	n=3;
   }
- 
+
   if ( ( n % 2 ) != 1 )
   {
+/*
     fprintf ( stderr, "\n" );
-    fprintf ( stderr, "FILON_TAB_SIN - Fatal error!\n" );
+    fprintf ( stderr, "FILON_FUN_COS - Fatal error!\n" );
     fprintf ( stderr, "  N must be odd.\n" );
     fprintf ( stderr, "  N = %d\n", n );
     exit ( 1 );
+*/
+	n++;
   }
 /*
   Set the X values.
@@ -672,8 +690,8 @@ double filon_tab_sin ( int n, double ftab[], double a, double b, double t )
   x = ( double * ) malloc ( n * sizeof ( double ) );
   for ( i = 0; i < n; i++ )
   {
-    x[i] = ( ( double ) ( n - i - 1 ) * a   
-           + ( double ) (     i     ) * b ) 
+    x[i] = ( ( double ) ( n - i - 1 ) * a
+           + ( double ) (     i     ) * b )
            / ( double ) ( n     - 1 );
   }
 
@@ -684,32 +702,32 @@ double filon_tab_sin ( int n, double ftab[], double a, double b, double t )
 
   if ( 6.0 * fabs ( theta ) <= 1.0 )
   {
-    alpha = 2.0 * pow ( theta, 3 ) /   45.0 
-          - 2.0 * pow ( theta, 5 ) /  315.0 
+    alpha = 2.0 * pow ( theta, 3 ) /   45.0
+          - 2.0 * pow ( theta, 5 ) /  315.0
           + 2.0 * pow ( theta, 7 ) / 4725.0;
-  
-    beta =  2.0                    /     3.0 
-          + 2.0 * pow ( theta, 2 ) /    15.0 
-          - 4.0 * pow ( theta, 4 ) /   105.0 
-          + 2.0 * pow ( theta, 6 ) /   567.0 
+
+    beta =  2.0                    /     3.0
+          + 2.0 * pow ( theta, 2 ) /    15.0
+          - 4.0 * pow ( theta, 4 ) /   105.0
+          + 2.0 * pow ( theta, 6 ) /   567.0
           - 4.0 * pow ( theta, 8 ) / 22275.0;
 
-    gamma = 4.0                    /      3.0 
-          - 2.0 * pow ( theta, 2 ) /     15.0 
-          +       pow ( theta, 4 ) /    210.0 
+    gamma = 4.0                    /      3.0
+          - 2.0 * pow ( theta, 2 ) /     15.0
+          +       pow ( theta, 4 ) /    210.0
           -       pow ( theta, 6 ) /  11340.0;
   }
   else
   {
-    alpha = ( pow ( theta, 2 ) + theta * sint * cost 
+    alpha = ( pow ( theta, 2 ) + theta * sint * cost
       - 2.0 * sint * sint ) / pow ( theta, 3 );
 
-    beta = ( 2.0 * theta + 2.0 * theta * cost * cost 
+    beta = ( 2.0 * theta + 2.0 * theta * cost * cost
       - 4.0 * sint * cost ) / pow ( theta, 3 );
 
     gamma = 4.0 * ( sint - theta * cost ) / pow ( theta, 3 );
   }
-  
+
   s2n = + 0.5 * ftab[0] * sin ( t * x[0] );
   for ( i = 2; i < n - 1; i = i + 2 )
   {
@@ -723,12 +741,12 @@ double filon_tab_sin ( int n, double ftab[], double a, double b, double t )
     s2nm1 = s2nm1 + ftab[i] * sin ( t * x[i] );
   }
 
-  value = h * ( 
-      alpha * ( ftab[0]   * cos ( t * x[0] ) 
-              - ftab[n-1] * cos ( t * x[n-1] ) ) 
-    + beta * s2n 
+  value = h * (
+      alpha * ( ftab[0]   * cos ( t * x[0] )
+              - ftab[n-1] * cos ( t * x[n-1] ) )
+    + beta * s2n
     + gamma * s2nm1 );
- 
+
   free ( x );
 
   return value;

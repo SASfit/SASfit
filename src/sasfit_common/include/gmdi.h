@@ -1,3 +1,6 @@
+#ifndef HEADER_14DA88F58F2D4263
+#define HEADER_14DA88F58F2D4263
+
 /*! \file gmdi.h */
 
 /*
@@ -44,6 +47,7 @@ typedef enum
     GDMI_INTE_FUNCTIONS_EXPONENTIAL,
     GDMI_INTE_FUNCTIONS_LAGUERRE,
     GDMI_INTE_FUNCTIONS_GSL_JACOBI,
+    GDMI_INTE_FUNCTIONS_LOBATTO
 } GMDI_INTE_FUNCTIONS;
 
 /*!
@@ -287,3 +291,5 @@ double gmdi_handle_get_abserr(gmdi_inte_handle handle);
 void gmdi_get_version(int * major, int * minor, int * subminor);
 
 #endif /* GMDI_H_ */
+#endif // header guard
+

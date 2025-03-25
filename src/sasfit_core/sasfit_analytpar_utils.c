@@ -590,6 +590,7 @@ int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[])
 	SF_TCL_GET_F(int,    "::FitPrecision", "IntStrategy_int", sasfit_set_int_strategy);
 	SF_TCL_GET_F(int,    "::FitPrecision", "SphAvgStrategy_int", sasfit_set_sphavg_strategy);
 	SF_TCL_GET_F(int,    "::FitPrecision", "HankelStrategy_int", sasfit_set_hankel_strategy);
+	SF_TCL_GET_F(int,    "::FitPrecision", "sincosquad_int", sasfit_set_sincos_quad_strategy);
 	SF_TCL_GET_F(int,    "::FitPrecision", "Robertus_p", sasfit_eps_set_robertus_p);
 	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_GAUSSLEGENDRE", sasfit_eps_set_gausslegendre);
 	SF_TCL_GET_F(int,    "::FitPrecision", "GSL_CHEBYSHEV1", sasfit_eps_set_chebyshev1);

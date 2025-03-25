@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   <Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef PCS_BOTTLE_BRUSH_PRIVATE_H

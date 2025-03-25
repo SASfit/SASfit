@@ -529,3 +529,9 @@ declare 160 generic {
 declare 161 generic {
     scalar sasfit_clipped_cos_quad(double a, double b, double (*f)(double, void *), double x, void *fparams)
 }
+declare 162 generic {
+	void sasfit_set_sincos_quad_strategy(int value)
+}
+declare 163 generic {
+	int sasfit_get_sincos_quad_strategy(void)
+}

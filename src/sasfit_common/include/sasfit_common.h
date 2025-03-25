@@ -84,6 +84,7 @@
 #define SG_GAUSS_LEGENDRE 38 // gqu
 #define SG_KONROD_PATTERSON 39 //kpn
 #define SG_FROLOV 40
+#define LOBATTO 41
 
 #define SPHAVG_GSL_2D_GAUSSLEGENDRE 0
 #define SPHAVG_Lebedev 1

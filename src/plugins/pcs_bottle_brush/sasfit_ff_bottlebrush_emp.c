@@ -42,7 +42,7 @@ scalar sasfit_ff_bottlebrush_emp(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((SIGMA_S <= 0.0), param, "sigma_s(%lg) <= 0",SIGMA_S); // modify condition to your needs
 
 	// insert your code here
-	return gsl_pow_2(sasfit_ff_bottlebrush__empirical__f(q,param));
+	return gsl_pow_2(sasfit_ff_bottlebrush_emp_f(q,param));
 }
 
 scalar sasfit_ff_bottlebrush_emp_f(scalar q, sasfit_param * param)

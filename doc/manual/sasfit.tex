@@ -82,7 +82,10 @@
 %\newcommand\subsubsubsubsection{\@startsection{subparagraph}{5}{0pt}{-2.5ex\@plus -1ex \@minus -.25ex}{1.25ex \@plus .25ex}{\normalfont\normalsize\rmfamily\mdseries\itshape}}
 %\makeatother
 %\newsectionstyle[\subsubsection][4]{\subsubsubsection} \renewsectionstyle[\subsubsection]{\paragraph}
-
+\usepackage{stackengine}
+\newcommand\mathstack[2]{\ensurestackMath{%
+  \stackengine{\Lstackgap}{{}#1{}}{#2}{O}{c}{F}{F}{L}}}
+  
 \makeatletter
 \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
             {-2.5ex\@plus -1ex \@minus -.25ex}%

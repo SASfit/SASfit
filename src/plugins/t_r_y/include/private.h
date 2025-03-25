@@ -1,3 +1,6 @@
+#ifndef HEADER_D74FAD662AB17C8
+#define HEADER_D74FAD662AB17C8
+
 /*
  * Author(s) of this file:
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
@@ -42,7 +45,8 @@
 #define BL	GSL_MIN(param->p[1],param->p[2])
 #define BU	GSL_MAX(param->p[1],param->p[2])
 
-#define DIM	param->p[3]
+#define DIM	    param->p[3]
+#define RSCALE	param->p[3]
 
 #define KAPPA	fabs(param->p[4])
 #define THETA	param->p[4]
@@ -125,4 +129,6 @@ scalar Lindley_F_R(scalar, scalar);
 scalar f_Gamma(scalar, scalar, scalar);
 scalar F_Gamma(scalar, scalar, scalar);
 #endif // end of file
+
+#endif // header guard 
 

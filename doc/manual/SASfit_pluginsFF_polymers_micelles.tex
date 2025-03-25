@@ -1043,10 +1043,10 @@ The third case discussed in \cite{Casassa1966} includes a binomial distributed r
   C_\mathrm{h} &= \left(1-e^{-\bar{x}(1-\bar{\lambda})/\bar{\zeta}}\right)^2 \left[\frac{\bar{x}\bar{\lambda}+\left(e^{-\bar{x}\bar{\lambda}}-1\right)}{\bar{x}^2\bar{\lambda}^2/\bar{\zeta}^2}\right]
 \end{align}
 where $\bar{x}$, $\bar{\lambda}$, and $\bar{\lambda}$ are averaged accordingly (details see \cite{Casassa1966}).
-In fig.\ \ref{fig:comb} The scattering intensity of am comb with 10 branches is shown. The differences between the models are hardly visible in the Loglog presentation, however, in the Kratky plot they become visible.
+In fig.\ \ref{fig:comb} The scattering intensity of am comb with 10 branches is shown. The differences between the models are hardly visible in the loglog presentation, however, in the Kratky plot they become visible.
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.7\textwidth]{../images/form_factor/polymer_branched/comb.pdf}
+\includegraphics[width=0.8\textwidth]{../images/form_factor/polymer_branched/comb.pdf}
 \end{center}
 \caption{Scattering of a comb in a Kratky and Loglog plot.}
 \label{fig:comb}
@@ -1071,7 +1071,66 @@ In fig.\ \ref{fig:comb} The scattering intensity of am comb with 10 branches is 
 \subsubsection{bottle-brush polymer}
 \label{sect:com_regular}
 ~\\
-\cite{Hsu2007,Hsu2008}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{../images/form_factor/polymer_branched/bottle_brush_polymer.pdf}
+\end{center}
+\caption{sketch of a bottle brush polymer \cite{Rathgeber2005}.}
+\label{fig:bottlebrush}
+\end{figure}
+
+For a bottle-brush polymer analytical expressions for the scattering length density profile of the brush cross-section have been suggested by \cite{Rathgeber2005}, which is an empirical star-like profile, and by \cite{Hsu2007,Hsu2008} based on simulations.
+The corresponding profiles read as
+\begin{align}
+  \rho_\mathrm{emp}(r) &= 
+    \begin{cases}
+      \eta , & \mbox{if } r\leq R_c \\
+      \eta \alpha r^{-k}\left\{1+\exp\left(\frac{r-R_s}{\sigma_s}\right)\right\}^{-1}, & \mbox{otherwise}.
+    \end{cases}
+  \label{eq:xsBrushes1}\\
+  \rho_\mathrm{sim}(r) &= \frac{\sigma \eta}{1+\left(r/R_1\right)^{x_1}} \exp\left[-\left(r/R_2\right)^{x_2}\right]\label{eq:xsBrushes2}
+\end{align}
+with $\eta$ being the scattering contrast, $\alpha=R_c^k\left\{1+\exp\left(\frac{R_c-R_s}{\sigma_s}\right)\right\}$ a scaling constant so that $\rho(R_c)$ is continuous, $R_c$ the inner radius, up to which this profile is constant, $k$ describes the power law decay to some outer radius $R_s$ with $\sigma_s$ to have a smooth transition to zero (Fermi function). In the second model $\sigma$ describes the grafting density, $R_1$ and $R_2$ are the length scales for the algebraic decays ($R_1 \ll R_2$), and $x_1$ and $x_2$ are the corresponding exponents. It is expected to have $x_1\simeq (3\nu-1)/(2\nu)$, where $\nu$ is the Flory parameter.
+
+For this two profiles the cross-section term $P_\mathrm{cs}(q)$ for thin rod-like structures as discussed in \ref{sec:very_anisotropic_particles}  using eq.\ \ref{Pcs:cylindrical} reads as
+\setstackgap{L}{0.3\baselineskip}
+\begin{align}
+P_\textrm{cs}^{\mathstack{\text{\tiny emp}}{\text{\tiny sim}}} (q) = \left[2\pi\int_0^\infty
+\rho_{\mathstack{\text{\tiny emp}}{\text{\tiny sim}}}(r) \textrm{J}_0(qr)r \,
+\textrm{d}r\right]^2 \label{Pcs:bottlebrush}
+\end{align}
+
+\noindent \uline{Input Parameters for models  \texttt{profile BottleBrush (emp.)} and \texttt{BottleBrush (emp.)}:}\\
+\begin{description}
+\item[\texttt{eta}] contrast
+\item[\texttt{Rc}] core radius $R_c$
+\item[\texttt{k}] power law decay $k>0$
+\item[\texttt{Rs}] outer radius $R_s > R_c$
+\item[\texttt{sigma\_s}] transition width $\sigma_s$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item $R_s > R_c $
+\item $k > 0$
+\item $\sigma_s>0$
+\end{itemize}
+
+\noindent \uline{Input Parameters for models \texttt{BottleBrush (sim)} and \texttt{profile BottleBrush (sim)}:}\\
+\begin{description}
+\item[\texttt{sigma\_eta}] grafting density times scattering contrast $\sigma \eta$
+\item[\texttt{R\_1}] first length scales for the algebraic decays $R_1$
+\item[\texttt{x\_1}] first power law decay $x_1>0$
+\item[\texttt{R\_2}] second length scales for the algebraic decays $0<R_1 \ll R_2$
+\item[\texttt{x\_2}] second power law decay $x_2>0$
+\end{description}
+
+\noindent\uline{Note:}
+\begin{itemize}
+\item $0< R_1 \ll R_2 $
+\item $x_1 > 0$
+\item $x_2 > 0$
+\end{itemize}
 
 ~\\
 \subsubsection{soft sphere model}

@@ -36,7 +36,7 @@ scalar sasfit_ff_bottlebrush_sim(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((X2 < 0.0), param, "x2(%lg) < 0",X2); // modify condition to your needs
     Q = q;
 	// insert your code here
-	gsl_pow_2(sasfit_ff_bottlebrush__from_sim__f(q,param));
+	gsl_pow_2(sasfit_ff_bottlebrush_sim_f(q,param));
 }
 
 scalar sasfit_ff_bottlebrush_sim_f(scalar q, sasfit_param * param)

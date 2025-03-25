@@ -1,3 +1,6 @@
+#ifndef HEADER_355CBCA42B085C03
+#define HEADER_355CBCA42B085C03
+
 /*
  * src/sasfit_common/include/sasfit_eps.h
  *
@@ -59,6 +62,7 @@ typedef struct
     int     int_strategy;
     int     sphavg_strategy;
     int     hankel_strategy;
+    int     sincos_quad_strategy;
 	int     robertus_p;
 	int     gausslegendre;
 	int     chebyshev1;
@@ -103,6 +107,7 @@ sasfit_common_DLLEXP int    sasfit_get_iq_or_gz(void);
 sasfit_common_DLLEXP int    sasfit_get_sphavg_strategy(void);
 sasfit_common_DLLEXP int    sasfit_get_int_strategy(void);
 sasfit_common_DLLEXP int    sasfit_get_hankel_strategy(void);
+sasfit_common_DLLEXP int    sasfit_get_sincos_quad_strategy(void);
 sasfit_common_DLLEXP scalar sasfit_get_h_Ogata(void);
 sasfit_common_DLLEXP scalar sasfit_get_N_Ogata(void);
 sasfit_common_DLLEXP scalar sasfit_get_MSASthickness(void);
@@ -148,6 +153,7 @@ sasfit_common_DLLEXP void sasfit_set_iq_or_gz(int value);
 sasfit_common_DLLEXP void sasfit_set_sphavg_strategy(int value);
 sasfit_common_DLLEXP void sasfit_set_int_strategy(int value);
 sasfit_common_DLLEXP void sasfit_set_hankel_strategy(int value);
+sasfit_common_DLLEXP void sasfit_set_sincos_quad_strategy(int value);
 sasfit_common_DLLEXP void sasfit_set_h_Ogata(scalar value);
 sasfit_common_DLLEXP void sasfit_set_N_Ogata(scalar value);
 sasfit_common_DLLEXP void sasfit_set_MSASthickness(scalar value);
@@ -190,4 +196,6 @@ sasfit_common_DLLEXP void sasfit_eps_print(void);
 
 #endif // MAKE_SASFIT_PLUGIN
 #endif // file
+
+#endif // header guard 
 

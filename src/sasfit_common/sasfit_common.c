@@ -203,6 +203,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_erfcinv, /* 159 */
 	sasfit_clipped_sinc_quad, /* 160 */
 	sasfit_clipped_cos_quad, /* 161 */
+	sasfit_set_sincos_quad_strategy, /* 162 */
+	sasfit_get_sincos_quad_strategy, /* 163 */
 };
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
 
