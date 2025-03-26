@@ -15,8 +15,8 @@ typedef double (*Func)(double);
 #define THROW_WARNING(msg) \
     { sasfit_out("%s\n", msg); }
 // Constants used in the algorithm
-const double ALPHA = 1.0 / sqrt(3.0 / 2.0);
-const double BETA = 1.0 / sqrt(5.0);
+#define ALPHA   1.0 / sqrt(3.0 / 2.0)
+#define BETA    1.0 / sqrt(5.0)
 
 /**
  * Perform a single step of the Gauss-Lobatto integration

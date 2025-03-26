@@ -71,7 +71,8 @@
 
 
 
-#define Q   param->p[MAXPAR-1]
+#define Q       param->p[MAXPAR-1]
+#define YSTART  param->p[MAXPAR-2]
 
 
 #define Power(x, y)	(pow((scalar)(x), (scalar)(y)))
@@ -130,5 +131,5 @@ scalar f_Gamma(scalar, scalar, scalar);
 scalar F_Gamma(scalar, scalar, scalar);
 #endif // end of file
 
-#endif // header guard 
+#endif // header guard
 

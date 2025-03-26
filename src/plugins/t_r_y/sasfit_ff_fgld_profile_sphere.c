@@ -14,6 +14,7 @@ scalar fgld_profile_sphere(scalar y, sasfit_param *param) {
 	Qc = sasfit_sd_fgld__v(y,param,DISTRIBUTION_QUANTILE);
 	qc = sasfit_sd_fgld__v(y,param,DISTRIBUTION_QUANTILE_DENS);
 	u=qmod*Qc;
+	if (y<YSTART) y = YSTART;
 	fsp = N*(1-y)*4*M_PI*Qc*Qc*qc*gsl_sf_bessel_j0(u);
 	return fsp;
 }
@@ -36,15 +37,14 @@ scalar sasfit_ff_fgld_profile_sphere(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_fgld_profile_sphere_f(scalar q, sasfit_param * param)
 {
-    scalar ystart, yend;
+    scalar yend;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 	// insert your code here
-	Q = q;
-	param->p[1]=0;
-	ystart = sasfit_invert_func_v(BL,&sasfit_sd_fgld__v,DISTRIBUTION_QUANTILE,0,1,param);
+	Q = q*RSCALE;
+	YSTART = sasfit_invert_func_v(BL,&sasfit_sd_fgld__v,DISTRIBUTION_QUANTILE,0,1,param);
 	yend   = sasfit_invert_func_v(BU,&sasfit_sd_fgld__v,DISTRIBUTION_QUANTILE,0,1,param);
-	return sasfit_clipped_sinc_quad(ystart,yend,&fgld_profile_void,Q,(void *) param);
-	return sasfit_integrate(ystart,yend,&fgld_profile_sphere,param);
+	//return sasfit_clipped_sinc_quad(0,yend,&fgld_profile_void,Q,(void *) param);*gsl_pow_3(RSCALE);
+	return sasfit_integrate(0,yend,&fgld_profile_sphere,param)*gsl_pow_3(RSCALE);
 }
 
 scalar sasfit_ff_fgld_profile_sphere_v(scalar u, sasfit_param * param, int dist)
