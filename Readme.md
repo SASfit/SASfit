@@ -208,7 +208,7 @@ Finally, build SASfit itself which should generate a binary package if it was su
 Install *GIT* first and get a copy of the latest SASfit source code:
 
     apt install git
-    git clone https://github.com/SASfit/SASfit.git sasfit
+    git clone --depth 1 https://github.com/SASfit/SASfit.git sasfit
 
 #### Optional: Prepare a podman container for building SASfit
 
@@ -237,7 +237,18 @@ For the compiler, the latest installed gcc is selected and indicated at the begi
     cd <SASfit-path>
     sh src/appveyor/4_build.sh
 
-The resulting package can be found in the *src* directory while the assembled package directory structure is next to the SASfit directory one level up ('<SASfit-path>/../<SASfit-binary-package>').
+The build process might end with an error message of `appimage-builder` not being found which is ok, since it was not installed and an *.AppImage* package is not created. But the *libsasfit.so* library and the *saskit* integrated Tcl/Tk interpreter should exist and it can be used to run SASfit from the source directory directly:
+
+    ./saskit/saskit_linux64 sasfit.vfs/main.tcl
+
+If desired, the system packages and tools for building an *.AppImage* package can be installed by running the following script similar to the one earlier:
+
+    cd <SASfit-path>
+    sh src/appveyor/0_install_linux4packaging.sh
+
+This script also installs docker or makes sure it is installed and adjusts the required user & group settings of the current user to use docker. For these changes to take effect, a log out and log in is necessary, including a restart of the graphical desktop session if there is one in use.
+
+Building SASfit again via `4_build.sh` should create an AppImage in the *src* directory while the assembled package directory structure is next to the SASfit directory one level up ('<SASfit-path>/../<SASfit-binary-package>').
 
 ### Common helpers
 
