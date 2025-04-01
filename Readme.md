@@ -248,7 +248,10 @@ If desired, the system packages and tools for building an *.AppImage* package ca
 
 This script also installs docker or makes sure it is installed and adjusts the required user & group settings of the current user to use docker. For these changes to take effect, a log out and log in is necessary, including a restart of the graphical desktop session if there is one in use.
 
-Building SASfit again via `4_build.sh` should create an AppImage in the *src* directory while the assembled package directory structure is next to the SASfit directory one level up ('<SASfit-path>/../<SASfit-binary-package>'). In case of errors during AppImage creation, make sure to delete `<SASfit-path>/AppDir` between consecutive runs.
+**Please note:**
+1. Make sure to remove the *tests* section from `src/AppImageBuilder.template.yml`. These tests are for the automatic builds and they will fail on a more recent Linux version, because created AppImage will not be backward compatible with older Linux/Ubuntu versions than the one it was built on due to the glibc version embedded in the AppImage.
+2. Building SASfit again via `4_build.sh` should create an *.AppImage* in `<SASfit-path>`.
+3. In case of errors during AppImage creation, make sure to delete the folders `AppDir` and `appimage-build` in `<SASfit-path>` between consecutive runs.
 
 ### Common helpers
 
