@@ -41,7 +41,7 @@ proc write_sasfit_inp_file {AanalytPar filename} {
 #if { [catch { puts "AnalytPar(dataset): $AnalytPar(dataset)" }] } { puts "AnalytPar(dataset) not defined" }
 #if { [catch { puts "AnalytPar(datalabel): $AnalytPar(datalabel)" }] } { puts "AnalytPar(datalabel) not defined" }
 #if { [catch { puts "AnalytPar(datasetlabel): $AnalytPar(datasetlabel)"}] } { puts "AnalytPar(datasetlabel) not defined" }
-		if {[catch {puts $f [format "%60s : SD belongs to j-th data set" [lindex $AnalytPar(datasetlabel)] $i]} ]} {
+		if {[catch {puts $f [format "%60s : SD belongs to j-th data set" [lindex $AnalytPar(dataset) $i]]} ]} {
 			puts $f [format "%60s : SD belongs to j-th data set" 1]
 		}
 		puts $f [format "%s" [lindex $AnalytPar(calcSDFF)   $i]]
@@ -100,6 +100,7 @@ return 1
 #        "0.0" : zero version 
 #        "0.3" : 0.3 version
 #        "0.7" : 0.7 version
+#        "0.7" : 0.8 version
 #
 proc get_par_version {fname} {
 
@@ -110,6 +111,7 @@ proc get_par_version {fname} {
 	switch $line {
 		"sasfit version 0.3" {return "0.3"}
 		"sasfit version 0.7" {return "0.7"}
+		"sasfit version 0.8" {return "0.8"}
 		default              {return "0.0"}
 	}
 }
@@ -420,7 +422,7 @@ return 1
 #------------------------------------------------------------------------------
 # load the parameter for fitting the  scattering curve by an analytical 
 # given size distribution and analytical given form factor
-# This procedure reads input files of sasfit version 0.0
+# This procedure reads input files of sasfit version 0.3
 #
 proc load_sasfit_inp_file_ver_0_3 {AanalyticPar filename} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -713,7 +715,7 @@ return 1
 #------------------------------------------------------------------------------
 # load the parameter for fitting the  scattering curve by an analytical 
 # given size distribution and analytical given form factor
-# This procedure reads input files of sasfit version 0.0
+# This procedure reads input files of sasfit version 0.7
 #
 proc load_sasfit_inp_file_ver_0_7 {AanalyticPar filename} {
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1075,6 +1077,372 @@ cp_arr tmpAP AnalytPar
 return 1
 }
 
+
+#------------------------------------------------------------------------------
+# load the parameter for fitting the  scattering curve by an analytical 
+# given size distribution and analytical given form factor
+# This procedure reads input files of sasfit version 0.8
+#
+proc load_sasfit_inp_file_ver_0_8 {AanalyticPar filename} {
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+upvar $AanalyticPar AnalytPar
+cp_arr AnalytPar tmpAP
+set f [open $filename r]
+gets $f line
+#
+# reading max_SD
+#
+if {[get_load_line $f 0 0 lv] && [check_list_numeric $lv]} {
+   set tmpAP(max_SD) [lindex $lv 0]
+} else {
+   close $f
+   return 0
+}
+#
+# check if tmpAP(max_SD) is of integer typ; if not return 0
+#
+if { [expr $tmpAP(max_SD) / round($tmpAP(max_SD))] != 1.0 } {close $f; return 0}
+#
+# return false if tmpAP(max_SD) < 1
+#
+if { $tmpAP(max_SD) < 1 } { close $f; return 0 }
+#
+# reading parameter of i-th size distribution
+#
+for {set i 1} {$i <= $tmpAP(max_SD)} {incr i} {
+#
+# skip line "i-th SD"
+#
+   if {![eof $f]} {
+      gets $f line 
+   } else {
+      close $f
+      return 0
+   }
+#
+# skip line "SD belongs to j-th data set"
+#
+   if {![eof $f]} {
+      gets $f line 
+   } else {
+      close $f
+      return 0
+   }
+#
+# read calcSDFF
+#
+   if {![eof $f]} {
+      if {$i == 1} {set tmpAP(calcSDFF) {} }
+      gets $f line
+      set line [string trim $line]
+      lappend tmpAP(calcSDFF) $line
+   } else {
+      close $f
+      return 0
+   }
+#
+# read fitSDFF
+#
+   if {![eof $f]} {
+      if {$i == 1} {set tmpAP(fitSDFF) {} }
+      gets $f line
+      set line [string trim $line]
+      lappend tmpAP(fitSDFF) $line
+   } else {
+      close $f
+      return 0
+   }
+
+#
+# read substrSDFF
+#
+   if {![eof $f]} {
+      if {$i == 1} {set tmpAP(substrSDFF) {} }
+      gets $f line
+      set line [string trim $line]
+      lappend tmpAP(substrSDFF) $line
+   } else {
+      close $f
+      return 0
+   }
+
+#
+# read FF_l
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(FF,l) {} }
+      lappend tmpAP(FF,l) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read FF_err
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(FF,err) {} }
+      lappend tmpAP(FF,err) $lv
+
+   } else {
+      close $f
+      return 0
+   }
+#
+# read FF_min
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(FF,min) {} }
+      lappend tmpAP(FF,min) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read FF_max
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(FF,max) {} }
+      lappend tmpAP(FF,max) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read FF_limits
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(FF,limits) {} }
+      lappend tmpAP(FF,limits) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read FF_active
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(FF,active) {} }
+      lappend tmpAP(FF,active) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read FF_distr
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(FF,distr) {} }
+      lappend tmpAP(FF,distr) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read FF_typestr
+#
+   if {![eof $f]} {
+      if {$i == 1} {set tmpAP(FF,typestr) {} }
+      gets $f line
+      set line [string trim $line]
+      lappend tmpAP(FF,typestr) $line
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SD_a
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SD,a) {} }
+      lappend tmpAP(SD,a) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SD_err
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SD,err) {} }
+      lappend tmpAP(SD,err) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SD_min
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SD,min) {} }
+      lappend tmpAP(SD,min) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SD_max
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SD,max) {} }
+      lappend tmpAP(SD,max) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SD_limits
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SD,limits) {} }
+      lappend tmpAP(SD,limits) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SD_active
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SD,active) {} }
+      lappend tmpAP(SD,active) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SD_typestr
+#
+   if {![eof $f]} {
+      if {$i == 1} {set tmpAP(SD,typestr) {} }
+      gets $f line
+      set line [string trim $line]
+      lappend tmpAP(SD,typestr) $line
+   } else {
+      close $f
+      return 0
+   }
+
+#
+# read SQ_s
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SQ,s) {} }
+      lappend tmpAP(SQ,s) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SQ_err
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SQ,err) {} }
+      lappend tmpAP(SQ,err) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SQ_min
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SQ,min) {} }
+      lappend tmpAP(SQ,min) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SQ_max
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SQ,max) {} }
+      lappend tmpAP(SQ,max) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SQ_limits
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SQ,limits) {} }
+      lappend tmpAP(SQ,limits) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SQ_active
+#
+   if {[get_load_line $f 0 49 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SQ,active) {} }
+      lappend tmpAP(SQ,active) $lv
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SQ_typestr
+#
+   if {![eof $f]} {
+      if {$i == 1} {set tmpAP(SQ,typestr) {} }
+      gets $f line
+      set line [string trim $line]
+      lappend tmpAP(SQ,typestr) $line
+   } else {
+      close $f
+      return 0
+   }
+#
+# read SQ_how
+#
+   if {[get_load_line $f 0 0 lv] && [check_list_numeric $lv]} {
+      if {$i == 1} {set tmpAP(SQ,how) {} }
+      lappend tmpAP(SQ,how) $lv
+   } else {
+      close $f
+      return 0
+   }
+
+if {$i == 1} {
+   set tmpAP(<R^0>) {}
+   set tmpAP(<R^1>) {} 
+   set tmpAP(<R^2>) {}
+   set tmpAP(<R^3>) {}
+   set tmpAP(<R^4>) {}
+   set tmpAP(<R^5>) {}
+   set tmpAP(<R^6>) {}
+   set tmpAP(<R^7>) {}
+   set tmpAP(<R^8>) {}
+   set tmpAP(R_li)  {}
+   set tmpAP(R_lc)  {}
+   set tmpAP(R_Ac)  {}
+   set tmpAP(R_VP)  {}
+   set tmpAP(R_RG)  {}
+   set tmpAP(fp)    {}
+}
+lappend tmpAP(<R^0>) -1.0
+lappend tmpAP(<R^1>) -1.0
+lappend tmpAP(<R^2>) -1.0
+lappend tmpAP(<R^3>) -1.0
+lappend tmpAP(<R^4>) -1.0
+lappend tmpAP(<R^5>) -1.0
+lappend tmpAP(<R^6>) -1.0
+lappend tmpAP(<R^7>) -1.0
+lappend tmpAP(<R^8>) -1.0
+lappend tmpAP(R_li)  -1.0
+lappend tmpAP(R_lc)  -1.0
+lappend tmpAP(R_Ac)  -1.0
+lappend tmpAP(R_VP)  -1.0
+lappend tmpAP(R_RG)  -1.0
+lappend tmpAP(fp)    -1.0
+
+} ;# end of for loop
+cp_arr tmpAP AnalytPar
+return 1
+}
+
 # gets the file version out of an already opened file
 # the first floating point number in the first line is the version number
 proc get_param_file_version { fileid } {
@@ -1144,7 +1512,7 @@ proc load_sasfit_inp_file {AnalyticPar filename} {
 	set f [open $filename RDONLY]
 	set version [get_param_file_version $f]
 
-#	puts "file version: $version"
+	puts "file version: $version"
 	if { $version <= 0.0 } {
 		puts stderr "Could not determine parameter file format version !"
 		return 0
@@ -1189,10 +1557,14 @@ proc load_sasfit_inp_file {AnalyticPar filename} {
 
 		# skip line "i-th SD"
 		get_param_record $f integer line
-
-		# skip line "SD belongs to j-th data set"
+		
+		# read line "SD belongs to j-th data set"
 		get_param_record $f integer line
-
+		if { $AP(isGlobal) } {
+			puts $AP(dataset)
+			lset AP(dataset) $i $line
+			puts $AP(dataset)
+		}
 		# read calcSDFF
 		if { ! [set_analytpar_entry $f AP "calcSDFF" alpha $i] } { break }
 

@@ -10,7 +10,7 @@
 - implemented form factors of two more oriented primitive objects, one of a rhombic dodecahedron and a second one of an octahedron together with their random oriented variant. 
 - corrected scaling factor of parallelepiped plugins to get proper absolute scaled values. 
 - bugfix in Chawe and QWE algorithm to calculate Hankel transform
-- added a routine for optimized Frolov sparse	-grids to extend the algorithm for sasfit_cubature (https://ins.uni-bonn.de/content/software-frolov)
+- added a routine for optimized Frolov sparse-grids to extend the algorithm for sasfit_cubature (https://ins.uni-bonn.de/content/software-frolov)
 - keep memory of previous sparse grid and only renew it if necessary
 - Supplied several spars-grid quadrature routines to sasfit_cubature
 - Supplied (randomized) quasi Monte Carlo (R)QMC integration routines using the quasi number generators from gsl. (R)QMC integration might converge faster than MC integration. 

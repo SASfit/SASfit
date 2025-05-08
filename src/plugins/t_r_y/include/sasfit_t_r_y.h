@@ -183,8 +183,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_v(scalar q, sasfit_param * p, 
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
  *       <td></td>
@@ -1068,7 +1068,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_u_e_gl___v(scalar q, sasfit_param * p, int 
  * \defgroup sd_w_l_e_ W-L{E}
  * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of W-L{E} function\>
+ * \brief some brief description of W-L{E} function
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1120,12 +1120,297 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_w_l_e__f(scalar q, sasfit_param * p);
 sasfit_t_r_y_DLLEXP scalar sasfit_sd_w_l_e__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_w_l_e_ ################ */
 
+/* ################ start ff_w_l_e_profile ################ */
+/**
+ * \defgroup ff_w_l_e_profile W-L{E} SLD-profile
+ * \ingroup ff_plugins_fuzzy_profiles
+ *
+ * \brief \< some brief description of W-L{E} profile function \>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_w_l_e_profile
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_profile
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_profile
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_w_l_e_profile ################ */
+
+/* ################ start ff_w_l_e_profile_sphere ################ */
+/**
+ * \defgroup ff_w_l_e_profile_sphere W-L{E} sph-xs
+ * \ingroup ff_plugins_fuzzy_sph
+ *
+ * \brief some brief description of W-L{E} sph-xs function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_w_l_e_profile_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_sphere(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_profile_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_sphere_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_profile_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_sphere_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_w_l_e_profile_sphere ################ */
+
+/* ################ start ff_w_l_e_sphere ################ */
+/**
+ * \defgroup ff_w_l_e_sphere W-L{E}-sd of sph.
+ * \ingroup ff_plugins_sd_spheres
+ *
+ * \brief W-L{E}-sd of spheres
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_w_l_e_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_w_l_e_spheres
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_sphere(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_w_l_e_spheres
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_sphere_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_sd_spheres
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_sphere_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_w_l_e_sphere ################ */
+
+/* ################ start ff_w_l_e_profile_PcsCyl ################ */
+/**
+ * \defgroup ff_w_l_e_profile_PcsCyl Pcs:W-L{E} cyl-xs
+ * \ingroup ff_plugins_fuzzy_cyl
+ *
+ * \brief W-L{E} profile for PcsCyl
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_w_l_e_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_PcsCyl(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_PcsCyl_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_w_l_e_profile_PcsCyl ################ */
+
+/* ################ start ff_w_l_e_profile_PcsPlanar ################ */
+/**
+ * \defgroup ff_w_l_e_profile_PcsPlanar Pcs: W-L{E} planar-xs
+ * \ingroup ff_plugins_fuzzy_planar
+ *
+ * \brief W-L{E} profile for PcsPlanar
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper boundary</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b beta</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_w_l_e_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_PcsPlanar(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_PcsPlanar_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_w_l_e_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_w_l_e_profile_PcsPlanar ################ */
+
 /* ################ start sd_n_l_c_ ################ */
 /**
  * \defgroup sd_n_l_c_ N-L{C}
  * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of N-L{C} function\>
+ * \brief https://doi.org/10.1186/s40488-021-00127-y
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1183,12 +1468,327 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_n_l_c__f(scalar q, sasfit_param * p);
 sasfit_t_r_y_DLLEXP scalar sasfit_sd_n_l_c__v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_n_l_c_ ################ */
 
+/* ################ start ff_n_l_c_profile ################ */
+/**
+ * \defgroup ff_n_l_c_profile N-L{C} SLD-profile
+ * \ingroup ff_plugins_fuzzy_profiles
+ *
+ * \brief https://doi.org/10.1186/s40488-021-00127-y
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_n_l_c_profile
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_profile
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_profile
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_profiles
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_n_l_c_profile ################ */
+
+/* ################ start ff_n_l_c_profile_sphere ################ */
+/**
+ * \defgroup ff_n_l_c_profile_sphere N-L{C} sph-xs
+ * \ingroup ff_plugins_fuzzy_sph
+ *
+ * \brief \< some brief description of N-L{C} sph-xs function \>
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_n_l_c_profile_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_sphere(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_profile_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_sphere_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_profile_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_sph
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_sphere_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_n_l_c_profile_sphere ################ */
+
+/* ################ start ff_n_l_c_sphere ################ */
+/**
+ * \defgroup ff_n_l_c_sphere N-L{C}-sd of sph.
+ * \ingroup ff_plugins_sd_spheres
+ *
+ * \brief N-L{C}-sd of spheres
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_n_l_c_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_n_l_c_spheres
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_sphere(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_n_l_c_spheres
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_sphere_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_sphere
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_sd_spheres
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_sphere_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_n_l_c_sphere ################ */
+
+/* ################ start ff_n_l_c_profile_PcsCyl ################ */
+/**
+ * \defgroup ff_n_l_c_profile_PcsCyl Pcs:N-L{C} cyl-xs
+ * \ingroup ff_plugins_fuzzy_cyl
+ *
+ * \brief N-L{C} profile for PcsCyl
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_n_l_c_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_PcsCyl(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_PcsCyl_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_profile_PcsCyl
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_PcsCyl_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_n_l_c_profile_PcsCyl ################ */
+
+/* ################ start ff_n_l_c_profile_PcsPlanar ################ */
+/**
+ * \defgroup ff_n_l_c_profile_PcsPlanar Pcs: N-L{C} planar-xs
+ * \ingroup ff_plugins_fuzzy_planar
+ *
+ * \brief N-L{C} profile for PcsPlanar
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower bound</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>upper bound</td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b theta</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b mu</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b sigma</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_n_l_c_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_PcsPlanar(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_PcsPlanar_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_n_l_c_profile_PcsPlanar
+ *
+ * \sa sasfit_t_r_y.h, ff_plugins_fuzzy_planar
+ */
+sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_PcsPlanar_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_n_l_c_profile_PcsPlanar ################ */
+
 /* ################ start sd_e_l_ll_ ################ */
 /**
  * \defgroup sd_e_l_ll_ E-L{LL}
  * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of E-L{LL} function\>
+ * \brief https://doi.org/10.1186/s40488-021-00127-y
  *
  * <more detailed documentation, see 'doxygen' docs>
  *

@@ -12,6 +12,7 @@ scalar fgld_profile_PcsCyl(scalar y, sasfit_param *param) {
 	scalar u,fsp,Qc, qc, yused;
 	if (y<YSTART) {
         yused = YSTART;
+        return N;
 	} else {
 	    yused = y;
 	}

@@ -7,7 +7,7 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(8)
+SASFIT_PLUGIN_EXP_BEGIN(10)
 SASFIT_PLUGIN_EXP_ADD( ff_boucher_cyl )
 SASFIT_PLUGIN_EXP_ADD( ff_profile_boucher_cyl )
 SASFIT_PLUGIN_EXP_ADD( ff_boucher2_cyl )
@@ -16,6 +16,8 @@ SASFIT_PLUGIN_EXP_ADD( ff_fuzzy_cyl )
 SASFIT_PLUGIN_EXP_ADD( ff_profile_fuzzy_cyl )
 SASFIT_PLUGIN_EXP_ADD( ff_linsh_cyl )
 SASFIT_PLUGIN_EXP_ADD( ff_profile_linsh_cyl )
+SASFIT_PLUGIN_EXP_ADD( ff_rc_exp_sh_cyl)
+SASFIT_PLUGIN_EXP_ADD( ff_rc_exp_sh_cyl_profile )
 
 SASFIT_PLUGIN_EXP_END
 

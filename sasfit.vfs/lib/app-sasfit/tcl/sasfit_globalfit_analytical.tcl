@@ -2648,9 +2648,9 @@ proc analyticalGlobalSDCmd {simorfit
 		 -modifycmd {
 		       RefreshactualGlobalParCommonPs
 		       if {[string compare $::addsasfit(simorfit) fit] == 0} {
-			   set ::actualGlobalAnalytPar(datalabel) [lindex $::addsasfit(Nth,filelabel) [expr $::actualGlobalAnalytPar(dataset)-1]]
+					set ::actualGlobalAnalytPar(datalabel) [lindex $::addsasfit(Nth,filelabel) [expr $::actualGlobalAnalytPar(dataset)-1]]
 		       } else {
-			   set ::actualGlobalAnalytPar(datalabel) $::actualGlobalAnalytPar(datalabel,$::actualGlobalAnalytPar(dataset))
+					set ::actualGlobalAnalytPar(datalabel) $::actualGlobalAnalytPar(datalabel,$::actualGlobalAnalytPar(dataset))
 		       }
 		 }
 

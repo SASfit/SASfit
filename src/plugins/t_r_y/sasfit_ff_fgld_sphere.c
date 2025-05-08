@@ -13,6 +13,7 @@ scalar fgld_sphere(scalar y, sasfit_param *param) {
 	qmod = Q;
 	Rc = sasfit_sd_fgld__v(y, param, DISTRIBUTION_QUANTILE);
 	u=qmod*Rc;
+	fsp = sasfit_sphere_fc(Q,Rc);
 	if (fabs(u)<1e-6) {
 		fsp = 1 - gsl_pow_2(u)/10. + gsl_pow_4(u)/280. - gsl_pow_6(u)/15120. + gsl_pow_8(u)/1.33056e6
 				- gsl_pow_int(u,10)/1.729728e8 + gsl_pow_int(u,12)/3.1135104e10;

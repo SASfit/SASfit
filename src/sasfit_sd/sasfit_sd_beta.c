@@ -39,9 +39,9 @@ scalar sasfit_sd_Beta(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR( param );
 
 	sasfit_get_param(param, 5, &N, &Xmin, &Xmax, &alpha, &beta);
+    Xmin = fabs(Xmin);
 
 	SASFIT_CHECK_COND2((Xmin >= Xmax), param, "Xmin(%lg) >= Xmax(%lg)",Xmin,Xmax);
-	SASFIT_CHECK_COND1((Xmin < 0), param, "Xmin(%lg) < 0",Xmin);
 	SASFIT_CHECK_COND1((alpha <= 0), param, "alpha(%lg) <= 0",alpha);
 	SASFIT_CHECK_COND1((beta <= 0), param, "beta(%lg) <= 0",beta);
 

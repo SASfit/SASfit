@@ -47,13 +47,9 @@ scalar sasfit_ff_guwelop_sphere_f(scalar q, sasfit_param * param)
 
 scalar sasfit_ff_guwelop_sphere_v(scalar q, sasfit_param * param, int dist)
 {
-    scalar xstart,xend;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	xstart=0;
-	xend=sasfit_sd_p_guwelop_v(1-sasfit_eps_get_nriq(),param,DISTRIBUTION_QUANTILE);
-	Q=0;
-	return sasfit_integrate(xstart,xend,&guwelop_sphere,param);
+	return 0;
 }
 

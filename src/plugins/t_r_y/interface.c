@@ -7,7 +7,7 @@
 #include "include/private.h"
 
 // functions to mark for export
-SASFIT_PLUGIN_EXP_BEGIN(20)
+SASFIT_PLUGIN_EXP_BEGIN(30)
 SASFIT_PLUGIN_EXP_ADD( sd_fgld_ )
 SASFIT_PLUGIN_EXP_ADD( ff_fgld_profile )
 SASFIT_PLUGIN_EXP_ADD( ff_fgld_profile_sphere )
@@ -26,7 +26,18 @@ SASFIT_PLUGIN_EXP_ADD( sd_p_w_gl__ )
 SASFIT_PLUGIN_EXP_ADD( sd_n_u_gl__ )
 SASFIT_PLUGIN_EXP_ADD( sd_u_e_gl__ )
 SASFIT_PLUGIN_EXP_ADD( sd_w_l_e_ )
+SASFIT_PLUGIN_EXP_ADD( ff_w_l_e_profile )
+SASFIT_PLUGIN_EXP_ADD( ff_w_l_e_profile_sphere )
+SASFIT_PLUGIN_EXP_ADD( ff_w_l_e_profile_PcsCyl )
+SASFIT_PLUGIN_EXP_ADD( ff_w_l_e_profile_PcsPlanar )
+SASFIT_PLUGIN_EXP_ADD( ff_w_l_e_sphere )
 SASFIT_PLUGIN_EXP_ADD( sd_n_l_c_ )
+SASFIT_PLUGIN_EXP_ADD( ff_n_l_c_profile )
+SASFIT_PLUGIN_EXP_ADD( ff_n_l_c_profile_sphere )
+SASFIT_PLUGIN_EXP_ADD( ff_n_l_c_profile_PcsCyl )
+SASFIT_PLUGIN_EXP_ADD( ff_n_l_c_profile_PcsPlanar )
+SASFIT_PLUGIN_EXP_ADD( ff_n_l_c_sphere )
+
 SASFIT_PLUGIN_EXP_ADD( sd_e_l_ll_ )
 SASFIT_PLUGIN_EXP_END
 

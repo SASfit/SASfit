@@ -536,5 +536,129 @@ sasfit_pcs_fuzzy_cyl_DLLEXP scalar sasfit_ff_profile_linsh_cyl_f(scalar q, sasfi
 sasfit_pcs_fuzzy_cyl_DLLEXP scalar sasfit_ff_profile_linsh_cyl_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_profile_linsh_cyl ################ */
 
+
+/* ################ start ff_rc_exp_sh_cyl ################ */
+/**
+ * \defgroup ff_rc_exp_sh_cyl Rc+Exp_Sh_Cyl
+ * \ingroup ff_plugins_fuzzy_cyl
+ *
+ * \brief http://dx.doi.org/10.1021/ma102624b
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b Rc</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>shape parameter for Exp-profile</td>
+ *      </tr><tr>
+ *       <td>\b sigma_s</td>
+ *       <td>smoothing parameter for shell/solvent transition</td>
+ *      </tr><tr>
+ *       <td>\b eta_c</td>
+ *       <td>SLD of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh_in</td>
+ *       <td>SLD of shell at core/shell boundary</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh_out</td>
+ *       <td>SLD of shell at shell/solvent boundary</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>SLD of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_rc_exp_sh_cyl
+ *
+ * \sa sasfit_pcs_fuzzy_cyl.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_pcs_fuzzy_cyl_DLLEXP scalar sasfit_ff_rc_exp_sh_cyl(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_rc_exp_sh_cyl
+ *
+ * \sa sasfit_pcs_fuzzy_cyl.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_pcs_fuzzy_cyl_DLLEXP scalar sasfit_ff_rc_exp_sh_cyl_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_rc_exp_sh_cyl
+ *
+ * \sa sasfit_pcs_fuzzy_cyl.h, ff_plugins_fuzzy_cyl
+ */
+sasfit_pcs_fuzzy_cyl_DLLEXP scalar sasfit_ff_rc_exp_sh_cyl_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_rc_exp_sh_cyl ################ */
+
+/* ################ start ff_rc_exp_sh_cyl_profile ################ */
+/**
+ * \defgroup ff_rc_exp_sh_cyl_profile profile Rc+Exp_Sh_Cyl
+ * \ingroup ff_plugins_fuzzy_profiles
+ *
+ * \brief http://dx.doi.org/10.1021/ma102624b
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ * \note Default (Size) Distribution: \ref delta
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b Rc</td>
+ *       <td>core radius</td>
+ *      </tr><tr>
+ *       <td>\b t</td>
+ *       <td>shell thickness</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>shape parameter for Exp-profile</td>
+ *      </tr><tr>
+ *       <td>\b sigma_s</td>
+ *       <td>smoothing parameter for shell/solvent transition</td>
+ *      </tr><tr>
+ *       <td>\b eta_c</td>
+ *       <td>SLD of core</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh_in</td>
+ *       <td>SLD of shell at core/shell boundary</td>
+ *      </tr><tr>
+ *       <td>\b eta_sh_out</td>
+ *       <td>SLD of shell at shell/solvent boundary</td>
+ *      </tr><tr>
+ *       <td>\b eta_solv</td>
+ *       <td>SLD of solvent</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup ff_rc_exp_sh_cyl_profile
+ *
+ * \sa sasfit_pcs_fuzzy_cyl.h, ff_plugins_fuzzy_profiles
+ */
+sasfit_pcs_fuzzy_cyl_DLLEXP scalar sasfit_ff_rc_exp_sh_cyl_profile(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_rc_exp_sh_cyl_profile
+ *
+ * \sa sasfit_pcs_fuzzy_cyl.h, ff_plugins_fuzzy_profiles
+ */
+sasfit_pcs_fuzzy_cyl_DLLEXP scalar sasfit_ff_rc_exp_sh_cyl_profile_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup ff_rc_exp_sh_cyl_profile
+ *
+ * \sa sasfit_pcs_fuzzy_cyl.h, ff_plugins_fuzzy_profiles
+ */
+sasfit_pcs_fuzzy_cyl_DLLEXP scalar sasfit_ff_rc_exp_sh_cyl_profile_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop ff_rc_exp_sh_cyl_profile ################ */
+
+
 #endif // this file
 

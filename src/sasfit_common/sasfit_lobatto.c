@@ -5,9 +5,6 @@
 #include <stdlib.h>
 #include "include/lobatto.h"
 
-// Function type definition
-typedef double (*Func)(double);
-
 // Error-handling macro for exceeding evaluations
 #define THROW_ERROR(msg) \
     { sasfit_err("%s\n", msg);  }
@@ -15,8 +12,8 @@ typedef double (*Func)(double);
 #define THROW_WARNING(msg) \
     { sasfit_out("%s\n", msg); }
 // Constants used in the algorithm
-#define ALPHA   1.0 / sqrt(3.0 / 2.0)
-#define BETA    1.0 / sqrt(5.0)
+#define ALPHA   0.816496580927726032732428024902 // 1.0 / sqrt(3.0 / 2.0)
+#define BETA    0.447213595499957939281834733746 // 1.0 / sqrt(5.0)
 
 /**
  * Perform a single step of the Gauss-Lobatto integration

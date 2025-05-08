@@ -29,7 +29,18 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sd_u_e_gl__.c
 	t_lindley_y_utils.c
 	sasfit_sd_w_l_e_.c
+	sasfit_ff_w_l_e_profile.c
+	sasfit_ff_w_l_e_profile_sphere.c
+	sasfit_ff_w_l_e_profile_PcsCyl.c
+	sasfit_ff_w_l_e_profile_PcsPlanar.c
+	sasfit_ff_w_l_e_sphere.c
 	sasfit_sd_n_l_c_.c
+	sasfit_ff_n_l_c_profile.c
+	sasfit_ff_n_l_c_profile_sphere.c
+	sasfit_ff_n_l_c_profile_PcsCyl.c
+	sasfit_ff_n_l_c_profile_PcsPlanar.c
+	sasfit_ff_n_l_c_sphere.c
+
 	sasfit_sd_e_l_ll_.c
 	interface.c
 )

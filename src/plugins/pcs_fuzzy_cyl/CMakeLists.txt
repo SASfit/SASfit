@@ -18,6 +18,8 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_ff_profile_fuzzy_cyl.c
 	sasfit_ff_linsh_cyl.c
 	sasfit_ff_profile_linsh_cyl.c
+	sasfit_ff_rc_exp_sh_cyl.c
+	sasfit_ff_rc_exp_sh_cyl_profile.c
 	interface.c
 )
 
