@@ -23,9 +23,6 @@ scalar sasfit_ff_egu_w_l_profile_PcsCyl(scalar q, sasfit_param * param)
 
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
-	SASFIT_CHECK_COND1((DIM > 6.0), param, "dim(%lg) > 6",DIM); // modify condition to your needs
-	SASFIT_CHECK_COND1((DIM < 0.0), param, "dim(%lg) < 0",DIM); // modify condition to your needs
-	SASFIT_CHECK_COND1((ALPHA <= 0.0), param, "alpha(%lg) <= 0",ALPHA); // modify condition to your needs
 	SASFIT_CHECK_COND1((BETA <= 0.0), param, "beta(%lg) <= 0",BETA); // modify condition to your needs
 	SASFIT_CHECK_COND1((GAMMA <= 0.0), param, "c(%lg) <= 0",GAMMA); // modify condition to your needs
 	param->p[1]=0;
