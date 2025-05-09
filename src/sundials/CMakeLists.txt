@@ -7,7 +7,7 @@
 
 # cmake .. -DEXAMPLES_ENABLE=OFF -DMPI_ENABLE=OFF ; make sundials_kinsol_share
 
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.5)
 
 get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 
