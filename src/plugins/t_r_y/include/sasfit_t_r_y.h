@@ -104,7 +104,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_fgld__v(scalar q, sasfit_param * p, int dis
  * \defgroup ff_fgld_profile FGLD SLD-profile
  * \ingroup ff_plugins_fuzzy_profiles
  *
- * \brief \< some brief description of FGLD profile function \>
+ * \brief doi:10.1007/s40745-021-00322-3
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -167,7 +167,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_v(scalar q, sasfit_param * p, 
  * \defgroup ff_fgld_profile_sphere FGLD sph-xs
  * \ingroup ff_plugins_fuzzy_sph
  *
- * \brief \< some brief description of FGLD sph-xs function \>
+ * \brief doi:10.1007/s40745-021-00322-3
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -230,7 +230,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_sphere_v(scalar q, sasfit_para
  * \defgroup ff_fgld_sphere FGLD-sd of sph.
  * \ingroup ff_plugins_sd_spheres
  *
- * \brief FGLD-sd of spheres
+ * \brief FGLD-sd of spheres (doi:10.1007/s40745-021-00322-3)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -293,7 +293,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_v(scalar q, sasfit_param * p, i
  * \defgroup ff_fgld_profile_PcsCyl Pcs:FGLD cyl-xs
  * \ingroup ff_plugins_fuzzy_cyl
  *
- * \brief FGLD profile for PcsCyl
+ * \brief FGLD profile for PcsCyl (doi:10.1007/s40745-021-00322-3)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -309,8 +309,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_sphere_v(scalar q, sasfit_param * p, i
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b r scale</td>
- *       <td>radius scale</td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
  *       <td></td>
@@ -356,7 +356,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl_v(scalar q, sasfit_para
  * \defgroup ff_fgld_profile_PcsPlanar Pcs: FGLD planar-xs
  * \ingroup ff_plugins_fuzzy_planar
  *
- * \brief FGLD profile for PcsPlanar
+ * \brief FGLD profile for PcsPlanar (doi:10.1007/s40745-021-00322-3)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -372,8 +372,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsCyl_v(scalar q, sasfit_para
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b kappa</td>
  *       <td></td>
@@ -419,7 +419,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsPlanar_v(scalar q, sasfit_p
  * \defgroup sd_egu_w_l EGu-W{L}
  * \ingroup sd_plugins_try
  *
- * \brief exponentiated Gumbel–Weibull {logistic} distribution
+ * \brief exponentiated Gumbel–Weibull {logistic} distribution (doi:10.1007/s40745-022-00373-0)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -482,7 +482,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_egu_w_l_v(scalar q, sasfit_param * p, int d
  * \defgroup ff_egu_w_l_profile EGu-W{L} SLD-profile
  * \ingroup ff_plugins_fuzzy_profiles
  *
- * \brief \< some brief description of EGu-W{L} profile function \>
+ * \brief (doi:10.1007/s40745-022-00373-0)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -545,7 +545,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_v(scalar q, sasfit_param * 
  * \defgroup ff_egu_w_l_profile_sphere  EGu-W{L} sph-xs
  * \ingroup ff_plugins_fuzzy_sph
  *
- * \brief \< some brief description of EGu-W{L} profile sphere function \>
+ * \brief (doi:10.1007/s40745-022-00373-0)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -561,8 +561,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_v(scalar q, sasfit_param * 
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b k</td>
  *       <td></td>
@@ -608,7 +608,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_sphere_v(scalar q, sasfit_p
  * \defgroup ff_egu_w_l_profile_PcsCyl Pcs:EGu-W{L} cyl-xs
  * \ingroup ff_plugins_fuzzy_cyl
  *
- * \brief EGu-W{L} profile for PcsCyl
+ * \brief EGu-W{L} profile for PcsCyl (doi:10.1007/s40745-022-00373-0)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -624,8 +624,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_sphere_v(scalar q, sasfit_p
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b k</td>
  *       <td></td>
@@ -671,7 +671,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsCyl_v(scalar q, sasfit_p
  * \defgroup ff_egu_w_l_profile_PcsPlanar Pcs:EGu-W{L} planar-xs
  * \ingroup ff_plugins_fuzzy_planar
  *
- * \brief EGu-W{L} profile for PcsPlanar
+ * \brief EGu-W{L} profile for PcsPlanar (doi:10.1007/s40745-022-00373-0)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -687,8 +687,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsCyl_v(scalar q, sasfit_p
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b k</td>
  *       <td></td>
@@ -734,7 +734,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_profile_PcsPlanar_v(scalar q, sasfi
  * \defgroup ff_egu_w_l_sphere EGu-W{L}-sd of sph
  * \ingroup ff_plugins_sd_spheres
  *
- * \brief \< some brief description of EGu-W{L} sphere function \>
+ * \brief (doi:10.1007/s40745-022-00373-0)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -797,7 +797,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_egu_w_l_sphere_v(scalar q, sasfit_param * p
  * \defgroup sd_g_c_e__ G-C{E}
  * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of G-C{E} function\>
+ * \brief (doi:10.1186/s40488-016-0050-3)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -854,7 +854,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_g_c_e___v(scalar q, sasfit_param * p, int d
  * \defgroup sd_ll_l_gl__ LL-L{GL}
  * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of LL-L{GL} function\>
+ * \brief (doi:10.1186/s40488-017-0081-4)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -915,7 +915,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_ll_l_gl___v(scalar q, sasfit_param * p, int
  * \defgroup sd_p_w_gl__ P-W{GL}
  * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of P-W{GL} function\>
+ * \brief (doi:10.1186/s40488-017-0081-4)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -966,7 +966,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_p_w_gl___v(scalar q, sasfit_param * p, int 
  * \defgroup sd_n_u_gl__ N-U{GL}
  * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of N-U{GL} function\>
+ * \brief (doi:10.1186/s40488-017-0081-4)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1020,7 +1020,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_n_u_gl___v(scalar q, sasfit_param * p, int 
  * \defgroup sd_u_e_gl__ U-E{GL}
  * \ingroup sd_plugins_try
  *
- * \brief \<some brief description of U-E{GL} function\>
+ * \brief (doi:10.1186/s40488-017-0081-4)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1068,7 +1068,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_u_e_gl___v(scalar q, sasfit_param * p, int 
  * \defgroup sd_w_l_e_ W-L{E}
  * \ingroup sd_plugins_try
  *
- * \brief some brief description of W-L{E} function
+ * \brief (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1125,7 +1125,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_sd_w_l_e__v(scalar q, sasfit_param * p, int di
  * \defgroup ff_w_l_e_profile W-L{E} SLD-profile
  * \ingroup ff_plugins_fuzzy_profiles
  *
- * \brief \< some brief description of W-L{E} profile function \>
+ * \brief (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1182,7 +1182,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_v(scalar q, sasfit_param * p,
  * \defgroup ff_w_l_e_profile_sphere W-L{E} sph-xs
  * \ingroup ff_plugins_fuzzy_sph
  *
- * \brief some brief description of W-L{E} sph-xs function
+ * \brief (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1198,8 +1198,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_v(scalar q, sasfit_param * p,
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b theta</td>
  *       <td></td>
@@ -1239,7 +1239,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_sphere_v(scalar q, sasfit_par
  * \defgroup ff_w_l_e_sphere W-L{E}-sd of sph.
  * \ingroup ff_plugins_sd_spheres
  *
- * \brief W-L{E}-sd of spheres
+ * \brief W-L{E}-sd of spheres (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1296,7 +1296,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_sphere_v(scalar q, sasfit_param * p, 
  * \defgroup ff_w_l_e_profile_PcsCyl Pcs:W-L{E} cyl-xs
  * \ingroup ff_plugins_fuzzy_cyl
  *
- * \brief W-L{E} profile for PcsCyl
+ * \brief W-L{E} profile for PcsCyl (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1312,8 +1312,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_sphere_v(scalar q, sasfit_param * p, 
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b theta</td>
  *       <td></td>
@@ -1353,7 +1353,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_PcsCyl_v(scalar q, sasfit_par
  * \defgroup ff_w_l_e_profile_PcsPlanar Pcs: W-L{E} planar-xs
  * \ingroup ff_plugins_fuzzy_planar
  *
- * \brief W-L{E} profile for PcsPlanar
+ * \brief W-L{E} profile for PcsPlanar (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1369,8 +1369,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_w_l_e_profile_PcsCyl_v(scalar q, sasfit_par
  *       <td>\b bu</td>
  *       <td>upper boundary</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b theta</td>
  *       <td></td>
@@ -1536,7 +1536,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_v(scalar q, sasfit_param * p,
  * \defgroup ff_n_l_c_profile_sphere N-L{C} sph-xs
  * \ingroup ff_plugins_fuzzy_sph
  *
- * \brief \< some brief description of N-L{C} sph-xs function \>
+ * \brief (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1552,8 +1552,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_v(scalar q, sasfit_param * p,
  *       <td>\b bu</td>
  *       <td>upper bound</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b theta</td>
  *       <td></td>
@@ -1599,7 +1599,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_sphere_v(scalar q, sasfit_par
  * \defgroup ff_n_l_c_sphere N-L{C}-sd of sph.
  * \ingroup ff_plugins_sd_spheres
  *
- * \brief N-L{C}-sd of spheres
+ * \brief N-L{C}-sd of spheres (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1662,7 +1662,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_sphere_v(scalar q, sasfit_param * p, 
  * \defgroup ff_n_l_c_profile_PcsCyl Pcs:N-L{C} cyl-xs
  * \ingroup ff_plugins_fuzzy_cyl
  *
- * \brief N-L{C} profile for PcsCyl
+ * \brief N-L{C} profile for PcsCyl (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1678,8 +1678,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_sphere_v(scalar q, sasfit_param * p, 
  *       <td>\b bu</td>
  *       <td>upper bound</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b theta</td>
  *       <td></td>
@@ -1725,7 +1725,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_PcsCyl_v(scalar q, sasfit_par
  * \defgroup ff_n_l_c_profile_PcsPlanar Pcs: N-L{C} planar-xs
  * \ingroup ff_plugins_fuzzy_planar
  *
- * \brief N-L{C} profile for PcsPlanar
+ * \brief N-L{C} profile for PcsPlanar (doi:10.1186/s40488-021-00127-y)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -1741,8 +1741,8 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_n_l_c_profile_PcsCyl_v(scalar q, sasfit_par
  *       <td>\b bu</td>
  *       <td>upper bound</td>
  *      </tr><tr>
- *       <td>\b dummy</td>
- *       <td></td>
+ *       <td>\b r</td>
+ *       <td>size scaling factor</td>
  *      </tr><tr>
  *       <td>\b theta</td>
  *       <td></td>

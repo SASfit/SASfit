@@ -35,11 +35,12 @@ scalar sasfit_ff_fgld_profile_PcsPlanar_f(scalar q, sasfit_param * param)
     scalar ystart, yend;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 	// insert your code here
-	Q = q;
+	if (RSCALE==0) return 0;
+	Q = q*RSCALE;
 	param->p[1]=0;
 	ystart = sasfit_invert_func_v(BL,&sasfit_sd_fgld__v,DISTRIBUTION_QUANTILE,0,1,param);
 	yend   = sasfit_invert_func_v(BU,&sasfit_sd_fgld__v,DISTRIBUTION_QUANTILE,0,1,param);
-	return sasfit_integrate(ystart,yend,&fgld_profile_PcsPlanar,param);
+	return sasfit_integrate(ystart,yend,&fgld_profile_PcsPlanar,param)*RSCALE;
 }
 
 scalar sasfit_ff_fgld_profile_PcsPlanar_v(scalar u, sasfit_param * param, int dist)

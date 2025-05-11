@@ -34,6 +34,8 @@ scalar sasfit_ff_fgld_profile_sphere(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((KAPPA < 0.0), param, "kappa(%lg) < 0",KAPPA); // modify condition to your needs
 	SASFIT_CHECK_COND1((BETA <= 0.0), param, "beta(%lg) <= 0",BETA); // modify condition to your needs
     SASFIT_CHECK_COND1((BU   <= 0.0), param, "bu(%lg) <= 0",BU);
+	SASFIT_CHECK_COND1((DIM > 6.0), param, "dim(%lg) > 6",DIM); // modify condition to your needs
+	SASFIT_CHECK_COND1((DIM < 0.0), param, "dim(%lg) < 0",DIM); // modify condition to your needs
 
 	// insert your code here
 	return gsl_pow_2(sasfit_ff_fgld_profile_sphere_f(q,param));

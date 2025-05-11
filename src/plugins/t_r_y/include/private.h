@@ -73,6 +73,7 @@
 
 #define Q       param->p[MAXPAR-1]
 #define YSTART  param->p[MAXPAR-2]
+#define P       param->p[MAXPAR-3]
 
 
 #define Power(x, y)	(pow((scalar)(x), (scalar)(y)))

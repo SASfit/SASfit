@@ -43,9 +43,10 @@ scalar sasfit_ff_n_l_c_profile_PcsCyl_f(scalar q, sasfit_param * param)
     SASFIT_CHECK_COND1((BU   <= 0.0), param, "bu(%lg) <= 0",BU);
 
     // insert your code here
-	Q = q;
+	if (RSCALE==0) return 0;
+	Q = q*RSCALE;
 
-	return sasfit_integrate(0,BU,&n_l_c_profile_PcsCyl,param);
+	return sasfit_integrate(0,BU,&n_l_c_profile_PcsCyl,param)*gsl_pow_2(RSCALE);
 }
 
 scalar sasfit_ff_n_l_c_profile_PcsCyl_v(scalar u, sasfit_param * param, int dist)

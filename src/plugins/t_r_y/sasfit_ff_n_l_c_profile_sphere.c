@@ -43,8 +43,9 @@ scalar sasfit_ff_n_l_c_profile_sphere_f(scalar q, sasfit_param * param)
     SASFIT_CHECK_COND1((BU   <= 0.0), param, "bu(%lg) <= 0",BU);
 
     // insert your code here
-	Q = q;
-	return sasfit_integrate(0,BU,&n_l_c_profile_sphere,param);
+	if (RSCALE==0) return 0;
+	Q = q*RSCALE;
+	return sasfit_integrate(0,BU,&n_l_c_profile_sphere,param)*gsl_pow_3(RSCALE);
 }
 
 scalar sasfit_ff_n_l_c_profile_sphere_v(scalar u, sasfit_param * param, int dist)
