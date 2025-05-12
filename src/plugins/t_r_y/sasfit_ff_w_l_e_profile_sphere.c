@@ -52,6 +52,6 @@ scalar sasfit_ff_w_l_e_profile_sphere_v(scalar u, sasfit_param * param, int dist
 
 	// insert your code here
 
-	return 0;
+	return 0.0;
 }
 

@@ -23,9 +23,15 @@ scalar sasfit_ff_egu_w_l_profile(scalar x, sasfit_param * param)
 
 	// insert your code here
 
-	if (x>=BU) return 0;
-	if (x<=BL) return N;
-	return N*(1-sasfit_sd_egu_w_l_v(x,param,DISTRIBUTION_CUMULATIVE));
+    if (x>BU) {
+        return 0;
+	}
+	if (x<=BL) {
+	    YSTART = sasfit_invert_func_v(BL,&sasfit_sd_egu_w_l_v,DISTRIBUTION_QUANTILE,0,1,param);
+        return N*(1-YSTART);
+	} else {
+        return N-sasfit_sd_egu_w_l_v(x,param,DISTRIBUTION_CUMULATIVE);
+	}
 }
 
 scalar sasfit_ff_egu_w_l_profile_f(scalar x, sasfit_param * param)
