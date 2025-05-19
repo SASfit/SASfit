@@ -9,7 +9,7 @@
 // define shortcuts for local parameters/variables
 #define RG	param->p[0]
 #define NU	param->p[1]
-#define I0	param->p[2]
+#define I0	fabs(param->p[2])
 
 scalar sasfit_ff_generalized_gaussian_coil(scalar q, sasfit_param * param)
 {

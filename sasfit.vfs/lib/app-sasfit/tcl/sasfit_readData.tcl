@@ -54,6 +54,8 @@ proc write_sasfit_inp_file {AanalytPar filename} {
 		puts $f [format "%60s : FF_limits"  [lindex $AnalytPar(FF,limits)  $i]]
 		puts $f [format "%60s : FF_active"  [lindex $AnalytPar(FF,active)  $i]]
 		puts $f [format "%60s : FF_distr"   [lindex $AnalytPar(FF,distr)   $i]]
+		catch {puts $f [format "%60s"  [lindex $AnalytPar(FF,common)  $i]]}
+		catch {puts $f [format "%60s : FF_factor"  [lindex $AnalytPar(FF,factor)  $i]]}
 		puts $f [format "%s" [lindex $AnalytPar(FF,typestr) $i]]
 		puts $f [format "%60s : SD_a"       [lindex $AnalytPar(SD,a)       $i]]
 		puts $f [format "%60s : SD_err"     [lindex $AnalytPar(SD,err)     $i]]
@@ -61,6 +63,8 @@ proc write_sasfit_inp_file {AanalytPar filename} {
 		puts $f [format "%60s : SD_max"     [lindex $AnalytPar(SD,max)     $i]]
 		puts $f [format "%60s : SD_limits"  [lindex $AnalytPar(SD,limits)  $i]]
 		puts $f [format "%60s : SD_active"  [lindex $AnalytPar(SD,active)  $i]]
+		catch {puts $f [format "%60s"  [lindex $AnalytPar(SD,common)  $i]]}
+		catch {puts $f [format "%60s : SD_factor"  [lindex $AnalytPar(SD,factor)  $i]]}
 		puts $f [format "%s" [lindex $AnalytPar(SD,typestr) $i]]
 		puts $f [format "%60s : SQ_s"       [lindex $AnalytPar(SQ,s)       $i]]
 		puts $f [format "%60s : SQ_err"     [lindex $AnalytPar(SQ,err)     $i]]
@@ -68,8 +72,18 @@ proc write_sasfit_inp_file {AanalytPar filename} {
 		puts $f [format "%60s : SQ_max"     [lindex $AnalytPar(SQ,max)     $i]]
 		puts $f [format "%60s : SQ_limits"  [lindex $AnalytPar(SQ,limits)  $i]]
 		puts $f [format "%60s : SQ_active"  [lindex $AnalytPar(SQ,active)  $i]]
+		catch {puts $f [format "%60s"  [lindex $AnalytPar(SQ,common)  $i]]}
+		catch {puts $f [format "%60s : SQ_factor"  [lindex $AnalytPar(SQ,factor)  $i]]}
 		puts $f [format "%s" [lindex $AnalytPar(SQ,typestr) $i]]
 		puts $f [format "%s : SQ_how" [lindex $AnalytPar(SQ,how) $i]]
+	}
+	set maxPar 0
+	if {![catch {puts $f [format "%60s" $AnalytPar(common_names) ]} ]} {
+		set maxPar [llength $AnalytPar(common_names)]
+	} 
+	for {set i 2} {$i < $maxPar} {incr i} {
+		set Pname [lindex $AnalytPar(common_names)  $i]
+		puts $f [format "%60s : %10s" $AnalytPar($Pname) $Pname]
 	}
 	close $f
 	return 0
@@ -100,7 +114,7 @@ return 1
 #        "0.0" : zero version 
 #        "0.3" : 0.3 version
 #        "0.7" : 0.7 version
-#        "0.7" : 0.8 version
+#        "0.8" : 0.8 version
 #
 proc get_par_version {fname} {
 
@@ -1561,9 +1575,8 @@ proc load_sasfit_inp_file {AnalyticPar filename} {
 		# read line "SD belongs to j-th data set"
 		get_param_record $f integer line
 		if { $AP(isGlobal) } {
-			puts $AP(dataset)
+			# puts $AP(dataset)
 			lset AP(dataset) $i $line
-			puts $AP(dataset)
 		}
 		# read calcSDFF
 		if { ! [set_analytpar_entry $f AP "calcSDFF" alpha $i] } { break }
@@ -1598,10 +1611,18 @@ proc load_sasfit_inp_file {AnalyticPar filename} {
 
 		# read FF,distr
 		if { ! [set_analytpar_entry $f AP "FF,distr" integer $i] } { break }
+		
+		if { $AP(isGlobal) } {
+			# read FF,common
+			if { ! [set_analytpar_entry $f AP "FF,common" wordchar $i] } { break }
+
+			# read FF,factor
+			if { ! [set_analytpar_entry $f AP "FF,factor" double $i] } { break }
+		}
 
 		# read FF,typestr
 		if { ! [set_analytpar_entry $f AP "FF,typestr" wordchar $i] } { break }
-
+		
 		### SD ###
 
 		# read SD,a
@@ -1622,9 +1643,18 @@ proc load_sasfit_inp_file {AnalyticPar filename} {
 		# read SD,active
 		if { ! [set_analytpar_entry $f AP "SD,active" integer $i] } { break }
 
+		if { $AP(isGlobal) } {
+			# read SD,common
+			if { ! [set_analytpar_entry $f AP "SD,common" wordchar $i] } { break }
+
+			# read SD,factor
+			if { ! [set_analytpar_entry $f AP "SD,factor" double $i] } { break }
+		}
+		
 		# read SD,typestr
 		if { ! [set_analytpar_entry $f AP "SD,typestr" wordchar $i] } { break }
 
+		
 		### SQ ###
 
 		# read SQ,s
@@ -1645,6 +1675,14 @@ proc load_sasfit_inp_file {AnalyticPar filename} {
 		# read SQ,active
 		if { ! [set_analytpar_entry $f AP "SQ,active" integer $i] } { break }
 
+		if { $AP(isGlobal) } {
+			# read SQ,common
+			if { ! [set_analytpar_entry $f AP "SQ,common" wordchar $i] } { break }
+
+			# read SQ,factor
+			if { ! [set_analytpar_entry $f AP "SQ,factor" double $i] } { break }
+		}
+		
 		# read SQ,typestr
 		if { ! [set_analytpar_entry $f AP "SQ,typestr" wordchar $i] } { break }
 
@@ -1656,7 +1694,23 @@ proc load_sasfit_inp_file {AnalyticPar filename} {
 #dropdownl_select_entry_by_name $ffmenu $ffmenu $AP(FF,typestr)
 	} ;# end of for loop
 
-	# for debugging/verification
+	if { $AP(isGlobal) } {
+			# read SQ,common
+		set AP(common_names) {NONE NEW}
+		if {[get_param_record $f wordchar line] } { 
+			set AP(common_names) $line
+			puts "line PXX: $AP(common_names)"
+		}
+	    for {set i 2} {$i< [llength $AP(common_names)]} {incr i} {
+			if { [get_param_record $f double line] } {
+				set Pname [lindex $AP(common_names) $i]
+				set AP($Pname) [lindex $line 0]
+				puts "$Pname = $AP([lindex $AP(common_names) $i])"
+			}
+		}
+	}
+
+# for debugging/verification
 #	puts "------------------------------------------------------------------------"
 #	foreach {name val} [array get AP] { puts "ar($name): $val ([llength $AP($name)])" }
 #	puts "========================================================================"

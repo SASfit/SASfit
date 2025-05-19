@@ -181,7 +181,7 @@ pack $w.frame.right.address $w.frame.right.sasfit \
 
 
 label $w.frame.right.address.line1 -text \
-"Copyright (c) 2008-2023, Paul Scherrer Institute (PSI)
+"Copyright (c) 2008-2025, Paul Scherrer Institute (PSI)
 Laboratory for Neutron Scattering and Imaging
 CH-5232 Villigen PSI, Switzerland"
 entry $w.frame.right.address.url
