@@ -13,6 +13,7 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sd_wgb1.c
 	sasfit_sd_wgb2.c
 	sasfit_sd_gb.c
+	sasfit_sd_std_beta.c
 	interface.c
 )
 

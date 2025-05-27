@@ -4522,8 +4522,8 @@ switch -exact $type {
            gammaSD { return "gammaSD(x) = gamma distribution = theta^k exp(-x/theta) x^(k-1) / GAMMA(k)\nwith int(gammaSD(x),x=0,infinity) = N), mode=(k-1)*theta, sigma^2 = k*theta^2" }
            Triangular { return "Triangular(x) = triangular distribution \nwith int(Triangular(x),x=0,infinity) = N)" }
            fractalSD { return "fractalSD(x) = fractal size distribution \nwith int(fractalSD(x),x=0,infinity) = N)" }
-           Uniform { return "Uniform(x) = Uniform distribution \nwith int(Iniform(x),x=0,infinity) = N)" }
-           Beta { return "Beta(x) = Beta distribution \nwith int(Iniform(x),x=0,infinity) = N)" }
+           Uniform { return "Uniform(x) = Uniform distribution \nwith int(Uniform(x),x=0,infinity) = N)" }
+           Beta { return "Beta(x) = Beta distribution \nwith int(Beta(x),x=0,infinity) = N)" }
            Gaussian { return "Gaussian(x) = N/c exp(-(x-x0)^2/(2s^2)) \nwith int(Gauss(x),x=0,infinity) = N)"}
            Maxwell { return "Maxwell(x) = N/c sqrt(2/Pi) s^3 (x-x0)^2 exp(-(x-x0)^2/(2s^2)) for x>x0\notherwise 0 with int(Maxwell(x),x=0,infinity) = N)"}
            Schulz-Zimm { return "Schulz-Zimm(x) = N (x/Ra)^(k-1)/Ra k^k/Gamma(k) exp(-k*x/Ra)\nwith k=1/sig^2 and int(Schulz-Zimm(x),x=0,infinity) = N)"}

@@ -32,11 +32,10 @@ proc fp n1 {
 format %4g $n1
 }
 
-
-proc Erik {} {
-	global sasfit erik
-	if { [catch {source $sasfit(tcl)/Erik.tcl} result] } {
-		puts stderr "error while sourcing Erik.tcl: $result"
+proc ANAXAM {} {
+	global sasfit ANAXAM
+	if { [catch {source $sasfit(tcl)/ANAXAM.tcl} result] } {
+		puts stderr "error while sourcing ANAXAM.tcl: $result"
 	}
 }
 
@@ -181,7 +180,7 @@ pack $w.frame.right.address $w.frame.right.sasfit \
 
 
 label $w.frame.right.address.line1 -text \
-"Copyright (c) 2008-2025, Paul Scherrer Institute (PSI)
+"Copyright (c) 2008-now, Paul Scherrer Institute (PSI)
 Laboratory for Neutron Scattering and Imaging
 CH-5232 Villigen PSI, Switzerland"
 entry $w.frame.right.address.url

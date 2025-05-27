@@ -36,6 +36,61 @@
 // - brief description
 // - description of parameters in HTML table-style
 
+/* ################ start sd_std_beta ################ */
+/**
+ * \defgroup sd_std_beta std. beta
+ * \ingroup sd_plugins_beta
+ *
+ * \brief beta distribution function
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b N</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>uper boundary</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number/volume/intensity distribution: 0/3/6</td>
+ *      </tr><tr>
+ *       <td>\b p</td>
+ *       <td></td>
+ *      </tr><tr>
+ *       <td>\b q</td>
+ *       <td></td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sd_std_beta
+ *
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
+ */
+sasfit_generalized_beta_DLLEXP scalar sasfit_sd_std_beta(scalar x, sasfit_param * p);
+
+/**
+ * \ingroup sd_std_beta
+ *
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
+ */
+sasfit_generalized_beta_DLLEXP scalar sasfit_sd_std_beta_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sd_std_beta
+ *
+ * \sa sasfit_generalized_beta.h, sd_plugins_beta
+ */
+sasfit_generalized_beta_DLLEXP scalar sasfit_sd_std_beta_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sd_std_beta ################ */
+
+
 /* ################ start sd_wgb1 ################ */
 /**
  * \defgroup sd_wgb1 WGB1
@@ -103,7 +158,16 @@ sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb1_v(scalar q, sasfit_param * 
  * \par Required parameters:
  *      <table border="0"><tr>
  *       <td>\b N</td>
- *       <td></td>
+ *       <td><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>uper boundary</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number/volume/intensity distribution: 0/3/6</td>
+ *      </tr></td>
  *      </tr><tr>
  *       <td>\b a</td>
  *       <td></td>
@@ -146,10 +210,10 @@ sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb2_v(scalar q, sasfit_param * 
 
 /* ################ start sd_gb ################ */
 /**
- * \defgroup sd_gb GB
+ * \defgroup sd_gb generalized beta
  * \ingroup sd_plugins_beta
  *
- * \brief \< generalized beta distribution \>
+ * \brief generalized beta distribution\n(https://doi.org/10.1016/0304-4076(94)01612-4)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -159,6 +223,15 @@ sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb2_v(scalar q, sasfit_param * 
  *       <td>\b N</td>
  *       <td></td>
  *      </tr><tr>
+ *       <td>\b bl</td>
+ *       <td>lower boundary</td>
+ *      </tr><tr>
+ *       <td>\b bu</td>
+ *       <td>uper boundary</td>
+ *      </tr><tr>
+ *       <td>\b alpha</td>
+ *       <td>number/volume/intensity distribution: 0/3/6</td>
+ *      </tr><tr>
  *       <td>\b a</td>
  *       <td>a>0</td>
  *      </tr><tr>
@@ -166,7 +239,7 @@ sasfit_generalized_beta_DLLEXP scalar sasfit_sd_wgb2_v(scalar q, sasfit_param * 
  *       <td>b>0</td>
  *      </tr><tr>
  *       <td>\b c</td>
- *       <td>0<c<1</td>
+ *       <td>c in [-inf,+inf], so that 0<=1/(1+exp(c))<=1</td>
  *      </tr><tr>
  *       <td>\b p</td>
  *       <td>p>0</td>

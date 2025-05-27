@@ -186,7 +186,7 @@ void find_integration_range(Tcl_Interp *interp,
 	scalar R_n, R_50,R_0,R_max, tmp;
 	scalar R2_n, R2_50,R2_0, R2start, R2end;
 	int   n;
-	scalar a1,a2,a3,a4,a5,a6;
+	scalar a1,a2,a3,a4,a5,a6,a7;
 	int funcid;
 	sasfit_param subParam;
 	const sasfit_plugin_func_t * func_descr;
@@ -199,6 +199,7 @@ void find_integration_range(Tcl_Interp *interp,
 	a4=a[3];
 	a5=a[4];
 	a6=a[5];
+	a7=a[6];
 
 	sasfit_init_param( &subParam );
 	subParam.p[0] = a[0];
@@ -696,13 +697,24 @@ void find_integration_range(Tcl_Interp *interp,
 				*Rstart = GSL_MIN(a2,a3);
 				*Rend   = GSL_MAX(a2,a3);
 				*n_intervals = Nint;
+			} else if ( (strcmp(func_descr->name,"sd_std_beta")      == 0) ) {
+				*Rstart = GSL_MIN(a2,a3);
+				*Rend   = GSL_MAX(a2,a3);
+				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_gb")      == 0) ) {
-				*Rstart = 0;
-				*Rend   = fabs(a3)/pow(1-(1.0/(1+exp(-a4))),1./a2);
+				*Rstart = 0.0;
+				*Rend   = a6*pow(1.-(1.0/(1.+exp(-a7))),-1./a5);
+				if (a5 > 0) {
+                    *Rstart = GSL_MAX(*Rstart,GSL_MIN(a2,a3));
+                    *Rend   = GSL_MIN(*Rend,GSL_MAX(a2,a3));
+				} else {
+                    *Rstart = GSL_MAX(*Rend,GSL_MIN(a2,a3));
+                    *Rend   = GSL_MAX(a2,a3);
+				}
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_wgb1")      == 0) ) {
 				*Rstart = 0;
-				*Rend   = fabs(a3);
+				*Rend   = a3;
 				*n_intervals = Nint;
 			} else if ( (strcmp(func_descr->name,"sd_wgb2")      == 0) ) {
 				*Rstart = 0;

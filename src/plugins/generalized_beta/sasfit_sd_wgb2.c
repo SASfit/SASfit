@@ -77,11 +77,38 @@ scalar sasfit_sd_wgb2_f(scalar x, sasfit_param * param)
 	return 1.0-gsl_sf_beta_inc(P+K/A,Q-K/A,1./(1+pow(x/B,A)));
 }
 
-scalar sasfit_sd_wgb2_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_sd_wgb2_v(scalar u, sasfit_param * param, int dist)
 {
+    scalar x,y;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return 0.0;
+		// case 0: quantile distribution function Q(y)=x
+		// case 1: quantile density distribution function q(y)=dQ(y)/dy = 1/p(y)
+		// case 2: probability distribution function p(x)
+		// case 3: cumulative distribution function F(x)=y
+		// case 4: mode
+		// case 5: mean
+		// case 6: variance
+		// case 7: median
+		// case 8: skewness
+		// case 9: excess kurtosis
+
+	switch (dist) {
+	    case DISTRIBUTION_TYPE: return DISTRIBUTION_PROBABILITY;
+        case DISTRIBUTION_QUANTILE:
+                y=u;
+        case DISTRIBUTION_QUANTILE_DENS:
+                y=u;
+        case DISTRIBUTION_PROBABILITY:
+        case DISTRIBUTION_CUMULATIVE:
+        case DISTRIBUTION_MEAN:
+        case DISTRIBUTION_VARIANCE:
+        case DISTRIBUTION_MEDIAN:
+        case DISTRIBUTION_SKEWNESS:
+        case DISTRIBUTION_EXCESS_KURTOSIS:
+        case DISTRIBUTION_MODE:
+        default: sasfit_err("parameter distr=%d not defined",dist);
+    }
 }
 

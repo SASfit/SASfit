@@ -14,7 +14,7 @@
 scalar lambda(scalar rot, scalar tilt) {
     return
         (12721
-           - 611.74*tilt
+           - 611.74127*tilt
            - 12.44417*gsl_pow_2(tilt)
            - 0.12411*gsl_pow_3(tilt)
            + 0.00583*gsl_pow_4(tilt))/rot
@@ -34,7 +34,7 @@ scalar sasfit_ff_tiltsans1(scalar rot, sasfit_param * param)
 	SASFIT_CHECK_COND1((D001 < 0), param, "d001(%lg) < 0",D001); // modify condition to your needs
 
 	// insert your code here
-	tilt=TILT0+DELTA_TILT;
+	tilt=-TILT0-DELTA_TILT;
 	d=D001;
 	lam = lambda(rot,tilt);
 	return 2*asin(lam/(2*d))*180/M_PI;
