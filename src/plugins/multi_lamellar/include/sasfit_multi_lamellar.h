@@ -488,7 +488,7 @@ sasfit_multi_lamellar_DLLEXP scalar sasfit_sq_paracrystalline_sd_v(scalar q, sas
  *       <td>stacking separation</td>
  *      </tr><tr>
  *       <td>\b eta_1</td>
- *       <td>Caillé parameter as a measure for bilayer bending fluctuation</td>
+ *       <td>Caille parameter as a measure for bilayer bending fluctuation</td>
  *      </tr><tr>
  *       <td>\b Nu</td>
  *       <td>scaling constant for additional diffuse scattering term</td>
@@ -536,7 +536,7 @@ sasfit_multi_lamellar_DLLEXP scalar sasfit_sq_modifiedcaille_v(scalar q, sasfit_
  *       <td>stacking separation</td>
  *      </tr><tr>
  *       <td>\b eta</td>
- *       <td>Caillé parameter as a measure for bilayer bending fluctuation</td>
+ *       <td>Caille parameter as a measure for bilayer bending fluctuation</td>
  *      </tr><tr>
  *       <td>\b Nu</td>
  *       <td>scaling constant for additional diffuse scattering term</td>
@@ -584,7 +584,7 @@ sasfit_multi_lamellar_DLLEXP scalar sasfit_sq_modifiedcaille_sum_v(scalar q, sas
  *       <td>stacking separation</td>
  *      </tr><tr>
  *       <td>\b eta</td>
- *       <td>Caillé parameter as a measure for bilayer bending fluctuation</td>
+ *       <td>Caille parameter as a measure for bilayer bending fluctuation</td>
  *      </tr><tr>
  *       <td>\b Nu</td>
  *       <td>scaling constant for additional diffuse scattering term</td>

@@ -102,7 +102,7 @@ sasfit_blob_DLLEXP scalar sasfit_ff_blob__star__v(scalar q, sasfit_param * p, in
  *       <td>radius of gyration</td>
  *      </tr><tr>
  *       <td>\b nu</td>
- *       <td>Flory–Huggins parameter (1/3<nu<=1)</td>
+ *       <td>Flory-Huggins parameter (1/3<nu<=1)</td>
  *      </tr><tr>
  *       <td>\b xi</td>
  *       <td>effective blob radius</td>

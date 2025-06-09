@@ -419,7 +419,7 @@ sasfit_t_r_y_DLLEXP scalar sasfit_ff_fgld_profile_PcsPlanar_v(scalar q, sasfit_p
  * \defgroup sd_egu_w_l EGu-W{L}
  * \ingroup sd_plugins_try
  *
- * \brief exponentiated Gumbel–Weibull {logistic} distribution (doi:10.1007/s40745-022-00373-0)
+ * \brief exponentiated Gumbel-Weibull {logistic} distribution (doi:10.1007/s40745-022-00373-0)
  *
  * <more detailed documentation, see 'doxygen' docs>
  *

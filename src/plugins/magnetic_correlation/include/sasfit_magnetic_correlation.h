@@ -59,7 +59,7 @@
  *       <td>l_H = sqrt[2A/(mu_0*Ms*Hi)] exchange length of magnetic field</td>
  *      </tr><tr>
  *       <td>\b R </td>
- *       <td>"anisotropy-field" radius</td>
+ *       <td>anisotropy-field radius</td>
  *      </tr></table>
  */
 
@@ -108,7 +108,7 @@ sasfit_magnetic_correlation_DLLEXP scalar sasfit_ff_c_r__for_spin_misalignment_v
  *       <td>l_H = sqrt[2A/(mu_0*Ms*Hi)] exchange length of magnetic field</td>
  *      </tr><tr>
  *       <td>\b R </td>
- *       <td>‘anisotropy-field’ radius</td>
+ *       <td>anisotropy-field radius</td>
  *      </tr></table>
  */
 
