@@ -3,13 +3,11 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
- // doi: 10.1021/ma049950l
- // Burchard, Walther
- // Angular Dependence of Scattered Light from Hyperbranched Structures in a Good Solvent. A Fractal Approach
- // 2004-04
- // Macromolecules , Vol. 37, No. 10
- // American Chemical Society (ACS)
- // p. 3841-3849
+// doi: 10.1063/5.0160446.
+// M. Jura and M. Bishop,
+// “The scattering functions of ideal tri-functional comb and dendrimer polymers,”
+// The Journal of Chemical Physics,
+// vol. 159, no. 3, Jul. 2023,
 
 #include "include/private.h"
 #include <sasfit_error_ff.h>

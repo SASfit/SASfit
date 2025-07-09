@@ -610,7 +610,7 @@ The quantile function of the metalog distribution $Q(y)=M_{k}(y)$ is defined as 
     M_{k-1}(y)+a_{k}(y-\frac12)^{{k \over 2}-1}\ln {y \over {1-y}}, &{\mbox{even}}\wedge k\geq 6 \\
  \end{array}}\right. \label{eq:Mk}
 \end{align}
-and its PDF $p(x)=m_k(y)$ with $x=M_{k}(y)$ reads as
+and its quantile density distribution function $q(y)=m_k(y)$ which is related to the probability distribution function $p(x)$ by $p(x)=1/q(y)$ with $x=M_{k}(y)$ reads as
 \begin{align}
 \label{eq:mk}
  m_{k}(y) &=
@@ -624,8 +624,8 @@ and its PDF $p(x)=m_k(y)$ with $x=M_{k}(y)$ reads as
  \end{array}
 \right.
 \end{align}
-The metalog PDF as defined above is an unbounded distribution. In case of describing a size distribution it needs to be bounded (Logit metalog) or at least semi-bounded (bounded below, Log metalog). This can be easily done by a transformation of $z(x) = \ln \left(x-b_l\right)$ for a distribution with a lower bound $b_l$ or $z(x)=\ln\left(\frac{x-b_l}{b_u-x}\right)$ with a lower bound $b_l$ and an upper bound $b_u$, where $z$ is then metalog-distributed.
-The corresponding quantile functions and PDF read as
+The metalog distribution as defined above is an unbounded distribution. In case of describing a size distribution it needs to be bounded (Logit metalog) or at least semi-bounded (bounded below, Log metalog). This can be easily done by a transformation of $z(x) = \ln \left(x-b_l\right)$ for a distribution with a lower bound $b_l$ or $z(x)=\ln\left(\frac{x-b_l}{b_u-x}\right)$ with a lower bound $b_l$ and an upper bound $b_u$, where $z$ is then metalog-distributed.
+The corresponding quantile functions and quantile density functions read as
 \begin{eqnarray}
    M_k^{\log}(y) &=&  \left\{{\begin{array}{ll}
     b_l+e^{M_k(y)}, & 0<y<1 \\
@@ -673,7 +673,7 @@ A work-around to avoid the calculation of the lower and upper integration bound 
   N \int_0^\infty p(x) A^n(h;\B{a}_i,x)\, \mathrm{d}x & = N \int_0^\infty p(Q(y)) A^n(h;\B{a}_i,Q(y)) \, \mathrm{d}x \\
    & = N \int_0^1 A^n(h;\B{a}_i,Q(y)) \, \mathrm{d}y
 \end{align}
-by a change of variables using $\mathrm{d}x/\mathrm{d}y=\mathrm{d}Q(y)/\mathrm{d}y=1/q(y)$ and $F(x)=y$. $n=[1,2]$ depending if the average scattering amplitude $(n=1)$ or the average scattering intensity $(n=2)$ needs to be calculated. The change of variable like above has the additional side effect that now the integration over semi-infinite interval for the size distribution becomes an integral with finite limits over the cumulative  distribution $y$ from  0  to  1. Furthermore, by doing this transformation the quadrature behaves numerically well for both very sharp and very broad distributions for all distribution functions decaying fast enough so that the integral in eq.\ \ref{eq:SDwQDF} stays finite. In \SASfit only those size distribution are supplied, which fulfill this condition for any form factor. The reason, that for some distribution functions  the integral diverges is, that the form factor scale typically with the squared volume of the particle, i.e. with up to the 6-th power of its size parameter. Therefore, already in the past it was suggested to use instead of the number density distribution $p(x)$ the volume $D_v(x)=p(x)x^3$ ($\alpha=3$) or intensity distribution $D_i(x)=p(x)x^6$ ($\alpha=6$) \cite{Glatter1980}. The third and sixth power have been chosen due to the assumption, that the volume scales with the third power of its size parameter which, however, would need an adjustment in case of objects with different scaling behaviour.
+by a change of variables using $\mathrm{d}x/\mathrm{d}y=\mathrm{d}Q(y)/\mathrm{d}y=q(y)=1/p(x)$ and $x=Q(y)$. $n=[1,2]$ depending if the average scattering amplitude $(n=1)$ or the average scattering intensity $(n=2)$ needs to be calculated. The change of variable like above has the additional side effect that now the integration over semi-infinite interval for the size distribution becomes an integral with finite limits over the cumulative  distribution $y$ from 0 to 1. Furthermore, by doing this transformation the quadrature behaves numerically well for both very sharp and very broad distributions for all distribution functions decaying fast enough so that the integral in eq.\ \ref{eq:SDwQDF} stays finite. In \SASfit only those size distribution are supplied, which fulfill this condition for any form factor. The reason, that for some distribution functions  the integral diverges is, that the form factor scale typically with the squared volume of the particle, i.e. with up to the 6-th power of its size parameter. Therefore, already in the past it was suggested to use instead of the number density distribution $p(x)$ the volume $D_v(x)=p(x)x^3$ ($\alpha=3$) or intensity distribution $D_i(x)=p(x)x^6$ ($\alpha=6$) \cite{Glatter1980}. The third and sixth power have been chosen due to the assumption, that the volume scales with the third power of its size parameter which, however, would need an adjustment in case of objects with different scaling behaviour.
 Applying this strategy using quantile distribution functions would in combination of a distribution proportional to $p_\alpha(x) = c_\alpha x^\alpha p(x)$ result in
 \begin{align}\label{eq:intensity_alpha_quantile}
 N  \int_0^\infty p(x) A^n(h;\B{a}_i,x)\, \mathrm{d}x & = N \int_0^\infty \underbrace{p(x) x^\alpha}_{=p_\alpha(x)/c_\alpha} x^{-\alpha} A^n(h;\B{a}_i,x)\, \mathrm{d}x & = \\
@@ -731,7 +731,7 @@ where $\mu_i$ are the position of the $i^\mathrm{th}$ phase boundary as well as 
   P_\textrm{cs}^\mathrm{2D}(h) & = \abs{\sum_i  \int_0^\infty \left[\Delta\eta_i\left(1-F_i(x,\mu_i)\right) +\Delta\eta_{i+1} F_i(x,\mu_i)\right] 2\pi x \textrm{J}_0(hx)\,\mathrm{d}x }^2 \\
   P_\textrm{cs}^\mathrm{3D}(h) & = \abs{\sum_i  \int_0^\infty \left[\Delta\eta_i\left(1-F_i(x,\mu_i)\right) +\Delta\eta_{i+1} F_i(x,\mu_i)\right] 4\pi x^2\frac{\sin hx}{hx}\,\mathrm{d}x }^2
 \end{align}
-In those case where not the cumulative distribution is known analytically but the quantile distribution function the integrals can be rewritten by variable transformation using $x=Q_i(y_i)$ and $\mathrm{d}x/\mathrm{d}y_i=\mathrm{d}Q(y_i)/\mathrm{d}y_i=q(y_i)$ and result in
+In those case where the cumulative distribution is not known analytically but the quantile distribution function the integrals can be rewritten by variable transformation using $x=Q_i(y_i)$ and $\mathrm{d}x/\mathrm{d}y_i=\mathrm{d}Q(y_i)/\mathrm{d}y_i=q(y_i)$ and result in
 \begin{align}
   P_\textrm{cs}^\mathrm{1D}(h) & = \abs{\sum_i  \int_0^1 \left[\Delta\eta_i\left(1-y_i\right) +\Delta\eta_{i+1} y_i\right] 2\cos (hQ_i(y_i))q_i(y_i)\,\mathrm{d}y_i }^2 \\
   P_\textrm{cs}^\mathrm{2D}(h) & = \abs{\sum_i  \int_0^1 \left[\Delta\eta_i\left(1-y_i\right) +\Delta\eta_{i+1} y_i\right] 2\pi Q_i(y_i) \textrm{J}_0(hQ_i(y_i))q_i(y_i)\,\mathrm{d}y_i }^2 \\
