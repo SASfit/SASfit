@@ -48,7 +48,7 @@ scalar sasfit_ff_fract_hyperbranched_polym(scalar q, sasfit_param * param)
 	xib2 = (C + 1)/(D*(D + 1))*RG*RG;
 	xil2 = 2*C/(D*(D + 1))*RG*RG;
 	u = q*RG;
-	return P_DBfract(sqrt(xib2*q), param)/P_linfract(sqrt(xil2*q), param);
+	return P_DBfract(sqrt(xib2)*q, param)/P_linfract(sqrt(xil2)*q, param);
 }
 
 scalar sasfit_ff_fract_hyperbranched_polym_f(scalar q, sasfit_param * param)
