@@ -39,7 +39,7 @@ scalar SF(scalar q,scalar r) {
 	if (qr == 0.0) {
 		return 4./3. * M_PI * gsl_pow_3(r);
 	} else {
-		return 4./3. * M_PI * gsl_pow_3(r) * 3.0*(sin(q*r)-qr*cos(q*r))/gsl_pow_3(q*r);
+		return 4./3. * M_PI * gsl_pow_3(r) * 3.0*(sin(qr)-qr*cos(qr))/gsl_pow_3(qr);
 	}
 }
 
