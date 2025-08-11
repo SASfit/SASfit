@@ -1,0 +1,173 @@
+diff -ur windows64_orig/generic/tclCmdMZ.c windows64/generic/tclCmdMZ.c
+--- windows64_orig/generic/tclCmdMZ.c	2012-11-19 17:27:15.000000000 +0100
++++ windows64/generic/tclCmdMZ.c	2025-08-11 16:38:39.627521800 +0200
+@@ -1242,7 +1242,11 @@
+ 	STR_REPLACE,	STR_TOLOWER,	STR_TOUPPER,	STR_TOTITLE,
+ 	STR_TRIM,	STR_TRIMLEFT,	STR_TRIMRIGHT,
+ 	STR_WORDEND,	STR_WORDSTART
+-    };	  
++    };
++    enum strCmpFunc {
++	MEMCMP=0, TCL_UNICHARNCASECMP, TCL_UNICHARNCMP,
++	TCLPUTFNCMP2, TCL_UTFNCASECMP, TCL_UTFNCMP
++    };
+ 
+     if (objc < 2) {
+         Tcl_WrongNumArgs(interp, 1, objv, "option arg ?arg ...?");
+@@ -1265,7 +1269,7 @@
+ 	     * comparison in INST_EQ/INST_NEQ/INST_LT/...).
+ 	     */
+ 	    int i, match, length, nocase = 0, reqlength = -1;
+-	    int (*strCmpFn)();
++	    enum strCmpFunc strCmpFn = MEMCMP;
+ 
+ 	    if (objc < 4 || objc > 7) {
+ 	    str_cmp_args:
+@@ -1321,7 +1325,7 @@
+ 		 */
+ 		string1 = (char*) Tcl_GetByteArrayFromObj(objv[0], &length1);
+ 		string2 = (char*) Tcl_GetByteArrayFromObj(objv[1], &length2);
+-		strCmpFn = memcmp;
++		strCmpFn = MEMCMP;
+ 	    } else if ((objv[0]->typePtr == &tclStringType)
+ 		    && (objv[1]->typePtr == &tclStringType)) {
+ 		/*
+@@ -1332,7 +1336,7 @@
+ 		 */
+ 		string1 = (char*) Tcl_GetUnicodeFromObj(objv[0], &length1);
+ 		string2 = (char*) Tcl_GetUnicodeFromObj(objv[1], &length2);
+-		strCmpFn = nocase ? Tcl_UniCharNcasecmp : Tcl_UniCharNcmp;
++		strCmpFn = nocase ? TCL_UNICHARNCASECMP : TCL_UNICHARNCMP;
+ 	    } else {
+ 		/*
+ 		 * As a catch-all we will work with UTF-8.  We cannot use
+@@ -1344,11 +1348,11 @@
+ 		string1 = (char*) Tcl_GetStringFromObj(objv[0], &length1);
+ 		string2 = (char*) Tcl_GetStringFromObj(objv[1], &length2);
+ 		if ((reqlength < 0) && !nocase) {
+-		    strCmpFn = TclpUtfNcmp2;
++		    strCmpFn = TCLPUTFNCMP2;
+ 		} else {
+ 		    length1 = Tcl_NumUtfChars(string1, length1);
+ 		    length2 = Tcl_NumUtfChars(string2, length2);
+-		    strCmpFn = nocase ? Tcl_UtfNcasecmp : Tcl_UtfNcmp;
++		    strCmpFn = nocase ? TCL_UTFNCASECMP : TCL_UTFNCMP;
+ 		}
+ 	    }
+ 
+@@ -1366,7 +1370,19 @@
+ 		     */
+ 		    reqlength = length + 1;
+ 		}
+-		match = strCmpFn(string1, string2, (unsigned) length);
++		if (strCmpFn == MEMCMP) {
++		    match = memcmp(string1, string2, (unsigned) length);
++		} else if (strCmpFn == TCL_UNICHARNCASECMP) {
++		    match = Tcl_UniCharNcasecmp((Tcl_UniChar*)string1, (Tcl_UniChar*)string2, (unsigned)length);
++		} else if (strCmpFn == TCL_UNICHARNCMP) {
++		    match = Tcl_UniCharNcmp((Tcl_UniChar*)string1, (Tcl_UniChar*)string2, (unsigned)length);
++		} else if (strCmpFn == TCLPUTFNCMP2) {
++		    match = TclpUtfNcmp2(string1, string2, (unsigned)length);
++		} else if (strCmpFn == TCL_UTFNCASECMP) {
++		    match = Tcl_UtfNcasecmp(string1, string2, (unsigned)length);
++		} else if (strCmpFn == TCL_UTFNCMP) {
++		    match = Tcl_UtfNcmp(string1, string2, (unsigned)length);
++		}
+ 		if ((match == 0) && (reqlength > length)) {
+ 		    match = length1 - length2;
+ 		}
+diff -ur windows64_orig/generic/tclScan.c windows64/generic/tclScan.c
+--- windows64_orig/generic/tclScan.c	2012-04-04 15:50:52.000000000 +0200
++++ windows64/generic/tclScan.c	2025-08-11 16:39:10.370336500 +0200
+@@ -575,9 +575,10 @@
+     int base = 0;
+     int underflow = 0;
+     size_t width;
+-    long (*fn)() = NULL;
++    enum strtofunc { STRTO_NONE=0, STRTOL, STRTOLL, STRTOUL, STRTOULL };
++    enum strtofunc fn = STRTO_NONE;
+ #ifndef TCL_WIDE_INT_IS_LONG
+-    Tcl_WideInt (*lfn)() = NULL;
++    enum strtofunc lfn = STRTO_NONE;
+     Tcl_WideInt wideValue;
+ #endif
+     Tcl_UniChar ch, sch;
+@@ -725,42 +726,42 @@
+ 	    case 'd':
+ 		op = 'i';
+ 		base = 10;
+-		fn = (long (*)())strtol;
++		fn = STRTOL;
+ #ifndef TCL_WIDE_INT_IS_LONG
+-		lfn = (Tcl_WideInt (*)())strtoll;
++		lfn = STRTOLL;
+ #endif
+ 		break;
+ 	    case 'i':
+ 		op = 'i';
+ 		base = 0;
+-		fn = (long (*)())strtol;
++		fn = STRTOL;
+ #ifndef TCL_WIDE_INT_IS_LONG
+-		lfn = (Tcl_WideInt (*)())strtoll;
++		lfn = STRTOLL;
+ #endif
+ 		break;
+ 	    case 'o':
+ 		op = 'i';
+ 		base = 8;
+-		fn = (long (*)())strtoul;
++		fn = STRTOUL;
+ #ifndef TCL_WIDE_INT_IS_LONG
+-		lfn = (Tcl_WideInt (*)())strtoull;
++		lfn = STRTOULL;
+ #endif
+ 		break;
+ 	    case 'x':
+ 		op = 'i';
+ 		base = 16;
+-		fn = (long (*)())strtoul;
++		fn = STRTOUL;
+ #ifndef TCL_WIDE_INT_IS_LONG
+-		lfn = (Tcl_WideInt (*)())strtoull;
++		lfn = STRTOULL;
+ #endif
+ 		break;
+ 	    case 'u':
+ 		op = 'i';
+ 		base = 10;
+ 		flags |= SCAN_UNSIGNED;
+-		fn = (long (*)())strtoul;
++		fn = STRTOUL;
+ #ifndef TCL_WIDE_INT_IS_LONG
+-		lfn = (Tcl_WideInt (*)())strtoull;
++		lfn = STRTOULL;
+ #endif
+ 		break;
+ 
+@@ -1019,7 +1020,11 @@
+ 		    *end = '\0';
+ #ifndef TCL_WIDE_INT_IS_LONG
+ 		    if (flags & SCAN_LONGER) {
+-			wideValue = (Tcl_WideInt) (*lfn)(buf, NULL, base);
++			if (lfn == STRTOL) { wideValue = (Tcl_WideInt)strtol(buf, NULL, base); }
++			else if (lfn == STRTOLL) { wideValue = (Tcl_WideInt)strtoll(buf, NULL, base); }
++			else if (lfn == STRTOUL) { wideValue = (Tcl_WideInt)strtoul(buf, NULL, base); }
++			else if (lfn == STRTOULL) { wideValue = (Tcl_WideInt)strtoull(buf, NULL, base); }
++			else { /* wideValue not set */ }
+ 			if ((flags & SCAN_UNSIGNED) && (wideValue < 0)) {
+ 			    /* INTL: ISO digit */
+ 			    sprintf(buf, "%" TCL_LL_MODIFIER "u",
+@@ -1030,7 +1035,11 @@
+ 			}
+ 		    } else {
+ #endif /* !TCL_WIDE_INT_IS_LONG */
+-			value = (long) (*fn)(buf, NULL, base);
++			if (fn == STRTOL) { value = strtol(buf, NULL, base); }
++			else if (fn == STRTOLL) { value = strtoll(buf, NULL, base); }
++			else if (fn == STRTOUL) { value = strtoul(buf, NULL, base); }
++			else if (fn == STRTOULL) { value = strtoull(buf, NULL, base); }
++			else { /* value not set */ }
+ 			if ((flags & SCAN_UNSIGNED) && (value < 0)) {
+ 			    sprintf(buf, "%lu", value); /* INTL: ISO digit */
+ 			    objPtr = Tcl_NewStringObj(buf, -1);

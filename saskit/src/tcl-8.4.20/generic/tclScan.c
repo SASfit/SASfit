@@ -1035,10 +1035,10 @@ Tcl_ScanObjCmd(dummy, interp, objc, objv)
 			}
 		    } else {
 #endif /* !TCL_WIDE_INT_IS_LONG */
-			if (lfn == STRTOL) { value = strtol(buf, NULL, base); }
-			else if (lfn == STRTOLL) { value = strtoll(buf, NULL, base); }
-			else if (lfn == STRTOUL) { value = strtoul(buf, NULL, base); }
-			else if (lfn == STRTOULL) { value = strtoull(buf, NULL, base); }
+			if (fn == STRTOL) { value = strtol(buf, NULL, base); }
+			else if (fn == STRTOLL) { value = strtoll(buf, NULL, base); }
+			else if (fn == STRTOUL) { value = strtoul(buf, NULL, base); }
+			else if (fn == STRTOULL) { value = strtoull(buf, NULL, base); }
 			else { /* value not set */ }
 			if ((flags & SCAN_UNSIGNED) && (value < 0)) {
 			    sprintf(buf, "%lu", value); /* INTL: ISO digit */
