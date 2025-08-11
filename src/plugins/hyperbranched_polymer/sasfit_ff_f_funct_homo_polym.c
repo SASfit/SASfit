@@ -21,14 +21,19 @@
 #define F	    param->p[1]
 #define ALPHA   param->p[2]
 #define I0	    param->p[3]
-#define APPROX	    param->p[4]
+#define APPROX  param->p[4]
+#define Q       param->p[MAXPAR-1]
 
 scalar Paf_Gauss(scalar x, sasfit_param * param) {
-    return 0;
+    scalar alphas;
+    alphas = ALPHA*(1-F);
+    return (1-alphas)*exp(-((1-alphas)*x+gsl_pow_2(SIGMA*Q)*pow(pow(x,0.588),2)/6));
 }
 
 scalar Paf_exact(scalar x, sasfit_param * param) {
-    return 0;
+    scalar alphas;
+    alphas = ALPHA*(1-F);
+    return (1-alphas)*exp(-((1-alphas)*x+gsl_pow_2(SIGMA*Q)*pow(pow(x,0.588),2.18)/6.2));
 }
 
 scalar sasfit_ff_f_funct_homo_polym(scalar q, sasfit_param * param)
@@ -50,12 +55,13 @@ scalar sasfit_ff_f_funct_homo_polym(scalar q, sasfit_param * param)
 	Rg=sqrt(S2z);
     X= q*Rg;
     phi = exp(-X*X/6.);
+    Q=q;
     switch (lround(APPROX)) {
         case 0: return I0/(1+X*X/3);
         case 1: return I0*ALPHA*F*phi/(1-ALPHA*(F-1)*phi) * (1-ALPHA*(F-1))/(ALPHA*F);
         case 2: return sasfit_integrate(0,GSL_POSINF,&Paf_Gauss,param);
         case 3: return sasfit_integrate(0,GSL_POSINF,&Paf_exact,param);
-        default: sasfit_err("aproximarion: %d unknown!\n",lround(APPROX));
+        default: sasfit_err("approximation: %d unknown!\n",lround(APPROX));
     }
 }
 
