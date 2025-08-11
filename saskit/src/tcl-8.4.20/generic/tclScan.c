@@ -575,9 +575,10 @@ Tcl_ScanObjCmd(dummy, interp, objc, objv)
     int base = 0;
     int underflow = 0;
     size_t width;
-    long (*fn)() = NULL;
+    enum strtofunc { STRTO_NONE=0, STRTOL, STRTOLL, STRTOUL, STRTOULL };
+    enum strtofunc fn = STRTO_NONE;
 #ifndef TCL_WIDE_INT_IS_LONG
-    Tcl_WideInt (*lfn)() = NULL;
+    enum strtofunc lfn = STRTO_NONE;
     Tcl_WideInt wideValue;
 #endif
     Tcl_UniChar ch, sch;
@@ -725,42 +726,42 @@ Tcl_ScanObjCmd(dummy, interp, objc, objv)
 	    case 'd':
 		op = 'i';
 		base = 10;
-		fn = (long (*)())strtol;
+		fn = STRTOL;
 #ifndef TCL_WIDE_INT_IS_LONG
-		lfn = (Tcl_WideInt (*)())strtoll;
+		lfn = STRTOLL;
 #endif
 		break;
 	    case 'i':
 		op = 'i';
 		base = 0;
-		fn = (long (*)())strtol;
+		fn = STRTOL;
 #ifndef TCL_WIDE_INT_IS_LONG
-		lfn = (Tcl_WideInt (*)())strtoll;
+		lfn = STRTOLL;
 #endif
 		break;
 	    case 'o':
 		op = 'i';
 		base = 8;
-		fn = (long (*)())strtoul;
+		fn = STRTOUL;
 #ifndef TCL_WIDE_INT_IS_LONG
-		lfn = (Tcl_WideInt (*)())strtoull;
+		lfn = STRTOULL;
 #endif
 		break;
 	    case 'x':
 		op = 'i';
 		base = 16;
-		fn = (long (*)())strtoul;
+		fn = STRTOUL;
 #ifndef TCL_WIDE_INT_IS_LONG
-		lfn = (Tcl_WideInt (*)())strtoull;
+		lfn = STRTOULL;
 #endif
 		break;
 	    case 'u':
 		op = 'i';
 		base = 10;
 		flags |= SCAN_UNSIGNED;
-		fn = (long (*)())strtoul;
+		fn = STRTOUL;
 #ifndef TCL_WIDE_INT_IS_LONG
-		lfn = (Tcl_WideInt (*)())strtoull;
+		lfn = STRTOULL;
 #endif
 		break;
 
@@ -1019,7 +1020,11 @@ Tcl_ScanObjCmd(dummy, interp, objc, objv)
 		    *end = '\0';
 #ifndef TCL_WIDE_INT_IS_LONG
 		    if (flags & SCAN_LONGER) {
-			wideValue = (Tcl_WideInt) (*lfn)(buf, NULL, base);
+			if (lfn == STRTOL) { wideValue = (Tcl_WideInt)strtol(buf, NULL, base); }
+			else if (lfn == STRTOLL) { wideValue = (Tcl_WideInt)strtoll(buf, NULL, base); }
+			else if (lfn == STRTOUL) { wideValue = (Tcl_WideInt)strtoul(buf, NULL, base); }
+			else if (lfn == STRTOULL) { wideValue = (Tcl_WideInt)strtoull(buf, NULL, base); }
+			else { /* wideValue not set */ }
 			if ((flags & SCAN_UNSIGNED) && (wideValue < 0)) {
 			    /* INTL: ISO digit */
 			    sprintf(buf, "%" TCL_LL_MODIFIER "u",
@@ -1030,7 +1035,11 @@ Tcl_ScanObjCmd(dummy, interp, objc, objv)
 			}
 		    } else {
 #endif /* !TCL_WIDE_INT_IS_LONG */
-			value = (long) (*fn)(buf, NULL, base);
+			if (lfn == STRTOL) { value = strtol(buf, NULL, base); }
+			else if (lfn == STRTOLL) { value = strtoll(buf, NULL, base); }
+			else if (lfn == STRTOUL) { value = strtoul(buf, NULL, base); }
+			else if (lfn == STRTOULL) { value = strtoull(buf, NULL, base); }
+			else { /* value not set */ }
 			if ((flags & SCAN_UNSIGNED) && (value < 0)) {
 			    sprintf(buf, "%lu", value); /* INTL: ISO digit */
 			    objPtr = Tcl_NewStringObj(buf, -1);

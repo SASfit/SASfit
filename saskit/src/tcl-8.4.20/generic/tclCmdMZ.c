@@ -1242,7 +1242,11 @@ Tcl_StringObjCmd(dummy, interp, objc, objv)
 	STR_REPLACE,	STR_TOLOWER,	STR_TOUPPER,	STR_TOTITLE,
 	STR_TRIM,	STR_TRIMLEFT,	STR_TRIMRIGHT,
 	STR_WORDEND,	STR_WORDSTART
-    };	  
+    };
+    enum strCmpFunc {
+	MEMCMP=0, TCL_UNICHARNCASECMP, TCL_UNICHARNCMP,
+	TCLPUTFNCMP2, TCL_UTFNCASECMP, TCL_UTFNCMP
+    };
 
     if (objc < 2) {
         Tcl_WrongNumArgs(interp, 1, objv, "option arg ?arg ...?");
@@ -1265,7 +1269,7 @@ Tcl_StringObjCmd(dummy, interp, objc, objv)
 	     * comparison in INST_EQ/INST_NEQ/INST_LT/...).
 	     */
 	    int i, match, length, nocase = 0, reqlength = -1;
-	    int (*strCmpFn)();
+	    enum strCmpFunc strCmpFn = MEMCMP;
 
 	    if (objc < 4 || objc > 7) {
 	    str_cmp_args:
@@ -1321,7 +1325,7 @@ Tcl_StringObjCmd(dummy, interp, objc, objv)
 		 */
 		string1 = (char*) Tcl_GetByteArrayFromObj(objv[0], &length1);
 		string2 = (char*) Tcl_GetByteArrayFromObj(objv[1], &length2);
-		strCmpFn = memcmp;
+		strCmpFn = MEMCMP;
 	    } else if ((objv[0]->typePtr == &tclStringType)
 		    && (objv[1]->typePtr == &tclStringType)) {
 		/*
@@ -1332,7 +1336,7 @@ Tcl_StringObjCmd(dummy, interp, objc, objv)
 		 */
 		string1 = (char*) Tcl_GetUnicodeFromObj(objv[0], &length1);
 		string2 = (char*) Tcl_GetUnicodeFromObj(objv[1], &length2);
-		strCmpFn = nocase ? Tcl_UniCharNcasecmp : Tcl_UniCharNcmp;
+		strCmpFn = nocase ? TCL_UNICHARNCASECMP : TCL_UNICHARNCMP;
 	    } else {
 		/*
 		 * As a catch-all we will work with UTF-8.  We cannot use
@@ -1344,11 +1348,11 @@ Tcl_StringObjCmd(dummy, interp, objc, objv)
 		string1 = (char*) Tcl_GetStringFromObj(objv[0], &length1);
 		string2 = (char*) Tcl_GetStringFromObj(objv[1], &length2);
 		if ((reqlength < 0) && !nocase) {
-		    strCmpFn = TclpUtfNcmp2;
+		    strCmpFn = TCLPUTFNCMP2;
 		} else {
 		    length1 = Tcl_NumUtfChars(string1, length1);
 		    length2 = Tcl_NumUtfChars(string2, length2);
-		    strCmpFn = nocase ? Tcl_UtfNcasecmp : Tcl_UtfNcmp;
+		    strCmpFn = nocase ? TCL_UTFNCASECMP : TCL_UTFNCMP;
 		}
 	    }
 
@@ -1366,7 +1370,19 @@ Tcl_StringObjCmd(dummy, interp, objc, objv)
 		     */
 		    reqlength = length + 1;
 		}
-		match = strCmpFn(string1, string2, (unsigned) length);
+		if (strCmpFn == MEMCMP) {
+		    match = memcmp(string1, string2, (unsigned) length);
+		} else if (strCmpFn == TCL_UNICHARNCASECMP) {
+		    match = Tcl_UniCharNcasecmp((Tcl_UniChar*)string1, (Tcl_UniChar*)string2, (unsigned)length);
+		} else if (strCmpFn == TCL_UNICHARNCMP) {
+		    match = Tcl_UniCharNcmp((Tcl_UniChar*)string1, (Tcl_UniChar*)string2, (unsigned)length);
+		} else if (strCmpFn == TCLPUTFNCMP2) {
+		    match = TclpUtfNcmp2(string1, string2, (unsigned)length);
+		} else if (strCmpFn == TCL_UTFNCASECMP) {
+		    match = Tcl_UtfNcasecmp(string1, string2, (unsigned)length);
+		} else if (strCmpFn == TCL_UTFNCMP) {
+		    match = Tcl_UtfNcmp(string1, string2, (unsigned)length);
+		}
 		if ((match == 0) && (reqlength > length)) {
 		    match = length1 - length2;
 		}
