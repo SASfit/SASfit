@@ -3241,6 +3241,8 @@ static Blt_OpSpec isOps[] =
 
 static int nIsOps = sizeof(isOps) / sizeof(Blt_OpSpec);
 
+typedef int (*Blt_TreeOp)(TreeCmd*, Tcl_Interp*, int, Tcl_Obj*CONST*);
+
 static int
 IsOp(
     TreeCmd *cmdPtr,
@@ -3255,7 +3257,7 @@ IsOp(
     if (proc == NULL) {
 	return TCL_ERROR;
     }
-    result = (*proc) (cmdPtr, interp, objc, objv);
+    result = ((Blt_TreeOp)proc) (cmdPtr, interp, objc, objv);
     return result;
 }
 
@@ -3764,7 +3766,7 @@ NotifyOp(
     if (proc == NULL) {
 	return TCL_ERROR;
     }
-    result = (*proc) (cmdPtr, interp, objc, objv);
+    result = ((Blt_TreeOp)proc) (cmdPtr, interp, objc, objv);
     return result;
 }
 
@@ -4589,7 +4591,7 @@ TagOp(
     if (proc == NULL) {
 	return TCL_ERROR;
     }
-    result = (*proc) (cmdPtr, interp, objc, objv);
+    result = ((Blt_TreeOp)proc) (cmdPtr, interp, objc, objv);
     return result;
 }
 
@@ -4796,7 +4798,7 @@ TraceOp(
     if (proc == NULL) {
 	return TCL_ERROR;
     }
-    result = (*proc) (cmdPtr, interp, objc, objv);
+    result = ((Blt_TreeOp)proc) (cmdPtr, interp, objc, objv);
     return result;
 }
 
@@ -5284,7 +5286,7 @@ TreeInstObjCmd(
 	return TCL_ERROR;
     }
     Tcl_Preserve(cmdPtr);
-    result = (*proc) (cmdPtr, interp, objc, objv);
+    result = ((Blt_TreeOp)proc) (cmdPtr, interp, objc, objv);
     Tcl_Release(cmdPtr);
     return result;
 }
@@ -5592,6 +5594,8 @@ static Blt_OpSpec treeCmdOps[] =
 
 static int nCmdOps = sizeof(treeCmdOps) / sizeof(Blt_OpSpec);
 
+typedef int (*Blt_TreeCmdOp)(ClientData, Tcl_Interp*, int, Tcl_Obj*CONST*);
+
 /*ARGSUSED*/
 static int
 TreeObjCmd(
@@ -5607,7 +5611,7 @@ TreeObjCmd(
     if (proc == NULL) {
 	return TCL_ERROR;
     }
-    return (*proc) (clientData, interp, objc, objv);
+    return ((Blt_TreeCmdOp)proc) (clientData, interp, objc, objv);
 }
 
 /*

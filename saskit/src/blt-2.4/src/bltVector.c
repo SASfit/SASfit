@@ -1631,6 +1631,8 @@ static Blt_OpSpec vectorCmdOps[] =
 
 static int nCmdOps = sizeof(vectorCmdOps) / sizeof(Blt_OpSpec);
 
+typedef int (*Blt_VectorCmdOp)(ClientData, Tcl_Interp*, int, CONST char**);
+
 /*ARGSUSED*/
 static int
 VectorCmd(clientData, interp, argc, argv)
@@ -1668,7 +1670,7 @@ VectorCmd(clientData, interp, argc, argv)
     if (proc == NULL) {
 	return TCL_ERROR;
     }
-    return (*proc) (clientData, interp, argc, argv);
+    return ((Blt_VectorCmdOp)proc) (clientData, interp, argc, argv);
 }
 
 /*

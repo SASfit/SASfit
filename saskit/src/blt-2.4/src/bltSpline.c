@@ -878,6 +878,8 @@ static Blt_OpSpec splineOps[] =
 };
 static int nSplineOps = sizeof(splineOps) / sizeof(Blt_OpSpec);
 
+typedef int (*Blt_SplineOp) (Point2D[], int, Point2D [], int);
+
 /*ARGSUSED*/
 static int
 SplineCmd(clientData, interp, argc, argv)
@@ -970,7 +972,7 @@ SplineCmd(clientData, interp, argc, argv)
 	intpPts[i].x = xArr[i];
 	intpPts[i].y = yArr[i];
     }
-    if (!(*proc) (origPts, nOrigPts, intpPts, nIntpPts)) {
+    if (!((Blt_SplineOp)proc) (origPts, nOrigPts, intpPts, nIntpPts)) {
 	Tcl_AppendResult(interp, "error generating spline for \"", 
 		Blt_NameOfVector(splY), "\"", (char *)NULL);
 	Blt_Free(origPts);

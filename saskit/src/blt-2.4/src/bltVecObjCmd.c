@@ -1959,6 +1959,8 @@ static Blt_OpSpec vectorInstOps[] =
 
 static int nInstOps = sizeof(vectorInstOps) / sizeof(Blt_OpSpec);
 
+typedef int (*Blt_VectorInstOp)(VectorObject*, Tcl_Interp*, int, Tcl_Obj*CONST*);
+
 int
 Blt_VectorInstCmd(clientData, interp, objc, objv)
     ClientData clientData;
@@ -1976,7 +1978,7 @@ Blt_VectorInstCmd(clientData, interp, objc, objv)
     if (proc == NULL) {
 	return TCL_ERROR;
     }
-    return (*proc) (vPtr, interp, objc, objv);
+    return ((Blt_VectorInstOp)proc) (vPtr, interp, objc, objv);
 }
 
 

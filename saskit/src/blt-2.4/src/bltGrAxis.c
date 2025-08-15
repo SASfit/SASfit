@@ -4154,12 +4154,13 @@ Blt_VirtualAxisOp(graphPtr, interp, argc, argv)
 	    "axisName ?moveto fract? ?scroll number what?",},
     };
     static int nAxisOps = sizeof(axisOps) / sizeof(Blt_OpSpec);
+    typedef int (*Blt_AxisOp)(Graph*, int, CONST char **);
 
     proc = Blt_GetOp(interp, nAxisOps, axisOps, BLT_OP_ARG2, argc, argv, 0);
     if (proc == NULL) {
 	return TCL_ERROR;
     }
-    result = (*proc) (graphPtr, argc, argv);
+    result = ((Blt_AxisOp)proc) (graphPtr, argc, argv);
     return result;
 }
 
@@ -4184,6 +4185,7 @@ Blt_AxisOp(graphPtr, margin, argc, argv)
 	{"use", 1, (Blt_Op)UseOp, 3, 4, "?axisName?",},
     };
     static int nAxisOps = sizeof(axisOps) / sizeof(Blt_OpSpec);
+    typedef int (*Blt_AxisOp)(Graph*, Axis*, int, CONST char **);
 
     proc = Blt_GetOp(graphPtr->interp, nAxisOps, axisOps, BLT_OP_ARG2, 
 	argc, argv, 0);
@@ -4194,7 +4196,7 @@ Blt_AxisOp(graphPtr, margin, argc, argv)
 			       * the argument list. Needed only for UseOp.
 			       */
     axisPtr = Blt_GetFirstAxis(graphPtr->margins[margin].axes);
-    result = (*proc)(graphPtr, axisPtr, argc - 3, argv + 3);
+    result = ((Blt_AxisOp)proc)(graphPtr, axisPtr, argc - 3, argv + 3);
     return result;
 }
 

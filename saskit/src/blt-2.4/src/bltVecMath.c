@@ -866,6 +866,8 @@ ParseString(interp, string, valuePtr)
     return TCL_OK;
 }
 
+typedef int (*Blt_VectorFunc)(ClientData, Tcl_Interp*, VectorObject *);
+
 /*
  *----------------------------------------------------------------------
  *
@@ -944,7 +946,7 @@ ParseMathFunction(interp, start, parsePtr, valuePtr)
 	return TCL_ERROR;	/* Missing right parenthesis */
     }
     mathPtr = (MathFunction *) Blt_GetHashValue(hPtr);
-    if ((*mathPtr->proc) (mathPtr->clientData, interp, valuePtr->vPtr)
+    if (((Blt_VectorFunc)mathPtr->proc) (mathPtr->clientData, interp, valuePtr->vPtr)
 	!= TCL_OK) {
 	return TCL_ERROR;	/* Function invocation error */
     }

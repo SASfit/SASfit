@@ -55,8 +55,8 @@ static int counter;
 
 #include "bltGrElem.h"
 
-extern Element *Blt_BarElement();
-extern Element *Blt_LineElement();
+extern Element *Blt_BarElement(Graph*, char*, Blt_Uid);
+extern Element *Blt_LineElement(Graph*, char*, Blt_Uid);
 
 static Blt_VectorChangedProc VectorChangedProc;
 
@@ -2159,6 +2159,7 @@ static Blt_OpSpec elemOps[] =
 };
 static int numElemOps = sizeof(elemOps) / sizeof(Blt_OpSpec);
 
+typedef int (*Blt_ElemOp)(Graph*, Tcl_Interp*, int, CONST char **);
 
 /*
  * ----------------------------------------------------------------
@@ -2195,7 +2196,7 @@ Blt_ElementOp(graphPtr, interp, argc, argv, type)
     if (proc == CreateOp) {
 	result = CreateOp(graphPtr, interp, argc, argv, type);
     } else {
-	result = (*proc) (graphPtr, interp, argc, argv);
+	result = ((Blt_ElemOp)proc) (graphPtr, interp, argc, argv);
     }
     return result;
 }

@@ -785,6 +785,8 @@ static Blt_OpSpec watchOps[] =
 };
 static int nWatchOps = sizeof(watchOps) / sizeof(Blt_OpSpec);
 
+typedef int (*Blt_WatchOp)(ClientData, Tcl_Interp*, int, CONST char**);
+
 /*ARGSUSED*/
 static int
 WatchCmd(clientData, interp, argc, argv)
@@ -800,7 +802,7 @@ WatchCmd(clientData, interp, argc, argv)
     if (proc == NULL) {
 	return TCL_ERROR;
     }
-    result = (*proc) (clientData, interp, argc, argv);
+    result = ((Blt_WatchOp)proc) (clientData, interp, argc, argv);
     return result;
 }
 
