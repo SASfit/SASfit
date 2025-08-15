@@ -734,8 +734,9 @@ AdjustIconImagePointers( LPICONIMAGE lpImage )
 
 static HICON
 MakeIconOrCursorFromResource(LPICONIMAGE lpIcon, BOOL isIcon) {
-    HICON hIcon ;
+    HICON hIcon;
     static FARPROC pfnCreateIconFromResourceEx=NULL;
+    typedef HICON (WINAPI *CreateIconFromResourceEx_t)(PBYTE, DWORD, WINBOOL, DWORD, int, int, UINT);
     static int initinfo=0;
     /*  Sanity Check */
     if (lpIcon == NULL)
@@ -752,7 +753,7 @@ MakeIconOrCursorFromResource(LPICONIMAGE lpIcon, BOOL isIcon) {
     }
     /*  Let the OS do the real work :) */
     if (pfnCreateIconFromResourceEx!=NULL) {
-	hIcon = (HICON) (pfnCreateIconFromResourceEx)
+	hIcon = ((CreateIconFromResourceEx_t)pfnCreateIconFromResourceEx)
 	(lpIcon->lpBits, lpIcon->dwNumBytes, isIcon, 0x00030000,
 	 (*(LPBITMAPINFOHEADER)(lpIcon->lpBits)).biWidth,
 	 (*(LPBITMAPINFOHEADER)(lpIcon->lpBits)).biHeight/2, 0);
