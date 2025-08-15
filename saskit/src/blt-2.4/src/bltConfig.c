@@ -277,12 +277,12 @@ Blt_StringToFlag(clientData, interp, tkwin, string, widgRec, offset)
 {
     unsigned int mask = (unsigned int)clientData;	/* Bit to be tested */
     int *flagPtr = (int *)(widgRec + offset);
-    int bool;
+    int boolVal;
 
-    if (Tcl_GetBoolean(interp, string, &bool) != TCL_OK) {
+    if (Tcl_GetBoolean(interp, string, &boolVal) != TCL_OK) {
 	return TCL_ERROR;
     }
-    if (bool) {
+    if (boolVal) {
 	*flagPtr |= mask;
     } else {
 	*flagPtr &= ~mask;
@@ -312,9 +312,9 @@ Blt_FlagToString(clientData, tkwin, widgRec, offset, freeProcPtr)
     Tcl_FreeProc **freeProcPtr;	/* Not Used. */
 {
     unsigned int mask = (unsigned int)clientData;	/* Bit to be tested */
-    unsigned int bool = *(unsigned int *)(widgRec + offset);
+    unsigned int boolVal = *(unsigned int *)(widgRec + offset);
 
-    return (bool & mask) ? "1" : "0";
+    return (boolVal & mask) ? "1" : "0";
 }
 
 

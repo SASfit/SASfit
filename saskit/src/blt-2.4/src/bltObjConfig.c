@@ -1218,16 +1218,16 @@ DoConfig(interp, tkwin, specPtr, objPtr, widgRec)
 
 	case BLT_CONFIG_BITFLAG: 
 	    {
-		int bool;
+		int boolVal;
 		unsigned int flag;
 
 		
-		if (Tcl_GetBooleanFromObj(interp, objPtr, &bool) != TCL_OK) {
+		if (Tcl_GetBooleanFromObj(interp, objPtr, &boolVal) != TCL_OK) {
 		    return TCL_ERROR;
 		}
 		flag = (unsigned int)specPtr->customPtr;
 		*(int *)ptr &= ~flag;
-		if (bool) {
+		if (boolVal) {
 		    *(int *)ptr |= flag;
 		}
 	    }

@@ -804,13 +804,13 @@ StringToLoose(clientData, interp, tkwin, string, widgRec, offset)
 	if ((argv[i][0] == 'a') && (strcmp(argv[i], "always") == 0)) {
 	    values[i] = TICK_RANGE_ALWAYS_LOOSE;
 	} else {
-	    int bool;
+	    int boolVal;
 
-	    if (Tcl_GetBoolean(interp, argv[i], &bool) != TCL_OK) {
+	    if (Tcl_GetBoolean(interp, argv[i], &boolVal) != TCL_OK) {
 		Blt_Free(argv);
 		return TCL_ERROR;
 	    }
-	    values[i] = bool;
+	    values[i] = boolVal;
 	}
     }
     axisPtr->looseMin = axisPtr->looseMax = values[0];

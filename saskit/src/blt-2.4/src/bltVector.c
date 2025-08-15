@@ -1384,7 +1384,7 @@ VectorCreate2(clientData, interp, argStart, argc, argv)
 		cmdName = argv[i];
 	    } else if ((length > 1) &&
 		(strncmp(argv[i], "-watchunset", length) == 0)) {
-		int bool;
+		int boolVal;
 
 		if ((i + 1) == argc) {
 		    Tcl_AppendResult(interp, "no value name supplied with \"",
@@ -1392,12 +1392,12 @@ VectorCreate2(clientData, interp, argStart, argc, argv)
 		    goto error;
 		}
 		i++;
-		if (Tcl_GetBoolean(interp, argv[i], &bool) != TCL_OK) {
+		if (Tcl_GetBoolean(interp, argv[i], &boolVal) != TCL_OK) {
 		    goto error;
 		}
-		freeOnUnset = bool;
+		freeOnUnset = boolVal;
 	    } else if ((length > 1) && (strncmp(argv[i], "-flush", length) == 0)) {
-		int bool;
+		int boolVal;
 
 		if ((i + 1) == argc) {
 		    Tcl_AppendResult(interp, "no value name supplied with \"",
@@ -1405,10 +1405,10 @@ VectorCreate2(clientData, interp, argStart, argc, argv)
 		    goto error;
 		}
 		i++;
-		if (Tcl_GetBoolean(interp, argv[i], &bool) != TCL_OK) {
+		if (Tcl_GetBoolean(interp, argv[i], &boolVal) != TCL_OK) {
 		    goto error;
 		}
-		flush = bool;
+		flush = boolVal;
 	    } else if ((length > 1) && (argv[i][1] == '-') &&
 		(argv[i][2] == '\0')) {
 		inspectFlags = FALSE;	/* Allow vector names to start with - */

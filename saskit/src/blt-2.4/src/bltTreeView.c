@@ -806,13 +806,13 @@ ObjToButton(
 	*flagsPtr &= ~BUTTON_MASK;
 	*flagsPtr |= BUTTON_AUTO;
     } else {
-	int bool;
+	int boolVal;
 
-	if (Tcl_GetBooleanFromObj(interp, objPtr, &bool) != TCL_OK) {
+	if (Tcl_GetBooleanFromObj(interp, objPtr, &boolVal) != TCL_OK) {
 	    return TCL_ERROR;
 	}
 	*flagsPtr &= ~BUTTON_MASK;
-	if (bool) {
+	if (boolVal) {
 	    *flagsPtr |= BUTTON_SHOW;
 	}
     }
@@ -838,14 +838,14 @@ ButtonToObj(
     char *widgRec,
     int offset)
 {
-    int bool;
+    int boolVal;
     unsigned int flags = *(int *)(widgRec + offset);
 
-    bool = (flags & BUTTON_MASK);
-    if (bool == BUTTON_AUTO) {
+    boolVal = (flags & BUTTON_MASK);
+    if (boolVal == BUTTON_AUTO) {
 	return Tcl_NewStringObj("auto", 4);
     } else {
-	return Tcl_NewBooleanObj(bool);
+	return Tcl_NewBooleanObj(boolVal);
     }
 }
 

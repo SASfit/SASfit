@@ -1726,18 +1726,18 @@ SortAutoOp(tvPtr, interp, objc, objv)
 {
 
     if (objc == 4) {
-	int bool;
+	int boolVal;
 	int isAuto;
 
 	isAuto = ((tvPtr->flags & TV_SORT_AUTO) != 0);
-	if (Tcl_GetBooleanFromObj(interp, objv[3], &bool) != TCL_OK) {
+	if (Tcl_GetBooleanFromObj(interp, objv[3], &boolVal) != TCL_OK) {
 	    return TCL_ERROR;
 	}
-	if (isAuto != bool) {
+	if (isAuto != boolVal) {
 	    tvPtr->flags |= (TV_LAYOUT | TV_DIRTY | TV_RESORT);
 	    Blt_TreeViewEventuallyRedraw(tvPtr);
 	}
-	if (bool) {
+	if (boolVal) {
 	    tvPtr->flags |= TV_SORT_AUTO;
 	} else {
 	    tvPtr->flags &= ~TV_SORT_AUTO;

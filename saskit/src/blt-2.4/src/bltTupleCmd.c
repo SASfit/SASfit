@@ -1306,11 +1306,11 @@ ExistsOp(
     Tcl_Obj *CONST *objv)
 {
     Blt_Tuple tuple;
-    int bool;
+    int boolVal;
     
-    bool = TRUE;
+    boolVal = TRUE;
     if (GetTuple(cmdPtr, objv[2], &tuple) != TCL_OK) {
-	bool = FALSE;
+	boolVal = FALSE;
     } else if (objc == 4) { 
 	Tcl_Obj *valueObjPtr;
 	char *key;
@@ -1318,11 +1318,11 @@ ExistsOp(
 	key = Tcl_GetString(objv[3]);
 	if (Blt_TupleGetValue((Tcl_Interp *)NULL, cmdPtr->table, tuple, 
 			     key, &valueObjPtr) != TCL_OK) {
-	    bool = FALSE;
+	    boolVal = FALSE;
 	}
-	bool = (valueObjPtr != NULL);
+	boolVal = (valueObjPtr != NULL);
     } 
-    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(bool));
+    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(boolVal));
     return TCL_OK;
 }
 

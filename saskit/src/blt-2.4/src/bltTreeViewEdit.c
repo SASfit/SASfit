@@ -1627,10 +1627,10 @@ SelectionPresentOp(tbPtr, interp, objc, objv)
     int objc;			/* Not used. */
     Tcl_Obj *CONST *objv;	/* Not used. */
 {
-    int bool;
+    int boolVal;
 
-    bool = (tbPtr->selFirst != -1);
-    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(bool));
+    boolVal = (tbPtr->selFirst != -1);
+    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(boolVal));
     return TCL_OK;
 }
 

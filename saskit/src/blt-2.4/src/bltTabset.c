@@ -4070,12 +4070,12 @@ PerforationActivateOp(setPtr, interp, argc, argv)
     int argc;
     char **argv;
 {
-    int bool;
+    int boolVal;
 
-    if (Tcl_GetBoolean(interp, argv[3], &bool) != TCL_OK) {
+    if (Tcl_GetBoolean(interp, argv[3], &boolVal) != TCL_OK) {
 	return TCL_ERROR;
     }
-    if (bool) {
+    if (boolVal) {
 	setPtr->flags |= PERFORATION_ACTIVE;
     } else {
 	setPtr->flags &= ~PERFORATION_ACTIVE;

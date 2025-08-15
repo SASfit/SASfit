@@ -2741,11 +2741,11 @@ ExistsOp(
     Tcl_Obj *CONST *objv)
 {
     Blt_TreeNode node;
-    int bool;
+    int boolVal;
     
-    bool = TRUE;
+    boolVal = TRUE;
     if (GetNode(cmdPtr, objv[2], &node) != TCL_OK) {
-	bool = FALSE;
+	boolVal = FALSE;
     } else if (objc == 4) { 
 	Tcl_Obj *valueObjPtr;
 	char *string;
@@ -2753,10 +2753,10 @@ ExistsOp(
 	string = Tcl_GetString(objv[3]);
 	if (Blt_TreeGetValue((Tcl_Interp *)NULL, cmdPtr->tree, node, 
 			     string, &valueObjPtr) != TCL_OK) {
-	    bool = FALSE;
+	    boolVal = FALSE;
 	}
     } 
-    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(bool));
+    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(boolVal));
     return TCL_OK;
 }
 
@@ -3136,14 +3136,14 @@ IsAncestorOp(
     Tcl_Obj *CONST *objv)
 {
     Blt_TreeNode node1, node2;
-    int bool;
+    int boolVal;
 
     if ((GetNode(cmdPtr, objv[3], &node1) != TCL_OK) ||
 	(GetNode(cmdPtr, objv[4], &node2) != TCL_OK)) {
 	return TCL_ERROR;
     }
-    bool = Blt_TreeIsAncestor(node1, node2);
-    Tcl_SetIntObj(Tcl_GetObjResult(interp), bool);
+    boolVal = Blt_TreeIsAncestor(node1, node2);
+    Tcl_SetIntObj(Tcl_GetObjResult(interp), boolVal);
     return TCL_OK;
 }
 
@@ -3163,14 +3163,14 @@ IsBeforeOp(
     Tcl_Obj *CONST *objv)
 {
     Blt_TreeNode node1, node2;
-    int bool;
+    int boolVal;
 
     if ((GetNode(cmdPtr, objv[3], &node1) != TCL_OK) ||
 	(GetNode(cmdPtr, objv[4], &node2) != TCL_OK)) {
 	return TCL_ERROR;
     }
-    bool = Blt_TreeIsBefore(node1, node2);
-    Tcl_SetIntObj(Tcl_GetObjResult(interp), bool);
+    boolVal = Blt_TreeIsBefore(node1, node2);
+    Tcl_SetIntObj(Tcl_GetObjResult(interp), boolVal);
     return TCL_OK;
 }
 
@@ -3214,13 +3214,13 @@ IsRootOp(
     Tcl_Obj *CONST *objv)
 {
     Blt_TreeNode node;
-    int bool;
+    int boolVal;
 
     if (GetNode(cmdPtr, objv[3], &node) != TCL_OK) {
 	return TCL_ERROR;
     }
-    bool = (node == Blt_TreeRootNode(cmdPtr->tree));
-    Tcl_SetIntObj(Tcl_GetObjResult(interp), bool);
+    boolVal = (node == Blt_TreeRootNode(cmdPtr->tree));
+    Tcl_SetIntObj(Tcl_GetObjResult(interp), boolVal);
     return TCL_OK;
 }
 

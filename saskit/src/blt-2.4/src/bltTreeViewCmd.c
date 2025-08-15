@@ -2007,14 +2007,14 @@ EntryIsBeforeOp(tvPtr, interp, objc, objv)
     Tcl_Obj *CONST *objv;
 {
     TreeViewEntry *e1Ptr, *e2Ptr;
-    int bool;
+    int boolVal;
 
     if ((Blt_TreeViewGetEntry(tvPtr, objv[3], &e1Ptr) != TCL_OK) ||
 	(Blt_TreeViewGetEntry(tvPtr, objv[4], &e2Ptr) != TCL_OK)) {
 	return TCL_ERROR;
     }
-    bool = Blt_TreeIsBefore(e1Ptr->node, e2Ptr->node);
-    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(bool));
+    boolVal = Blt_TreeIsBefore(e1Ptr->node, e2Ptr->node);
+    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(boolVal));
     return TCL_OK;
 }
 
@@ -2034,13 +2034,13 @@ EntryIsHiddenOp(tvPtr, interp, objc, objv)
     Tcl_Obj *CONST *objv;
 {
     TreeViewEntry *entryPtr;
-    int bool;
+    int boolVal;
 
     if (Blt_TreeViewGetEntry(tvPtr, objv[3], &entryPtr) != TCL_OK) {
 	return TCL_ERROR;
     }
-    bool = (entryPtr->flags & ENTRY_HIDDEN);
-    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(bool));
+    boolVal = (entryPtr->flags & ENTRY_HIDDEN);
+    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(boolVal));
     return TCL_OK;
 }
 
@@ -2061,13 +2061,13 @@ EntryIsOpenOp(tvPtr, interp, objc, objv)
     Tcl_Obj *CONST *objv;
 {
     TreeViewEntry *entryPtr;
-    int bool;
+    int boolVal;
 
     if (Blt_TreeViewGetEntry(tvPtr, objv[3], &entryPtr) != TCL_OK) {
 	return TCL_ERROR;
     }
-    bool = ((entryPtr->flags & ENTRY_CLOSED) == 0);
-    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(bool));
+    boolVal = ((entryPtr->flags & ENTRY_CLOSED) == 0);
+    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(boolVal));
     return TCL_OK;
 }
 
@@ -4233,13 +4233,13 @@ SelectionIncludesOp(tvPtr, interp, objc, objv)
     Tcl_Obj *CONST *objv;
 {
     TreeViewEntry *entryPtr;
-    int bool;
+    int boolVal;
 
     if (Blt_TreeViewGetEntry(tvPtr, objv[3], &entryPtr) != TCL_OK) {
 	return TCL_ERROR;
     }
-    bool = Blt_TreeViewEntryIsSelected(tvPtr, entryPtr);
-    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(bool));
+    boolVal = Blt_TreeViewEntryIsSelected(tvPtr, entryPtr);
+    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(boolVal));
     return TCL_OK;
 }
 
@@ -4328,10 +4328,10 @@ SelectionPresentOp(tvPtr, interp, objc, objv)
     int objc;			/* Not used. */
     Tcl_Obj *CONST *objv;
 {
-    int bool;
+    int boolVal;
 
-    bool = (Blt_ChainGetLength(tvPtr->selChainPtr) > 0);
-    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(bool));
+    boolVal = (Blt_ChainGetLength(tvPtr->selChainPtr) > 0);
+    Tcl_SetObjResult(interp, Tcl_NewBooleanObj(boolVal));
     return TCL_OK;
 }
 

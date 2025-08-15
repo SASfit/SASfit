@@ -1120,7 +1120,7 @@ DrawCheckBox(tvPtr, drawable, entryPtr, valuePtr, stylePtr, x, y)
     Tk_3DBorder border;
     XColor *fgColor;
     Tk_Font font;
-    int bool;
+    int boolVal;
     int borderWidth, relief;
     TextLayout *textPtr;
     int boxX, boxY, boxWidth, boxHeight;
@@ -1175,8 +1175,8 @@ DrawCheckBox(tvPtr, drawable, entryPtr, valuePtr, stylePtr, x, y)
 	}
     }
 
-    bool = (strcmp(valuePtr->string, cbPtr->onValue) == 0);
-    textPtr = (bool) ? cbPtr->onPtr : cbPtr->offPtr;
+    boolVal = (strcmp(valuePtr->string, cbPtr->onValue) == 0);
+    textPtr = (boolVal) ? cbPtr->onPtr : cbPtr->offPtr;
 
     /*
      * Draw the box and check. 
@@ -1199,7 +1199,7 @@ DrawCheckBox(tvPtr, drawable, entryPtr, valuePtr, stylePtr, x, y)
     XDrawRectangle(tvPtr->display, drawable, cbPtr->boxGC, boxX, boxY, 
 	boxWidth, boxHeight);
 
-    if (bool) {
+    if (boolVal) {
 	int midX, midY;
 	int i;
 
@@ -2408,18 +2408,18 @@ StyleHighlightOp(tvPtr, interp, objc, objv)
     Tcl_Obj *CONST *objv;
 {
     TreeViewStyle *stylePtr;
-    int bool, oldBool;
+    int boolVal, oldBool;
 
     stylePtr = GetStyle(interp, tvPtr, Tcl_GetString(objv[3]));
     if (stylePtr == NULL) {
 	return TCL_ERROR;
     }
-    if (Tcl_GetBooleanFromObj(interp, objv[4], &bool) != TCL_OK) {
+    if (Tcl_GetBooleanFromObj(interp, objv[4], &boolVal) != TCL_OK) {
 	return TCL_ERROR;
     }
     oldBool = ((stylePtr->flags & STYLE_HIGHLIGHT) != 0);
-    if (oldBool != bool) {
-	if (bool) {
+    if (oldBool != boolVal) {
+	if (boolVal) {
 	    stylePtr->flags |= STYLE_HIGHLIGHT;
 	} else {
 	    stylePtr->flags &= ~STYLE_HIGHLIGHT;

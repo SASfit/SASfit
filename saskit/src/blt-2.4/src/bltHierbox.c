@@ -7974,10 +7974,10 @@ IncludesOpOp(hboxPtr, interp, argc, argv)
 	return TCL_ERROR;
     }
     if (treePtr != NULL) {
-	int bool;
+	int boolVal;
 
-	bool = IsSelected(hboxPtr, treePtr);
-	Blt_SetBooleanResult(interp, bool);
+	boolVal = IsSelected(hboxPtr, treePtr);
+	Blt_SetBooleanResult(interp, boolVal);
     }
     return TCL_OK;
 }
@@ -8065,10 +8065,10 @@ PresentOpOp(hboxPtr, interp, argc, argv)
     int argc;			/* Not used. */
     char **argv;
 {
-    int bool;
+    int boolVal;
 
-    bool = (Blt_ChainGetLength(&(hboxPtr->selectChain)) > 0);
-    Blt_SetBooleanResult(interp, bool);
+    boolVal = (Blt_ChainGetLength(&(hboxPtr->selectChain)) > 0);
+    Blt_SetBooleanResult(interp, boolVal);
     return TCL_OK;
 }
 

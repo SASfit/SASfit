@@ -706,13 +706,13 @@ StringToControl(clientData, interp, tkwin, string, widgRec, offset)
 {
     double *controlPtr = (double *)(widgRec + offset);
     unsigned int length;
-    int bool;
+    int boolVal;
     char c;
 
     c = string[0];
     length = strlen(string);
-    if (Tcl_GetBoolean(NULL, string, &bool) == TCL_OK) {
-	*controlPtr = bool;
+    if (Tcl_GetBoolean(NULL, string, &boolVal) == TCL_OK) {
+	*controlPtr = boolVal;
 	return TCL_OK;
     }
     if ((c == 'n') && (length > 1) &&

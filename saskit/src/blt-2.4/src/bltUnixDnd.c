@@ -1154,16 +1154,16 @@ GetDragResult(interp, string)
     char *string;
 {
     char c;
-    int bool;
+    int boolVal;
 
     c = string[0];
     if ((c == 'c') && (strcmp(string, "cancel") == 0)) {
 	return DROP_CANCEL;
-    } else if (Tcl_GetBoolean(interp, string, &bool) != TCL_OK) {
+    } else if (Tcl_GetBoolean(interp, string, &boolVal) != TCL_OK) {
 	Tcl_BackgroundError(interp);
 	return DROP_CANCEL;
     }
-    return bool;
+    return boolVal;
 }
 
 static void

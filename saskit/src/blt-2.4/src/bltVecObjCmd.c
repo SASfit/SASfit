@@ -696,7 +696,7 @@ NotifyOp(vPtr, interp, objc, objv)
     Tcl_Obj *CONST *objv;
 {
     int option;
-    int bool;
+    int boolVal;
     enum optionIndices {
 	OPTION_ALWAYS, OPTION_NEVER, OPTION_WHENIDLE, 
 	OPTION_NOW, OPTION_CANCEL, OPTION_PENDING
@@ -733,8 +733,8 @@ NotifyOp(vPtr, interp, objc, objv)
 	}
 	break;
     case OPTION_PENDING:
-	bool = (vPtr->notifyFlags & NOTIFY_PENDING);
-	Tcl_SetObjResult(interp, Tcl_NewBooleanObj(bool));
+	boolVal = (vPtr->notifyFlags & NOTIFY_PENDING);
+	Tcl_SetObjResult(interp, Tcl_NewBooleanObj(boolVal));
 	break;
     }	
     return TCL_OK;
