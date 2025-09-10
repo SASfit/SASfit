@@ -133,34 +133,41 @@ Once the *quarantine* label was removed, the package can be extracted by double-
 
 On a fresh system, download and install the latest [MSYS2](https://www.msys2.org) (x86\_64) software distro and building platform for Windows.
 
+Open the terminal named **MSYS2 MinGW 64-bit** in the Windows Start Menu (Do not use the plain *MSYS2* terminal, it does not work as expected).
+
 The following commands have to be executed in the previously installed MSYS2 shell.
 Ensure software repository mirrors and GIT version control system are up to date:
 
-    pacman -S --needed --noconfirm pacman-mirrors
-    pacman -S --needed --noconfirm git
+    pacman -S --needed --noconfirm pacman-mirrors git
 
 Update all packages first. Twice, because the MSYS2 window has to be closed in between and opened again, just as the updater in the shell tells you:
 
     pacman -Syu --noconfirm
     pacman -Syu --noconfirm
 
-Installing required packages for building SASfit:
+Check out the SASfit source tree with GIT (here to ~/Downloads/sasfit):
 
-    pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-python-pip mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl mingw-w64-x86_64-zlib
+    cd $USERPROFILE/Downloads
+    git clone --recursive https://github.com/SASfit/SASfit.git sasfit
 
-Get a copy of the latest SASfit source code:
+Next, run the install script for slightly older gcc-13 install:
 
-    git clone https://github.com/SASfit/SASfit.git sasfit
+    mkdir packages && cd packages
+    sh ../sasfit/src/appveyor/citools/msys2_install_old_pckg.sh gcc-13
+    sh ../sasfit/src/appveyor/citools/msys2_install_old_pckg.sh cmake-2.29.2
+    sh ../sasfit/src/appveyor/citools/msys2_install_old_pckg.sh python-pip-24.0
+    pacman -U *.zst
 
-Create a build directory:
+Installing other required packages for building SASfit:
 
-    % cd sasfit
-    sasfit % mkdir build
-    sasfit % cd build
+    pacman -S --noconfirm make diffutils coreutils patch mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl
 
-Close the terminal window and open the one named **MSYS2 MinGW 64-bit** in the Windows Start Menu (Do not use the plain *MSYS2* terminal, it does not work as expected).
-The terminal should have the commands *gcc* and *cmake* in PATH.
+Create a build directory and make it the work dir:
 
+    cd $USERPROFILE/Downloads/sasfit
+    mkdir build && build
+
+The terminal should have the commands *gcc* and *cmake* in PATH now.
 Configure the source with CMake which builds required packages on the way:
 
     sasfit/build % cmake -G "MSYS Makefiles" ../src
