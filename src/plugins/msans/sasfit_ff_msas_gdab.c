@@ -39,7 +39,7 @@ scalar sasfit_ff_msas_gdab(scalar q, sasfit_param * param)
 
 	SASFIT_CHECK_COND1((q < 0.0), param, "q(%lg) < 0",q);
 	SASFIT_CHECK_COND1((XI < 0.0), param, "xi(%lg) < 0",XI); // modify condition to your needs
-	SASFIT_CHECK_COND1((H < 0.0), param, "H(%lg) < 0",H); // modify condition to your needs
+    SASFIT_CHECK_COND1((H <= -0.5), param, "H(%lg) <= -0.5",H); // modify condition to your needs
 	SASFIT_CHECK_COND1((DUMMY < 0.0), param, "dummy(%lg) < 0",DUMMY); // modify condition to your needs
 	SASFIT_CHECK_COND1((SIGMATOT < 0.0), param, "Sigma_t(%lg) < 0",SIGMATOT); // modify condition to your needs
 	SASFIT_CHECK_COND1((T < 0.0), param, "t(%lg) < 0",T); // modify condition to your needs

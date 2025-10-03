@@ -28,9 +28,7 @@ scalar sasfit_ff_hankel_gdab_(scalar r, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((A < 0.0), param, "a(%lg) < 0",A); // modify condition to your needs
-	SASFIT_CHECK_COND1((H < 0.0), param, "H(%lg) < 0",H); // modify condition to your needs
-	SASFIT_CHECK_COND1((DUMMY < 0.0), param, "dummy(%lg) < 0",DUMMY); // modify condition to your needs
-	SASFIT_CHECK_COND1((ETA < 0.0), param, "eta(%lg) < 0",ETA); // modify condition to your needs
+	SASFIT_CHECK_COND1((H <= -0.5), param, "H(%lg) <= -0.5",H); // modify condition to your needs
 
 	// insert your code here
 	G0=sasfit_integrate(0,GSL_POSINF,&gdab_hankel0,param);

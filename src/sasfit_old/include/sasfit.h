@@ -171,6 +171,7 @@ typedef struct
     char  EMmethod[132];
     char  EMobjtype[132];
     int   iEMmethod, iEMobjtype;
+    scalar  alphaBoucher;
 	int     nh, nR;
 	scalar  C4, C0;
 	double *in, *out, *xwork, **A, **Ared, **Awork, **S, **T3, *Ih4mC4, *prior;

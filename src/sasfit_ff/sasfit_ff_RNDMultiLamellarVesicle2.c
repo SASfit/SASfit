@@ -27,6 +27,7 @@
 
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_randist.h>
+#include <gsl/gsl_sf.h>
 #include "include/sasfit_ff_utils.h"
 
 #define NMAX 200
@@ -57,7 +58,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((t_sh < 0.0), param, "t_sh(%lg) < 0",t_sh);
 	SASFIT_CHECK_COND1((s_tsh < 0.0), param, "s_tsh(%lg) < 0",s_tsh);
 	SASFIT_CHECK_COND1((n < 1.0), param, "n(%lg) < 1",n);
-	SASFIT_CHECK_COND1((n > 100), param, "n(%lg) > 100",n);
+	SASFIT_CHECK_COND1((n > 100), param, "n(%lg) > 200",n);
 	SASFIT_CHECK_COND1((s_n < 0.0), param, "s_n(%lg) < 0",s_n);
 
 	if (idum < 0)
@@ -175,13 +176,7 @@ scalar sasfit_ff_RNDMultiLamellarVesicle2(scalar q, sasfit_param * param)
 					       +pow(r_i[i][1]-r_i[j][1],2)
 					       +pow(r_i[i][2]-r_i[j][2],2)
 						  );
-				if (rij == 0)
-				{
-					sum = sum + 2.0*Fi*Fj;
-				} else
-				{
-					sum = sum + 2.0*Fi*Fj*sin(q*rij)/(q*rij);
-				}
+				sum = sum + 2*Fi*Fj*gsl_sf_bessel_j0(q*rij);
 			}
 		}
 		sumt = sumt+sum;
