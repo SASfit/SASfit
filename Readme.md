@@ -153,9 +153,9 @@ Check out the SASfit source tree with GIT (here to ~/Downloads/sasfit):
 Next, run the install script for slightly older gcc-13 install:
 
     mkdir packages && cd packages
-    sh ../sasfit/src/appveyor/citools/msys2_install_old_pckg.sh gcc-13
-    sh ../sasfit/src/appveyor/citools/msys2_install_old_pckg.sh cmake-2.29.2
-    sh ../sasfit/src/appveyor/citools/msys2_install_old_pckg.sh python-pip-24.0
+    sh ../sasfit/src/appveyor/citools/msys2_get_pckg+deps.sh gcc-13
+    sh ../sasfit/src/appveyor/citools/msys2_get_pckg+deps.sh cmake-2.29.2
+    sh ../sasfit/src/appveyor/citools/msys2_get_pckg+deps.sh python-pip-24.0
     pacman -U *.zst
 
 Installing other required packages for building SASfit:
@@ -165,7 +165,7 @@ Installing other required packages for building SASfit:
 Create a build directory and make it the work dir:
 
     cd $USERPROFILE/Downloads/sasfit
-    mkdir build && build
+    mkdir build && cd build
 
 The terminal should have the commands *gcc* and *cmake* in PATH now.
 Configure the source with CMake which builds required packages on the way:
