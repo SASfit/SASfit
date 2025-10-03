@@ -3,8 +3,8 @@
  *   <your name> (<email address>)
  */
 
-#ifndef SPH_PRIVATE_H
-#define SPH_PRIVATE_H
+#ifndef PCS_FUZZY_PLANAR_PRIVATE_H
+#define PCS_FUZZY_PLANAR_PRIVATE_H
 
 /*
  * Header file for the implementation of the form factor itself.
@@ -30,7 +30,7 @@
 #endif
 
 // adjust according to the plugins name
-#include "sasfit_sph.h"
+#include "sasfit_pcs_fuzzy_planar.h"
 
 //
 // add local defines here:

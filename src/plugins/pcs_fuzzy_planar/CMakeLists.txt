@@ -1,7 +1,7 @@
 # cmake_minimum_required(VERSION 3.0)
 
 # the project name
-set(PRJ_NAME sasfit_hollow_sph)
+set(PRJ_NAME sasfit_pcs_fuzzy_planar)
 
 # required external libs which are installed on the system
 set(LIBS_EXT
@@ -10,7 +10,8 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_ff_hollowsphere.c
+	sasfit_ff_boucher_planar.c
+	sasfit_ff_profile_boucher_planar.c
 	interface.c
 )
 
