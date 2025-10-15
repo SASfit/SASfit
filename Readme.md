@@ -154,9 +154,15 @@ Next, run the install script for slightly older gcc-13 install:
 
     mkdir packages && cd packages
     sh ../sasfit/src/appveyor/citools/msys2_get_pckg+deps.sh gcc-13
-    sh ../sasfit/src/appveyor/citools/msys2_get_pckg+deps.sh cmake-2.29.2
+    sh ../sasfit/src/appveyor/citools/msys2_get_pckg+deps.sh cmake-3.29.2
     sh ../sasfit/src/appveyor/citools/msys2_get_pckg+deps.sh python-pip-24.0
-    pacman -U *.zst
+    pacman -U --noconfirm *.zst
+
+- **Note:** If it complains about dependency conflicts and installing the packages in the previous
+step failed (`pacman -U`), you need to remove the conflicting packages first.
+This may be caused by another GCC version with all dependent packages already present:
+
+        pacman -Rnc mingw-w64-x86_64-libwinpthread
 
 Installing other required packages for building SASfit:
 
