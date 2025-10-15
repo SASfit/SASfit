@@ -3,8 +3,8 @@
  *   <your name> (<email address>)
  */
 
-#ifndef TEST_HANKEL_GDAB_PRIVATE_H
-#define TEST_HANKEL_GDAB_PRIVATE_H
+#ifndef SPHERICALSHELLS_PRIVATE_H
+#define SPHERICALSHELLS_PRIVATE_H
 
 /*
  * Header file for the implementation of the form factor itself.
@@ -24,19 +24,13 @@
 
   SASFIT_PLUGIN_INFO_DECL;
 
-  // use lookup table for ff_g_dab(q, param)
-  #define sasfit_ff_g_dab(q,p) SASFIT_PLUGIN_IMPORTS()->functions[0].func((q),(p))
-  #define sasfit_ff_g_dab_f(q,p) SASFIT_PLUGIN_IMPORTS()->functions[0].func_f((q),(p))
-  #define sasfit_ff_g_dab_v(q,p,d) SASFIT_PLUGIN_IMPORTS()->functions[0].func_v((q),(p),(d))
-
 #else
 
-  #include <sasfit_non_particulate.h>
 
 #endif
 
 // adjust according to the plugins name
-#include "sasfit_test_hankel_gdab.h"
+#include "sasfit_sphericalshells.h"
 
 //
 // add local defines here:

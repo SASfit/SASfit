@@ -1,7 +1,7 @@
 # cmake_minimum_required(VERSION 3.0)
 
 # the project name
-set(PRJ_NAME sasfit_test_hankel_gdab)
+set(PRJ_NAME sasfit_sphericalshells)
 
 # required external libs which are installed on the system
 set(LIBS_EXT
@@ -10,7 +10,16 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_ff_hankel_gdab_.c
+	sasfit_ff_multilamellar_vesicle.c
+	sasfit_ff_spherical_shell_iii.c
+	sasfit_ff_spherical_shell_ii.c
+	sasfit_ff_spherical_shell_i.c
+	sasfit_ff_sphere.c
+	sasfit_ff_rnd_multilamellar_vesicle.c
+	sasfit_ff_rnd_multilamellar_vesicle_2.c
+	sasfit_ff_mlv_frielinghaus.c
+	sasfit_ff_bilayered_vesicle.c
+	sasfit_ff_hollow_sphere.c
 	interface.c
 )
 

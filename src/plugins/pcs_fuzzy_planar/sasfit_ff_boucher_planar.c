@@ -23,7 +23,7 @@ scalar sasfit_ff_boucher_planar(scalar q, sasfit_param * param)
 	SASFIT_CHECK_COND1((ALPHA <= -1.0), param, "alpha(%lg) <= -1",ALPHA); // modify condition to your needs
 
 	// insert your code here
-	return DETA*sqrt(M_PI)*T*gsl_sf_gamma(1+ALPHA)/gsl_sf_gamma(1.5+ALPHA)*gsl_sf_hyperg_0F1(1.5+ALPHA-0.25*gsl_pow_2(q*T));
+	return DETA*sqrt(M_PI)*T*gsl_sf_gamma(1+ALPHA)/gsl_sf_gamma(1.5+ALPHA)*gsl_sf_hyperg_0F1(1.5+ALPHA,-0.25*gsl_pow_2(q*T));
 }
 
 scalar sasfit_ff_boucher_planar_f(scalar q, sasfit_param * param)
@@ -31,7 +31,7 @@ scalar sasfit_ff_boucher_planar_f(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-	return DETA*sqrt(M_PI)*T*gsl_sf_gamma(1+ALPHA)/gsl_sf_gamma(1.5+ALPHA)*gsl_sf_hyperg_0F1(1.5+ALPHA-0.25*gsl_pow_2(q*T));
+	return DETA*sqrt(M_PI)*T*gsl_sf_gamma(1+ALPHA)/gsl_sf_gamma(1.5+ALPHA)*gsl_sf_hyperg_0F1(1.5+ALPHA,-0.25*gsl_pow_2(q*T));
 ;
 }
 
