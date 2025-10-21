@@ -470,6 +470,43 @@ $\int_0^\infty \mathrm{Gauss}(D,1,\sigma_D^\textrm{Gauss},D_0) P_\text{cs}\left(
 \label{fig:BiLayerGaussianProfileIQ}
 \end{figure}
 
+\subsubsection{Pcs(Q) for local planar objects with a Boucher contrast profile} ~\\
+\label{plugin:Pcs:BoucherPlanar}
+
+The idea of form factor is taken from section \ref{sect:BoucherSphere} but applied to a planar geometry. The cross-section term is valid for a scattering in direction to the normal of the planar object. In case of random oriented planar layers the cross-section term has to be multiplied by a shape factor $P'(q)$ according to eq.\ \ref{eq:PprimePcs}.
+
+
+The used radial profile of Boucher-type \cite{Boucher1983} reads as
+\begin{align}
+\eta(r) &= \eta_0
+  \begin{cases}
+    \left(1-\left(\frac{r}{t_\text{\sfrac{1}{2}}}\right)^2\right)^{\alpha/2-1}, & \mbox{if } \abs{r}\leq t_\text{\sfrac{1}{2}} \\
+    0, & \mbox{otherwise}.
+  \end{cases}
+\end{align}
+For a planar geometry the scattering intensity is calculated as
+\begin{align}\label{eq:Pcs_planarBoucher}
+  P_\mathrm{cs}(q)&= \left[\int_0^\infty 2 \cos(qx) \eta(x) \mathrm{d}x \right]^2 \nonumber \\
+                  &= \beta^2 \left[ {}_0F_1\left(\frac{\alpha-1}{2},-\frac14q^2t_\text{\sfrac{1}{2}}^2\right)\right]^2 \\
+\end{align}
+with the excess scattering contribution $\beta$ of the cross-section profile equals to
+\begin{align}\label{eq:beta_cyl_boucher}
+  \beta & = \eta_0 \sqrt{\pi} t_\text{\sfrac{1}{2}} \frac{\Gamma\left(\alpha/2\right)}{\Gamma\left(\frac{\alpha+1}{2}\right)}
+\end{align}
+For large scattering vector the cross-section form factor decays by
+\begin{align}
+  \lim_{q\to\infty}P_{cs}(q) &= 2^{\alpha } t_\text{\sfrac{1}{2}}^2 \Gamma \left(\frac{\alpha }{2}\right)^2 (q t_\text{\sfrac{1}{2}})^{-\alpha } \cos ^2\left(\frac{\pi  \alpha }{4}-q t_\text{\sfrac{1}{2}}\right) \propto q^{-\alpha}
+\end{align}
+
+\noindent
+\uline{Note}
+\begin{itemize}
+  \item This form factor is supposed to be combined with a shape factor for
+local planar objects which are implemented as structure  plugins
+under "\texttt{[by plugin|thin obj.|P'(Q): local planar
+obj.]}".
+\item $\alpha > 0$
+\end{itemize}
 
 %
 %\clearpage

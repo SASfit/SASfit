@@ -25,7 +25,7 @@ scalar boucher_cyl(scalar x, sasfit_param *param) {
 }
 
 scalar boucher_cyl_core(scalar x, sasfit_param *param) {
-	scalar Pcs, u, LNdistr;
+	scalar Pcs, LNdistr;
 	sasfit_param subParam;
 
 	SASFIT_ASSERT_PTR(param);
