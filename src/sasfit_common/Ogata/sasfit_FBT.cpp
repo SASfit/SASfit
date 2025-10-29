@@ -16,7 +16,7 @@ FBT ogata = FBT(0.0, 0, 10, 1.0);  // nu_def:0.0, option_def:0 , N_def:1, Q_def:
 
 void sasfit_set_FBT(double nu, int option, int N, double Q) {
     static scalar old_nu=0.0, old_Q=1.0;
-    static int old_option=0, old_N=1;
+    static int old_option=0, old_N=10;
     if (old_nu == nu && old_Q==Q && old_N == N && old_option == option ) {
         return;
     } else {

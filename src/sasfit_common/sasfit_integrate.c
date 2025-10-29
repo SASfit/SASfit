@@ -1293,6 +1293,7 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
         }
         case HANKEL_FBT1: {
             sasfit_set_FBT(nu, 1, sasfit_get_N_Ogata(), sasfit_get_h_Ogata());
+            res = sasfit_FBT(x, f_FBT, &FBTparam);
             break;
         }
         case HANKEL_FBT2: {
