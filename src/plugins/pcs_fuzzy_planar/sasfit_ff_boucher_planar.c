@@ -13,13 +13,13 @@
 
 #define ALPHA	param->p[3]
 
-#define DETA	param->p[7]
+#define DELTA	param->p[7]
 
 #define Q	param->p[MAXPAR-1]
 #define P	param->p[MAXPAR-2]
 
 scalar boucher_planar(scalar x, sasfit_param * param) {
-	return gsl_pow_int(DETA*sqrt(M_PI)*x*
+	return gsl_pow_int(DELTA*sqrt(M_PI)*x*
                     gsl_sf_gamma(ALPHA/2.)/gsl_sf_gamma((ALPHA+1)/2.)
                    *gsl_sf_hyperg_0F1((ALPHA+1)/2.,-0.25*gsl_pow_2(Q*x)),lround(P));
 }

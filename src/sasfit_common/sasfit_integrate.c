@@ -53,6 +53,7 @@
 #include "quasimontecarlo/quasimontecarlo.h"
 #include "quasimontecarlo/Burley2020Scrambling/genpoints.h"
 #include "../sasfit_jburkardt/include/filon_rule.h"
+#include <math.h>
 
 typedef struct {
     sasfit_param *param;
@@ -995,7 +996,6 @@ double intQAWF_FBT(double x, void *FBTparams) {
                 gsl_sf_bessel_Jnu(FBT_param->nu,FBT_param->Q*x+phi0-1e-6)
                     / cos(x*FBT_param->Q-1e-6) )/2.;
     }
-    return (x+phi0/FBT_param->Q)*sqrt(M_2_PI/((x+phi0/FBT_param->Q)*FBT_param->Q))* FBT_param->function((x+phi0/FBT_param->Q),FBT_param->fparams);
 }
 
 scalar DEtransform(scalar t) {
@@ -1007,6 +1007,121 @@ scalar deriv_DEtransform(scalar t){
     res = 1. / cosh(M_PI_2 * sinh(t));
     res = M_PI_2 * t * cosh(t) * res * res + tanh(M_PI_2 * sinh(t));
     return res;
+}
+
+/* Prototype:
+ * int hankel_transform(double (*f)(double), double w, int ni, double eta,
+ *                      double *H_out, int *nval_out);
+ *
+ * f : user-provided function f(t)
+ * w : frequency argument
+ * ni: integer order
+ * eta: tolerance
+ * H_out: pointer to result H
+ * nval_out: pointer to number of function evaluations (nval)
+ *
+ * Returns 0 on success, non-zero on error.
+ */
+
+static double safe_pow(double a, double b) { return pow(a, b); }
+
+static int secant_search(double (*fun)(double, void *), double eta, double *N_out, int *k_out, void *fparams) {
+    double N0 = 5.0;
+    double N1 = N0 + 1.0;
+    double F0 = fun(N0, fparams);
+    double F1 = fun(N1, fparams);
+    double N = N1;
+    double st = 1.0;
+    int k = 1;
+    const int kmax = 100;
+
+    while (st > eta && k < kmax && fabs(F1) >= eta) {
+        double der = (F1 - F0) / (N1 - N0);
+        if (der >= 0.0) {
+            // derivative non-negative -> abort search
+            break;
+        }
+        N = N - (F1 - eta) / der;
+        N0 = N1; F0 = F1;
+        N1 = N;
+        F1 = fun(N1, fparams);
+        st = fabs(F1 - eta);
+        k++;
+    }
+
+    *N_out = N;
+    *k_out = k;
+    return 0;
+}
+
+int hankel_transform(double (*f)(double, void *), double w, int ni, double eta,
+                     double *H_out, int *nval_out, void *fparams) {
+    if (!f || !H_out || !nval_out || w == 0.0 || eta <= 0.0) return -1;
+
+    // Step 1
+    int M = (int)ceil(-5.0 * log10(eta));
+
+    // Step 2
+    // K = pi^(ni+2) / (w^2 * 2^ni * gamma(ni+1) * (ni+2))
+    double K = pow(M_PI, (double)(ni + 2))
+             / ( (w*w) * pow(2.0, (double)ni) * tgamma((double)ni + 1.0) * (ni + 2.0) );
+
+    double h = (1.0 / ((ni + 2.0) * M)) * log( K * pow((double)M, (double)(ni+2)) / eta );
+
+    // Step 3: define fun(x) = c * f(pi/w * x) * x^(-1/2)
+    double c = (sqrt(2.0) / 16.0) / (w*w) * fabs(4.0 * ni * ni - 1.0);
+    // closure via static variables: create small wrapper
+    struct FunWrap { double c; double w; double (*f)(double, void *); void *fparams; };
+    struct FunWrap fw = { c, w, f, fparams };
+
+    double fun_wrapper(double x, void *fparams) {
+        if (x <= 0.0) return 0.0;
+        double arg = M_PI / fw.w * x;
+        double val = fw.f(arg, fw.fparams);
+        return fw.c * val * pow(x, -0.5);
+    }
+
+    double N_double;
+    int k;
+    secant_search(fun_wrapper, eta, &N_double, &k, fparams);
+    int N = (int)ceil(N_double);
+
+    // Step 4
+    // phi(t) = t / (1 - exp(-t))
+    // phiP(t) = (1 - exp(-t) - t*exp(-t)) / (1 - exp(-t))^2
+    double tau = M_PI / h;
+    double q = M_PI / (4.0 * tau) * (1.0 - 2.0 * ni);
+
+    // Sum F(v) for v = -M .. N
+    long vmin = -M;
+    long vmax = N;
+    double sum = 0.0;
+
+    double prefactor = (tau / w) * (tau / w); // (tau/w)^2
+
+    for (long vi = vmin; vi <= vmax; ++vi) {
+        double t = vi * h;
+        double arg = t - q;
+        double expneg = exp(-arg);
+        double denom = 1.0 - expneg;
+        if (denom == 0.0) continue; // avoid division by zero
+
+        double phi = arg / denom;
+        double phiP = (1.0 - expneg - arg * expneg) / (denom * denom);
+
+        double ff_arg = (tau / w) * phi;
+        double fval = fw.f(ff_arg, fw.fparams);
+
+        double jnval = jn(ni, tau * phi); // integer order Bessel J_n
+        double F = fval * prefactor * phi * jnval * phiP;
+        sum += F;
+    }
+
+    double H = h * sum;
+    *H_out = H;
+    *nval_out = M + N + 1 + k;
+
+    return 0;
 }
 
 scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fparams) {
@@ -1172,24 +1287,23 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             break;
         }
         case HANKEL_FBT0: {
-            sasfit_set_FBT(nu, 0, sasfit_get_N_Ogata(), 1.0e-2);
+            sasfit_set_FBT(nu, 0, sasfit_get_N_Ogata(), sasfit_get_h_Ogata());
             res = sasfit_FBT(x, f_FBT, &FBTparam);
             break;
         }
         case HANKEL_FBT1: {
-            sasfit_set_FBT(nu, 1, sasfit_get_N_Ogata(), 1.0e-2);
-            res = sasfit_FBT(x, f_FBT, &FBTparam);
+            sasfit_set_FBT(nu, 1, sasfit_get_N_Ogata(), sasfit_get_h_Ogata());
             break;
         }
         case HANKEL_FBT2: {
-            sasfit_set_FBT(nu, 2, sasfit_get_N_Ogata(), 1.0e-2);
+            sasfit_set_FBT(nu, 2, sasfit_get_N_Ogata(), sasfit_get_h_Ogata());
             res = sasfit_FBT(x, f_FBT, &FBTparam);
             break;
         }
         case HANKEL_GSL_QAWF: {
             phi0 = M_PI/4.*(1.+nu*2.);
             na = lround(sasfit_get_N_Ogata());
-            a=gsl_sf_bessel_zero_Jnu(nv,(na<10?na:10))/FBTparam.Q;
+            a=gsl_sf_bessel_zero_Jnu(nv,(na<2?na:2))/FBTparam.Q;
 
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
             eps_nriq=sasfit_eps_get_nriq();
@@ -1203,7 +1317,7 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             gsl_integration_workspace * w = gsl_integration_workspace_alloc (limit);
             gsl_integration_workspace * w_cycle = gsl_integration_workspace_alloc (limit);
             gsl_integration_qawo_table * wf=gsl_integration_qawo_table_alloc (FBTparam.Q, 1.0, GSL_INTEG_COSINE, 200);
-            status = gsl_integration_qawf (&F,a-phi0/FBTparam.Q,eps_nriq*3,limit,w, w_cycle, wf, &res, &abserr);
+            status = gsl_integration_qawf (&F,a-phi0/FBTparam.Q,eps_nriq*10,limit,w, w_cycle, wf, &res, &abserr);
             if (status != GSL_SUCCESS) sasfit_out("Q:%lf\n",FBTparam.Q);
             gsl_integration_qawo_table_free (wf);
             gsl_integration_workspace_free(w);
@@ -1214,6 +1328,9 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
         case HANKEL_SINC_SEO: {
             scalar seta, sK, sh, sc, sni, sw, sH, st, sF0, sF1, stau, sq, sder, rN, rN0, rN1;
             int v, sM, sN, sN0, sN1, nval, k, kmax, l, lmax;
+            hankel_transform(f, FBTparam.Q, FBTparam.nu, sasfit_eps_get_nriq(),
+                     &res, &nval, fparams);
+            break;
             seta = sasfit_eps_get_nriq();
             sM   = lround(ceil(-5*log10(seta)));
             sni  = FBTparam.nu;
@@ -1223,7 +1340,7 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             sc = sqrt(2)/16.0/(sw*sw)*fabs(4*sni*sni-1);
             #define FUN(X) (sc * f(fabs(X*M_PI/sw) , fparams) / sqrt(X))
             #define PHI(X) (X/(1 - exp(-X)))
-            #define PHIP(X) ((1 - exp(-X)-X*exp(-X))/(1-exp(-X)))
+            #define PHIP(X) (1 - exp(-X)-X*exp(-X))/gsl_pow_2((1-exp(-X)))
             #define F(t) f(fabs(stau/sw *PHI(t-sq)),fparams) *gsl_pow_2(stau/sw)*PHI(st-sq) * gsl_sf_bessel_Jnu(sni, stau*PHI(t-sq)) * PHIP(t-sq)
             stau = M_PI / sh;
             sq = M_PI /(4*stau) *(1-2*sni);
@@ -1259,13 +1376,13 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             sH = 0;
             sN = lround(rN);
             for (v=-sM;v<=sN;v++) {
-                sH+= F(v*sh);
+                sH=sH+F(v*sh);
             }
-            sH *= sh;
+            sH = sH*sh;
             res = sH;
             err = seta;
             nval = sM+sN+k+1;
-            sasfit_out("needed %d function evaluations.\n",nval);
+            //sasfit_out("needed %d function evaluations.\n",nval);
             break;
         }
         case HANKEL_GUPTASARMA_97_FAST: {
