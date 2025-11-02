@@ -194,11 +194,29 @@ cm$^{-2}$.}
 \end{table}
 
 \clearpage
-\subsection{bi-LogNorm}\hspace{1pt}
+\subsection{shifted bi-LogNorm}\hspace{1pt}
 \label{sec:sd_bilognorm}
+\begin{align}
+c_i &= \frac{1}{\sqrt{2\pi}\sigma_i \mu_i^{1-p_i}}\exp\!\left(-\tfrac{1}{2}\sigma_i^2(1-p_i)^{2}\right)\\
+\mathrm{biLogNorm}(x) &=
+\begin{cases}
+0, & x \le x_0,\\ 
+\sum_{i=0}^1 \frac{N_i\,c_i}{(x-x_0)^{-p_i}}\exp\!\left(-\frac{\ln^2\left(\dfrac{x-x_0}{\mu_i}\right)}{2 \sigma_i^2}\right)
+, & x > x_0.
+\end{cases}
+\end{align}
 
 \subsection{shifted LogNorm}\hspace{1pt}
 \label{sec:sd_shiftedlognorm}
+\begin{align}
+c &= \frac{1}{\sqrt{2\pi} \sigma} \\
+\mathrm{LN}_\mathrm{sh}(x) &=
+\begin{cases}
+0, & x \le x_0,\\ 
+\frac{N\,c}{x - x_0}\exp\left(-\frac{\ln^2\left(\frac{x - x_0}{\mu}\right)}{2 \sigma^2}\right)
+, & x > x_0.
+\end{cases}
+\end{align}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{metalog distribution} \hspace{1pt}

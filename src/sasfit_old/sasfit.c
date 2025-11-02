@@ -1660,6 +1660,46 @@ scalar HTIQ_OOURA(scalar Q, void *param4int) {
         return (Icalc)*Q*bessj0(Q*z)/(2*M_PI);
 }
 
+scalar Gztransform(scalar r, sasfit_param *param){
+    sasfit_param4int *param4int;
+    param4int = ( sasfit_param4int *) param->moreparam;
+    if (param4int->res<=0 || sasfit_get_iq_or_gz()==3) {
+        param4int->z = 0;
+        param4int->H0 = sasfit_integrate(0,GSL_POSINF,&IQ4HT_Hankel,param);
+        param4int->z = r;
+        param4int->Hz = sasfit_hankel(0,&IQ4HTvoid,r,param);
+    } else {
+        param4int->z = 0;
+        param4int->H0 = sasfit_integrate(0,param4int->res,&IQ4HT_Hankel,param);
+        param4int->z = r;
+        param4int->Hz = sasfit_integrate(0,param4int->res,&IQ4HT_Hankel,param);
+    }
+    if (sasfit_get_iq_or_gz() == 1) {
+        return exp( (param4int->Hz-param4int->H0)/(2*M_PI) );
+    } else {
+        return (param4int->Hz-param4int->H0)/(2*M_PI);
+    }
+}
+
+scalar imMSAStransform(scalar r, void *par){
+    sasfit_param4int *param4int;
+    sasfit_param *param;
+    param = (sasfit_param *) par;
+    scalar i1, i0, im, Gz, G0, k0, k02, t, Gz_G0;
+    param4int = ( sasfit_param4int *) param->moreparam;
+    k0 = 2*M_PI/sasfit_get_MSASlambda();
+    k02=k0*k0;
+    t = sasfit_get_MSASthickness();
+    Gz_G0=Gztransform(r,param);
+    G0=param4int->H0/(2*M_PI);
+    Gz=param4int->Hz/(2*M_PI);
+    i1 = gsl_pow_2(2*M_PI)*t*Gz;
+    i0 = gsl_pow_2(2*M_PI)*t*G0;
+    //im = k02*(exp(gsl_pow_2(2*M_PI)*t/k02*(Gz_G0))-exp(-gsl_pow_2(2*M_PI)*t/k02*G0));
+    im = exp(-i0/k02)*k02*expm1(i1/k02);
+    return im;
+}
+
 scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
 			    int dF_dpar[],
 			    scalar l[],
@@ -1679,16 +1719,17 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
 {
     sasfit_param4int param4int;
     sasfit_param param;
-    scalar Gz, Xi, err;
+    scalar SESANS, err;
     scalar *aw;
     int lenaw;
 
     switch (sasfit_get_iq_or_gz()) {
         case 0 : {
+            /* Operator 1: calculation of scattering intensity */
             return integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,error);
             break;}
-        case 1:
-        case 2:{
+        case 1: /* Exp(H{...}/2pi*/
+        case 2:{ /* H{...}/2pi */
             if (Q==0) return 0;
             param4int.interp=interp;
             param4int.dF_dpar=dF_dpar;
@@ -1703,25 +1744,30 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
             param4int.nintervals=nintervals;
             param4int.distr=distr;
             param4int.SQ_how=SQ_how;
+            param4int.res=Qres;
             param.moreparam=&param4int;
 
-            if (Qres<=0) {
-                param4int.z = 0;
-                Xi = sasfit_integrate(0,GSL_POSINF,&IQ4HT_Hankel,&param)/(2*M_PI);
-                param4int.z = Q;
-                Gz = sasfit_hankel(0,&IQ4HTvoid,Q,&param)/(2*M_PI);
-            } else {
-                param4int.z = 0;
-                Xi = sasfit_integrate(0,Qres,&IQ4HT_Hankel,&param)/(2*M_PI);
-                param4int.z = Q;
-                Gz = sasfit_integrate(0,Qres,&IQ4HT_Hankel,&param)/(2*M_PI);
-            }
+            SESANS = Gztransform(Q,&param);
             *error = param4int.error;
-//            sasfit_out("Gz(%lg)-Xi(%lg)\n",Gz,Xi);
-            return Gz-Xi;
+            return SESANS;
             break;}
-        case 3: {
-            return 0;
+        case 3: { /* MSAS */
+            param4int.interp=interp;
+            param4int.dF_dpar=dF_dpar;
+            param4int.l=l;
+            param4int.s=s;
+            param4int.a=a;
+            param4int.SD=SD;
+            param4int.FF=FF;
+            param4int.SQ=SQ;
+            param4int.Rstart=Rstart;
+            param4int.Rend=Rend;
+            param4int.nintervals=nintervals;
+            param4int.distr=distr;
+            param4int.SQ_how=SQ_how;
+            param4int.res=0;
+            param.moreparam=&param4int;
+            return sasfit_hankel(0,&imMSAStransform,Q,&param)/(2*M_PI*sasfit_get_MSASthickness());
             break;}
         default: {
             return integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,error);

@@ -43,7 +43,10 @@ typedef struct
     scalar *s;
     scalar *a;
     scalar Q;
+    scalar res;
     scalar z;
+    scalar Hz;
+    scalar H0;
     sasfit_function*  SD;
     sasfit_function*  FF;
     sasfit_function*  SQ;

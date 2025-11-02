@@ -39,9 +39,20 @@ double dgamma(double x)
 #define DUMMY	param->p[2]
 #define ETA	param->p[3]
 
+#define V param->p[MAXPAR-1]
+
+scalar taylor0(scalar u, scalar HH, sasfit_param *param) {
+        return gsl_pow_2(ETA*V)/(2*M_PI)*
+            (u*( (-8*u*(96*(-4 + HH)*HH - 12*HH*gsl_pow_int(u,2) + gsl_pow_int(u,4) + 30*(12 + gsl_pow_int(u,2))))
+                /((-5 + 2*HH)*(-3 + 2*HH)*(-1 + 2*HH)*(1 + 2*HH)) +
+                 (3*pow(u,2*HH)*(32*HH*(4 + HH) + 8*HH*gsl_pow_int(u,2) + gsl_pow_int(u,4) + 20*(6 + gsl_pow_int(u,2)))*gsl_sf_gamma(-0.5 - HH))
+                /(pow(4,HH)*gsl_sf_gamma(3.5 + HH))
+               )
+            ) /(384.*gsl_pow_int(A,2));
+}
 scalar sasfit_ff_gz_generalized_dab(scalar z, sasfit_param * param)
 {
-    scalar Gz, G0, V,u,KH,z2_4,nu;
+    scalar Gz, G0,u,KH,z2_4,nu;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	SASFIT_CHECK_COND1((z < 0.0), param, "z(%lg) < 0",z);
@@ -51,13 +62,23 @@ scalar sasfit_ff_gz_generalized_dab(scalar z, sasfit_param * param)
 	// insert your code here
 
     if (z==0) return 0;
+
     gsl_set_error_handler_off();
 
 //    V = gsl_pow_3(2*A)*M_PI*sqrt(M_PI)*exp(gsl_sf_lngamma(1.5+H)-gsl_sf_lngamma(H));
     V = gsl_pow_3(2*A)*M_PI*sqrt(M_PI)*gsl_sf_poch(H,1.5);
+    if (V*ETA==0) return 0;
     u=z/A;
+    if (u < 1e-3) {
+        if ( ((0.5+H) - lround(0.5+H)) == 0) {
+            return (taylor0(u,H*(1-1e-6),param)+taylor0(u,H*(1+1e-6),param))/2;
+        } else {
+            return taylor0(u,H,param);
+        }
+    }
 //  G0 = V*2*A*sqrt(M_PI)*exp(gsl_sf_lngamma(0.5+H)-gsl_sf_lngamma(H));
     G0 = V*V/(2*M_PI*gsl_pow_2(A)*(1+2*H));
+
     if ( ((0.5+H) - lround(0.5+H)) == 0) {
         KH = gsl_sf_bessel_Kn(lround(H+0.5),u);
     } else {
@@ -75,7 +96,6 @@ scalar sasfit_ff_gz_generalized_dab(scalar z, sasfit_param * param)
 
 scalar sasfit_ff_gz_generalized_dab_f(scalar q, sasfit_param * param)
 {
-    scalar V;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here

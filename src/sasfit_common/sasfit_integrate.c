@@ -1054,16 +1054,17 @@ static int secant_search(double (*fun)(double, void *), double eta, double *N_ou
     return 0;
 }
 
-    struct FunWrap { double c; double w; double (*f)(double, void *); void *fparams; };
-    struct FunWrap fw;
+struct FunWrap { double c; double w; double (*f)(double, void *); void *fparams; };
+struct FunWrap fw;
 
-    double fun_wrapper(double x, void *fparams) {
-        if (x <= 0.0) return 0.0;
-        double arg = M_PI / fw.w * x;
-        double val = fw.f(arg, fw.fparams);
-        return fw.c * val * pow(x, -0.5);
-    }
-int hankel_transform(double (*f)(double, void *), double w, int ni, double eta,
+double fun_wrapper(double x, void *fparams) {
+    if (x <= 0.0) return 0.0;
+    double arg = M_PI / fw.w * x;
+    double val = fw.f(arg, fw.fparams);
+    return fw.c * val * pow(x, -0.5);
+}
+
+int hankel_transform(double (*f)(double, void *), double w, int ni, double  eta,
                      double *H_out, int *nval_out, void *fparams) {
     if (!f || !H_out || !nval_out || w == 0.0 || eta <= 0.0) return -1;
 
