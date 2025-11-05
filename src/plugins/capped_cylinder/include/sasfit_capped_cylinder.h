@@ -52,11 +52,20 @@
  *       <td>\b r</td>
  *       <td>cylinder radius</td>
  *      </tr><tr>
+ *       <td>\b sigma_r</td>
+ *       <td>LN width of radii</td>
+ *      </tr><tr>
  *       <td>\b h</td>
  *       <td>center offset of end cap from surface, (h<0 flat end cap, h>0 barbell end cap)</td>
  *      </tr><tr>
+ *       <td>\b dummy</td>
+ *       <td>width parameter (Gaussian) for h-offset (h<0 flat end cap, h>0 barbell end cap)</td>
+ *      </tr><tr>
  *       <td>\b L</td>
  *       <td>length of cylinder</td>
+ *      </tr><tr>
+ *       <td>\b sigma_L</td>
+ *       <td>LN width of cylinder lengths</td>
  *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering contrast</td>
