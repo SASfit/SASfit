@@ -1,6 +1,14 @@
 ﻿0.94.13 2025-xx-xx
-- implemented a two different cross-section form factors Pcs for bottle brush polymers
-- a new integration routine based on adaptive Gauss-Lobatto quadrature has been made available
+- added plugin for fuzzy planar sheets with a Boucher type profile
+- activated MSAS tools, which is only reasonable fast for form factors, which do not need to be calculated by a numerical integration.
+- Start to transfer form factor of spheres to plugin area
+- debugged Hankel transform algorithms: SINC_SEO and FBT1 seems to work now
+- extended capped cylinder model by size distribution for R and L directly in the form factor
+- extended the regularization algorithm to local cylindrical and local planar structures
+- bug fix for fractal hyperbranched polymer from Burchardt
+- implemented form factor for fractal branched polymers
+- implemented two different cross-section form factors Pcs for bottle brush polymers
+- an additional integration routine based on adaptive Gauss-Lobatto quadrature has been made available
 - implemented form factor for random oriented cylinders with spherical end cups
 - extended the regularization algorithm to local cylindrical and local planar structures
 - implemented form factor for a branched polymer with comb shape

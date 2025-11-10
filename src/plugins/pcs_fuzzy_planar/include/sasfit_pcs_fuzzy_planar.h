@@ -37,11 +37,11 @@
 // - description of parameters in HTML table-style
 
 /* ################ start ff_boucher_planar ################ */
-/** 
- * \defgroup ff_boucher_planar boucher_planar
+/**
+ * \defgroup ff_boucher_planar Pcs:BoucherPlanar
  * \ingroup ff_plugins_pcslocalplanar
  *
- * \brief \<some brief description of boucher_planar function\>
+ * \brief see SASfit manual to read more about Pcs:BoucherPlanar
  *
  * <more detailed documentation, see 'doxygen' docs>
  *
@@ -98,7 +98,7 @@ sasfit_pcs_fuzzy_planar_DLLEXP scalar sasfit_ff_boucher_planar_v(scalar q, sasfi
 /* ################ stop ff_boucher_planar ################ */
 
 /* ################ start ff_profile_boucher_planar ################ */
-/** 
+/**
  * \defgroup ff_profile_boucher_planar profile_boucher_planar
  * \ingroup ff_plugins_pcslocalplanar
  *
