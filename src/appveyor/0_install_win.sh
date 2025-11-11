@@ -12,7 +12,24 @@ echo ## Installing required packages:
 ## sh -lc "pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-python-pip mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl mingw-w64-x86_64-zlib mingw-w64-x86_64-boost"
 
 # Remove existing package with wrong versions first
-pacman -Rns --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-libwinpthread mingw-w64-x86_64-winpthreads mingw-w64-x86_64-binutils mingw-w64-x86_64-gcc-libs
+pacman -Rns --noconfirm \
+    mingw-w64-x86_64-gcc \
+    mingw-w64-x86_64-libwinpthread \
+    mingw-w64-x86_64-winpthreads \
+    mingw-w64-x86_64-binutils \
+    mingw-w64-x86_64-gcc-libs \
+    mingw-w64-x86_64-bzip2 \
+    mingw-w64-x86_64-gdb \
+    mingw-w64-x86_64-gettext-runtime \
+    mingw-w64-x86_64-mpdecimal \
+    mingw-w64-x86_64-mpfr \
+    mingw-w64-x86_64-ncurses \
+    mingw-w64-x86_64-python \
+    mingw-w64-x86_64-readline \
+    mingw-w64-x86_64-tcl \
+    mingw-w64-x86_64-termcap \
+    mingw-w64-x86_64-tools-git \
+    mingw-w64-x86_64-zstd
 
 # Install specific versions of some build packages
 cd "$APPVEYOR_BUILD_FOLDER"
