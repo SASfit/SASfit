@@ -20,6 +20,8 @@ pacman -Rns --noconfirm \
     mingw-w64-x86_64-gcc-libs \
     mingw-w64-x86_64-bzip2 \
     mingw-w64-x86_64-gdb \
+    mingw-w64-x86_64-gdb-multiarch \
+    mingw-w64-x86_64-make \
     mingw-w64-x86_64-gettext-runtime \
     mingw-w64-x86_64-mpdecimal \
     mingw-w64-x86_64-mpfr \
