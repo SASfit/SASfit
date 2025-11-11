@@ -38,7 +38,7 @@ cd "$APPVEYOR_BUILD_FOLDER"
 mkdir packages
 cd packages
 pacman -S --noconfirm curl gawk
-sh -x "../src/appveyor/citools/msys2_get_pckg+deps.sh" gcc-13
+sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" gcc-13
 sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" cmake-3.29.2
 sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-pip-24.0
 pacman -U --noconfirm *.zst
