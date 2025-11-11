@@ -60,6 +60,16 @@ for:
   install:
     - set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
     - C:\msys64\usr\bin\bash -l "%APPVEYOR_BUILD_FOLDER%\src\appveyor\0_install_win.sh"
+    - ps: |
+      python3 --version
+      # create venv first to get a mutable environment (relevant on macOS sonoma)
+      python3 -m venv --system-site-packages --upgrade-deps pyvenv-deploy
+      # activate the venv
+      ./pyvenv-deploy/bin/Activate.ps1
+      # install packages in it
+      pip install requests python-dateutil pyyaml
+      # cleanup AppVeyor history
+      python3 -c "import requests"
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.zip
@@ -161,5 +171,3 @@ on_success:
       python3 src/appveyor/8_cloudsmith_upload.py
       # upload to zenodo each binary, if all binaries are in place finalize by publishing zenodo record
       python3 src/appveyor/9_zenodo_upload.py
-
-# vim: set ts=2 sw=2 sts=2 tw=0 et:
