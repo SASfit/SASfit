@@ -55,9 +55,11 @@ for:
     MSYS2_ARCH: x86_64
     MSYS2_DIR: msys64
     MSYSTEM: MINGW64
+    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
     CACHEID: windows64
   install:
-    - src\appveyor\0_install_win.bat
+    - set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
+    - C:\msys64\usr\bin\bash -l src\appveyor\0_install_win.sh
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.zip
