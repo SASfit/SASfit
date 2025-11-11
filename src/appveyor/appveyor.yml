@@ -59,6 +59,7 @@ for:
     CACHEID: windows64
   install:
     - set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
+    - C:\msys64\usr\bin\bash -lc "pwd"
     - C:\msys64\usr\bin\bash -l src/appveyor/0_install_win.sh
   artifacts:
     # final SASfit package
