@@ -16,12 +16,13 @@ set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
 @echo ## Installing required packages:
 :: sh -lc "pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-python-pip mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl mingw-w64-x86_64-zlib mingw-w64-x86_64-boost"
 @echo ## Remove existing package with wrong versions first
-sh -lc "pacman -Rns mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-libwinpthread"
+sh -lc "pacman -Rns --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-libwinpthread"
+sh -lc "pacman -S --noconfirm curl gawk"
 
 @echo ## Install specific versions of some build packages
 mkdir packages
 cd packages
-sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" gcc-13
+sh -x "../src/appveyor/citools/msys2_get_pckg+deps.sh" gcc-13
 sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" cmake-3.29.2
 sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-pip-24.0
 sh -lc "pacman -U --noconfirm *.zst"
