@@ -6,6 +6,7 @@ echo Platform: $PLATFORM
 echo MSYS2 directory: $MSYS2_DIR
 echo MSYS2 system: $MSYSTEM
 echo MINGW_PACKAGE_PREFIX: $MINGW_PACKAGE_PREFIX
+echo "PATH=$PATH"
 
 echo ## Installing required packages:
 ## sh -lc "pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-python-pip mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl mingw-w64-x86_64-zlib mingw-w64-x86_64-boost"
