@@ -57,20 +57,21 @@ for:
     MSYSTEM: MINGW64
     MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
     CACHEID: windows64
-  install:
-    - set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
-    - C:\msys64\usr\bin\bash -l "%APPVEYOR_BUILD_FOLDER%\src\appveyor\0_install_win.sh"
-    - ps: |
+  install: |
+      set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
+      C:\msys64\usr\bin\bash -l "%APPVEYOR_BUILD_FOLDER%\src\appveyor\0_install_win.sh"
+      C:\msys64\usr\bin\bash -lc "
         pacman -Q
         python3 --version
         # create venv first to get a mutable environment (relevant on macOS sonoma)
         python3 -m venv --system-site-packages --upgrade-deps pyvenv-deploy
         # activate the venv
-        ./pyvenv-deploy/bin/Activate.ps1
+        ./pyvenv-deploy/bin/activate.sh
         # install packages in it
         pip install requests python-dateutil pyyaml
         # cleanup AppVeyor history
-        python3 -c "import requests"
+        python3 -c 'import requests'
+        "
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.zip
