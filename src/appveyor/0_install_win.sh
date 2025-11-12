@@ -32,7 +32,7 @@ pacman -Rns --noconfirm \
     mingw-w64-x86_64-termcap \
     mingw-w64-x86_64-tools-git \
     mingw-w64-x86_64-zstd \
-    $(pacman -Q | grep '^mingw-w64-i686-')
+    $(pacman -Q | awk '/^mingw-w64-i686-/{print $1}')
 
 # Install specific versions of some build packages
 cd "$APPVEYOR_BUILD_FOLDER"
