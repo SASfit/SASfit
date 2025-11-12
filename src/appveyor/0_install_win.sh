@@ -8,10 +8,7 @@ echo MSYS2 system: $MSYSTEM
 echo MINGW_PACKAGE_PREFIX: $MINGW_PACKAGE_PREFIX
 echo "PATH=$PATH"
 
-echo ## Installing required packages:
-## sh -lc "pacman -S --noconfirm make diffutils patch mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-python-pip mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl mingw-w64-x86_64-zlib mingw-w64-x86_64-boost"
-
-# Remove existing package with wrong versions first
+echo "# Remove existing package with wrong versions first"
 pacman -Rns --noconfirm \
     mingw-w64-x86_64-gcc \
     mingw-w64-x86_64-libwinpthread \
@@ -34,7 +31,7 @@ pacman -Rns --noconfirm \
     mingw-w64-x86_64-zstd \
     $(pacman -Q | awk '/^mingw-w64-i686-/{print $1}')
 
-# Install specific versions of some build packages
+echo "# Install specific versions of some build packages"
 cd "$APPVEYOR_BUILD_FOLDER"
 mkdir packages
 cd packages
@@ -45,7 +42,8 @@ sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-3.11.9
 sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-pip-24.0
 pacman -U --noconfirm *.zst
 
-# Install more general build tools
+echo "# Install more general build tools"
 pacman -S --noconfirm make diffutils coreutils patch mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl
 
-pacman -Q 2>&1
+echo "# installed packages with versions"
+pacman -Q
