@@ -46,6 +46,8 @@ pacman -U --noconfirm *.zst
 # Install more general build tools
 pacman -S --noconfirm make diffutils coreutils patch mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl
 
+pwd
+which pacman
+pacman -Q 2>&1
 python3 --version
 python3 -m pip
-
