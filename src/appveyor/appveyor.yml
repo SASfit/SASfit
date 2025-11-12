@@ -61,7 +61,9 @@ for:
       set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
       C:\msys64\usr\bin\bash -l "%APPVEYOR_BUILD_FOLDER%\src\appveyor\0_install_win.sh"
       C:\msys64\usr\bin\bash -lc "
-        pacman -Q
+        pwd
+        which pacman
+        pacman -Q 2>&1
         python3 --version
         # create venv first to get a mutable environment (relevant on macOS sonoma)
         python3 -m venv --system-site-packages --upgrade-deps pyvenv-deploy
