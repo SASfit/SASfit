@@ -31,7 +31,8 @@ pacman -Rns --noconfirm \
     mingw-w64-x86_64-tcl \
     mingw-w64-x86_64-termcap \
     mingw-w64-x86_64-tools-git \
-    mingw-w64-x86_64-zstd
+    mingw-w64-x86_64-zstd \
+    $(pacman -Q | grep '^mingw-w64-i686-')
 
 # Install specific versions of some build packages
 cd "$APPVEYOR_BUILD_FOLDER"
@@ -40,6 +41,7 @@ cd packages
 pacman -S --noconfirm curl gawk
 sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" gcc-13
 sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" cmake-3.29.2
+sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-3.11.9
 sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-pip-24.0
 pacman -U --noconfirm *.zst
 
