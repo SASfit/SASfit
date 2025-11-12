@@ -55,9 +55,11 @@ for:
     MSYS2_ARCH: x86_64
     MSYS2_DIR: msys64
     MSYSTEM: MINGW64
+    MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
     CACHEID: windows64
-  install:
-    - src\appveyor\0_install_win.bat
+  install: |
+      set "PATH=C:\%MSYS2_DIR%\%MSYSTEM%\bin;C:\%MSYS2_DIR%\usr\bin;%PATH%"
+      C:\msys64\usr\bin\bash -l "%APPVEYOR_BUILD_FOLDER%\src\appveyor\0_install_win.sh"
   artifacts:
     # final SASfit package
     - path: src\sasfit_*_*.zip
@@ -159,5 +161,3 @@ on_success:
       python3 src/appveyor/8_cloudsmith_upload.py
       # upload to zenodo each binary, if all binaries are in place finalize by publishing zenodo record
       python3 src/appveyor/9_zenodo_upload.py
-
-# vim: set ts=2 sw=2 sts=2 tw=0 et:
