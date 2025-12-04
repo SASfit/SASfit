@@ -57,6 +57,9 @@
  *      </tr><tr>
  *       <td>\b d001</td>
  *       <td>lattice constant for 1st peak, d_Agbeh=5.8378 nm</td>
+ *      </tr><tr>
+ *       <td>\b TOForAgBeh</td>
+ *       <td><1: AgBeh, >=1 TOF</td>
  *      </tr></table>
  */
 

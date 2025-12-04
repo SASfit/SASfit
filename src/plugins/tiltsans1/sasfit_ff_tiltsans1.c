@@ -10,6 +10,7 @@
 #define TILT0	param->p[0]
 #define DELTA_TILT	param->p[1]
 #define D001	param->p[2]
+#define TOForAgBeh	param->p[3]
 
 scalar lambda(scalar rot, scalar tilt) {
     return
@@ -37,6 +38,7 @@ scalar sasfit_ff_tiltsans1(scalar rot, sasfit_param * param)
 	tilt=-TILT0-DELTA_TILT;
 	d=D001;
 	lam = lambda(rot,tilt);
+	if (TOForAgBeh >=1) return lam;
 	return 2*asin(lam/(2*d))*180/M_PI;
 }
 
