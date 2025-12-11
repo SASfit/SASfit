@@ -39,7 +39,7 @@ fi
 echo "Determined $NUM_LOGICAL_CORES logical cores."
 
 cd "$APPVEYOR_BUILD_FOLDER" && \
-mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" -DCREATE_BINARY=TRUE "$scriptdir/.." && pacman -Suy mingw-w64-x86_64-bzip2 && make -j$NUM_LOGICAL_CORES
+mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" -DCREATE_BINARY=TRUE "$scriptdir/.." && pacman -S --noconfirm mingw-w64-x86_64-zlib && make -j$NUM_LOGICAL_CORES
 
 #mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" -DCREATE_BINARY=TRUE -DDEBUG=TRUE "$scriptdir/.." && make -j$NUM_LOGICAL_CORES
 
