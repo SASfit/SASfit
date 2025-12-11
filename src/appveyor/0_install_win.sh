@@ -28,7 +28,6 @@ pacman -Rns --noconfirm \
     mingw-w64-x86_64-tcl \
     mingw-w64-x86_64-termcap \
     mingw-w64-x86_64-tools-git \
-	mingw-w64-x86_64-zlib \
     mingw-w64-x86_64-zstd \
     $(pacman -Q | awk '/^mingw-w64-i686-/{print $1}')
 
