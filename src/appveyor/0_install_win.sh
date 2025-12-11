@@ -15,7 +15,7 @@ pacman -Rns --noconfirm \
     mingw-w64-x86_64-winpthreads \
     mingw-w64-x86_64-binutils \
     mingw-w64-x86_64-gcc-libs \
-#    mingw-w64-x86_64-bzip2 \
+    mingw-w64-x86_64-bzip2 \
     mingw-w64-x86_64-gdb \
     mingw-w64-x86_64-gdb-multiarch \
     mingw-w64-x86_64-make \
@@ -28,7 +28,7 @@ pacman -Rns --noconfirm \
     mingw-w64-x86_64-tcl \
     mingw-w64-x86_64-termcap \
     mingw-w64-x86_64-tools-git \
-    mingw-w64-x86_64-zstd \
+#    mingw-w64-x86_64-zstd \
     $(pacman -Q | awk '/^mingw-w64-i686-/{print $1}')
 
 echo "# Install specific versions of some build packages"
