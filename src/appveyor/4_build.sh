@@ -19,6 +19,7 @@ then
             | grep NumberOfLogicalProcessors \
             | cut -d= -f2 \
             | tr -d '[:space:]' )"
+		NUM_LOGICAL_CORES=1
     fi
     CMAKE_GENERATOR='MSYS Makefiles'
 else # macOS or Linux
