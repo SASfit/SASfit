@@ -1512,11 +1512,17 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             break;
         }
         case HANKEL_QWE: {
-            res = sasfit_qwe(0, f, x, fparams, lenaw, sasfit_eps_get_nriq()*10, DBL_MIN);
+            res = sasfit_qwe(0, f, x, fparams,
+                             lround(sasfit_get_N_Ogata()),
+                             sasfit_eps_get_nriq()*10,
+                             DBL_MIN);
             break;
         }
         case HANKEL_CHAVE: {
-            res = sasfit_HankelChave(0, f,x, fparams, lenaw, sasfit_eps_get_nriq()*10, DBL_MIN);
+            res = sasfit_HankelChave(0, f,x, fparams,
+                                     lround(sasfit_get_N_Ogata()),
+                                     sasfit_eps_get_nriq()*10,
+                                     DBL_MIN);
             break;
         }
         default:{

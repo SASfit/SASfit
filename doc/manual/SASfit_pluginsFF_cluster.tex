@@ -132,18 +132,35 @@ V_c &= \pi R^2 d
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
-\subsection{DumbbellShell}
-\label{sect:DumbbellShell}
+\subsection{DoubleShell}
+\label{sect:DoubleShell}
 ~\\
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{../images/form_factor/cluster/l_doubleshell.png}
-%1059x446
+\includegraphics[width=0.5\textwidth]{../images/form_factor/spheres/doubleshell.pdf}
 \end{center}
-\caption{} \label{DumbbellShell}
+\caption{sketch of a sphere with two shells whereas the outer one can contain a certain amount $x_s$ of solvent} \label{DoubleShell}
 \end{figure}
-
+The double shell form factor is a special case of a multi-shell spherical objects. A multi-shell with core radius $R_c$ and core scattering length density $\eta_\mathrm{c}$ and $N$ shells of thicknesses $\Delta R_i$ with corresponding scattering length density $\eta_{i}$ in a solvent or matrix with scattering length density $\eta_\mathrm{s}$ reads as
+\begin{subequations} \label{eq:multishellsphere}
+\begin{align}
+  I_\mathrm{ms}(q) &= \abs{ K_\mathrm{sph}(q,R_\mathrm{c},\eta_\mathrm{c}-\eta_\mathrm{s})+\sum_{i=1}^{N} K_i(q)}^2 \\
+  K_\mathrm{sph}(q,R,\eta) &= \eta \frac43 \pi R^3  3 \frac{\sin (qR)-qR\cos (qR)}{(qR)^3} \\
+  R_i &=R_0+\sum_{j=1}^{i} \Delta R_j \\
+  R_0 &=R_\mathrm{c} \\
+%  \eta_0 &= \eta_\mathrm{c} \\
+  K_i(q) &= K_\mathrm{sph}(q,R_i,\eta_{i}-\eta_\mathrm{s}) + K_\mathrm{sph}(q,R_{i-1},\eta_{i}-\eta_\mathrm{s})
+\end{align}
+\end{subequations}
+The \texttt{DoubleShell} model as defined here is a multi-shell sphere with $N=2$ shells and a scattering length density for the two shells equal to
+\begin{subequations} \label{eq:DoubleShell}
+\begin{align}
+  \eta_1 &= \eta_{\mathrm{sh,}1} \\
+  \eta_2 &= \eta_{\mathrm{sh,}2} (1-x_s)
+\end{align}
+\end{subequations}
+with $x_s$ being the amount of solvent in the outer shell and $\eta_{\mathrm{sh,}2}$ its scattering length density for the case of no presence of solvent.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
@@ -153,11 +170,11 @@ V_c &= \pi R^2 d
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.18\textwidth]{../images/form_factor/cluster/tetrahedron1.png}
-\includegraphics[width=0.18\textwidth]{../images/form_factor/cluster/tetrahedron2.png}
-\includegraphics[width=0.18\textwidth]{../images/form_factor/cluster/DoubleShellChain3.png}
-\includegraphics[width=0.18\textwidth]{../images/form_factor/cluster/DoubleShellChain4.png}
-\includegraphics[width=0.18\textwidth]{../images/form_factor/cluster/DoubleShellChain5.png}
+\includegraphics[height=0.18\textwidth]{../images/form_factor/cluster/tetrahedron1.png}
+\includegraphics[height=0.18\textwidth]{../images/form_factor/cluster/tetrahedron2.png}
+\includegraphics[height=0.18\textwidth]{../images/form_factor/cluster/DoubleShellChain3.png}
+\includegraphics[height=0.18\textwidth]{../images/form_factor/cluster/DoubleShellChain4.png}
+\includegraphics[height=0.18\textwidth]{../images/form_factor/cluster/DoubleShellChain5.png}
 \end{center}
 \caption{} \label{doubleshellchain}
 \end{figure}

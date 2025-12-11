@@ -202,7 +202,7 @@ scalar sasfit_qwe(double nu, double (*f)(double, void *), double x, void *fparam
 	amax=gsl_sf_bessel_zero_Jnu(nu,nDelay)/param.more_p[1];
 	amin=DBL_MIN;
 	amin=amax*sasfit_eps_get_nriq();
-	prev = prev + sasfit_integrate(amin,amax,&FrJnu,&param);
+	prev = prev + sasfit_integrate_ctm(amin,amax,&FrJnu,&param, 10000, atol, rtol);
 	nTerms   = nIntervalsMax-nDelay-1;
 	rmin     = DBL_MIN;
 	S      = calloc(nTerms+1,sizeof(scalar));
@@ -213,7 +213,7 @@ scalar sasfit_qwe(double nu, double (*f)(double, void *), double x, void *fparam
 	for (i=nDelay+1;i<=nTerms;i++) {
         amin=amax;
         amax=gsl_sf_bessel_zero_Jnu(nu,i)/param.more_p[1];
-        Fi = sasfit_integrate(amin,amax,&FrJnu,&param);
+        Fi = sasfit_integrate_ctm(amin,amax,&FrJnu,&param, 10000, atol, rtol);
 
         n = i-nDelay;
         S[n+1] = S[n]+Fi;
@@ -428,7 +428,7 @@ scalar sasfit_HankelChave(scalar order, double (*f)(double, void *), scalar r, v
     for (nzero = 1;nzero<=nIntervalsMax;nzero++) { //%upper limit is arbitrary and should never be reached
         a = b;
         b = Zeroj(nzero,order)/r;
-        s[nzero] = sasfit_integrate(a,b,&FrJnu,&param);
+        s[nzero] = sasfit_integrate_ctm(a, b,&FrJnu,&param, 10000, aerr, rerr);
         Sum = Padesum(s,nzero);
         if (fabs(Sum - last) <= rerr*fabs(Sum) + aerr) {
             converged = TRUE;
