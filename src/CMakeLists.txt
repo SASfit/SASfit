@@ -175,7 +175,7 @@ add_definitions(
 )
 
 # zlib
-#find_package(ZLIB QUIET REQUIRED)
+find_package(ZLIB QUIET REQUIRED)
 
 # openMP
 find_package(OpenMP)
