@@ -30,6 +30,10 @@
 static sasfit_eps_t     sasfit_eps;
 
 sasfit_common_DLLEXP
+scalar sasfit_get_res_scaling(void) {
+	return sasfit_eps.res_scaling;
+}
+sasfit_common_DLLEXP
 scalar sasfit_eps_get_aniso(void) {
 	return sasfit_eps.aniso;
 }
@@ -312,7 +316,10 @@ sasfit_common_DLLEXP
 void sasfit_set_sg_level(int value) {
 	sasfit_eps.sg_level = value;
 }
-
+sasfit_common_DLLEXP
+void sasfit_set_res_scaling(scalar value) {
+	sasfit_eps.res_scaling = value;
+}
 
 
 

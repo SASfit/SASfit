@@ -575,6 +575,7 @@ int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[])
 	double tcl_double;
 
 	sasfit_eps_set_comp(1e-50); // c/SASFIT_x_tcl.c, l.575: somewhere between 1e-70 and 1e-100
+	sasfit_set_res_scaling(1.0);
 
 	SF_TCL_GET_F(double, "::FitPrecision", "epsNRIQ", sasfit_eps_set_nriq);
 	SF_TCL_GET_F(double, "::FitPrecision", "h", sasfit_eps_set_h);
@@ -609,6 +610,7 @@ int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[])
 	SF_TCL_GET_F(double, "::FitPrecision", "N_Ogata", sasfit_set_N_Ogata);
 	SF_TCL_GET_F(double, "::FitPrecision", "MSASthickness", sasfit_set_MSASthickness);
 	SF_TCL_GET_F(double, "::FitPrecision", "MSASlambda", sasfit_set_MSASlambda);
+	SF_TCL_GET_F(double, "::FitPrecision", "res_scaling", sasfit_set_res_scaling);
 	SF_TCL_GET_F(bool, argv[1], "fit", sasfit_eps_set_fitorsim);
 	if (sasfit_eps_get_alpha() <= -1) {
         sasfit_err("alpha=&lg<=-1, will be set to -0.9\n",sasfit_eps_get_alpha());

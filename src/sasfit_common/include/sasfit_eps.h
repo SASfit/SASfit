@@ -86,6 +86,7 @@ typedef struct
 	scalar  beta;
 	scalar  h;          //!< Percentage of variation for numerical differentiation.
 	scalar  comparison; //!< Tolerance value for tests if two numbers are equal.
+	scalar res_scaling;
 } sasfit_eps_t;
 
 // hide direct functions from plugins
@@ -129,6 +130,7 @@ sasfit_common_DLLEXP int    sasfit_get_rootalg(void);
 sasfit_common_DLLEXP scalar sasfit_eps_get_alpha(void);
 sasfit_common_DLLEXP scalar sasfit_eps_get_beta(void);
 sasfit_common_DLLEXP int sasfit_get_sg_level(void);
+sasfit_common_DLLEXP scalar sasfit_get_res_scaling(void);
 
 sasfit_common_DLLEXP scalar sasfit_eps_get_comp(void);
 /**
@@ -177,6 +179,7 @@ sasfit_common_DLLEXP void sasfit_eps_set_comp(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_alpha(scalar value);
 sasfit_common_DLLEXP void sasfit_eps_set_beta(scalar value);
 sasfit_common_DLLEXP void sasfit_set_sg_level(int value);
+sasfit_common_DLLEXP void sasfit_set_res_scaling(scalar value);
 
 /**
  * \ingroup sasfit_eps
@@ -197,5 +200,5 @@ sasfit_common_DLLEXP void sasfit_eps_print(void);
 #endif // MAKE_SASFIT_PLUGIN
 #endif // file
 
-#endif // header guard 
+#endif // header guard
 

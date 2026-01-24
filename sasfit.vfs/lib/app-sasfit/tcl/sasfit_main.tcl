@@ -450,6 +450,8 @@ set FitPrecision(Lebedev) 32
 set FitPrecision(spherical_t_design) 42
 set FitPrecision(SG_Level) 8
 set FitPrecision(FIBONACCI) 1024
+set FitPrecision(res_scaling)   1.0
+
 setSinCosQuad2int
 setIntStrategy2int
 setSphAvgStrategy2int

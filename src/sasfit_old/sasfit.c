@@ -2255,15 +2255,17 @@ void IQ(Tcl_Interp *interp,
 
     if (sasfit_get_iq_or_gz() == 0) {
         if (Qres <= 0.0) {
-            IQ_t(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpAP,error_type,error);
+            IQ_t(interp,Q,Qres*sasfit_get_res_scaling(),par,Ifit,Isub,dydpar,max_SD,tmpAP,error_type,error);
         } else {
-            if (Q-3.0*Qres<=0.0) {
+            // as it is not clear if the resolution is given
+            // in sigma or FWHM or HWHM the resolution is scaled by a constant factor
+            if (Q-3.0*Qres*sasfit_get_res_scaling()<=0.0) {
                 Qmin = 1.0e-3*Q;
             } else {
-                Qmin = Q-3.0*Qres;
+                Qmin = Q-3.0*Qres*sasfit_get_res_scaling();
             }
-            Qmax = Q+3*Qres;
-            SASFITqrombIQ(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpAP,error_type,error);
+            Qmax = Q+3*Qres*sasfit_get_res_scaling();
+            SASFITqrombIQ(interp,Qmin,Qmax,Q,Qres*sasfit_get_res_scaling(),par,Ifit,Isub,dydpar,max_SD,tmpAP,error_type,error);
         }
         if (DLS==max_SD) *Ifit = (*Ifit)*(*Ifit);
     } else {
@@ -3286,15 +3288,15 @@ void IQ_Global(Tcl_Interp *interp,
 
     if (sasfit_get_iq_or_gz() == 0) {
         if (Qres <= 0.0) {
-            IQ_t_global(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
+            IQ_t_global(interp,Q,Qres*sasfit_get_res_scaling(),par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
         } else {
-            if (Q-3.0*Qres<=0.0) {
-                Qmin = 1.0e-3*Q;
+            if (Q-3.0*Qres*sasfit_get_res_scaling()<=0.0) {
+                Qmin = 1.0e-3*Q*sasfit_get_res_scaling();
             } else {
-                Qmin = Q-3.0*Qres;
+                Qmin = Q-3.0*Qres*sasfit_get_res_scaling();
             }
-            Qmax = Q+3*Qres;
-            SASFITqrombIQglobal(interp,Qmin,Qmax,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
+            Qmax = Q+3*Qres*sasfit_get_res_scaling();
+            SASFITqrombIQglobal(interp,Qmin,Qmax,Q,Qres*sasfit_get_res_scaling(),par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);
         }
     } else {
         IQ_t_global(interp,Q,Qres,par,Ifit,Isub,dydpar,max_SD,tmpGAP,GCP,error_type,error);

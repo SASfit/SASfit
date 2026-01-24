@@ -12,7 +12,7 @@
 \end{figure}
 The scattering intensity and scattering amplitude of a homogeneous sphere with a small relative refraction index is given by \cite{Rayleigh1914}
 \begin{subequations}
-\begin{align}
+\begin{align} 
 I_\text{Sphere}(Q,R) = K^2(Q,R,\Delta\eta) \label{eq:I_sphere}
 \end{align}
 with
@@ -26,7 +26,7 @@ $$
 \end{subequations}
 
 \vspace{5mm}
-\noindent \uline{Input Parameters for model \texttt{Sphere}:}
+\noindent \uline{Input Parameters for model \texttt{sphere}:}
 \begin{description}
 \item[\texttt{R}] radius of sphere $R$
 \item[- - -] not used
@@ -50,7 +50,7 @@ The scattering length density contrast is set to 1.} \label{fig:I_sphere}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 
-\subsection{Spherical Shell i}
+\subsection{spherical shell i}
 \label{sect:spherical_shell_i} ~\\
 
 \begin{figure}[htb]
@@ -60,7 +60,7 @@ The scattering length density contrast is set to 1.} \label{fig:I_sphere}
 \caption{Spherical Shell i} \label{fig:shell1}
 \end{figure}
 
-This implementation of a spherical shell is parametrised with an inner radius $ R_2$ and outer
+This implementation of a spherical shell is parameterised with an inner radius $ R_2$ and outer
 radius $R_1$. The scattering contrast relative to the matrix of the core is $\mu \Delta \eta$
 and the one of the shell $\Delta\eta$.
 
@@ -74,13 +74,13 @@ with
 \end{align}
 The forward scattering for $Q=0$ is given by
 $$
-\lim_{Q=0}I_\text{Shell1}(Q,R_1,R_2,\Delta\eta,\mu) =
+\lim_{Q=0}I_\text{shell1}(Q,R_1,R_2,\Delta\eta,\mu) =
 \left(\frac{4}{3}\pi \Delta\eta \left[ R_1^3 -
 R_2^3(1-\mu)\right]\right)^2
 $$
 
 \vspace{5mm}
-\noindent  \uline{Input Parameters for model \texttt{Spherical Shell i}:}
+\noindent  \uline{Input Parameters for model \texttt{spherical shell i}:}
 \begin{description}
 \item[\texttt{R1}] overall radius of spherical shell $R_1$
 \item[\texttt{R2}] radius of core $R_2$
@@ -105,16 +105,16 @@ and the one of the core to -1, -0.5, and 2.} \label{fig:I_shell_i}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
-\subsection{Spherical Shell ii}
+\subsection{spherical shell ii}
 \label{sect:spherical_shell_ii} ~\\
 
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.38\textwidth]{../images/form_factor/spheres/shell2.png}
 \end{center}
-\caption{\texttt{Spherical Shell ii}} \label{fig:shell2}
+\caption{\texttt{spherical shell ii}} \label{fig:shell2}
 \end{figure}
-This implementation of a spherical shell is parametrised with an outer radius $R$ and an inner
+This implementation of a spherical shell is parameterised with an outer radius $R$ and an inner
 radius $\nu R$. The scattering contrast relative to the matrix of the core is $ \mu \Delta \eta$
 and the one of the shell $\Delta\eta$.
 \begin{align}
@@ -133,7 +133,7 @@ R^3(1-\mu)\right]\right)^2
 $$
 
 \vspace{5mm}
-\noindent \uline{Input Parameters for model \texttt{Spherical Shell ii}:}
+\noindent \uline{Input Parameters for model \texttt{spherical shell ii}:}
 \begin{description}
 \item[\texttt{R}] overall radius of spherical shell $R$
 \item[\texttt{nu}] the radius of the core is only the fraction $\nu$ of the overall radius  $R$
@@ -157,7 +157,7 @@ and the one of the core to -1, -0.5, and 2.} \label{fig:I_shell_ii}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
-\subsection{Spherical Shell iii}
+\subsection{spherical shell iii}
 \label{sect:spherical_shell_iii} ~\\
 
 \begin{figure}[htb]
@@ -166,7 +166,7 @@ and the one of the core to -1, -0.5, and 2.} \label{fig:I_shell_ii}
 \end{center}
 \caption{Spherical Shell iii} \label{fig:shell3}
 \end{figure}
-This implementation of a spherical shell is parametrised with an inner radius $R$ and a shell
+This implementation of a spherical shell is parameterised with an inner radius $R$ and a shell
 thickness $\Delta R$. The scattering contrast relative to the matrix of the core is $ \Delta \eta_1$
 and the one of the shell $\Delta\eta_2$.
 \begin{align}
@@ -186,7 +186,7 @@ $$
 $$
 
 \vspace{5mm}
-\noindent  \uline{Input Parameters for model \texttt{Spherical Shell iii}:}
+\noindent  \uline{Input Parameters for model \texttt{spherical shell iii}:}
 \begin{description}
 \item[\texttt{R}] radius of core $R$
 \item[\texttt{dR}] thickness of the shell $\Delta R$

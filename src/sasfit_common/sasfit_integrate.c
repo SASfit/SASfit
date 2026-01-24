@@ -1308,7 +1308,7 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
         }
         case HANKEL_GSL_QAWF: {
             phi0 = M_PI/4.*(1.+nu*2.);
-            na = lround(sasfit_get_N_Ogata());
+            na = GSL_MIN(lround(sasfit_get_N_Ogata()),30);
             a=gsl_sf_bessel_zero_Jnu(nv,(na<2?na:2))/FBTparam.Q;
 
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -1336,59 +1336,6 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
             int v, sM, sN, sN0, sN1, nval, k, kmax, l, lmax;
             hankel_transform(f, FBTparam.Q, FBTparam.nu, sasfit_eps_get_nriq(),
                      &res, &nval, fparams);
-            break;
-            seta = sasfit_eps_get_nriq();
-            sM   = lround(ceil(-5*log10(seta)));
-            sni  = FBTparam.nu;
-            sw = FBTparam.Q;
-            sK = pow(M_PI,(sni+2)) /( sw*sw*pow(2,sni) * gsl_sf_gamma(sni+1) *(sni+2) );
-            sh = 1.0/((sni +2) * sM) * log(sK * pow(sM,(sni +2))/seta );
-            sc = sqrt(2)/16.0/(sw*sw)*fabs(4*sni*sni-1);
-            #define FUN(X) (sc * f(fabs(X*M_PI/sw) , fparams) / sqrt(X))
-            #define PHI(X) (X/(1 - exp(-X)))
-            #define PHIP(X) (1 - exp(-X)-X*exp(-X))/gsl_pow_2((1-exp(-X)))
-            #define F(t) f(fabs(stau/sw *PHI(t-sq)),fparams) *gsl_pow_2(stau/sw)*PHI(st-sq) * gsl_sf_bessel_Jnu(sni, stau*PHI(t-sq)) * PHIP(t-sq)
-            stau = M_PI / sh;
-            sq = M_PI /(4*stau) *(1-2*sni);
-            sN0=5;
-            rN0=5;
-            sder = 0;
-            lmax = 8;
-            l=0;
-            while (sder >= 0 && l<lmax) {
-                rN0 *= 2;
-                rN = rN0;
-                rN1= rN0+1;
-                st = 1;
-                kmax = 100;
-                sF0 = FUN(rN);
-                sF1 = FUN(rN1);
-                k = 1;
-                while (st > seta && k < kmax && fabs(sF1) >= seta) {
-                    sder = (sF1-sF0)/(rN1-rN0);
-                    if (sder >= 0) {
-                        sasfit_out("solution not found , increase N0=%lg\n",rN0);
-                        break;
-                    }
-                    rN  = rN - (sF1 - seta)/sder ;
-                    rN0 = rN1;
-                    sF0 = sF1;
-                    rN1 = rN;
-                    sF1 = FUN(rN) ;
-                    st  = fabs (sF1 - seta);
-                    k++;
-                }
-            }
-            sH = 0;
-            sN = lround(rN);
-            for (v=-sM;v<=sN;v++) {
-                sH=sH+F(v*sh);
-            }
-            sH = sH*sh;
-            res = sH;
-            err = seta;
-            nval = sM+sN+k+1;
-            //sasfit_out("needed %d function evaluations.\n",nval);
             break;
         }
         case HANKEL_GUPTASARMA_97_FAST: {

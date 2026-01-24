@@ -535,3 +535,9 @@ declare 162 generic {
 declare 163 generic {
 	int sasfit_get_sincos_quad_strategy(void)
 }
+declare 164 generic {
+	void sasfit_set_res_scaling(scalar value)
+}
+declare 165 generic {
+	scalar sasfit_get_res_scaling(void)
+}

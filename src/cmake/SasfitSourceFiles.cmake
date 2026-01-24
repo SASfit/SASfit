@@ -69,6 +69,18 @@ set(SOURCE_sasfit_common
 	Ogata/FBT.cpp
 	Ogata/sasfit_FBT.cpp
 	Ogata/FBT.h
+	Ogata/2026/hankel.c
+	Ogata/2026/hankel.h
+	Ogata/2026/hankel_adaptive.c
+	Ogata/2026/hankel_adaptive.h
+	Ogata/2026/hankel_adaptive_finite.c
+	Ogata/2026/hankel_adaptive_finite.h
+	Ogata/2026/hankel_finite.c
+	Ogata/2026/hankel_ogata.c
+	Ogata/2026/hankel_table.c
+	Ogata/2026/hankel_vector.c
+	Ogata/2026/levin_hankel.c
+	Ogata/2026/levin_hankel.h
 	libcerf_1.5/erfcx.c
 	libcerf_1.5/err_fcts.c
 	libcerf_1.5/im_w_of_x.c

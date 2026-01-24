@@ -30,14 +30,14 @@
 
 /*
 scalar DoubleShell_withSD(Tcl_Interp *interp,
-			 scalar q, 
-			 scalar R, 
+			 scalar q,
+			 scalar R,
 			 scalar s,
 		  scalar c1,
 		  scalar c2,
 		  scalar c3,
 		  scalar cm,
-			 scalar d1, 
+			 scalar d1,
 			 scalar d2,
 			 bool  *error)
 */
@@ -829,6 +829,8 @@ scalar sasfit_ff_DoubleShell_withSD(scalar q, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param);
 
 	sasfit_get_param(param, 8, &R, &s, &c1, &c2, &c3, &cm, &d1, &d2);
+    d1 = fabs(d1);
+    d2 = fabs(d2);
 
 	t2 =  ( R *  R);
 	t3 =  q *  q;
@@ -971,11 +973,11 @@ scalar sasfit_ff_DoubleShell_withSD(scalar q, sasfit_param * param)
 	t213 = t212 * d2;
 	t214 = t213 * t5;
 	t215 = t211 * t214;
-	t218 = 0.8e1 * t19 * t25 - 0.2e1 * t29 * t32 + t45 * t51 - 0.4e1 * t55 
-		* t57 * t62 * t3 + 0.64e2 * t69 * t70 * t77 * t23 - 0.4e1 * t87 * t90 
-		- 0.32e2 * t95 * t70 * t77 * d1 + 0.8e1 * t101 * t109 - 0.8e1 * t82 
-		* t113 * t134 - 0.4e1 * t55 * t57 * t22 * t49 + 0.16e2 * t143 * t147 
-		+ t29 * t151 + 0.128e3 * t156 * t167 + 0.4e1 * t172 * t180 - 0.4e1 
+	t218 = 0.8e1 * t19 * t25 - 0.2e1 * t29 * t32 + t45 * t51 - 0.4e1 * t55
+		* t57 * t62 * t3 + 0.64e2 * t69 * t70 * t77 * t23 - 0.4e1 * t87 * t90
+		- 0.32e2 * t95 * t70 * t77 * d1 + 0.8e1 * t101 * t109 - 0.8e1 * t82
+		* t113 * t134 - 0.4e1 * t55 * t57 * t22 * t49 + 0.16e2 * t143 * t147
+		+ t29 * t151 + 0.128e3 * t156 * t167 + 0.4e1 * t172 * t180 - 0.4e1
 		* t184 * t189 + 0.8e1 * t193 * t198 + 0.2e1 * t204 * t206 - 0.8e1 * t210 * t215;
 	t219 = t35 *  t2;
 	t221 = (t102 + t41) *  t12;
@@ -1990,7 +1992,7 @@ scalar sasfit_ff_DoubleShell_withSD(scalar q, sasfit_param * param)
 		+ t218 + t2080 + t1642 + t3116 + t1186 + t3160 + t3374 + t933 + t2857
 		+ t1882 + t3333 + t1364 + t1986 + t1593 + t503 + t2173 + t2312 + t3575
 		+ t3204 + t1238 + t1302 + t2539 + t2903 + t2268 + t2364 + t3535
-		+ t2640 + t780 + t1126 + t1057 + t3292 + t1932 + t2122 + t2946) 
+		+ t2640 + t780 + t1126 + t1057 + t3292 + t1932 + t2122 + t2946)
 		/ t153 / t11 /  t116 /  t8;
 
 	return 4./3.*M_PI*(R*R+s*s)*(R*R+2.*s*s)/R* t3592;

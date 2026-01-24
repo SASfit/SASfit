@@ -441,12 +441,18 @@ $I = \int_a^{+\infty} \mathrm{d}x g(x)
 \cos{(\omega x)}
 \end{array}
 \right\}$
-By defining $g(r)= f(r) \frac{\mathrm{J}_n(qr)}{\cos\left(qr-\frac{\pi}{2}n-\frac{\pi}{4}\right)}$ we convert the Hankel transform in \ref{eq:HT} into a $\cos$-Fourier type transform after an additional substitutions of $r'=r-\frac{\pi}{2}\frac{n}{q}-\frac{1}{q}\frac{\pi}{4}$.
+By defining $g(r)= rf(r) \frac{\mathrm{J}_n(qr)}{\cos\left(qr-\frac{\pi}{2}n-\frac{\pi}{4}\right)}$ we convert the Hankel transform in \ref{eq:HT} into a $\cos$-Fourier type transform after an additional substitutions of $r'=r-\frac{\pi}{2}\frac{n}{q}-\frac{1}{q}\frac{\pi}{4}$.
 \end{description}
-Next to the quadrature algorithms above also fast digital filters for Hankel transform have been developed. A few of these have been supplied in SASfit for testing \cite{Anderson1989,Guptasarma1997,Ogata2005,Kong2007,Key2012,Kang2021}: \\
-\texttt{OGATA\_2005}, \texttt{FBT0}, \texttt{FBT1}, \texttt{FBT2}, \texttt{GUPTASARMA\_97}, \texttt{GUPTASARMA\_97\_FAST}, \texttt{KEY\_51}, \texttt{KEY\_101}, \texttt{KEY\_201}, \texttt{ANDERSON\_801}
-
-
+Next to the quadrature algorithms above also fast digital filters for Hankel transform have been developed. A few of these have been supplied in SASfit for testing
+\begin{description}
+\item[\texttt{GUPTASARMA\_97}] Digital linear filter operators from \cite{Guptasarma1997}
+\item[\texttt{GUPTASARMA\_97\_FAST}] Digital linear filter operators from \cite{Guptasarma1997}
+\item[\texttt{KEY\_51}, \texttt{KEY\_101}, \texttt{KEY\_201}] Digital linear filter operators from \cite{Key2012,Werthmueller2019}
+\item[\texttt{ANDERSON\_801}] Digital linear filter operators from \cite{Anderson1989,Werthmueller2019}
+\end{description}
+\cite{Ogata2005,Kong2007,Kang2021}: \\
+\texttt{OGATA\_2005}, \texttt{FBT0}, \texttt{FBT1}, \texttt{FBT2}
+Other interesting references are: \cite{GuizarSicairos2004,Diehl2024a,Diehl2024,Malinka2021,Baddour2017}
 
 \clearpage
 \section{Fitting strategies}

@@ -205,6 +205,8 @@ sasfit_common_stubs_t sasfit_common_stubs = {
 	sasfit_clipped_cos_quad, /* 161 */
 	sasfit_set_sincos_quad_strategy, /* 162 */
 	sasfit_get_sincos_quad_strategy, /* 163 */
+	sasfit_set_res_scaling, /* 164 */
+	sasfit_get_res_scaling, /* 165 */
 };
 /* !END!: Do not edit above this line, see sasfit_common.decls for modifications. */
 

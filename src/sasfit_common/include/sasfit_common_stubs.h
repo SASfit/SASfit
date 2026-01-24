@@ -241,8 +241,11 @@ typedef struct
 	scalar (*sasfit_erfcinv) (scalar); /* 159 */
 	scalar (*sasfit_clipped_sinc_quad) (double, double, sasfit_func_int_t, double, void *); /* 160 */
 	scalar (*sasfit_clipped_cos_quad)  (double, double, sasfit_func_int_t, double, void *); /* 161 */
-	void (*sasfit_set_sincos_quad_strategy) (int value); /* 1625 */
+	void (*sasfit_set_sincos_quad_strategy) (int value); /* 162 */
 	int (*sasfit_get_sincos_quad_strategy) (void); /* 163 */
+	void (*sasfit_set_res_scaling) (scalar value); /* 164 */
+	scalar (*sasfit_get_res_scaling) (void); /* 165 */
+
 
 } sasfit_common_stubs_t;
 
@@ -880,6 +883,14 @@ typedef struct
 #ifndef sasfit_get_sincos_quad_strategy
 #define sasfit_get_sincos_quad_strategy \
 	(SASFIT_COMMON_STUBS()->sasfit_get_sincos_quad_strategy) /* 163 */
+#endif
+#ifndef sasfit_set_res_scaling
+#define sasfit_set_res_scaling \
+	(SASFIT_COMMON_STUBS()->sasfit_set_res_scaling) /* 164 */
+#endif
+#ifndef sasfit_get_res_scaling
+#define sasfit_get_res_scaling \
+	(SASFIT_COMMON_STUBS()->sasfit_get_res_scaling) /* 165 */
 #endif
 #endif /* defined(MAKE_SASFIT_PLUGIN) */
 
