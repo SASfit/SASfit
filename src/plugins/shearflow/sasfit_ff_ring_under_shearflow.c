@@ -46,7 +46,7 @@ int rshearflow_kernel_cub(unsigned ndim, const double *x, void *pam,
 	}
 	if (ndim==2) {
         PSI = sasfit_param_override_get_psi(PSI_DEG*M_PI/180.) - THETA0_DEG*M_PI/180. - x[1];
-        fval[0]=gsl_rexpQRn2(x[0],param)/(2*DTHETA0);
+        fval[0]=gsl_rexpQRn2(x[0],param)/(DTHETA0);
 	} else {
 	    PSI = sasfit_param_override_get_psi(PSI_DEG*M_PI/180.) - THETA0_DEG*M_PI/180.;
 	    fval[0]=gsl_rexpQRn2(x[0],param);
@@ -54,49 +54,15 @@ int rshearflow_kernel_cub(unsigned ndim, const double *x, void *pam,
 	return 0;
 }
 
-scalar rshearflow_kernel_OOURA2(scalar x, void *pam) {
-	sasfit_param * param;
-	param = (sasfit_param *) pam;
-	PSI = sasfit_param_override_get_psi(PSI_DEG*M_PI/180.) - THETA0_DEG*M_PI/180.-x;
-	return gsl_rexpQRn2(XX,param);
-}
-
-scalar rshearflow_kernel_OOURA(scalar x, void *pam) {
-    scalar *aw, res,err,sum;
-    int intstrategy, lenaw=4000;
-	sasfit_param * param;
-	param = (sasfit_param *) pam;
-
-	if (DELTA_THETA0DEG == 0) {
-        return gsl_rexpQRn2(x,param);
-	} else {
-	    XX = x;
-        intstrategy = sasfit_get_int_strategy();
-//    intstrategy=OOURA_CLENSHAW_CURTIS_QUADRATURE;
-        switch(intstrategy) {
-        case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&rshearflow_kernel_OOURA2,-DTHETA0,DTHETA0, aw, &res, &err, param);
-			sum=res;
-            free(aw);
-            break;
-            }
-        case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&rshearflow_kernel_OOURA2, -DTHETA0,DTHETA0, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,param);
-			sum=res;
-            free(aw);
-            break;
-            }
-        }
-        return sum/(2*DTHETA0);
-	}
+scalar rshearflow_kernel_sasfit_cubature(const double *x, size_t ndim, void *pam) {
+    scalar fval;
+    int ierr;
+    ierr = rshearflow_kernel_cub(ndim, x, pam,1,&fval);
+    return fval;
 }
 
 scalar sasfit_ff_ring_under_shearflow(scalar q, sasfit_param * param)
-{	scalar *aw, res,err,sum;
+{	scalar *aw, res,err,sum, ierr;
     scalar cubxmin[2], cubxmax[2], fval[1], ferr[1];
     int intstrategy, lenaw=4000;
 
@@ -113,60 +79,13 @@ scalar sasfit_ff_ring_under_shearflow(scalar q, sasfit_param * param)
     DTHETA0 = DELTA_THETA0DEG*M_PI/360.;
 	cubxmin[0]=0;
 	cubxmax[0]=1;
-	cubxmin[1]= -DTHETA0;
-	cubxmax[1]=  DTHETA0;
+	cubxmin[1]= -DTHETA0/2;
+	cubxmax[1]=  DTHETA0/2;
 	Q = q;
-
-	intstrategy = sasfit_get_int_strategy();
-//    intstrategy=OOURA_DOUBLE_EXP_QUADRATURE;
-	switch(intstrategy) {
-    case OOURA_DOUBLE_EXP_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw)*sizeof(scalar));
-            sasfit_intdeini(lenaw, GSL_DBL_MIN, sasfit_eps_get_nriq(), aw);
-            sasfit_intde(&rshearflow_kernel_OOURA,0,1, aw, &res, &err, param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case OOURA_CLENSHAW_CURTIS_QUADRATURE: {
-            aw = (scalar *)malloc((lenaw+1)*sizeof(scalar));
-            sasfit_intccini(lenaw, aw);
-            sasfit_intcc(&rshearflow_kernel_OOURA, 0,1, sasfit_eps_get_nriq(), lenaw, aw, &res, &err,param);
-			sum=res;
-            free(aw);
-            break;
-            }
-    case H_CUBATURE: {
-            if (DTHETA0 == 0) {
-                hcubature(1, &rshearflow_kernel_cub,param,1, cubxmin, cubxmax,
-                    100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-                    fval, ferr);
-            } else {
-                hcubature(1, &rshearflow_kernel_cub,param,2, cubxmin, cubxmax,
-                    100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-                    fval, ferr);
-            }
-			sum = fval[0];
-            break;
-            }
-    case P_CUBATURE: {
-            if (DTHETA0 == 0) {
-                pcubature(1, &rshearflow_kernel_cub,param,1, cubxmin, cubxmax,
-                    100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-                    fval, ferr);
-            } else {
-                pcubature(1, &rshearflow_kernel_cub,param,2, cubxmin, cubxmax,
-                    100000, 0.0, sasfit_eps_get_nriq(), ERROR_PAIRED,
-                    fval, ferr);
-            }
-			sum = fval[0];
-            break;
-            }
-    default: {
-//		    sasfit_out("This is default sasfit_integrate routine\n");
-			sum = sasfit_integrate(0,1,&gsl_rexpQRn2,param);
-            break;
-            }
+    if (DTHETA0 == 0) {
+        ierr  = sasfit_cubature(1,cubxmin,cubxmax,rshearflow_kernel_sasfit_cubature,param,sasfit_eps_get_nriq(), &sum,&err);
+    } else {
+        ierr  = sasfit_cubature(2,cubxmin,cubxmax,rshearflow_kernel_sasfit_cubature,param,sasfit_eps_get_nriq(), &sum,&err);
     }
     return I0*sum;
 }
