@@ -38,16 +38,16 @@ scalar sasfit_sd_fgld__v(scalar u, sasfit_param * param, int dist)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
-		// case 0: quantile distribution function Q(y)=x
-		// case 1: quantile density distribution function q(y)=dQ(y)/dy = 1/p(y)
-		// case 2: probability distribution function p(x)
-		// case 3: cumulative distribution function F(x)=y
-		// case 4: mode
-		// case 5: mean
-		// case 6: variance
-		// case 7: median
-		// case 8: skewness
-		// case 9: excess kurtosis
+		// case 1: quantile distribution function Q(y)=x
+		// case 2: quantile density distribution function q(y)=dQ(y)/dy = 1/p(y)
+		// case 3: probability distribution function p(x)
+		// case 4: cumulative distribution function F(x)=y
+		// case 5: mode
+		// case 6: mean
+		// case 7: variance
+		// case 8: median
+		// case 9: skewness
+		// case 10: excess kurtosis
 
 	switch (dist) {
 	    case DISTRIBUTION_TYPE: return DISTRIBUTION_QUANTILE;

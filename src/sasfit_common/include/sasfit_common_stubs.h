@@ -219,9 +219,9 @@ typedef struct
     void (*sasfit_sph_t_by_order) ( int order, double *x, double *y, double *z); /*137 */
     scalar (*sasfit_hankel) (double nu, double (*f)(double q, void *par), double x, void *fparams); /* 138 */
 	scalar (*sasfit_get_h_Ogata) (void); /* 139 */
-	scalar (*sasfit_get_N_Ogata) (void); /* 140 */
+	int (*sasfit_get_N_Ogata) (void); /* 140 */
 	void (*sasfit_set_h_Ogata) (scalar value); /* 141 */
-	void (*sasfit_set_N_Ogata) (scalar value); /* 142 */
+	void (*sasfit_set_N_Ogata) (int value); /* 142 */
 	void (*sasfit_set_hankel_strategy) (int value); /* 143 */
 	int (*sasfit_get_hankel_strategy) (void); /* 144 */
 	scalar (*sasfit_get_MSASthickness) (void); /* 145 */

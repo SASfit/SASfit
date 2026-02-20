@@ -189,11 +189,11 @@ scalar sasfit_get_h_Ogata(void) {
 	return sasfit_eps.h_Ogata;
 }
 sasfit_common_DLLEXP
-void sasfit_set_N_Ogata(scalar value) {
+void sasfit_set_N_Ogata(int value) {
 	sasfit_eps.N_Ogata = value;
 }
 sasfit_common_DLLEXP
-scalar sasfit_get_N_Ogata(void) {
+int sasfit_get_N_Ogata(void) {
 	return sasfit_eps.N_Ogata;
 }
 sasfit_common_DLLEXP
@@ -338,7 +338,7 @@ void sasfit_eps_print_struct(const sasfit_eps_t * fitp)
     sasfit_out("SphAvgStrategy_int  %d\n", fitp->sphavg_strategy);
     sasfit_out("Hankel_int          %d\n", fitp->hankel_strategy);
     sasfit_out("sincos_quad_int     %d\n", fitp->sincos_quad_strategy);
-	sasfit_out("N_Ogfata:           %f\n", fitp->N_Ogata);
+	sasfit_out("N_Ogfata:           %d\n", fitp->N_Ogata);
 	sasfit_out("h_Ogata:            %f\n", fitp->h_Ogata);
 	sasfit_out("Spars-Grid-level:   %d\n", fitp->sg_level);
 	sasfit_out("MSASthickness:      %f\n", fitp->MSASthickness);

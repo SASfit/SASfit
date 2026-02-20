@@ -50,7 +50,7 @@
 #define H_CUBATURE 4
 #define P_CUBATURE 5
 #define NR_QROMB 6
-#define Sphere_Lebedev 7
+#define Sphere_Lebedev 7     // this definition should not be here needs to be removed
 #define TanhSinh 8
 #define GSL_QAGS 9
 #define GSL_QNG 10
@@ -148,7 +148,9 @@ enum sasfit_dist {
     DISTRIBUTION_VARIANCE,
     DISTRIBUTION_MEDIAN,
     DISTRIBUTION_SKEWNESS,
-    DISTRIBUTION_EXCESS_KURTOSIS
+    DISTRIBUTION_EXCESS_KURTOSIS,
+    DISTRIBUTION_X_MOMENT_MIN,
+    DISTRIBUTION_X_MOMENT_MAX
 };
 
 

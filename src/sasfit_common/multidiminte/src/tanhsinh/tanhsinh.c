@@ -659,7 +659,7 @@ double qthsh(double (*f)(double, void *), void *par, double a, double b, int n, 
 	#include <stdlib.h>
 	#include <math.h>
 
-	// compile with -DFAST to accellerate with modest descrease in accuracy
+	// compile with -DFAST to accelerate with modest decrease in accuracy
 	#ifdef FAST
 	#define FUDGE1 160
 	#define FUDGE2 16

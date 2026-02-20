@@ -77,8 +77,10 @@ scalar Kernel_carvedP_OOURA3(scalar x, void * pam) {
 	lenaw=10000;
 	PHI = x;
 
-    EE= sqrt(gsl_pow_2(A*cos(GAMA))+gsl_pow_2(B*sin(GAMA))+C*C);
-    SINPHI = sqrt(gsl_pow_2(A*cos(GAMA))+gsl_pow_2(B*sin(GAMA)))/EE;
+    EE= gsl_hypot3(A*cos(GAMA),B*sin(GAMA),C);
+    // EE =sqrt(gsl_pow_2(A*cos(GAMA))+gsl_pow_2(B*sin(GAMA))+C*C);
+    SINPHI = gsl_hypot(A*cos(GAMA),B*sin(GAMA))/EE;
+    // SINPHI = sqrt(gsl_pow_2(A*cos(GAMA))+gsl_pow_2(B*sin(GAMA)))/EE;
     COSPHI = C/EE;
     H1w = EE*Q*R*SINPHI*sin(BETA);
     H1 = H1w*R;
@@ -348,6 +350,7 @@ scalar sasfit_ff_carved_triax_ellip_shell(scalar q, sasfit_param * param)
 	cparam.ndim=ndim;
 	cparam.func = &sasfit_ff_carved_triax_ellip_shell_core;
 
+	//sasfit_orient_avg();
 	intstrategy = sasfit_get_int_strategy();
 	intstrategy=H_CUBATURE;
 	switch(intstrategy) {

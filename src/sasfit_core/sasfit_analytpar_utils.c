@@ -607,7 +607,7 @@ int sasfit_eps_get_from_tcl(Tcl_Interp * interp, const char * argv[])
 	SF_TCL_GET_F(double, "::FitPrecision", "GSL_ALPHA", sasfit_eps_set_alpha);
 	SF_TCL_GET_F(double, "::FitPrecision", "GSL_BETA", sasfit_eps_set_beta);
 	SF_TCL_GET_F(double, "::FitPrecision", "h_Ogata", sasfit_set_h_Ogata);
-	SF_TCL_GET_F(double, "::FitPrecision", "N_Ogata", sasfit_set_N_Ogata);
+	SF_TCL_GET_F(int,    "::FitPrecision", "N_Ogata", sasfit_set_N_Ogata);
 	SF_TCL_GET_F(double, "::FitPrecision", "MSASthickness", sasfit_set_MSASthickness);
 	SF_TCL_GET_F(double, "::FitPrecision", "MSASlambda", sasfit_set_MSASlambda);
 	SF_TCL_GET_F(double, "::FitPrecision", "res_scaling", sasfit_set_res_scaling);

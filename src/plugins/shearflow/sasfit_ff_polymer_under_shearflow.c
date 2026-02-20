@@ -76,10 +76,11 @@ scalar sasfit_ff_polymer_under_shearflow(scalar q, sasfit_param * param)
     DTHETA0 = DELTA_THETA0DEG*M_PI/360.;
 	cubxmin[0]=0;
 	cubxmax[0]=1;
-	cubxmin[1]= -DTHETA0;
-	cubxmax[1]=  DTHETA0;
+	cubxmin[1]= -DTHETA0/2;
+	cubxmax[1]=  DTHETA0/2;
     if (DTHETA0 == 0) {
         ierr  = sasfit_cubature(1,cubxmin,cubxmax,shearflow_kernel_sasfit_cubature,param,sasfit_eps_get_nriq(), &sum,&err);
+        sum = sum/DTHETA0;
     } else {
         ierr  = sasfit_cubature(2,cubxmin,cubxmax,shearflow_kernel_sasfit_cubature,param,sasfit_eps_get_nriq(), &sum,&err);
     }

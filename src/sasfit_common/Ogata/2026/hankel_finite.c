@@ -245,9 +245,20 @@ double hankel_finite_filon(
     if (npanels > 0) {
         panels = npanels;
     } else {
-        panels = (int)ceil(4.0 * k * R);
-        if (panels < 16) panels = 16;
-        if (panels > 10000) panels = 10000;
+        /* Increase panel density to improve Filon accuracy; default 40 panels per k*R */
+        panels = (int)ceil(40.0 * k * R);
+        if (panels < 64) panels = 64;
+        if (panels > 200000) panels = 200000;
+    }
+
+    /* Trace and log invocation so we can confirm Filon is being exercised */
+    printf("[FILON] k=%g R=%g panels=%d npanels=%d\n", k, R, panels, npanels);
+    {
+        FILE *lf = fopen("C:/Users/kohlbrecher/switchdrive/SASfitGit/src/sasfit_common/Ogata/2026/hankel_instrument.log","a");
+        if (lf) {
+            fprintf(lf, "FILON_INVOKE k=%g R=%g panels=%d npanels=%d\n", k, R, panels, npanels);
+            fclose(lf);
+        }
     }
 
     double sum = 0.0;
@@ -272,6 +283,32 @@ double hankel_finite_filon(
         panel_sum += c[2] * (M2 / (kpow1*k*k));
 
         sum += panel_sum;
+
+        /* Instrumentation: compare Filon panel contribution to direct GL on this panel */
+        {
+            FILE *lf = fopen("C:/Users/kohlbrecher/switchdrive/SASfitGit/src/sasfit_common/Ogata/2026/hankel_instrument.log","a");
+            if (lf) {
+                double direct = 0.0;
+                int do_direct = 1;
+                /* For very large panel counts compute direct only every so often to limit cost */
+                if (panels > 4096) {
+                    int stride = panels / 4096;
+                    if ((p % stride) != 0) do_direct = 0;
+                }
+                if (do_direct) {
+                    gsl_function F;
+                    finite_params_t params = {f, (double)nu, k, user_data};
+                    F.function = &finite_integrand;
+                    F.params = &params;
+                    gsl_integration_workspace *w = gsl_integration_workspace_alloc(500);
+                    double abserr = 0.0;
+                    gsl_integration_qag(&F, r_points[0], r_points[2], 0.0, tol, 500, GSL_INTEG_GAUSS61, w, &direct, &abserr);
+                    gsl_integration_workspace_free(w);
+                }
+                fprintf(lf, "FILON_PANEL k=%g p=%d r0=%g r2=%g panel_sum=%g direct=%g\n", k, p, r_points[0], r_points[2], panel_sum, direct);
+                fclose(lf);
+            }
+        }
     }
     return sum;
 }

@@ -4,6 +4,8 @@
 #include "hankel_adaptive.h"
 #include "hankel.h"         /* Ogata API: hankel_ogata_nu, hankel_ogata_table_* */
 #include "levin_hankel.h"   /* Levin tail: hankel_tail_levin_int_order */
+#include "bestlime_c_api.h"   /* optional BestLime backend */
+#include <stdlib.h>
 
 /* Fast method switch: for small k use finite Gauss-Legendre integration (faster
     and accurate for slowly oscillatory integrands); for larger k use Ogata+Levin. */
@@ -151,6 +153,38 @@ static double hankel_tail_adaptive(
     double R1 = R0 + 200.0;
     int    N_levin = 1024; /* more collocation points for better tail accuracy */
 
+    /* If BestLime is available, try it first using a sampled grid on [R0,R1].
+       Fall back to the existing Levin collocation if BestLime is unavailable or
+       returns NaN. */
+#ifdef USE_BESTLIME
+    {
+        size_t nz = 1024;
+        if (nz < 128) nz = 128;
+        double dz = (R1 - R0) / (double)(nz - 1);
+        double *z = (double*)malloc(nz * sizeof(double));
+        double *fv = (double*)malloc(nz * sizeof(double));
+        if (z && fv) {
+            for (size_t i = 0; i < nz; ++i) {
+                z[i] = R0 + dz * (double)i;
+                fv[i] = f(z[i], user_data);
+            }
+            double best = bestlime_integrate_samples(n, k, R0, R1, z, fv, nz, tol);
+            {
+                FILE *lf = fopen("C:/Users/kohlbrecher/switchdrive/SASfitGit/src/sasfit_common/Ogata/2026/hankel_instrument.log","a");
+                if (lf) {
+                    fprintf(lf, "BESTLIME_TRY k=%g R0=%g R1=%g nz=%zu res=%g\n", k, R0, R1, nz, best);
+                    fclose(lf);
+                }
+            }
+            free(z); free(fv);
+            if (!isnan(best)) return best;
+            /* otherwise fall through to Levin */
+        } else {
+            if (z) free(z); if (fv) free(fv);
+        }
+    }
+#endif
+
     double tail_prev = hankel_tail_levin_int_order(
         f, user_data, n, k, R0, R1, N_levin
     );
@@ -184,13 +218,16 @@ double hankel_adaptive_scalar(
     if (tol <= 0.0) tol = 1e-10;
     if (k <= 0.0)   return 0.0; /* or handle k=0 separately */
 
-    /* Fast switch: use adaptive finite GL for small k to keep runtime low */
+    /* Fast switch: use adaptive finite GL for small k to keep runtime low.
+       Can be overridden by setting environment variable HANKEL_FORCE_FILON_H1. */
+    int force_filon = 0;
+    if (getenv("HANKEL_FORCE_FILON_H1")) force_filon = 1;
     if (n == 1) {
-        if (k <= HANKEL_FAST_SWITCH_K) {
+        if (!force_filon && k <= HANKEL_FAST_SWITCH_K) {
             return hankel_finite_GL_adaptive(f, user_data, n, k, HANKEL_FINITE_R, HANKEL_FINITE_NGL, tol);
         }
 
-        /* For larger k use Filon composite on [0,Rk] plus Levin tail */
+        /* For larger k (or when forced) use Filon composite on [0,Rk] plus Levin tail */
         double Rk = fmax(HANKEL_FINITE_R, 20.0 + 10.0 * k);
         double H_core = hankel_finite_filon(f, user_data, n, k, Rk, 0, tol);
 
@@ -268,8 +305,10 @@ double hankel_adaptive_debug(
         return 0.0;
     }
 
+    int force_filon = 0;
+    if (getenv("HANKEL_FORCE_FILON_H1")) force_filon = 1;
     if (n == 1) {
-        if (k <= HANKEL_FAST_SWITCH_K) {
+        if (!force_filon && k <= HANKEL_FAST_SWITCH_K) {
             double val = hankel_finite_GL_adaptive(f, user_data, n, k, HANKEL_FINITE_R, HANKEL_FINITE_NGL, tol);
             if (core_out) *core_out = val;
             if (tail_out) *tail_out = 0.0;
@@ -346,10 +385,12 @@ void hankel_adaptive_vector(
 {
     if (!k_array || !H_out || nk <= 0) return;
 
+    int force_filon = 0;
+    if (getenv("HANKEL_FORCE_FILON_H1")) force_filon = 1;
     for (int i = 0; i < nk; ++i) {
         double k = k_array[i];
         if (k <= 0.0) { H_out[i] = 0.0; continue; }
-        if (k <= HANKEL_FAST_SWITCH_K) {
+        if (k <= HANKEL_FAST_SWITCH_K && !force_filon) {
             if (n == 1) {
                 double Rk = fmax(HANKEL_FINITE_R, 10.0 + 5.0 * k);
                 H_out[i] = hankel_finite_filon(f, user_data, n, k, Rk, 0, tol);

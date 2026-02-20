@@ -2,7 +2,7 @@
  * Author(s) of this file:
  *   Evgeniy Ponomarev (evgeniy.ponomarev@epfl.ch)
  *   Modified 13.09.2013
- *   extended and last modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   extended and modified by Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  *   07.12.2016
  *   Andersen Acceleration option has been implemented by Alain Studer
  */

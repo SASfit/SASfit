@@ -133,9 +133,9 @@ scalar sasfit_Pthirtynine(scalar q, sasfit_param * param)
 
 	sasfit_init_param( &subParam );
 	subParam.p[0] = 1.0;
-	subParam.p[0] = L;
-	subParam.p[0] = b;
-	subParam.p[0] = 0.0;
+	subParam.p[1] = L;
+	subParam.p[2] = b;
+	subParam.p[3] = 0.0;
 
 	//P_ch  = WormLikeChainEXV(interp,q,1.0,L,b,0.0,error)/(1.+nu*Ptwentyone(pow(q*Rg,2.)));
 	P_ch  = sasfit_ff_WormLikeChainEXV(q, &subParam)/(1.+nu*Ptwentyone(pow(q*Rg,2.)));

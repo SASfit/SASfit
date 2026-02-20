@@ -464,13 +464,13 @@ declare 139 generic {
 	scalar sasfit_get_h_Ogata(void)
 }
 declare 140 generic {
-	scalar sasfit_get_N_Ogata(void)
+	int sasfit_get_N_Ogata(void)
 }
 declare 141 generic {
 	void sasfit_set_h_Ogata(scalar value)
 }
 declare 142 generic {
-	void sasfit_set_N_Ogata(scalar value)
+	void sasfit_set_N_Ogata(int value)
 }
 declare 143 generic {
 	void sasfit_set_hankel_strategy(int value)

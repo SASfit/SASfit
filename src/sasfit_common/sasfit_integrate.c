@@ -1253,7 +1253,7 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
     switch (sasfit_get_hankel_strategy()) {
         case HANKEL_OOURA_DEO: {
 
-            na = lround(sasfit_get_N_Ogata());
+            na = sasfit_get_N_Ogata();
             a=gsl_sf_bessel_zero_Jnu(nv,(na<10?na:10))/FBTparam.Q;
 
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -1308,7 +1308,7 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
         }
         case HANKEL_GSL_QAWF: {
             phi0 = M_PI/4.*(1.+nu*2.);
-            na = GSL_MIN(lround(sasfit_get_N_Ogata()),30);
+            na = GSL_MIN(sasfit_get_N_Ogata(),30);
             a=gsl_sf_bessel_zero_Jnu(nv,(na<2?na:2))/FBTparam.Q;
 
             aw = (scalar *)malloc((lenaw)*sizeof(scalar));
@@ -1460,14 +1460,14 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
         }
         case HANKEL_QWE: {
             res = sasfit_qwe(0, f, x, fparams,
-                             lround(sasfit_get_N_Ogata()),
+                             sasfit_get_N_Ogata(),
                              sasfit_eps_get_nriq()*10,
                              DBL_MIN);
             break;
         }
         case HANKEL_CHAVE: {
             res = sasfit_HankelChave(0, f,x, fparams,
-                                     lround(sasfit_get_N_Ogata()),
+                                     sasfit_get_N_Ogata(),
                                      sasfit_eps_get_nriq()*10,
                                      DBL_MIN);
             break;
