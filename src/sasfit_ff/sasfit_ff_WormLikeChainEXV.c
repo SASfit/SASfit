@@ -52,7 +52,7 @@ float WormLikeChainEXV(Tcl_Interp *interp,
 
 /* ******************************************************************* */
 /*		kp chains with excl volume. R/b=0.1 */
-/*		S(q) from MC simulations parametreised by the Yoshizaki and */
+/*		S(q) from MC simulations parametrized by the Yoshizaki and */
 /*		Yamakawa approach */
 /*		RL= CONTOUR LENGTH */
 /*		RRL = KUHN LENGTH */

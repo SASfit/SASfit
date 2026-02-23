@@ -29,8 +29,8 @@
 #include "include/sasfit_ff_utils.h"
 
 /*
-float P39(Tcl_Interp *interp, 
-			float q, 
+float P39(Tcl_Interp *interp,
+			float q,
 			float Nc,	// aggregation number
 			float Rg,	// gyration radius of chains
 			float Rc,	// radius of core
@@ -58,7 +58,7 @@ scalar sasfit_ff_P39(scalar q, sasfit_param * param)
 	R = Rc;
 	Mthirtynine = rhos + Nc*rhoc;
 
-	if (Rc == 0.0) 
+	if (Rc == 0.0)
 	{
 		sigma = Nc/4.;
 	}
@@ -80,7 +80,7 @@ scalar sasfit_ff_P39(scalar q, sasfit_param * param)
 	subParam.p[10] = L;
 
 	// return sasfit_Pthirtynine(interp, q, Nc, Rg, R, Rc, s, nu, Mthirtynine, rhos, rhoc, b, L, error);
-	res = sasfit_Pthirtynine(q, param);
+	res = sasfit_Pthirtynine(q, subparam);
 
 	SASFIT_CHECK_SUB_ERR(param, subParam);
 

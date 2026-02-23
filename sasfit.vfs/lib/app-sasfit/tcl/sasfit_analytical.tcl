@@ -705,17 +705,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) ""
                         }
-   "P39"                { set actualPar(FF,l1,label) "Nc ="
-                          set actualPar(FF,l2,label) "Rg ="
-                          set actualPar(FF,l3,label) "Rc ="
-                          set actualPar(FF,l4,label) "rhos ="
-                          set actualPar(FF,l5,label) "rhoc ="
-                          set actualPar(FF,l6,label) "L ="
-                          set actualPar(FF,l7,label) "b ="
-                          set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
    "SuperParStroboPsi"  { set actualPar(FF,l1,label) "phi0 ="
                           set actualPar(FF,l2,label) "Knuc_Kmag ="
                           set actualPar(FF,l3,label) "R ="
@@ -1367,17 +1356,6 @@ switch $actualPar(FF,typestr) {
                           set actualPar(FF,l6,label) ""
                           set actualPar(FF,l7,label) ""
                           set actualPar(FF,l8,label) ""
-                          set actualPar(FF,l9,label) ""
-                          set actualPar(FF,l10,label) ""
-                        }
-   "Andrea1"            { set actualPar(FF,l1,label) "R ="
-                          set actualPar(FF,l2,label) "dR ="
-                          set actualPar(FF,l3,label) "c ="
-                          set actualPar(FF,l4,label) "core =" 
-                          set actualPar(FF,l5,label) "dR2 ="
-                          set actualPar(FF,l6,label) "shell1 ="
-                          set actualPar(FF,l7,label) "shell2 ="
-                          set actualPar(FF,l8,label) "c2 ="
                           set actualPar(FF,l9,label) ""
                           set actualPar(FF,l10,label) ""
                         }
@@ -2147,17 +2125,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
 				}
-	   "Francois1"          { set actualAnalytPar(FF,l1,label) "Rc ="
-				  set actualAnalytPar(FF,l2,label) "Rm ="
-				  set actualAnalytPar(FF,l3,label) "nu ="
-				  set actualAnalytPar(FF,l4,label) "L ="
-				  set actualAnalytPar(FF,l5,label) "b ="
-				  set actualAnalytPar(FF,l6,label) "Nagg ="
-				  set actualAnalytPar(FF,l7,label) "Drho ="
-				  set actualAnalytPar(FF,l8,label) "K ="
-				  set actualAnalytPar(FF,l9,label) "exvol ="
-				  set actualAnalytPar(FF,l10,label) ""
-				}
 	"CopolymerMicelleR^-a"  { set actualAnalytPar(FF,l1,label) "Rc ="
 				  set actualAnalytPar(FF,l2,label) "Vc ="
 				  set actualAnalytPar(FF,l3,label) "Vsh ="
@@ -2349,17 +2316,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l5,label) {T\[K\] =}
 				  set actualAnalytPar(FF,l6,label) {T_fluct\[K\] =}
 				  set actualAnalytPar(FF,l7,label) {B_r\[Tesla\] =}
-				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "P39"                { set actualAnalytPar(FF,l1,label) "Nc ="
-				  set actualAnalytPar(FF,l2,label) "Rg"
-				  set actualAnalytPar(FF,l3,label) "Rc ="
-				  set actualAnalytPar(FF,l4,label) "rhos ="
-				  set actualAnalytPar(FF,l5,label) "rhoc ="
-				  set actualAnalytPar(FF,l6,label) "L ="
-				  set actualAnalytPar(FF,l7,label) "b ="
 				  set actualAnalytPar(FF,l8,label) ""
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
@@ -3028,17 +2984,6 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(FF,l6,label) ""
 				  set actualAnalytPar(FF,l7,label) ""
 				  set actualAnalytPar(FF,l8,label) ""
-				  set actualAnalytPar(FF,l9,label) ""
-				  set actualAnalytPar(FF,l10,label) ""
-				}
-	   "Andrea1"            { set actualAnalytPar(FF,l1,label) "R ="
-				  set actualAnalytPar(FF,l2,label) "dR ="
-				  set actualAnalytPar(FF,l3,label) "c ="
-				  set actualAnalytPar(FF,l4,label) "core =" 
-				  set actualAnalytPar(FF,l5,label) "dR2 ="
-				  set actualAnalytPar(FF,l6,label) "shell1 ="
-				  set actualAnalytPar(FF,l7,label) "shell2 ="
-				  set actualAnalytPar(FF,l8,label) "c2 ="
 				  set actualAnalytPar(FF,l9,label) ""
 				  set actualAnalytPar(FF,l10,label) ""
 				}
@@ -6475,16 +6420,13 @@ set selected_ff [dropdownl_add_entries_old $ffmenu ::actualAnalytPar ::tmpAnalyt
 			{Robertus1 Delta} \
 			{Robertus2 Delta} \
 			{JuelichMicelle Monodisperse} \
-			{Francois1 Monodisperse} \
 			{CopolymerMicelleR^-a Monodisperse} \ 
 			{CopolymerMicelleRod Monodisperse} \
 			{CopolymerMicelleEll Monodisperse} \ 
 			{CopolymerMicelleCyl Monodisperse} \
-			Andrea1 \
 			{A(B) Monodisperse} \ 
 			{B(B) Monodisperse} \
-			{P39 Monodisperse} \
-			{julia "Julia's form factors" {{TripleLayeredXS_ULV Monodisperse}}} } } \ 
+		 } } \ 
 }]
 
 set selected_plug [dropdownl_add_entries $ffmenu ::actualAnalytPar ::tmpAnalytPar update_datasets_single [winfo parent $ffmenu] [winfo parent $sdmenu] [get_old_func_name "form_fac"] [get_children_idx_by_name "form_fac"]]

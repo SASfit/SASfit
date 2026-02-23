@@ -979,17 +979,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
-	   "Francois1"          { set actualPar(FF,l1,label) "Rc ="
-				  set actualPar(FF,l2,label) "Rm ="
-				  set actualPar(FF,l3,label) "nu ="
-				  set actualPar(FF,l4,label) "L ="
-				  set actualPar(FF,l5,label) "b ="
-				  set actualPar(FF,l6,label) "Nagg ="
-				  set actualPar(FF,l7,label) "Drho ="
-				  set actualPar(FF,l8,label) "K ="
-				  set actualPar(FF,l9,label) "exvol ="
-				  set actualPar(FF,l10,label) ""
-				}
 	 "CopolymerMicelleRod"  { set actualPar(FF,l1,label) "Vpolym_core ="
 				  set actualPar(FF,l2,label) "Vpolym_brsh ="
 				  set actualPar(FF,l3,label) "eta_core ="
@@ -1567,17 +1556,6 @@ proc GlobalAPindex {AnalytPar actualAnalytPar index
 				  set actualPar(FF,l6,label) ""
 				  set actualPar(FF,l7,label) ""
 				  set actualPar(FF,l8,label) ""
-				  set actualPar(FF,l9,label) ""
-				  set actualPar(FF,l10,label) ""
-				}
-	   "Andrea1"            { set actualPar(FF,l1,label) "R ="
-				  set actualPar(FF,l2,label) "dR ="
-				  set actualPar(FF,l3,label) "c ="
-				  set actualPar(FF,l4,label) "core ="
-				  set actualPar(FF,l5,label) "dR2 ="
-				  set actualPar(FF,l6,label) "shell1 ="
-				  set actualPar(FF,l7,label) "shell2 ="
-				  set actualPar(FF,l8,label) "c2 ="
 				  set actualPar(FF,l9,label) ""
 				  set actualPar(FF,l10,label) ""
 				}
@@ -2475,15 +2453,13 @@ proc analyticalGlobalSDCmd {simorfit
 					{Robertus1 Delta} \
 					{Robertus2 Delta} \ 
 					{JuelichMicelle Monodisperse} \
-					{Francois1 Monodisperse} \
 					{CopolymerMicelleR^-a Monodisperse} \ 
 					{CopolymerMicelleRod Monodisperse} \
 					{CopolymerMicelleEll Monodisperse} \ 
 					{CopolymerMicelleCyl Monodisperse} \
-					Andrea1 \
 					{A(B) Monodisperse} \ 
 					{B(B) Monodisperse} \
-					{julia "Julia's form factors" {{TripleLayeredXS_ULV Monodisperse}}} } } \ 
+				 } } \ 
 	}]
 
 	set selected_plug [dropdownl_add_entries $ffmenu ::actualGlobalAnalytPar ::tmpGlobalAnalytPar update_datasets_multi [winfo parent $ffmenu] [winfo parent $ffmenu] [get_old_func_name "form_fac"] [get_children_idx_by_name "form_fac"]]
