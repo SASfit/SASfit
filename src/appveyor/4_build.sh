@@ -37,7 +37,7 @@ fi
 
 echo "Determined $NUM_LOGICAL_CORES logical cores."
 
-cd "$APPVEYOR_BUILD_FOLDER" && \
+([ -z "$APPVEYOR_BUILD_FOLDER" ] || cd "$APPVEYOR_BUILD_FOLDER") && \
 mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" -DCREATE_BINARY=TRUE "$scriptdir/.." && make -j$NUM_LOGICAL_CORES
 
 #mkdir -p build && cd build && cmake -G "$CMAKE_GENERATOR" -DCREATE_BINARY=TRUE -DDEBUG=TRUE "$scriptdir/.." && make -j$NUM_LOGICAL_CORES
