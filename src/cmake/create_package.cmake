@@ -44,7 +44,6 @@ endif(NOT DEFINED SASFIT_VERSION)
 # build the name of the package path (for distribution)
 set(PCKG_DIR_NAME ${CMAKE_PROJECT_NAME}-${SASFIT_VERSION}-${SASFIT_PCKG_DIR_POSTFIX})
 set(SASFIT_PCKG_DIR ${SASFIT_ROOT_DIR}/../${PCKG_DIR_NAME})
-get_filename_component(SASFIT_PCKG_DIR "${SASFIT_PCKG_DIR}" REALPATH) 
 
 # remove previously created package directory (if the same as present) and create a new one
 if(EXISTS ${SASFIT_PCKG_DIR})

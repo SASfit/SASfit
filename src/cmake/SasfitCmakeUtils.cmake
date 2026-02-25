@@ -462,7 +462,6 @@ function(get_package_dir PCKG_NAME CURRENT_DIR)
         return()
     endif()
     messageSection("Looking for ${PCKG_NAME} in '${CURRENT_DIR}'")
-    get_filename_component(CURRENT_DIR "${CURRENT_DIR}" REALPATH)
     unset(SOURCE_DIR)
     set_package_source_dir(PCKG_SRC_DIR ${CURRENT_DIR})
     find_configure(${PCKG_SRC_DIR})
@@ -593,7 +592,6 @@ function(build_from_source CURRENT_DIR CONFIG_OPTIONS)
 
     # set working directory for next build steps configure or cmake
     set(WORK_DIR ${SOURCE_DIR}/${SUFFIX_DIR})
-    get_filename_component(WORK_DIR "${WORK_DIR}" REALPATH)
 
     # configure and build by appropriate script
     if(${CONFIG_FILE} STREQUAL "configure")
