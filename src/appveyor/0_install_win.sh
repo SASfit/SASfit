@@ -32,15 +32,16 @@ pacman -Rns --noconfirm \
     $(pacman -Q | awk '/^mingw-w64-i686-/{print $1}')
 
 echo "# Install specific versions of some build packages"
-cd "$APPVEYOR_BUILD_FOLDER"
-mkdir packages
-cd packages
+#cd "$APPVEYOR_BUILD_FOLDER"
+#mkdir packages
+#cd packages
 pacman -S --noconfirm curl gawk
-sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" gcc-13
-sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" cmake-3.29.2
-sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-3.11.9
-sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-pip-24.0
-pacman -U --noconfirm *.zst
+pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-python mingw-w64-x86_64-python-pip
+#sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" gcc-13
+#sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" cmake-3.29.2
+#sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-3.11.9
+#sh "../src/appveyor/citools/msys2_get_pckg+deps.sh" python-pip-24.0
+#pacman -U --noconfirm *.zst
 
 echo "# Install more general build tools"
 pacman -S --noconfirm make diffutils coreutils patch mingw-w64-x86_64-fftw mingw-w64-x86_64-gsl
