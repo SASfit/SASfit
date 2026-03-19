@@ -669,7 +669,7 @@ StringToTicks(clientData, interp, tkwin, string, widgRec, offset)
     char *widgRec;		/* Pointer to structure record. */
     int offset;			/* Offset of field in structure. */
 {
-    unsigned long mask = (unsigned long)clientData;
+    unsigned int mask = (unsigned int)clientData;
     Axis *axisPtr = (Axis *)widgRec;
     Ticks **ticksPtrPtr = (Ticks **) (widgRec + offset);
     int nTicks;
@@ -3645,9 +3645,9 @@ UseOp(graphPtr, axisPtr, argc, argv)
     Blt_ChainLink *linkPtr;
     int i;
     Blt_Uid classUid;
-    long margin;
+    int margin;
 
-    margin = (long)argv[-1];
+    margin = (int)argv[-1];
     chainPtr = graphPtr->margins[margin].axes;
     if (argc == 0) {
 	for (linkPtr = Blt_ChainFirstLink(chainPtr); linkPtr!= NULL;
@@ -4167,7 +4167,7 @@ Blt_VirtualAxisOp(graphPtr, interp, argc, argv)
 int
 Blt_AxisOp(graphPtr, margin, argc, argv)
     Graph *graphPtr;
-    long margin;
+    int margin;
     int argc;
     CONST84 char **argv;
 {
