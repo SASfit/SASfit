@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 echo
 echo "## Installing build tools on:"
 echo
@@ -15,7 +17,7 @@ set +x
 echo
 echo "## Show all apt sources installed"
 echo
-for fn in $(find /etc/apt -type f -path '*source*' ); do echo "## $fn:"; grep -v '^\(\([# ]\+\)\|$\)' $fn; done
+for fn in $(find /etc/apt -type f -path '*source*' ); do echo "## $fn:"; grep -v '^\(\([# ]\+\)\|$\)' $fn; done || true
 echo
 echo "## Update the package database"
 echo
