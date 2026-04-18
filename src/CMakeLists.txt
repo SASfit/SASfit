@@ -77,7 +77,7 @@ endif()
 
 if(CMAKE_HOST_APPLE)
     add_definitions(-DMACOSX)
-    add_definitions(-DNO_LONGLONG_AND_NO_LONGINT)
+    add_definitions(-DNO_LONGLONG_AND_NO_LONGINT -fopenmp)
     set(CMAKE_OSX_ARCHITECTURES ${CMAKE_SYSTEM_PROCESSOR})
     if(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
         # assuming os is recent enough to understand x64
@@ -102,14 +102,15 @@ IF(WIN32) # for Windows
         -DNO_FPINIT
         -DCONFLICTING_ISATTY
         -DNO_FUNCTION_MACRO
+        -fopenmp
     )
     IF(MSVC80)
         # suppress warnings about usage of old non-limited string functions
         # has to be fixed later
         add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
-        add_definitions(-DINTEGER_STAR_8) # see f2c/f2c.h
+        add_definitions(-DINTEGER_STAR_8 -fopenmp) # see f2c/f2c.h
     ELSE() # NOT MSVC80
-#        add_definitions(-DNO_LONGLONG_AND_NO_LONGINT)
+        add_definitions(-DNO_LONGLONG_AND_NO_LONGINT -fopenmp)
     ENDIF()
 ENDIF() # for Windows
 
@@ -152,6 +153,10 @@ message(STATUS "TCL INCLUDES:  ${TCL_INCLUDE_DIRS}")
 message(STATUS "TCL LIBRARIES: ${TCL_LIBRARIES}")
 message(STATUS "TCL SH: ${TCL_SH}")
 
+# openMP
+find_package(OpenMP REQUIRED)
+
+
 # FFTW
 messageSection("Looking for FFTW3:")
 find_package(FFTW3 QUIET REQUIRED)
@@ -169,6 +174,16 @@ endif()
 message(STATUS "sundials INCLUDES:  ${sundials_INCLUDE_DIRS}")
 message(STATUS "sundials LIBRARIES: ${sundials_LIBRARIES}")
 
+# bestlime
+find_package(bestlime QUIET REQUIRED)
+if(NOT bestlime_FOUND)
+    add_subdirectory(bestlime)
+    find_package(bestlime REQUIRED)
+endif()
+message(STATUS "bestlime INCLUDES:  ${bestlime_INCLUDE_DIRS}")
+message(STATUS "bestlime LIBRARIES: ${bestlime_LIBRARIES}")
+
+
 add_definitions(
     -DUSE_TCL_STUBS
     -DUSE_TK_STUBS
@@ -177,8 +192,6 @@ add_definitions(
 # zlib
 find_package(ZLIB QUIET REQUIRED)
 
-# openMP
-find_package(OpenMP)
 
 # get a list of all source files and prepare include dirs
 set(SRC_FILES "")
@@ -202,6 +215,7 @@ include_directories(
     ${GSL_INCLUDE_DIRS}
     ${FFTW3_INCLUDE_DIRS}
     ${sundials_INCLUDE_DIRS}
+    ${bestlime_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
 )
 
@@ -211,11 +225,12 @@ add_library(sasfit SHARED
 
 target_link_libraries(sasfit
     ${TCL_LIBRARIES}
+    ${OpenMP_LIB}
     ${GSL_LIBRARIES}
     ${FFTW3_fftw3_LIBRARY}
     ${sundials_LIBRARIES}
+    ${bestlime_LIBRARIES}
 	${ZLIB_LIBRARIES}
-    ${OpenMP_LIB}
 )
 if(FALSE) # CMAKE_HOST_APPLE
     # seems to be needed on macOS
@@ -226,7 +241,7 @@ endif()
 # configure build flags, assumes gcc-style flags on all platforms
 #sasfit_build_props_unix(sasfit "-save-temps")
 set(CMAKE_C_FLAGS -std=gnu99 ${CMAKE_C_FLAGS})
-set(CMAKE_CXX_FLAGS -std=gnu++11 ${CMAKE_CXX_FLAGS})
+set(CMAKE_CXX_FLAGS -std=gnu++14 ${CMAKE_CXX_FLAGS})
 set(COMPILE_FLAGS)
 if(UNIX)
     set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall")
@@ -278,6 +293,8 @@ if(DEFINED WITH_STATIC)
 
 endif()
 
+# build cephes library
+add_subdirectory(maths_cephes)
  #############
 ### Plugins ###
  #############

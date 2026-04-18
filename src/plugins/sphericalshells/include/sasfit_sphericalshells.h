@@ -51,9 +51,13 @@
  *      <table border="0"><tr>
  *       <td>\b R_c</td>
  *       <td>core radius containing solvent</td>
+ *       <td>(default=10)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b t_sh</td>
  *       <td>layer thickness</td>
+ *       <td>(default=2)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b t_sol</td>
  *       <td>thickness of solvent layer</td>
@@ -106,15 +110,23 @@ sasfit_sphericalshells_DLLEXP scalar sasfit_ff_multilamellar_vesicle_v(scalar q,
  *      <table border="0"><tr>
  *       <td>\b R</td>
  *       <td>inner radius</td>
+ *       <td>(default=10)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b dR</td>
  *       <td>shell thickness</td>
+ *       <td>(default=2)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b eta1</td>
  *       <td>scattering contrast of core</td>
+ *       <td>(default=1e10)</td>
+ *       <td>(-inf;+inf)</td>
  *      </tr><tr>
  *       <td>\b eta2</td>
  *       <td>scattering contrast of shell</td>
+ *       <td>(default=-0.5e10)</td>
+ *       <td>(-inf;+inf)</td>
  *      </tr></table>
  */
 
@@ -155,15 +167,23 @@ sasfit_sphericalshells_DLLEXP scalar sasfit_ff_spherical_shell_iii_v(scalar q, s
  *      <table border="0"><tr>
  *       <td>\b R</td>
  *       <td>outer radius</td>
+ *       <td>(default=10)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b nu</td>
  *       <td>nu*R: inner radius</td>
+ *       <td>(default=3)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b mu</td>
  *       <td>mu*eta: scattering contrast of inner core</td>
+ *       <td>(default=-2)</td>
+ *       <td>(-inf;+inf)</td>
  *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering contrast of shell</td>
+ *       <td>(default=1e10)</td>
+ *       <td>(-inf;+inf)</td>
  *      </tr></table>
  */
 
@@ -204,15 +224,23 @@ sasfit_sphericalshells_DLLEXP scalar sasfit_ff_spherical_shell_ii_v(scalar q, sa
  *      <table border="0"><tr>
  *       <td>\b R1</td>
  *       <td>outer radius</td>
+ *       <td>(default=10)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b R2</td>
  *       <td>inner radius</td>
+ *       <td>(default=10)</td>
+ *       <td>[R1;+inf)</td>
  *      </tr><tr>
  *       <td>\b mu</td>
  *       <td>mu*eta: scattering contrast of inner core</td>
+ *       <td>(default=-2)</td>
+ *       <td>(-inf;+inf)</td>
  *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>eta: scattering contrast of shell</td>
+ *       <td>(default=1e10)</td>
+ *       <td>(-inf;+inf)</td>
  *      </tr></table>
  */
 
@@ -253,6 +281,8 @@ sasfit_sphericalshells_DLLEXP scalar sasfit_ff_spherical_shell_i_v(scalar q, sas
  *      <table border="0"><tr>
  *       <td>\b R</td>
  *       <td>radius</td>
+ *       <td>(default=10)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
@@ -262,6 +292,8 @@ sasfit_sphericalshells_DLLEXP scalar sasfit_ff_spherical_shell_i_v(scalar q, sas
  *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering_contrast</td>
+ *       <td>(default=1e10)</td>
+ *       <td>(-inf;+inf)</td>
  *      </tr></table>
  */
 
@@ -489,15 +521,21 @@ sasfit_sphericalshells_DLLEXP scalar sasfit_ff_bilayered_vesicle_v(scalar q, sas
  *      <table border="0"><tr>
  *       <td>\b R</td>
  *       <td>core radius (solvent)</td>
+ *       <td>(default=10)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b dR</td>
  *       <td>shell thickness</td>
+ *       <td>(default=2)</td>
+ *       <td>[0;+inf)</td>
  *      </tr><tr>
  *       <td>\b dummy</td>
  *       <td></td>
  *      </tr><tr>
  *       <td>\b eta</td>
  *       <td>scattering length density contrast</td>
+ *       <td>(default=1e10)</td>
+ *       <td>(-inf;+inf)</td>
  *      </tr></table>
  */
 
