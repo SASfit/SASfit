@@ -233,7 +233,7 @@ Run container interactively:
 
 In the container shell:
 
-    apt update && apt install -y lsb-release sudo fuse-overlayfs
+    apt update && apt install -y lsb-release sudo fuse-overlayfs wget
 
 #### Install the required packages for building
 
