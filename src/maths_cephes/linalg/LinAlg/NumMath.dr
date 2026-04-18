@@ -1,0 +1,60 @@
+			Numerical Mathematical Library
+
+README			Simple Introduction plus revision history
+Makefile		Makefile for making the library
+
+		Linear Algebra, Basic Operations
+LinAlg.h		Declaration of Matrices, Vectors, etc. over
+			real numbers
+LAStreams.h		Streams of REALs
+matrix1.cc		Level 1 BLAS, element-wise operations
+matrix2.cc		Level 2 BLAS, multiplications
+matrix_sub.cc		Level 1 & 2 BLAS, Matrix row/col/diag
+matrix_inv.cc		Find a matrix inverse
+vector.cc		Specific vector operations, Level 1 & 2 BLAS
+determinant.cc		Evaluate the determinant of a square matrix
+
+vvector.cc		Verify operations on vectors
+vvector.dat		Validation test output
+
+vmatrix.cc		Verify primitive operations on matrices
+vmatrix1.cc		Verify less trivial operations (norms, 
+			forcing of promises, transpositions)
+vmatrix2.cc		Verify multiplication/inv operations on matrices
+vlastreams.cc		Verify streams over matrices and vectors
+vmatrix.dat		Validation test output
+vmatrix1.dat		Validation test output
+vmatrix2.dat		Validation test output
+vlastreams.dat		Validation test output
+
+sample_adv.cc		Sample code demonstrating a few "advanced" features
+sample_adv.dat		and comparisons with the traditional style
+sample_ult.cc		Sample code illustrating the use of LAStreams
+sample_ult.dat		(operations on triangular blocks of a matrix)
+
+		Numerical Math
+math_num.h		Declaration of the routines implementing various
+			numerical math algorithms
+
+ali.cc			Interpolation over the table of function values
+vali.cc			Verification program
+vali.dat		Validation test output
+
+hjmin.cc		Hooke-Jeeves multivariate optimization
+vhjmin.cc		Validation code
+vhjmin.dat		Validation test run
+
+zeroin.cc		Brent's root finder
+fminbr.cc		Brent's one-dimensional minimizer
+vzeroin.cc		Verification program
+vfminbr.cc		Verification program
+vzeroin.dat		Validation test output
+vfminbr.dat		Validation test output
+
+svd.h			Singular Value Decomposition
+svd.cc			Implementation of the SVD class
+vsvd.cc			Verification code
+vslesing.cc		Verification of the SVD applications
+vsvd.dat		Validation test output
+vslesing.dat		Validation test output
+

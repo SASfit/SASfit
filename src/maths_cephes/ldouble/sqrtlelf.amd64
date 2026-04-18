@@ -1,0 +1,15 @@
+	.file	"sqrtlelf.amd64"
+.text
+	.p2align 4,,15
+.globl sqrtl
+       .type   sqrtl, @function
+sqrtl:
+	pushq %rbp
+	movq %rsp,%rbp
+	fldt 16(%rbp)
+	fld  %st(0)
+	fsqrt
+	fstp %st(1)
+	popq %rbp
+	ret
+	.size	sqrtl,.-sqrtl

@@ -1,0 +1,164 @@
+./vlastreams
+
+
+-------------------------------------------------------------------------------
+		Verify streams over matrices and vectors
+
+---> Test LAStreams
+Fill out the matrix in the natural order via an ElementAction...
+Check the filling order by a direct access. The row index varies first!
+Check the filling order via ElementWiseConstAction
+Check the filling order via AREALStreamIn
+	rewinding the stream and checking again...
+Check the filling order via AREALStreamOut
+	Copying the matrices via streams
+	Checking various seeks
+
+Done
+
+---> Test LAStrideStreams over 10x20 matrix with a stride of 1
+Fill out the matrix in the natural order via ElementWiseAction...
+Check the filling order via LAStrideStreamIn
+	strides made: 200
+Doubling every 1 element 
+	and checking it out...
+	strides made: 200
+	checking it out using regular stream with ignore...
+	strides made: 200
+	Checking various seeks
+
+Done
+
+---> Test LAStrideStreams over 20x10 matrix with a stride of 2
+Fill out the matrix in the natural order via ElementWiseAction...
+Check the filling order via LAStrideStreamIn
+	strides made: 100
+Doubling every 2 element 
+	and checking it out...
+	strides made: 100
+	checking it out using regular stream with ignore...
+	strides made: 100
+	Checking various seeks
+
+Done
+
+---> Test LAStrideStreams over 20x11 matrix with a stride of 3
+Fill out the matrix in the natural order via ElementWiseAction...
+Check the filling order via LAStrideStreamIn
+	strides made: 74
+Doubling every 3 element 
+	and checking it out...
+	strides made: 74
+	checking it out using regular stream with ignore...
+	strides made: 74
+	Checking various seeks
+
+Done
+
+---> Test LAStrideStreams over 20x11 matrix with a stride of 11
+Fill out the matrix in the natural order via ElementWiseAction...
+Check the filling order via LAStrideStreamIn
+	strides made: 20
+Doubling every 11 element 
+	and checking it out...
+	strides made: 20
+	checking it out using regular stream with ignore...
+	strides made: 20
+	Checking various seeks
+
+Done
+
+---> Test LAStrideStreams over 20x11 matrix with a stride of 220
+Fill out the matrix in the natural order via ElementWiseAction...
+Check the filling order via LAStrideStreamIn
+	strides made: 1
+Doubling every 220 element 
+	and checking it out...
+	strides made: 1
+	checking it out using regular stream with ignore...
+	strides made: 1
+	Checking various seeks
+
+Done
+
+---> Test subranging of LAStreams of a 10 -element vector 
+	checking the verify_ap_stream routine...
+	checking subranging of an LAStream by [-INF,INF]
+	checking subranging of an LAStreamIn by [-11,11]
+	checking subranging of an LAStreamOut by [0,9]
+	checking subranging of an LAStreamIn by [0,0]
+	checking subranging of an LAStreamIn by [1,1]
+	checking subranging of an LAStreamIn by [-2,-2]
+	checking subranging of an LAStreamIn by [1,0]
+	checking modifying via a subranged LAStreamOut by [1,2]
+
+Done
+
+---> Test subranging of LAStrideStream of a 10 -element vector with a stride of 1
+	checking subranging of an LAStrideStream by [-INF,INF]
+	checking subranging of an LAStrideStreamIn by [-11,11]
+	checking subranging of an LAStrideStreamOut by [0,9]
+	checking subranging of an LAStrideStreamIn by [0,0]
+	checking subranging of an LAStrideStreamIn by [1,1]
+	checking subranging of an LAStrideStreamIn by [-2,-2]
+	checking subranging of an LAStrideStreamIn by [1,0]
+	checking modifying via a subranged LAStrideStreamOut by [1,2]
+
+Done
+
+---> Test subranging of LAStrideStream of a 10 -element vector with a stride of 2
+	checking subranging of an LAStrideStream by [-INF,INF]
+	checking subranging of an LAStrideStreamIn by [-11,11]
+	checking subranging of an LAStrideStreamOut by [0,4]
+	checking subranging of an LAStrideStreamIn by [0,0]
+	checking subranging of an LAStrideStreamIn by [1,1]
+	checking subranging of an LAStrideStreamIn by [-2,-2]
+	checking subranging of an LAStrideStreamIn by [1,0]
+	checking modifying via a subranged LAStrideStreamOut by [1,2]
+
+Done
+
+---> Test subranging of LAStrideStream of a 10 -element vector with a stride of 3
+	checking subranging of an LAStrideStream by [-INF,INF]
+	checking subranging of an LAStrideStreamIn by [-11,11]
+	checking subranging of an LAStrideStreamOut by [0,3]
+	checking subranging of an LAStrideStreamIn by [0,0]
+	checking subranging of an LAStrideStreamIn by [1,1]
+	checking subranging of an LAStrideStreamIn by [-2,-2]
+	checking subranging of an LAStrideStreamIn by [1,0]
+	checking modifying via a subranged LAStrideStreamOut by [1,2]
+
+Done
+
+---> Test subranging of LAStrideStream of a 10 -element vector with a stride of 11
+	checking subranging of an LAStrideStream by [-INF,INF]
+	checking subranging of an LAStrideStreamIn by [-11,11]
+	checking subranging of an LAStrideStreamOut by [0,0]
+	checking subranging of an LAStrideStreamIn by [0,0]
+	checking subranging of an LAStrideStreamIn by [-2,-2]
+	checking subranging of an LAStrideStreamIn by [1,0]
+
+Done
+
+---> Test LABlockStreams for 2:12x0:20
+	Filling out the matrix in the natural order...
+	checking accessing of the whole matrix as a block stream...
+	checking modifying the whole matrix as a block stream...
+	checking LABlockStreams clipped as [-INF,INF] x [-INF,0]
+	checking LABlockStreams clipped as [2,INF] x [1,1]
+	checking LABlockStreams clipped as [3,12] x [20,INF]
+	checking LABlockStreams clipped as [-INF,2] x [0,INF]
+	checking LABlockStreams clipped as [3,3] x [-INF,20]
+	checking LABlockStreams clipped as [12,INF] x [-INF,19]
+	checking LABlockStreams clipped as [2,2] x [0,0]
+	checking LABlockStreams clipped as [12,INF] x [20,INF]
+	checking LABlockStreams clipped as [3,4] x [18,INF]
+	checking LABlockStreams clipped as [9,11] x [2,3]
+	checking modifying LABlockStreams clipped as [4,4] x [3,3]
+
+Done
+
+
+All test passed
+
+Compilation finished at Fri Dec 25 23:11:25

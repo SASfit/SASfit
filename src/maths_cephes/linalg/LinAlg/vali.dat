@@ -1,0 +1,128 @@
+./vali
+
+
+		Verification of the Aitken-Lagrange interpolation
+
+------------- Interpolation over the table with uniform grid
+Function to interpolate: exp(-x)
+
+Check to see that interpolation at a node gives an exact result
+
+Uniform grid [0.1:1] with the step 0.1
+
+Done
+
+Check the precision of the interpolation at arbitrary points
+
+Uniform grid [0.1:1] with the step 0.1
+
+Point	Exact function value     Interpolated    Error
+   0	           1		    0.999998   1.72853e-06
+0.11	    0.895834		    0.895834   1.26336e-08
+0.22	    0.802519		    0.802519   1.29626e-08
+0.33	    0.718924		    0.718924   1.41076e-08
+0.44	    0.644036		    0.644036   8.84407e-09
+0.55	     0.57695		     0.57695   1.43652e-07
+0.66	    0.516851		    0.516851   3.10746e-08
+0.77	    0.463013		    0.463013   1.53709e-08
+0.88	    0.414783		    0.414783   8.92645e-08
+0.99	    0.371577		    0.371576   4.41423e-07
+ 1.1	    0.332871		    0.332871   2.12869e-07
+
+Done
+
+------------- Interpolation over the table with non-uniform grid
+Function to interpolate: sin(x) * exp(-x/10)
+
+Grids 0.1 .. 1 have the mesh 0.1, and 1..9 have the mesh 0.2
+
+Check to see that interpolation at a node gives an exact result
+
+Done
+
+Check the precision of the interpolation at arbitrary points
+
+Point	Exact function value     Interpolated    Error
+   0	           0		 8.51708e-07   8.51708e-07
+0.27	    0.259626		    0.259626   1.14471e-08
+0.54	    0.487109		    0.487109   3.00486e-08
+0.81	    0.667933		    0.667933   1.61806e-08
+ 1.1	     0.79167		     0.79167   6.00246e-08
+ 1.4	    0.852505		    0.852481   2.41944e-05
+ 1.6	    0.849412		    0.849412    1.1897e-08
+ 1.9	    0.785971		    0.785972   1.42046e-07
+ 2.2	    0.669875		    0.669875   9.72032e-08
+ 2.4	    0.512161		    0.512161   3.90728e-09
+ 2.7	    0.326253		    0.326253   1.96635e-08
+   3	    0.126876		    0.126876   2.32042e-08
+ 3.2	  -0.0710583		  -0.0710583    2.1131e-08
+ 3.5	   -0.253526		   -0.253526   2.44474e-08
+ 3.8	   -0.408341		    -0.40834   1.73721e-07
+
+Done
+
+Check the precision of the interpolation at arbitrary points
+
+Example from Fig. 4.11 of the book
+	Numerical Methods and Software,
+	by D.Kahaner, C.Moler, and S.Nash - Prentice Hall, 1989
+
+		Interpolation nots
+x      0      2      3      5      6      8      9     11     12     14     15 
+y     10     10     10     10     10     10     10     15     50     60     85 
+
+Point	Interpolated value
+      0             10
+   0.32             10
+   0.64             10
+   0.96             10
+   1.28             10
+    1.6             10
+   1.92             10
+   2.24             10
+   2.56             10
+   2.88             10
+    3.2             10
+   3.52             10
+   3.84             10
+   4.16             10
+   4.48             10
+    4.8             10
+   5.12             10
+   5.44             10
+   5.76             10
+   6.08             10
+    6.4             10
+   6.72             10
+   7.04        9.94286
+   7.36        9.93781
+   7.68        9.95318
+      8             10
+   8.32        10.0911
+   8.64        10.2309
+   8.96        10.4641
+   9.28        10.2771
+    9.6          9.232
+   9.92        8.71549
+  10.24        5.79377
+  10.56        9.07021
+  10.88        12.9199
+   11.2        20.6143
+  11.52         29.442
+  11.84        42.5424
+  12.16        57.7971
+  12.48        73.2555
+   12.8        86.0643
+  13.12        62.2166
+  13.44        61.3373
+  13.76        60.1782
+  14.08        60.8715
+   14.4             66
+  14.72        74.3712
+  15.04        86.8043
+  15.36        104.118
+  15.68        127.133
+
+Done
+
+Compilation finished at Fri Dec 25 23:20:31

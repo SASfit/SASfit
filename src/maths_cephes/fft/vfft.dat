@@ -1,0 +1,365 @@
+./vfft
+
+
+		Verify Fast Fourier Transform Package
+
+
+
+Verify the computed FFT of the AP series x[j]=j
+j = 0..7
+
+Performing Complex FFT of AP series (IM part being set to 0)
+
+It took 0.00 sec to perform Complex Fourier transform
+Verifying the Re part of the transform ...
+Verifying the Im part of the transform ...
+Two (4,1) elements of matrices with values 2.44929e-16 and 0
+differ the most, although the deviation 2.44929e-16 is small
+Verifying the power spectrum ...
+
+Performing FFT of a REAL AP sequence
+
+It took 0.00 sec to perform "Real" Fourier transform
+Check out that "Real" and Complex FFT give identical results
+
+Done
+
+
+Verify the computed FFT of the AP series x[j]=j
+j = 0..1023
+
+Performing Complex FFT of AP series (IM part being set to 0)
+
+It took 0.02 sec to perform Complex Fourier transform
+Verifying the Re part of the transform ...
+Verifying the Im part of the transform ...
+Two (512,1) elements of matrices with values 3.1351e-14 and 0
+differ the most, although the deviation 3.1351e-14 is small
+Verifying the power spectrum ...
+
+Performing FFT of a REAL AP sequence
+
+It took 0.02 sec to perform "Real" Fourier transform
+Check out that "Real" and Complex FFT give identical results
+
+Done
+
+
+Verify the computed FFT for x[j] = W^(-l*j)
+j = 0..1023, l=1
+
+Performing Complex FFT
+
+It took 0.02 sec to perform Complex Fourier transform
+Verifying the Re part of the transform ...
+Two (869,1) elements of matrices with values 0 and 3.87654e-06
+differ the most, although the deviation 3.87654e-06 is small
+Verifying the Im part of the transform ...
+Two (897,1) elements of matrices with values 0 and -3.21196e-14
+differ the most, although the deviation 3.21196e-14 is small
+Verifying the power spectrum ...
+Two (869,1) elements of matrices with values 0 and 3.87654e-06
+differ the most, although the deviation 3.87654e-06 is small
+
+Done
+
+
+Verify the computed FFT of the truncated AP sequence x[j]=j
+j = 0..7, with N=16
+
+Performing Complex FFT (with IM part being set to 0)
+
+It took 0.00 sec to perform Complex Fourier transform
+
+Source Vector         	 0.0000  1.0000  2.0000  3.0000  4.0000  5.0000  6.0000  7.0000 
+
+Computed cos transform	28.0000 -9.1371 -4.0000  2.3801 -4.0000  3.2768 -4.0000  3.4802 -4.0000  3.4802 -4.0000  3.2768 -4.0000  2.3801 -4.0000 -9.1371 
+
+Computed sin transform	 0.0000 -20.1094  9.6569 -5.9864  4.0000 -2.6727  1.6569 -0.7956  0.0000  0.7956 -1.6569  2.6727 -4.0000  5.9864 -9.6569 20.1094 
+Verifying the Re part of the transform ...
+Verifying the Im part of the transform ...
+Two (8,1) elements of matrices with values 2.44929e-16 and 0
+differ the most, although the deviation 2.44929e-16 is small
+Verifying the power spectrum ...
+
+Performing FFT of a REAL AP sequence
+
+It took 0.00 sec to perform "Real" Fourier transform
+Check out that "Real" and Complex FFT give identical results
+Check out the functions returning the half of the transform
+
+Done
+
+
+Verify the computed FFT of the truncated AP sequence x[j]=j
+j = 0..511, with N=1024
+
+Performing Complex FFT (with IM part being set to 0)
+
+It took 0.02 sec to perform Complex Fourier transform
+Verifying the Re part of the transform ...
+Verifying the Im part of the transform ...
+Two (512,1) elements of matrices with values 1.56755e-14 and 0
+differ the most, although the deviation 1.56755e-14 is small
+Verifying the power spectrum ...
+
+Performing FFT of a REAL AP sequence
+
+It took 0.01 sec to perform "Real" Fourier transform
+Check out that "Real" and Complex FFT give identical results
+Check out the functions returning the half of the transform
+
+Done
+
+
+Verify the sin/cos transform for the following example
+	r*exp( -r/a )	<=== sin-transform ===>	2a^3 k/(1 + (ak)^2)^2
+	r*exp( -r/a )	<=== cos-transform ===>	a^2 (1-(ak)^2)/(1 + (ak)^2)^2
+
+Parameter a is 4.000000
+No. of grids   512
+Grid mesh in the r-space dr = 0.039
+Grid mesh in the k-space dk = 0.157
+
+Check out the inquires to FFT package about N, dr, dk, cutoffs
+
+It took 0.01 sec to perform Sine transform
+
+It took 0.02 sec to perform Cosine transform
+
+
+Comparison of two Matrices:
+	Computed and Exact sin-transform
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		0.312458
+   occured at the point		(1,1)
+ Matrix 1 element is    		10.6476
+ Matrix 2 element is    		10.3351
+ Absolute error v2[i]-v1[i]		-0.312458
+ Relative error				-0.0297824
+
+||Matrix 1||   			26.1276
+||Matrix 2||   			23.5973
+||Matrix1-Matrix2||				4.69511
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	0.189089
+
+
+Comparison of two Matrices:
+	Computed and Exact cos-transform
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		0.649606
+   occured at the point		(0,1)
+ Matrix 1 element is    		15.3504
+ Matrix 2 element is    		16
+ Absolute error v2[i]-v1[i]		0.649606
+ Relative error				0.0414416
+
+||Matrix 1||   			34.543
+||Matrix 2||   			33.8396
+||Matrix1-Matrix2||				3.01891
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	0.0882996
+
+
+Comparison of two Matrices:
+	Computed cos-transform with DC component removed, and exact result
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		0.651867
+   occured at the point		(0,1)
+ Matrix 1 element is    		15.3481
+ Matrix 2 element is    		16
+ Absolute error v2[i]-v1[i]		0.651867
+ Relative error				0.0415889
+
+||Matrix 1||   			34.9727
+||Matrix 2||   			33.8396
+||Matrix1-Matrix2||				3.01892
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	0.0877554
+
+It took 0.02 sec to perform Inverse sine transform
+
+It took 0.01 sec to perform Inverse cosine transform
+
+
+Comparison of two Matrices:
+	Computed inverse sin-transform vs the original function
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		5.96046e-08
+   occured at the point		(221,1)
+ Matrix 1 element is    		0.997371
+ Matrix 2 element is    		0.997371
+ Absolute error v2[i]-v1[i]		5.96046e-08
+ Relative error				5.97618e-08
+
+||Matrix 1||   			392.97
+||Matrix 2||   			392.97
+||Matrix1-Matrix2||				1.12206e-05
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	2.85533e-08
+
+
+Comparison of two Matrices:
+	Computed inverse cos-transform vs the original function
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		0.767671
+   occured at the point		(58,1)
+ Matrix 1 element is    		2.05355
+ Matrix 2 element is    		1.28588
+ Absolute error v2[i]-v1[i]		-0.767671
+ Relative error				-0.459761
+
+||Matrix 1||   			785.94
+||Matrix 2||   			392.97
+||Matrix1-Matrix2||				392.97
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	0.707107
+
+
+Comparison of two Matrices:
+	Computed inverse cos-transform with DC component removed,
+and the original function
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		0.135816
+   occured at the point		(55,1)
+ Matrix 1 element is    		1.11981
+ Matrix 2 element is    		1.25562
+ Absolute error v2[i]-v1[i]		0.135816
+ Relative error				0.11435
+
+||Matrix 1||   			324.137
+||Matrix 2||   			392.97
+||Matrix1-Matrix2||				69.4601
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	0.194622
+
+Done
+
+
+Verify the sin/cos transform for the following example
+	exp( -r^2/4a )	<=== cos-transform ===> sqrt(a*pi) exp(-a*k^2)
+
+Parameter a is 4.00
+No. of grids   512
+Grid mesh in the r-space dr = 0.039
+Grid mesh in the k-space dk = 0.157
+
+Check out the inquires to FFT package about N, dr, dk, cutoffs
+
+It took 0.02 sec to perform Cosine transform
+
+
+Comparison of two Matrices:
+	Computed and Exact cos-transform
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		0.0195313
+   occured at the point		(18,1)
+ Matrix 1 element is    		0.0195313
+ Matrix 2 element is    		4.5914e-14
+ Absolute error v2[i]-v1[i]		-0.0195313
+ Relative error				-2
+
+||Matrix 1||   			21.7725
+||Matrix 2||   			11.7725
+||Matrix1-Matrix2||				10
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	0.624616
+
+
+Comparison of two Matrices:
+	Computed with DC removed, and Exact cos-transform
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		2.23517e-08
+   occured at the point		(350,1)
+ Matrix 1 element is    		-2.23517e-08
+ Matrix 2 element is    		0
+ Absolute error v2[i]-v1[i]		2.23517e-08
+ Relative error				0.223517
+
+||Matrix 1||   			11.7725
+||Matrix 2||   			11.7725
+||Matrix1-Matrix2||				3.91315e-06
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	3.32399e-07
+
+It took 0.02 sec to perform Inverse cosine transform
+
+
+Comparison of two Matrices:
+	Computed inverse cos-transform vs the original function
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		0.177245
+   occured at the point		(2,1)
+ Matrix 1 element is    		1.17686
+ Matrix 2 element is    		0.999619
+ Absolute error v2[i]-v1[i]		-0.177245
+ Relative error				-0.162873
+
+||Matrix 1||   			181.999
+||Matrix 2||   			91.2496
+||Matrix1-Matrix2||				90.7496
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	0.704198
+
+
+Comparison of two Matrices:
+	Computed inverse with DC removed vs the original
+Matrix 0:511x1:1  is not engaged
+
+Matrix 0:511x1:1  is not engaged
+
+Maximal discrepancy    		3.57628e-07
+   occured at the point		(0,1)
+ Matrix 1 element is    		1
+ Matrix 2 element is    		1
+ Absolute error v2[i]-v1[i]		3.57628e-07
+ Relative error				3.57628e-07
+
+||Matrix 1||   			91.2496
+||Matrix 2||   			91.2496
+||Matrix1-Matrix2||				6.16255e-06
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	6.75351e-08
+
+Done
+
+
+check speed of different kind of transforms
+j = 0..2047 for 100 times
+	Performing Complex FFT 
+
+It took 4.28 sec to perform Complex Fourier transform
+	Performing FFT of a REAL sequence
+
+It took 3.48 sec to perform "Real" Fourier transform
+	Performing Complex FFT of a half sequence padded by zeros
+
+It took 3.86 sec to perform Complex Fourier transform
+	Performing FFT of a REAL half-sequence padded by zeros
+
+It took 3.38 sec to perform "Real" Fourier transform
+	Performing FFT of a REAL padded half-sequence and getting half
+
+It took 3.24 sec to perform "Real" Fourier transform
+
+Done
+
+Compilation finished at Fri Dec 25 23:27:07

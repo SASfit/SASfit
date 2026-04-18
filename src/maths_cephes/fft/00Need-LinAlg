@@ -1,0 +1,17 @@
+	You need LinAlg 4.3 to compile this FFT v1.2 package
+
+Download LinAlg.tar.gz from the same place you got fft.tar.gz
+
+Make sure the version of the LinAlg package is 4.3
+
+Untar LinAlg.tar.gz first, which makes a directory LinAlg
+
+cd LinAlg and untar this fft.tar.gz archive within that directory
+
+Look through the Makefile and make adjustments if necessary
+(in compilation flags, standard libraries to link with, etc)
+
+make dist-clean lib check-all
+
+Disregard all compiler warnings
+

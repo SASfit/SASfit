@@ -1,0 +1,17 @@
+Planck black body radiation formula
+Program by Steve Moshier
+Enter temperature (degrees Kelvin) = 5.5550000E+03 ? 
+5.5550000E+03
+Total radiated power = 5.3995536e+07 watts per square meter
+Wavelength of maximum radiation = 5.2164826e-07 meter
+Power between two wavelengths:
+  Enter lower wavelength (meters) = 4.0000000E-07 ? 
+4.0000000E-07
+  Enter upper wavelength (meters) = 7.0000000E-07 ? 
+7.0000000E-07
+  Portion of radiation at wavelengths less than lower = 1.0499855e-01
+  Portion of radiation at wavelengths greater than higher = 5.3974529e-01
+  Power between the two wavelengths = 1.9182247e+07 watts / square meter
+  Portion of total radiated power = 3.5525616e-01
+Enter temperature (degrees Kelvin) = 5.5550000E+03 ? -1.0000000E+00
+ ? temperature must be > 0.

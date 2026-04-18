@@ -1,0 +1,90 @@
+./vmatrix2
+
+
+-------------------------------------------------------------------------------
+		Verify Advanced Operations on Matrices
+
+---> Verify determinant evaluation
+for a square matrix of size 20
+
+Check to see that the determinant of the unit matrix is one
+	determinant is 1
+Check the determinant for the matrix with 2.5
+	at the diagonal
+	determinant is 9.09495e+07
+Check the determinant of the transposed matrix
+swap two rows/cols of a matrix and watch det's sign
+Check the determinant for the matrix with 2.5
+	at the anti-diagonal
+Check the determinant for the singular matrix
+	defined as above with zero first row
+	determinant is 0
+Check out the determinant of the Hilbert matrix
+    3x3 Hilbert matrix: exact determinant 1/2160 
+                              computed    1/2159.99
+    4x4 Hilbert matrix: exact determinant 1/6048000 
+                              computed    1/6.04788e+06
+    5x5 Hilbert matrix: exact determinant 3.749295e-12
+                              computed    3.75127e-12
+    7x7 Hilbert matrix: exact determinant 4.8358e-25
+                              computed    6.54014e-25
+    9x9 Hilbert matrix: exact determinant 9.72023e-43
+                              computed    -1.10127e-39
+    10x10 Hilbert matrix: exact determinant 2.16418e-53
+                              computed    -3.15323e-47
+Done
+
+---> Verify matrix multiplications
+for matrices of the characteristic size 20
+
+Test inline multiplications of the UnitMatrix
+Test inline multiplications by a DiagMatrix
+Test XPP = X where P is a permutation matrix
+Test general matrix multiplication through inline mult
+Check to see UU' = U'U = E when U is the Haar matrix
+Two (27,27) elements of matrices with values 1 and 1
+differ the most, although the deviation 5.96046e-08 is small
+Two (27,27) elements of matrices with values 1 and 1
+differ the most, although the deviation 5.96046e-08 is small
+Two (32,32) elements of matrices with values 1 and 1
+differ the most, although the deviation 5.96046e-08 is small
+Two (32,32) elements of matrices with values 1 and 1
+differ the most, although the deviation 5.96046e-08 is small
+Two (32,32) elements of matrices with values 1 and 1
+differ the most, although the deviation 5.96046e-08 is small
+
+Done
+
+---> Verify vector-matrix multiplications
+for matrices of the characteristic size 20
+
+Check shrinking a vector by multiplying by a non-sq unit matrix
+Check expanding a vector by multiplying by a non-sq unit matrix
+Check general matrix-vector multiplication
+
+Done
+
+---> Verify matrix inversion for square matrices
+of size 20
+
+Test invesion of a diagonal matrix
+Test invesion of an orthonormal (Haar) matrix
+Two (5,4) elements of matrices with values 8.97181e-09 and 0
+differ the most, although the deviation 8.97181e-09 is small
+Two (5,7) elements of matrices with values 0.707107 and 0.707107
+differ the most, although the deviation 5.96046e-08 is small
+Test invesion of a good matrix with diagonal dominance
+	computed determinant             4.69592
+	determinant returned by invert() 4.69592
+	check to see M^(-1) * M is E
+Two (11,11) elements of matrices with values 1 and 1
+differ the most, although the deviation 3.57628e-07 is small
+	check to see M * M^(-1) is E
+Two (11,11) elements of matrices with values 1 and 1
+differ the most, although the deviation 3.57628e-07 is small
+
+Done
+
+All tests passed
+
+Compilation finished at Fri Dec 25 23:09:17

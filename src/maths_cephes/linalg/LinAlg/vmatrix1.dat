@@ -1,0 +1,46 @@
+./vmatrix1
+
+
+-------------------------------------------------------------------------------
+		Verify less trivial Operations on Matrices
+
+---> Verify norm calculations
+
+Assign 10.25 to all the elements and check norms
+  1. (col) norm should be pattern*nrows
+  Inf (row) norm should be pattern*ncols
+  Square of the Eucl norm has got to be pattern^2 * no_elems
+
+Done
+
+---> Check creating some special matrices of dimension 20
+
+test creating Hilbert matrices
+test creating zero matrix and copy constructor
+test creating unit matrices
+check to see that Haar matrix has *exactly* orthogonal columns
+make Haar (sub)matrix and test it *is* a submatrix
+
+Done
+
+---> Check making/forcing promises, (lazy)matrices of dimension 20
+
+make a promise and force it by a constructor
+make a promise and force it by an assignment
+
+Done
+
+---> Verify matrix transpose
+for matrices of a characteristic size 20
+
+Check to see that a square UnitMatrix' stays the same
+Test a non-square UnitMatrix
+Check to see that a symmetric (Hilbert)Matrix' stays the same
+Check transposing a non-symmetric matrix
+Check double transposing a non-symmetric matrix
+Done
+
+
+All test passed
+
+Compilation finished at Fri Dec 25 23:08:18

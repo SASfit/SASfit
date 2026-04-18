@@ -1,0 +1,36 @@
+./vzeroin
+
+
+		Testing Brent's root finder
+
+
+For function x^3 - 2*x - 5, from the Forsythe book,
+the root over [2,3] is	2.094551482e+00
+The function value at the root is	-1.7764e-15
+Total iterations		11
+The expected value of the root is	2.0945515e+00
+
+For function cos(x)-x,
+the root over [2,3] is	2.000000000e+00
+The function value at the root is	-2.4161e+00
+Total iterations		52
+
+For function cos(x)-x,
+the root over [-1,3] is	7.390851332e-01
+The function value at the root is	0.0000e+00
+Total iterations		11
+The expected value of the root is	7.3908513e-01
+
+For function sin(x)-x,
+the root over [-1,3] is	-1.643737357e-08
+The function value at the root is	0.0000e+00
+Total iterations		58
+The expected value of the root is	0.0000000e+00
+
+For function HUMPS function Matlab:Demos:zerodemo.m,
+the root over [0.4,1.6] is	1.299549683e+00
+The function value at the root is	0.0000e+00
+Total iterations		14
+The expected value of the root is	1.2995497e+00
+
+Compilation finished at Fri Dec 25 23:18:42

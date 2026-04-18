@@ -1,0 +1,1035 @@
+			Numerical Math Class Library
+				version 4.3
+
+***** Version history is at the very end
+
+***** Comments, questions, problem reports, etc.
+are all very welcome. Please mail me at
+oleg@pobox.com or oleg@acm.org or oleg@computer.org
+
+***** Platforms
+	I have personally compiled and tested LinAlg 4.3 on
+	Linux 2.0.33 i586, gcc 2.7.2.1
+	HP 9000/770, HP-UX 10.10, gcc 2.8.1 (with optimization off)
+	UltraSparcII, Solaris 2.6, gcc 2.8.1 (with optimization off)
+	PowerMac 8500/132, BeOS Release 4, Metrowerk's CodeWarrior C++
+	Pentium, WinNT 4.0, Visual C++ 5.0
+The previous (4.1) version also works on
+	SunSparc20/Solaris 2.4, gcc 2.7.2 and SunWorkshopPro
+	SGI, gcc 2.7.2 and SGI's native compiler
+	PowerMac 7100/80, 8500/132,
+	Metrowerk's CodeWarrior C++, v. 11-12
+	DEC Alpha (Digital UNIX Version 5.60), gcc 2.7.2
+
+Note: if g++ version 2.8.1 is used to compile LinAlg, optimization
+must be turned off. Otherwise, the compiler crashes with internal
+compiler errors. Other compilers as well as gcc v2.7.2 don't seem to have
+this problem.
+
+***** Verification files: vmatrix vvector vmatrix1 vmatrix2 vlastreams
+			  vali vhjmin vfminbr vzeroin
+			  vsvd vslesing
+
+Don't forget to compile and run them, see comments in the Makefile for
+details.  The verification code checks to see that all the functions
+in this package have compiled and run well. The validation code can also
+serve as an illustration of how package's classes and functions
+may be employed.
+
+
+***** Highlights and idioms
+
+1. Data classes and view classes
+
+	Objects of a class Matrix are the only ones that _own_ data, that
+is, 2D grids of REALs. All other classes provide different views of/into
+the grids: in 2D, in 1D (a view of all matrix elements linearly arranged
+in a column major order), a view of a single matrix row, column, or the
+diagonal, a view of a rectangular subgrid, etc.
+
+	The views are designed to be as lightweight as possible: most of
+the view functionality could be inlined. That is why views do not have any
+virtual functions. View classes are supposed to be final, in Java parlance:
+It makes little sense to inherit from them. Indeed, views are designed
+to provide general and many special ways of accessing matrix elements, as
+safely and efficiently as possible. Views turn out to be so flexible that
+many former Matrix methods can now be implemented outside of the Matrix class.
+These methods can do their job without a privileged access to Matrix'
+internals while not sacrificing performance. Examples of such methods:
+comparison of two matrices, multiplication of a matrix by a diagonal of
+another matrix. 
+
+
+2. Matrix streams
+
+	Matrix streams provide a sequential view/access to a matrix or
+its parts. Many of Linear Algebra algorithms actually require only sequential
+access to a matrix or its rows/columns, which is simpler and faster than a
+random access. That's why LinAlg stresses streams. There are two kinds of
+sequential views: ElementWise streams are transient views that exist only
+for the duration of an elementwise action. Hence these views don't require a
+"locking" of a matrix. On the other hand, LAStream and the ilk are more
+permanent views. An application traverses the stream at its own convenience,
+bookmarking certain spots and possibly returning to them later. An LAStream
+does assert a shared lock on the matrix, to prevent the grid of matrix
+values from moving or disappearing.
+
+	Again, LAStreamIn etc. are meant to denote a stream under user's
+control, which the user can create and play with for some time, getting
+elements, moving the current position, etc. That is, LAStreamIn and the 
+Matrix object from which the stream was created (whose view the stream is)
+can coexist. This arrangement is dangerous as one can potentially dispose
+of the container before all of its views are closed. To guard against this,
+a view asserts a "shared lock" on a matrix grid. Any operation that disposes 
+of the grid or potentially moves it in memory (like resize_to()) checks this
+lock. Actually, it tries to assert an exclusive lock. Exclusive locking
+of a matrix object will always fail if there are any outstanding shared
+locks.
+
+	In contrast, ElementWiseConst and ElementWise are meant to be
+transient, created only for the duration of a requested operation. That's
+why it is syntactically impossible to dispose of the matrix that is
+being viewed through a ElementWiseConst or ElementWise object. These
+objects do not have any public constructors. This prevents a user from
+building the view on his own (and forgetting to delete it). Therefore
+creation of ElementWiseConst objects does not require asserting any locks,
+which makes this class rather "light".
+
+	Matrix streams may stride a matrix by an arbitrary amount. This
+allows traversing of a matrix along the diagonal, by columns, by rows, etc.
+Streams can be constructed of a Matrix itself, or from other matrix views
+(MatrixColumn, MatrixRow, MatrixDiag). In the latter case, the streams are
+confined only to specific portions of the matrix.
+
+	Many methods and functions have been re-written to take advantage
+of the streams. Notable examples:
+
+  		// Vector norms are computed via the streams:
+  inline double Vector::norm_1(void) const
+	{ return of_every(*this).sum_abs(); }
+  inline double Vector::norm_2_sqr(void) const
+	{ return of_every(*this).sum_squares(); }
+  inline double Vector::norm_inf(void) const
+	{ return of_every(*this).max_abs(); }
+
+The methods ElementWiseConst::sum_abs(), sum_squares(), and max_abs()
+can also be applied to two collections. In this case, they work through
+element-by-element differences between the collections.
+
+	An example of using LAStreams:
+
+		// Aitken-Lagrange interpolation (see ali.cc)
+  double ALInterp::interpolate()
+  {
+    LAStreamIn args(arg);	// arg and val are vectors
+    LAStreamOut vals(val);
+    register double valp = vals.peek();	// The best approximation found so far
+    register double diffp = DBL_MAX;	// abs(valp - prev. to valp)
+
+			// Compute the j-th row of the Aitken scheme and
+			// place it in the 'val' array
+    for(register int j=2; j<=val.q_upb(); j++)
+    {
+      register double argj = (args.get(), args.peek());
+      register REAL&  valj = (vals.get(), vals.peek());
+      args.rewind(); vals.rewind();	// rewind the vector streams
+      for(register int i=1; i<=j-1; i++)
+      {
+        double argi = args.get();
+        valj = ( vals.get()*(q-argj) - valj*(q-argi) ) / (argi - argj);
+      }
+      ....
+    }
+    return valp;
+  }
+Note, all the streams are light-weight: they use no heap storage and leave no
+garbage. All the operations in the snippets above are inlined.
+
+	A stride of a stride stream doesn't have to be an even multiple
+of the number of elements in the corresponding collection, as the 
+following not-so-trivial example shows. It places a 'value' at the
+_anti_-diagonal of a matrix m:	
+
+  m.clear();
+  LAStrideStreamOut m_str(m,m.q_nrows()-1);
+  m_str.get();	// Skip the first element
+  for(register int i=0; i<m.q_nrows(); i++)
+    m_str.get() = value;
+Again, the matrix is accessed only sequentially. All operations in this snippet
+are inlined.
+
+	If an operation involves two ElementWiseStride streams, they don't
+have to have the same stride. Note that an ElementWise iterator can always
+be converted into an ElementWiseStride stream -- an operation the compiler
+does tacitly. This allows an assignment of a vector to a matrix row or
+column or a diagonal, or the other way around:
+			// Checking the difference between a matrix row and
+			// a given vector vr
+  assert( of_every(ConstMatrixRow(m,i)).max_abs(of_every(vr)) == 2.0 );
+
+			// multiplying the i-th matrix column by a vector,
+			// elementwise
+  to_every(MatrixColumn(m,i)) *= of_every(vc);
+
+
+	Streams can also be constructed implicitly: For example, a function
+  bool FPoint::is_step_relatively_small(LAStreamIn hs, const double tau);
+in hjmin.cc is declared to take a LAStreamIn as an argument. It is called
+however as 
+  if( pbase.is_step_relatively_small(h,tau) ) ...
+where h is a vector. The vector is converted to a "LAStreamIn hs" when it is
+passed as a parameter. Note one can just as easily pass an entire matrix
+or a matrix column to is_step_relatively_small(), and the function will take
+it. Again, no heap storage is allocated in the process, and all the functions
+are inlined. The FFT package uses this technique extensively.
+
+	All streams have now an ability to 'seek(offset, seek_dir)'. In
+particular, one can 'ignore(how_many)' elements in a stream. how_many and
+the offset can be positive as well as zero or negative quantities. 'seek_dir'
+specifies that the offset will count from the beginning of a stream,
+end of the stream, or from the stream's current position. This is very
+similar to seeking in an ordinary iostream. Trying to seek past the upper
+end of a stream does _not_ generate an error: it merely sets the EOF
+condition on the stream. This condition can be checked later by an eof()
+method. This lets one check to see if a given offset is within a stream,
+without incurring a stream exception. This shows an easy way to implement
+'has(offset);' and 'peek(offset);' functions suggested by Erik Kruus.
+Note, trying to get() or peek() from a stream at the EOF results in an
+immediate error. See vlastreams.cc for more details and examples of many
+a seek.
+
+	As yet another example of clarity and efficiency of streams,
+consider the following method of a SVD package. In LinAlg 3.2, it is
+used to read:	
+				// Carry out U * S with a rotation matrix
+				// S (which combines i-th and j-th columns
+				// of U, i>j)
+inline void SVD::rotate(Matrix& U, const int i, const int j,
+		   const double cos_ph, const double sin_ph)
+{
+  MatrixColumn Ui(U,i), Uj(U,j);
+  for(register int l=1; l<=U.q_row_upb(); l++)
+  {
+    REAL& Uil = Ui(l); REAL& Ujl = Uj(l);
+    const REAL Ujl_was = Ujl;
+    Ujl =  cos_ph*Ujl_was + sin_ph*Uil;
+    Uil = -sin_ph*Ujl_was + cos_ph*Uil;
+  }
+}
+
+The new version of the package, v4.3, rewrites this code in the
+following way, avoiding random access to Matrix elements (and incident
+range checks for MatrixColumns' indices).
+
+inline void SVD::rotate(Matrix& U, const int i, const int j,
+		   const double cos_ph, const double sin_ph)
+{
+  LAStreamOut Ui(MatrixColumn (U,i));
+  LAStreamOut Uj(MatrixColumn (U,j));
+  while( !Ui.eof() )
+  {
+    REAL& Uil = Ui.get(); REAL& Ujl = Uj.get();
+    const REAL Ujl_was = Ujl;
+    Ujl =  cos_ph*Ujl_was + sin_ph*Uil;
+    Uil = -sin_ph*Ujl_was + cos_ph*Uil;
+  }
+}
+
+
+
+LinAlg's implementation and validation code provides many more examples
+of flexibility, clarity, and efficiency of streams.
+
+
+4. Subranging a stream
+
+	LinAlg 4.3 implements subranging of a stream: creation of a new
+stream that spans over a part of another. The latter can be either
+a stride 1 or an arbitrary stride stream. The new stream may not _extend_
+the old one: subranging is therefore a safe operation. A child stream
+is always confined within its father's boundaries. A substream, once
+created, lives independently of its parent: either of them can go out of
+scope without affecting the other.
+
+	To create a substream, one has to specify its range as a 
+[lwb,upb] pair: an all-inclusive range. The 'lwb' may also be
+given as -IRange::INF, and 'upb' as IRange::INF. These special values
+are interpreted intelligently. Given an output stream, one may create
+either an immutable, input substream, or allow modifications to a part
+of the original stream. Obviously, given a read-only stream, only
+read-only substreams may be created: the compiler will see to that at
+_compile_ time. File sample_ult.cc provides a good example of using
+substreams to efficiently reflect the upper triangle of a square matrix
+onto the lower one (yielding a symmetric matrix).  See vlastreams.cc and
+SVD for more extensive examples of subranging.
+
+	As a good illustration to the power and efficiency of streams,
+consider the following snippet from SVD::left_householder() (file svd.cc).
+In LinAlg 3.2, the snippet was programmed as:
+
+   for(j=i+1; j<=N; j++)		// Transform i+1:N columns of A
+   {
+     MatrixColumn Aj(A,j);
+     REAL factor = 0;
+     for(k=i; k<=M; k++)
+       factor += UPi(k) * Aj(k);	// Compute UPi' * A[,j]
+     factor /= beta;
+     for(k=i; k<=M; k++)
+       Aj(k) -= UPi(k) * factor;
+   }
+
+Version 4.3 uses substreams (which span only a part of matrix'
+columns):
+
+   IRange range = IRange::from(i - A.q_col_lwb());
+   LAStreamOut UPi_str(MatrixColumn(A,i),range);
+   ...
+   for(register int j=i+1; j<=N; j++)	// Transform i+1:N columns of A
+   {
+     LAStreamOut Aj_str(MatrixColumn(A,j),range);
+     REAL factor = 0;
+     while( !UPi_str.eof() )
+       factor += UPi_str.get() * Aj_str.get();	// Compute UPi' * A[,j]
+     factor /= beta;
+     for(UPi_str.rewind(), Aj_str.rewind(); !UPi_str.eof(); )
+       Aj_str.get() -= UPi_str.get() * factor;
+     UPi_str.rewind();
+   }
+ 
+
+5. Streams over an arbitrary rectangular block of a matrix
+
+	LinAlg 4.3 permits LAstreams that span an arbitrary  rectangular
+block of a matrix (including the whole matrix, a single matrix element,
+a matrix row or a column, or a part thereof). You simply specify a matrix, 
+and the range of rows and columns to include in the stream.
+
+vlastreams.cc verification code shows very many examples. The following
+is a annotated snippet from vlastreams' output (vlastreams.dat)
+
+	---> Test LABlockStreams for 2:12x0:20
+        checking accessing of the whole matrix as a block stream...
+        checking modifying the whole matrix as a block stream...
+					# The first column of m
+        checking LABlockStreams clipped as [-INF,INF] x [-INF,0]
+					# The second column of m
+        checking LABlockStreams clipped as [2,INF] x [1,1]
+					# A part of the last column of m
+        checking LABlockStreams clipped as [3,12] x [20,INF]
+					# The first row of m
+        checking LABlockStreams clipped as [-INF,2] x [0,INF]
+					# The second row of m
+        checking LABlockStreams clipped as [3,3] x [-INF,20]
+					# A part of the last row of m
+        checking LABlockStreams clipped as [12,INF] x [-INF,19]
+					# The first matrix element
+        checking LABlockStreams clipped as [2,2] x [0,0]
+					# The last matrix element
+        checking LABlockStreams clipped as [12,INF] x [20,INF]
+					# A 2x3 block at the upper-right corner
+        checking LABlockStreams clipped as [3,4] x [18,INF]
+					# A 3x2 block at the lower-left corner
+        checking LABlockStreams clipped as [9,11] x [2,3]
+        checking modifying LABlockStreams clipped as [4,4] x [3,3]
+
+With block streams, it is trivial to assign a block of one matrix
+to a block of another matrix. See vlastreams.cc for examples.
+
+
+6. Direct access to matrix elements
+
+	In LinAlg 3.2 and earlier, a Matrix contained a column index.
+The index was used to speed up direct access to matrix elements 
+(like in m(i,j)). The index was allocated on heap and initialized upon
+Matrix construction. In LinAlg 4+, a Matrix object no longer allocates
+any index. The Matrix class therefore does not allow direct access to
+matrix elements. This is done on purpose, to slim down matrices and make
+them easier to build. Many linear algebra operations actually require
+only sequential access to matrix elements. Thus the column index and other
+direct access facilities are often redundant.
+
+	If one does need to access arbitrary elements of a matrix, the package
+offers several choices. One may use a special MatrixDA view, which is
+designed to provide an efficient direct access to a matrix grid. The MatrixDA
+view allocates and builds a column index, and uses it to efficiently
+compute a reference to the (i,j)-th element:
+
+  Matrix ethc = m;
+  MatrixDA eth(ethc);
+  for(register int i=eth.q_row_lwb(); i<=eth.q_row_upb(); i++)
+    for(register int j=eth.q_col_lwb(); j<=eth.q_col_upb(); j++)
+       eth(i,j) *= v(j);
+
+see the validation code vmatrix*.cc, vvector.cc for more details. If creating
+of an index seems like overkill, one may use MatrixRow, matrixColumn or
+MatrixDiag. For example, the following statements are all equivalent:
+  MatrixRow(m,2)(3) = M_PI;
+  MatrixColumn(m,3)(2) = M_PI;
+  MatrixDA ma(m); ma(2,3) = M_PI;
+  (MatrixDA(m))(2,3) = M_PI;
+
+Unlike Matrix itself, a Vector and all matrix views (MatrixRow,
+MatrixColumn, MatrixDiag) allow direct access to their elements.
+
+	In most of the cases, MatrixDA behaves like a matrix. On occasions
+when one needs to get hold of a real matrix, he can always
+use MatrixDA::ref() or MatrixDA::get_container() methods:
+  Matrix mc(-1,10,1,20);
+  MatrixDA m(mc);
+  m.get_container().clear();
+  verify_element_value(m,0);
+
+	Again, it is strongly encouraged to use stream-lined matrix
+operations as much as possible. As an example, finding of a matrix inverse
+and computing of a determinant are implemented in this package using only
+sequential matrix access. It is possible indeed to avoid direct access.
+
+
+7. Const and Writable views
+
+	There are two flavors of every matrix view: a const and a writable
+views, for example: ConstMatrixDA and MatrixDA, ConstMatrixColumn and
+MatrixColumn, ElementWiseConst and ElementWise, LAStreamIn and LAStreamOut.
+A const view can be constructed around a const matrix reference. A const
+view provides methods that do not alter the matrix: methods that
+query matrix elements, compare them, compute norms and other cumulative
+quantities (sum of squares, max absolute value, etc). A writable view is
+a subclass of the const view. That means that a writable view allows all
+the query/comparison operations that the corresponding const view implements.
+In addition, a writable view permits modification of matrix elements, via
+assignment or other related operations (+=, *=, etc). Needless to say one
+needs a non-const matrix reference to construct a writable view:
+
+  cout << "   compare (m = pattern^2)/pattern with pattern\n";
+  m = pattern; to_every(m1) = pattern;
+  to_every(m).sqr();
+  assert( of_every(m).max_abs() == pattern*pattern );
+  to_every(m) /= of_every(m1);
+  verify_element_value(m,pattern);
+
+to_every() makes a writable ElementWise view, while of_every() makes a
+ElementWiseConst view.
+
+
+8. Never return non-trivial objects (matrices or vectors)
+
+Danger: For example, when the following snippet 
+  Matrix foo(const int n)
+  { Matrix foom(n,n); fill_in(foom); return foom; }
+  Matrix m = foo(5);
+runs, it constructs matrix foo:foom, copies it onto stack as a return
+value and destroys foo:foom. The return value (a matrix) from foo() is
+then copied over to m via a copy constructor. After that, the return value
+is destroyed. The matrix constructor is called 3 times and the
+destructor 2 times. For big matrices, the cost of multiple
+constructing/copying/destroying of objects may be very large. *Some*
+optimized compilers can do a little better. That still leaves at least
+two calls to the Matrix constructor. LazyMatrices (see below) can construct
+a Matrix m "inplace", with only a _single_ call to the constructor.
+
+
+9. Lazy matrices
+
+	Instead of returning an object return a "recipe" how
+to make it. The full matrix would be rolled out only when and where
+it is needed:
+  Matrix haar = haar_matrix(5);
+haar_matrix() is a *class*, not a simple function. However similar
+this looks to returning of an object (see the note above), it is
+dramatically different. haar_matrix() constructs a LazyMatrix, an
+object just of a few bytes long. A special "Matrix(const LazyMatrix&
+recipe)" constructor follows the recipe and makes the matrix haar()
+right in place. No matrix element is moved whatsoever!
+
+Another example of matrix promises is
+  REAL array[] = {0,-4,0,  1,0,0,  0,0,9 };
+  test_svd_expansion(MakeMatrix(3,3,array,sizeof(array)/sizeof(array[0])));
+
+Here, MakeMatrix is a LazyMatrix that promises to deliver a matrix
+filled in from a specified array. Function test_svd_expansion(const Matrix&)
+forces the promise: the compiler makes a temporary matrix, fills
+it in using LazyMatrix's recipe, and passes it out to test_svd_expansion().
+Once the function returns, the temporary matrix is disposed of.
+All this goes behind the scenes. See vsvd.cc for more details (this is
+where the fragment was snipped from).
+
+	Lazy matrices turned out so general and convenient that they subsumed
+glorified constructors (existed in the previous version of the LinAlg). It is
+possible to write now:
+  Matrix A = zero(B);
+  Matrix C = unit(B);
+  Matrix D = transposed(B);
+  A = unit(B);
+  D = inverse(B);
+In all these cases, the result is computed right in-place, no temporary
+matrices are created or copied.
+
+	Here's a more advanced example, 
+  Matrix haar = haar_matrix(5);
+  Matrix unitm = unit(haar);
+  Matrix haar_t = transposed(haar);
+  Matrix hht = haar * haar_t;		// NB! And it's efficient!
+  Matrix hht1 = haar; hht1 *= haar_t;
+  Matrix hht2 = zero(haar); hht2.mult(haar,haar_t);
+  verify_matrix_identity(unitm,hht);
+  verify_matrix_identity(unitm,hht1);
+  verify_matrix_identity(unitm,hht2);
+
+	With lazy matrices, it is possible to express a matrix multiplication
+in a "natural way", without the usual penalties:
+  C = A * B;
+Here again, the star operator does not actually multiply the matrices. It
+merely constructs a lazy matrix, a promise to compute the product (when the
+destination of the product becomes known). The promise is then forced by the
+assignment to matrix C. A check is made that the dimensions of the promise
+are compatible with those of the target. The result will be computed right
+into matrix's C grid, no temporary storage is ever allocated/used.
+
+	As even more interesting example, consider the following snippet
+from the verification code:
+  verify_matrix_identity(m * morig,unit(m));
+Here both argument expressions compute matrix promises; the promises are
+forced by parameter passing, so that the function can compare the resulting
+matrices and verify that they are identical. The forced matrices are 
+discarded afterwards (as we don't need them). Note how this statement leaves
+no garbage.
+
+	A file sample_adv.cc tries to prove that LazyMatrices do indeed
+improve performance. You can see this for yourself by compiling and
+running this code on your platform. LazyMatrices are typically 2 to
+three (Metrowerks C++, BeOS) times as efficient.
+
+
+10. Lazy matrices and expression templates
+
+        Lazy matrices and expression templates are a bit different.
+Expression templates are a _parser_ of expressions, an embedded language.
+They parse an expression like
+        C = A*B;
+at compile time and generate the most efficient, inlined code. This
+however places an immense burden on a compiler. For one thing, the
+compiler has to optimize out _very_ many temporary objects of various types,
+which emulate Expression templates parser's stack. The compiler should
+be able to automatically instantiate templates; gcc until recently couldn't,
+and even now I won't dare to ask it to. Furthermore, one has to be very
+careful writing expression templates: every type of expression
+(multiplication, addition, parenthesized expression, left-right
+multiplication by a scalar (a double, float,...)), etc. requires 
+its own template. One has to make sure that multiplication
+is indeed performed ahead of addition, according to usual operation
+priorities, as in D = A + B*C; Templates are not the best tool to write
+parsers to start with. The very need to write one's own parser in C++ (which
+already has a parser) appears rather contrived: this may show that C++
+might not be the right language for such problems after all.
+
+        Lazy matrices do not require any templates at all; multiplication
+itself as in
+        C = A*B;
+is performed by a separate function, which may be a library function
+and may not even be written in C++: as a typical BLAS, matrix multiplication
+can be coded in assembly to take the best advantage of certain architectures.
+
+        Lazy matrices is a technique of dealing with an operation like
+A*B when its target is not yet known. In the standard C++ paradigm,
+the expression is evaluated and the result is placed into a temporary.
+Lazy matrices offer a way to delay the execution until the target,
+the true and the final recipient of the product, becomes known.
+One doesn't need any matrix temporary then. Lazy computation is the
+standard fare of functional programming; in Haskell, all computation is
+lazy. That is, a Haskell code isn't in a hurry to execute an operation,
+it waits to see if the results are really necessary, and if so,
+where to place them. It's interesting  that a similar technique is
+possible in C++ as well.
+
+        As lazy matrices and expression templates are rather independent,
+one can mix and match them freely.
+
+
+11. Accessing row/col/diagonal of a matrix without much fuss
+(and without moving a lot of stuff around)
+
+  Matrix m(n,n); Vector v(n); 
+  to_every(MatrixDiag(m)) += 4;	// increments the diag elements of m
+				// by 4
+
+  v = of_every(ConstMatrixRow(m,1));	// Saves a matrix row into a vector
+
+  MatrixColumn(m,1)(2) = 3; // the same as m(2,1)=3, but does not
+			    // require constructing of MatrixDA
+
+  (MatrixDiag(m))(3) = M_PI; // assigning pi to the 3d diag element
+
+Note, constructing of, say, MatrixDiag does *not* involve any copying
+of any elements of the source matrix. No heap storage is used either.
+
+
+12. Nested functions
+
+	For example, creating of a Hilbert matrix can be done as follows:
+
+  void foo(const Matrix& m)
+  {
+    Matrix m1 = zero(m);
+    struct MakeHilbert : public ElementAction
+    {
+      void operation(REAL& element, const int i, const int j)
+	{ element = 1./(i+j-1); }
+    };
+    m1.apply(MakeHilbert());
+  }
+
+A special method Matrix::hilbert_matrix() is still more optimal, but not
+by the whole lot. The class MakeHilbert is declared *within* a function
+and is local to that function. This means one can define another MakeHilbert
+class (within another function or outside of any function - in the global
+scope), and it will still be OK.
+
+Another example is application of a simple function to each matrix element
+
+ void foo(Matrix& m, Matrix& m1)
+ {
+  class ApplyFunction : public ElementWiseAction
+  {
+    double (*func)(const double x);
+    void  operator () (REAL& element) { element = func(element); }
+    public: ApplyFunction(double (*_func)(const double x)) : func(_func) {}
+  };
+  to_every(m).apply(ApplyFunction(sin));
+  to_every(m1).apply(ApplyFunction(cos));
+ }
+
+Validation code vmatrix.cc and vvector.cc contains a few more examples
+of this kind (especially vmatrix1.cc:test_special_creation())
+
+
+13. SVD decomposition and its applications
+
+Class SVD performs a  Singular Value Decomposition of a rectangular matrix
+A = U * Sig * V'. Here, matrices U and V are orthogonal; matrix Sig is a
+diagonal matrix: its diagonal elements, which are all non-negative, are
+singular values (numbers) of the original matrix A. In another interpretation,
+the singular values are eigenvalues of matrix A'A.
+
+Application of SVD: _regularized_ solution of a set of simultaneous
+linear equations Ax=B.  Matrix A does _not_ have to be a square matrix.
+If A is a MxN rectangular matrix with M>N, the set Ax=b is obviously
+overspecified. The solution x produced by SVD_inv_mult would then be  
+the least-norm solution, that is, a least-squares solution.
+Note, B can be either a vector (Mx1-matrix), or a "thick" matrix. If B is
+chosen to be a unit matrix, then x is A's inverse, or a pseudo-inverse if
+A is non-square and/or singular.
+An example of using SVD:
+	SVD svd(A);
+	cout << "condition number of matrix A " << svd.q_cond_number();
+	Vector x = SVD_inv_mult(svd,b);		// Solution of Ax=b
+Note that SVD_inv_mult is a LazyMatrix. That is, the actual computation
+occurs not when the object SVD_inv_mult is constructed, but when it's
+required (in an assignment).
+
+
+14. Functor as a function pointer
+
+Package's fminbr(), zeroin(), hjmin() are functions of "the higher
+order": they take a function, any function, and try to find out a
+particular property of it - a root or a minimum. In LinAlg 3.2 and
+earlier, this function under investigation was specified as a pointer
+to a C/C++ function. For example,
+
+static int counter;
+static double f1(const double x)		// Test from the Forsythe book
+{
+  counter++;
+  return (sqr(x)-2)*x - 5;
+}
+main()
+{
+  counter = 0;
+  const double a = 0, const double b = 1.0;
+  const double found_location_of_min = fminbr(a,b,f1);
+  printf("\nIt took %d iterations\n",counter);
+}
+
+Note that function f1(x) under investigation had a side-effect: it
+alters a 'counter', to count the total number of function's
+invocations. Since f1(x) is called (by fminbr()) with only single
+argument, the 'counter' has to be declared an external variable. This
+makes it exposed to other functions of the package, which may
+inadvertently change its value. Also, the main() function should know
+that f1() uses this parameter 'counter', which main() must initialize
+properly (because the function f1() obviously can't do that itself)
+
+	The new, 4.0 version of the package provides a more general
+way to specify a function to operate upon. A math_num.h file declares
+a generic function class, a functor, which takes a single
+floating-point argument and returns a single FP (double) number as the
+result:
+
+struct UnivariateFunctor {
+  virtual double operator() (const double x) = 0;
+};
+
+The user should specialize this abstract base class, inheriting from
+it and specifying "double operator()" to be a function being
+investigated.  The user may also add his own data members and methods
+to his derived class, which would serve as an "environment" for the
+function being optimized. The user should then instantiate this class
+(thus initializing the environment), and pass the instance to
+fminbr().  The environment will persist even after fminbr() returns,
+so the user may use accumulated results it may contain.  For example,
+
+		// Declaration of a particular functor class
+class F1 : public UnivariateFunctor
+{
+protected:
+  int counter;                  // Counts calls to the function
+  const char * const title;
+public:
+  ATestFunction(const char _title []) : counter(0), title(_title) {}
+  double operator() (const double x) { counter++; return (sqr(x)-2)*x - 5; }
+  int get_counter(void) const	{ return counter; }
+};
+
+main()
+{
+  const double a = 0, const double b = 1.0;
+  F1 f1("from the Forsythe book");	// Instantiating the functor
+  const double found_location_of_min = fminbr(a,b,f1);
+  printf("\nIt took %d iterations\n",f1.get_counter());
+}
+
+Note how similar this looks to the previous example. The way fminbr()
+is called hasn't changed at all! This is to be expected: from the
+operational point of view, a function class is almost identical to a
+function pointer. In a sense, a function class is a syntactic wrapper
+around a function pointer, which is tucked away into a virtual table
+of UnivariateFunctor class. However, there are some differences: For
+one, main() does not care any more about global data f1() may use, and
+how they should be initialized. It's the job of a functor's
+constructor. Also, since the function pointer itself as well as
+function's private environment ('counter', for example) are hidden,
+there is no way one can mess them up, leave uninitialized, or use
+inappropriately.
+
+The validation code vfminbr.cc and vzeroin.cc shows further refinement
+of this idea. Please mail me if you have any question or comment.
+
+
+
+***** Grand plans
+	Computing of a random orthogonal matrix
+	Saving/loading of a matrix
+	Finding matrix Extrema (and extrema of abs(matrix))
+	Compute X'AX for a square matrix
+	Compute x'Ax (a square form)
+	Asymmetry index
+	Add an ArithmeticProgression class ("virtual" constant vector)
+	Recompile and beautify FFT and SVD parts, taking advantage of
+	streams as much as possible. For example, FFT should take and
+	transform a StrideStream rather than a vector. In that case, one can
+	apply FFT to the whole matrix, or a separate matrix row or
+	a column.
+	Make FFT itself a stream class (a Complex stream). This will
+	obviate the need for FFT:real(), FFT::abs(), FFT::abs_half() etc.
+	methods.
+	In FFT, add functions to compute 2D sin/cos transforms.
+	Make an FFT FAQ (questions I answered through e-mail,e.g., 2D FFT,
+	DFT vs. Fourier integral, etc). Describe in detail how to perform an
+	inverse transform.
+	Make a special class for SymmetricMatrix
+	When gcc starts supporting member function templates, make
+	iterator classes for iterating over a vector, two vectors, Matrix
+	slices, etc.
+	Code to verify a matrix (pseudo)inverse, that is,
+	test Moore-Penrose conditions XAX = X, AXA = A; AX and XA are
+	symmetric (that is, AX = (AX)', etc.) where X is a (pseudo)inverse
+	of A.
+	Another SVD application: compute a covariance matrix for a
+	given design matrix X, i.e. find the inverse of X'X for a
+	rectangular matrix X.
+	SVD optimization: when solving Ax=b via SVD, one doesn't need
+	to accumulate matrix U: one can apply the transformations directly
+	to b. That is, make SVD take matrices U,V as input (which must be
+	appropriately initialized), so SVD would accumulate transformations
+	in them. U,V don't have to be initialized as unit matrices at all
+	(and may be omitted).
+	Add ispline(): building a spline and integrating it
+	Add slehol: solve a set of SLE with a symmetric matrix
+	Lazy matrix operators A+B, multtranspose(A,B), etc.
+	Overload operator "," for inline filling in of vectors, as in
+		Vector v = VectorInline, 0, 1.0, 3;
+	which creates a vector of three elements and assigns initial
+	values to them.
+	Introduce matrix streams of the second order, that is, a
+	stream that traverses a matrix column-by-column, and can create
+	a column stream to access the current column. The same for the
+	rows.
+	Note an article "Scientific Computing: C++ vs Fortran", Nov 1997
+	issue of DDJ (described in my DDJ notes)
+	Add dump(), validate() methods to every class!
+	Note suggestions by Marco Tenuti (in particular, computing
+	the rank of a matrix)
+	Maybe I have to make a (protected) method
+	"bool Matrix::q_within(const REAL * const p) const"
+	and use it in LAStreamIn, etc. wherever I need to make sure the pointer
+	is within matrix's grid. Maybe this should be Matrix::ConstReference's
+	method.
+	Consider adding MAC (multiply-accumulate) "instruction" similar
+	to the one in DSP. Note that streaming is a typical memory
+	access model of DSPs: that's why DSP almost never incorporate a
+	a data cache (See "DSP Processors Hit the Mainstream,"
+	Jennifer Eyre and Jeff Bier, Computer, Vol. 31, No. 8, August 1998,
+	pp. 51-59). Also refer to an article "Smarter Memory: Improving
+	Bandwidth for Streamed References", Computer, July 1998, pp.54-63. A
+	memory architecture designed in the article achieves low
+	overall latencies because it was told by a compiler that
+	a stream operation is to follow. Thus streaming is a deep
+	software/hardware concept.
+	Add streams over Matrix triangles (although they can easily be
+	emulated with regular or block streams -- and appropriate 'seek'-ing).
+	Construct ElementWiseConst from LAStreamIn or LAStreamOut;
+	Make all ElementWise iterators (to_every(), of_every() constructors)
+	accept an IRange argument.
+	Note mentioning of LinAlg in 
+		http://z.ca.sandia.gov/~if-forum/list/msg00000.html
+	Replace all 'double' with REAL_EXT
+	Think about combinators of a form of_every(of_every1,of_every2);
+	In particular, "ElementWiseAction& apply(ElementWiseAction1& functor,
+	ConstElementWise&);" where functor takes one argument and
+	returns one value. Generalize this 'apply' to take two
+	ConstStreams and a functor that takes two arguments. This is
+	similar to Scheme's map. Thus it should be possible to
+	write "to_every(V).apply(adder(x),of_every(V1));" to
+	compute V += V1*x;
+	How to calculate: M = N*H*3.5; without modifying the matrices N and H?
+	(Boris Holscher's question).
+	A member function to return the first element of the matrix, so
+	one can easily convert a 1x1 matrix to a scalar
+	(Boris Holscher's suggestion)
+	Note a similarity between streams and restricted pointers (a
+	proposed addition to ANSI C by a Numerical C Extensions Group).
+	Restricted pointers are a means of asserting an aliasing constraints
+	(if an array is not being modified via a restricted pointer, a
+	compiler may assume the array is not being modified at all).
+
+
+***** Revision history
+
+Version 4.3 (Christmas 1998)
+
+	Improved portability: LinAlg now compiles with gcc 2.8.1, Visual
+	C++ and Metrowerk's C++. I heard that SGI's native compiler
+	takes LinAlg 4.3 as well.
+
+	The package is complete now: SVD and FFT have been finally
+	ported from the 3.2 version.
+
+	Genuine Lambda-abstractions: see vzeroin.cc and vfminbr.cc
+
+	MinMax class (in LinALg.h) is extended with methods to permit
+	accumulation of	min and max; see svd.cc for a usage example.
+
+	Introducing IRange and IRangeStride classes in LinALg.h
+
+	Added an explanation of differences between Lazy Matrices and
+	expression template styles. See this README file, above.
+
+	Introducing streams over an arbitrary rectangular block of a
+	matrix
+
+	All streams have now an ability to 'seek(offset, seek_dir)' in 
+	a manner similar to that of ordinary iostreams.
+	In particular, one can 'ignore(how_many)' elements in a stream.
+	See the explanation above for more details.
+
+	One can _subrange_ a stream: create a new stream that spans over
+	a part of another. The new stream may not _extend_ the old one.
+	When specifying range boundaries, -INF and INF are permitted, and
+	interpreted intelligently. One may create an input stream as a
+	subrange of an output stream. See notes above for more details.
+
+	Changed ElementAction and ConstElementAction: they are now
+	pure interfaces; the index of the current element is passed
+	as an argument to the interface's 'operation'
+
+	Note, SVD::rotate is actually a general-purpose function.
+
+	builtin.h provides now its own implementation of div() on Linux.
+	The implementation of div() in linux's libc.a does not agree with
+	gcc's optimizations (thanks to Erik Kruus for pointing this out).
+
+	Added pow(double,long) and pow(long,long) to myenv.cc
+	They used to be in libg++; yet libstdc++ has dropped them: they
+	are not standard yet often convenient
+
+	LAStreams.h is separated from LinAlg.h to make LinAlg.h smaller
+	and more manageable
+
+	Trivial changes to the FFT package: taking advantage of
+	LAStreams on few occasions, making sure everything works and
+	verifies.
+
+
+Version 4.1
+
+	Completely redesigned the entire hierarchy, based on container/view/
+	stream principles. See above for more details.
+
+	Matrix class per se no longer provides a direct access to matrix
+	elements. Use MatrixDA, MatrixRow, MatrixColumn, or MatrixDiag
+	views.
+
+	MatrixRow, MatrixCol, MatrixDiag, LazyMatrix all inherit from
+	DimSpec, that is, all answer queries about their dimensions
+	(row/col lower and upper bounds).
+
+	Added lazy matrix operator * (const Matrix&B, const Matrix&C), so
+	that it is possible to write now Matrix D = A * B;
+
+	operator *= (Matrix& m, const ConstMatrixDiag& diag)
+	is not a member of the Matrix class any more: it does not
+	need any privileged access to a matrix object (nor ConstMatrixDiag
+	class). The multiplication itself is implemented with streams.
+	(and makes a good example of their usage). It is almost just as
+	efficient as the priviledged implementation: all loops
+	are inlined, no extra procedures/functions are called 
+	while traversing the matrices and multiplying their elements.
+
+	By the same token, computing of Vector norms no longer requires
+	any direct access to vector's elements. Entire computation is
+	a trivial application of an ElementWiseConst iterator.
+
+	No need for separate operations on MatrixColumn, etc:
+	it's enough that MatrixColumn can be tacitly converted to
+	ElementWise stream, meaning that the whole suite of elementwise
+	operations immediately applies.
+
+	Glorified Matrix constructors are gone. They are subsumed by Lazy
+	matrices (see the discussion above).
+
+	The matrix inversion algorithm is tinkered with to avoid a direct
+	access to matrix' elements (that is, avoid using a column matrix
+	index). That's why a method invert() can be applied to a
+	Matrix itself, rather than MatrixDA.
+
+	Made constructors (iterators?) for a Vector from MatrixRow/Col/Diag
+
+	ali.cc and hjmin.cc are re-written to take advantage of LAStreams:
+	most of the time they use only sequential access to vector
+	elements.
+
+	New style casts (const_cast, static_cast) are used throughout.
+
+	Use of mixin inheritance throughout (DimSpec, AREALStream, etc.)
+
+	Tests (validation code) remained mostly unchanged. The only
+	modifications were insertions of to_every()/of_every() in a few
+	places. This shows how much of the LinAlg interface remained the same.
+
+	ElementPrimAction is replaced with ElementWiseAction/
+	ElementWiseConstAction, which are to be applied to a
+	(resp, writable and const) ElementWise stream.
+
+	The code and comments in zeroin.cc and fminbr.cc are greatly
+	embellished: The code is now more in the C++ true spirit.
+	The function under investigation is now a functor
+	(a "clause") rather than a mere function pointer;
+	DBL_EPSILON is used throughout, instead of my own
+	EPSILON (which is deprecated)
+	Declarations in math_num.h are adjusted accordingly.
+
+	Validation code vzeroin.cc and vfminbr.cc is almost completely
+	re-written to take advantage and show off functors
+	(function "clauses") as arguments to zeroin() and fminbr().
+	Furthermore, test cases themselves are declared as anonymous,
+	"lambda"-like functions, similar to Scheme/Dylan even in
+	appearance.
+
+	The validation code is also expanded with new test cases,
+	from Matlab:Demos:zerodemo.m
+
+	use M_PI instead of PI (in the fft package)
+	FFT package embellished for the new gcc
+	determinant.cc is rewritten using only _serial_ access to Matrix
+	elements. The algorithm is faster and clearer now.
+	Makefile is beautified: c++l is gotten rid of
+	Corrected spellings for Householder and Hooke-Jeeves
+	corrected an insidious bug in SVD::rip_through() method of QR part
+	of svd.cc:
+	only abs values of quantities (quantity f) makes sense to compare
+	with eps; many thanks to W. Meier <wmeier@manu.com>
+	vsvd.cc now includes the test case W. Meier used to show the bug
+	fabs() is replaced with abs() throughout the package (which does
+	not actually change functionality, but makes the code more generic)
+	
+Version 3.2
+	hjmin(), Hooke-Jeeves optimization, embellished and tested
+	ali.cc beautified, using nested functions, etc. (nice style)
+	Added SVD, singular value decomposition, and a some code
+	to use it (Solving Ax=b, where A doesn't have to be rectangular,
+	and b doesn't have to be a vector)
+	Minor embellishments
+	using bool datatype wherever appropriate
+	short replaced by 'int' as a datatype for indices, etc.: all
+	modern CPUs handle int more efficiently than short
+	(and memory isn't that of a problem any more)
+	Forcing promise (LazyMatrix) on assignment
+	Testing Matrix(Matrix::Inverted,m) glorified constructor
+	added retrieving an element from row/col/diag
+	added Matrix C.mult(A,B);	// Product A*B
+	*= operation on Matrix slices
+	Making a vector from a LazyMatrix
+	made sure that if memory is allocated via new, it's disposed
+	of via delete; if it was allocated via malloc/calloc, it's
+	disposed of via free(). It's important for CodeWarrior, where
+	new and malloc() are completely different beasts.
+	
+
+Version 3.1
+	Deleted dummy destructors (they're better left inferred: it results
+	in more optimal code, especially in a class with virtual functions)
+	Minor tweaking and embellishments to please gcc 2.6.3
+	#included <float.h> and <minmax.h> where missing
+
+Version 3.0 (beta): only Linear Algebra package was changed
+	got rid of a g++ extension when returning objects (in a_columns, etc)
+	removed "inline MatrixColumn Matrix::a_column(const int coln) const"
+	  and likes: less problems with non-g++ compilers, better portability
+	Matrix(operation::Transpose) constructors and likes, 
+	  (plus like-another constructor) Zero:, Unit, constructors
+	invert() matrix
+	true copy constructor (*this=another; at the very end)
+	fill in the matrix (with env) by doing ElementAction
+
+	cleaned Makefile (pruned dead wood, don't growl creating libla
+	  for the first time), a lots of comments as to how to make things
+	used M_PI instead of PI
+	#ifndef around GNU #pragma's
+	REAL is introduced via 'typedef' rather than via '#define': more
+	  portable and flexible
+	added verify_element_value(), verify_matrix_identity() to the main
+	  package (used to be local functions). They are useful in
+	  writing the validation code
+	added inplace and regular matrix multiplication: computing A*B and A'*B
+	all matrix multiplication code is tested now
+	implemented A*x = y (inplace (w/resizing))
+	Matrix::allocate() made virtual
+	improved allocation of vectors (more optimal now)
+	added standard function to make an orthogonal Haar matrix
+	  (useful for testing/validating purposes)
+	Resizing a vector keeps old info now (expansion adds zeros (but still
+	  keeps old elements)
+	universal matrix creator from a special class: Lazy Matrices
+
+Version 2.0, Mar 1994: Only LinAlg package was changed significantly
+	Linear Algebra library was made more portable and compiles now
+	  under gcc 2.5.8 without a single warning.
+	Added comparisons between a matrix and a scalar (for-every/all -type
+	  comparisons)
+	More matrix slice operators implemented
+	  (operations on a col/row/diag of a matrix, assignments them
+	  to/from a vector)
+	Other modules weren't changed (at least, significantly), but work
+	  fine with the updated libla library
+
+Version 1.1, Mar 1992 (initial revision)
+

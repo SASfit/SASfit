@@ -1,0 +1,111 @@
+./vmatrix
+
+
+-------------------------------------------------------------------------------
+		Verify Basic operations on Matrices
+
+
+---> Test allocation and compatibility check
+The following matrices have been allocated
+
+Matrix 1:4x1:20 Matrix m1 is not engaged
+
+Matrix 1:4x1:20 Matrix m2 is not engaged
+
+Matrix 1:4x0:19 Matrix m3 is not engaged
+
+Matrix 1:4x1:20 Matrix m4 is not engaged
+
+Status information reported for matrix m3:
+  Row lower bound ... 1
+  Row upper bound ... 4
+  Col lower bound ... 0
+  Col upper bound ... 19
+  No. rows ...........4
+  No. cols ...........20
+  No. of elements ....80
+  Name Matrix m3
+
+Check matrices 1 & 2 for compatibility
+Check matrices 1 & 4 for compatibility
+m2 has to be compatible with m3 after resizing to m3
+m1 has to be compatible with m5 after resizing to m5
+
+Matrix 1:5x1:25 Matrix m5 is not engaged
+
+Done
+
+
+---> Test operations that treat each element uniformly
+Writing zeros to m...
+Creating zero m1 ...
+Comparing m1 with 0 ...
+Writing a pattern 8.625 by assigning to m(i,j)...
+Writing the pattern by assigning to m1 as a whole ...
+Comparing m and m1 ...
+Comparing (m=0) and m1 ...
+Clearing m1 ...
+
+Clear m and add the pattern
+   add the doubled pattern with the negative sign
+   subtract the tripled pattern with the negative sign
+
+Verify comparison operations when all elems are the same
+
+Verify comparison operations when not all elems are the same
+
+Assign 2*pattern to m by repeating additions
+Assign 2*pattern to m1 by multiplying by two 
+Multiply m1 by one half returning it to the 1*pattern
+
+Assign -pattern to m and m1
+m = sqrt(sqr(m)); m1 = abs(m1); Now m and m1 have to be the same
+
+Check out to see that sin^2(x) + cos^2(x) = 1
+Element (16,8) with value 1 differs the most from what
+was expected, 1, though the deviation 1.19209e-07 is small
+
+Done
+
+
+---> Test Binary Matrix element-by-element operations
+
+Verify assignment of a matrix to the matrix
+
+Adding the matrix to itself, uniform pattern 4.25
+  subtracting two matrices ...
+  subtracting the matrix from itself
+  adding two matrices together
+
+Arithmetic operations on matrices with not the same elements
+   adding mp to the zero matrix...
+
+Testing element-by-element multiplications and divisions
+   squaring each element with sqr() and via multiplication
+   compare (m = pattern^2)/pattern with pattern
+
+
+Comparison of two Matrices:
+	Original matrix and matrix after squaring and dividing
+Matrix 2:11x0:19  is not engaged
+
+Matrix 2:11x0:19  is not engaged
+
+Maximal discrepancy    		0
+   occured at the point		(2,0)
+ Matrix 1 element is    		4.25
+ Matrix 2 element is    		4.25
+ Absolute error v2[i]-v1[i]		0
+ Relative error				0
+
+||Matrix 1||   			850
+||Matrix 2||   			850
+||Matrix1-Matrix2||				0
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	0
+
+Done
+
+
+All test passed
+
+Compilation finished at Fri Dec 25 23:06:05

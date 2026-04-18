@@ -1,0 +1,56 @@
+
+                    planck.zip
+
+This program calculates the integrated power radiated, between two
+given wavelength limits, by a Planckian black body at given temperature.
+Units are degrees Kelvin, watts, and meters.
+
+There are two physical constants that affect the result.
+The values used here are
+  First radiation constant: c1 = 2 pi h c^2 = 3.741 771 53 (17) e-16 W m2
+  Second radiation constant: c2 = h c / k  = 0.014 387 770 (13) m K
+These are the 2010 SI values quoted by the Bureau of
+Standards (NIST).
+
+Before attempting to compile the program, edit mconf.h to indicate
+whether your computer's numbers are big-endian (e.g. Sun sparcstation)
+or little-endian (e.g. IBM PC).
+
+Rather than try to second-guess the features or bugs of your system's math
+library, all necessary mathematical function subroutines have been
+included here.  You can of course use your own math library if you want.
+
+Files:
+
+rad.exe   Precompiled MS-DOS executable program
+rad.ans	  Sample program output
+
+mconf.h   Edit this to suit your computer.
+makefile  Unix make file
+msc6.mak  Microsoft make file (DOS compilers)
+msc.mak   Microsoft nmake file (Visual C)
+rad.c     Main program with user interaction
+planck.c  Integral of Planck's black body radiation formula
+protos.h  Function declarations
+polylog.c Polylogarithms
+isnan.c   IEEE tests
+exp.c     Exponential function
+sin.c     Sine, cosine
+fac.c     Factorial
+gamma.c   Gamma function
+floor.c   Truncations
+pow.c     Exponentiation
+log.c     Logarithm
+powi.c    Real raised to integer power
+mtherr.c  Error printout
+const.c   Mathematical constants
+polevl.c  Evaluate polynomial
+zetac.c   Riemann zeta function
+spence.c  Spence's integral, related to polylogarithm of order 2
+unity.c   Relative error log(1+x) and exp(x) - 1
+
+
+Stephen L. Moshier
+moshier@na-net.ornl.gov
+Version 0.0: August, 1999
+Update: December, 2011

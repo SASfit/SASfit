@@ -1,0 +1,175 @@
+./vvector
+
+
+-------------------------------------------------------------------------------
+		Verify Operations on Vectors
+
+
+---> Test allocation and compatibility check
+The following vector have been allocated
+
+Matrix 1:20x1:1  is not engaged
+
+Matrix 1:20x1:1  is not engaged
+
+Matrix 0:19x1:1  is not engaged
+
+Matrix 1:20x1:1  is not engaged
+
+Status information reported for vector v3:
+  Lower bound ... 0
+  Upper bound ... 19
+  No. of elements 20
+  Name 
+
+Check vectors 1 & 2 for compatibility
+Check vectors 1 & 4 for compatibility
+v2 has to be compatible with v3 after resizing to v3
+v1 has to be compatible with v5 after resizing to v5.upb
+
+Matrix 1:25x1:1 Vector v5 is not engaged
+
+Check that shrinking does not change remaining elements
+Check that expansion expands by zeros
+
+Done
+
+
+---> Test operations that treat each element uniformly
+Writing zeros to v...
+Clearing v1 ...
+Comparing v1 with 0 ...
+Writing a pattern 3.14159 by assigning to v(i)...
+Writing the pattern by assigning to v1 as a whole ...
+Comparing v and v1 ...
+Comparing (v=0) and v1 ...
+Asigning the pattern via a LAStreamOut...
+
+Clear v and add the pattern
+   add the doubled pattern with the negative sign
+Element (18,1) with value -3.14159 differs the most from what
+was expected, -3.14159, though the deviation 2.38419e-07 is small
+   subtract the trippled pattern with the negative sign
+
+Verify comparison operations
+
+Assign 2*pattern to v by repeating additions
+Assign 2*pattern to v1 by multiplying by two 
+Multiply v1 by one half returning it to the 1*pattern
+
+Assign -pattern to v and v1
+v = sqrt(sqr(v)); v1 = abs(v1); Now v and v1 have to be the same
+Element (18,1) with value 9.86961 differs the most from what
+was expected, 9.8696, though the deviation 9.53674e-07 is small
+
+Check out to see that sin^2(x) + cos^2(x) = 1
+Element (17,1) with value 1 differs the most from what
+was expected, 1, though the deviation 2.38419e-07 is small
+
+	do it again through LazyMatrix promise of a vector
+Element (17,1) with value 1 differs the most from what
+was expected, 1, though the deviation 2.38419e-07 is small
+Element (17,1) with value 1 differs the most from what
+was expected, 1, though the deviation 2.38419e-07 is small
+
+Verify constructor with initialization
+
+Done
+
+
+---> Test Binary Vector operations
+
+Verify assignment of a vector to the vector
+
+Adding one vector to itself, uniform pattern 3.14159
+  subtracting two vectors ...
+  subtracting the vector from itself
+  adding two vectors together
+
+Arithmetic operations on vectors with not the same elements
+   adding vp to the zero vector...
+
+Testing element-by-element multiplications and divisions
+   squaring each element with sqr() and via multiplication
+   compare (v = pattern^2)/pattern with pattern
+
+
+Comparison of two Matrices:
+	Original vector and vector after squaring and dividing
+Matrix 2:21x1:1  is not engaged
+
+Matrix 2:21x1:1  is not engaged
+
+Maximal discrepancy    		0
+   occured at the point		(2,1)
+ Matrix 1 element is    		3.14159
+ Matrix 2 element is    		3.14159
+ Absolute error v2[i]-v1[i]		0
+ Relative error				0
+
+||Matrix 1||   			62.8319
+||Matrix 2||   			62.8319
+||Matrix1-Matrix2||				0
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	0
+
+Done
+
+---> Verify norm calculations
+
+Assign 10.25 to all the elements and check norms
+  1. norm should be pattern*no_elems
+  Square of the 2. norm has got to be pattern^2 * no_elems
+  Inf norm should be pattern itself
+  Scalar product of vector by itself is the sqr(2. vector norm)
+
+Assign the arithm progression with 1. term -10.25
+and the difference 1
+  1. norm should be 100.5
+  Square of the 2. norm has got to be n*[ a0^2 + a0*q*(n-1) + q^2/6*(n-1)*(2n-1) ], or 676.25
+  Inf norm should be max(abs(a0),abs(a0+(n-1)*q)), ie 10.25
+  Scalar product of vector by itself is the sqr(2. vector norm)
+
+
+Comparison of two Matrices:
+	Compare the vector v with a zero vector
+Matrix 1:20x1:1  is not engaged
+
+Matrix 1:20x1:1  is not engaged
+
+Maximal discrepancy    		10.25
+   occured at the point		(1,1)
+ Matrix 1 element is    		-10.25
+ Matrix 2 element is    		0
+ Absolute error v2[i]-v1[i]		10.25
+ Relative error				2
+
+||Matrix 1||   			100.5
+||Matrix 2||   			0
+||Matrix1-Matrix2||				100.5
+||Matrix1-Matrix2||/sqrt(||Matrix1|| ||Matrix2||)	1.005e+09
+
+Construct v1 to be orthogonal to v as v(n), -v(n-1), v(n-2)...
+||v1|| has got to be equal ||v|| regardless of the norm def
+But the scalar product has to be zero
+
+Done
+
+
+---> Test operations with vectors and matrix slices
+
+Check modifying the matrix column-by-column
+
+Check modifying the matrix row-by-row
+
+Check modifying the matrix row-by-row, again
+
+Check modifying the matrix diagonal
+
+Check out to see that multiplying by diagonal is a column-wise
+matrix multiplication
+
+Done
+
+All tests passed
+
+Compilation finished at Fri Dec 25 23:17:14

@@ -1,0 +1,88 @@
+./vslesing
+
+
+Verify application of SVD to solving sets of simultaneous equations
+
+
+Checking solution of a set of linear equations
+with a Hilb+E of order 10x10
+
+condition number 2.75192
+true vs. computed solution follows 
+
+Matrix 1:2x1:10  is not engaged
+
+
+     |        1  |        2  |        3  |        4  |        5  |        6  |
+-------------------------------------------------------------------------------
+   1 |          1            2            3            4            5            6  
+   2 |          1            2            3            4            5            6  
+
+
+     |        7  |        8  |        9  |       10  |
+-------------------------------------------------------------------------------
+   1 |          7            8            9           10  
+   2 |          7            8            9           10  
+Done
+	checking to see that Ax is indeed b
+Two (3,1) elements of matrices with values 9.79358 and 9.79358
+differ the most, although the deviation 3.8147e-06 is small
+
+
+Checking solution of a set of linear equations
+with a Hilb+E of order 20x10
+
+condition number 2.7952
+true vs. computed solution follows 
+
+Matrix 1:2x1:10  is not engaged
+
+
+     |        1  |        2  |        3  |        4  |        5  |        6  |
+-------------------------------------------------------------------------------
+   1 |          1            2            3            4            5            6  
+   2 |          1            2            3            4            5            6  
+
+
+     |        7  |        8  |        9  |       10  |
+-------------------------------------------------------------------------------
+   1 |          7            8            9           10  
+   2 |          7            8            9           10  
+Done
+	checking to see that Ax is indeed b
+Two (7,1) elements of matrices with values 11.4156 and 11.4156
+differ the most, although the deviation 3.8147e-06 is small
+
+
+Checking solution of a set of linear equations
+with a Hilbert matrix of order 10
+
+condition number 8.94709e+08
+
+SVD solver of AX=B detected a linear dependency among X
+  #  singular value	null coefficients
+ 7      1.2e-07 	(0.00130963 -0.0394396   0.269146  -0.616852   0.308427   0.394039 -0.0290467  -0.351558  -0.257763   0.322839 )
+ 8      2.6e-09 	(         0 0.00283669 -0.0518273   0.279691  -0.562661   0.245453   0.411889  -0.123976  -0.511031   0.309951 )
+ 9        2e-09 	(         0 0.000267683 -0.0073021  0.0653878  -0.271881   0.589665   -0.67155    0.34876 -0.0243657 -0.0290013 )
+ 10      2.4e-09 	(         0 -0.000503957  0.0115796 -0.0849961   0.267981  -0.339047 -0.0717925   0.633468  -0.603703   0.187034 )
+true vs. computed solution follows 
+
+Matrix 1:2x1:10  is not engaged
+
+
+     |        1  |        2  |        3  |        4  |        5  |        6  |
+-------------------------------------------------------------------------------
+   1 |          1            2            3            4            5            6  
+   2 |     0.9995         2.01        2.955        4.055        5.013        5.971  
+
+
+     |        7  |        8  |        9  |       10  |
+-------------------------------------------------------------------------------
+   1 |          7            8            9           10  
+   2 |      6.975        8.004        9.022        9.996  
+Done
+	checking to see that Ax is indeed b
+Two (5,1) elements of matrices with values 5.32709 and 5.32708
+differ the most, although the deviation 9.53674e-07 is small
+
+Compilation finished at Fri Dec 25 23:25:24

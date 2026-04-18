@@ -1,0 +1,11 @@
+#!/bin/sh
+#	GNU C++ compilation
+# Note, ${foo:+bar} is just a weird way of commenting out bar
+gcc -c -pipe -W -Wall -Wpointer-arith -ffor-scope -Woverloaded-virtual \
+-Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations \
+${foo:+'-Wold-style-cast'} -Wbad-function-cast -Wwrite-strings \
+${foo:+'-Winline -Wredundant-decls'} -fno-rtti -fno-exceptions \
+-finline-functions  -fforce-mem ${foo:+'-funsigned-char -fshort-enums'} \
+-fforce-addr -fstrict-prototype -felide-constructors ${foo:+'-fno-implicit-templates'} \
+-fomit-frame-pointer ${foo:+'-fvtable-thunks'} ${foo:+'-Weffc++'} -freg-struct-return \
+-I. -I- $*
