@@ -15,7 +15,7 @@ get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_LIST_FILE} PATH)
 #build_from_source_by_cmake(${CURRENT_DIR} ${CONFIGURE_OPTIONS})
 #OPTION(EXAMPLES_ENABLE OFF) # tests require python, not needed here
 #OPTION(MPI_ENABLE OFF)      # mpi framework not needed
-#add_subdirectory(bestlime-1.0)
+#add_subdirectory(bestlime-1.2)
 # required for static builds on 64bit Linux
 if(UNIX)
     if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
