@@ -157,7 +157,7 @@ message(STATUS "TCL SH: ${TCL_SH}")
 if(CMAKE_HOST_APPLE)
     find_package(OPENMP  REQUIRED)
 else()
-    find_package(openMP  REQUIRED)
+    find_package(OpenMP  REQUIRED)
 endif()
 
 
