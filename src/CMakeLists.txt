@@ -154,7 +154,12 @@ message(STATUS "TCL LIBRARIES: ${TCL_LIBRARIES}")
 message(STATUS "TCL SH: ${TCL_SH}")
 
 # openMP
-find_package(OPENMP  REQUIRED)
+if(CMAKE_HOST_APPLE)
+    find_package(OPENMP  REQUIRED)
+else()
+    find_package(openMP  REQUIRED)
+endif()
+
 
 
 # FFTW
