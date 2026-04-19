@@ -77,7 +77,7 @@ endif()
 
 if(CMAKE_HOST_APPLE)
     add_definitions(-DMACOSX)
-    add_definitions(-DNO_LONGLONG_AND_NO_LONGINT -fopenmp)
+    add_definitions(-DNO_LONGLONG_AND_NO_LONGINT -fopenmp=libomp)
     set(CMAKE_OSX_ARCHITECTURES ${CMAKE_SYSTEM_PROCESSOR})
     if(CMAKE_SYSTEM_PROCESSOR MATCHES "i[0-9]86")
         # assuming os is recent enough to understand x64
@@ -154,7 +154,7 @@ message(STATUS "TCL LIBRARIES: ${TCL_LIBRARIES}")
 message(STATUS "TCL SH: ${TCL_SH}")
 
 # openMP
-find_package(OpenMP REQUIRED)
+find_package(OPENMP  REQUIRED)
 
 
 # FFTW
