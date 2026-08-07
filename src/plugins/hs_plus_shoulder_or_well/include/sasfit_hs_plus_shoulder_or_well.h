@@ -1,6 +1,6 @@
 /*
  * Author(s) of this file:
- *   <your name> (<email address>)
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
 #ifndef SASFIT_PLUGIN_HS_PLUS_SHOULDER_OR_WELL_H
@@ -330,6 +330,102 @@ sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_two_piecewise_constant_f
  */
 sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_two_piecewise_constant_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sq_two_piecewise_constant ################ */
+
+/* ################ start sq_square_well_zepeda_lopez ################ */
+/**
+ * \defgroup sq_square_well_zepeda_lopez Square Well (Zepeda-Lopez)
+ * \ingroup sq_plugins_sticky_hard_sphere
+ *
+ * \brief Square Well (Zepeda-Lopez): https://www.arxiv.org/abs/1906.09894v1
+ *
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b RHS</td>
+ *       <td>hard sphere repulsive radius</td>
+ *      </tr><tr>
+ *       <td>\b fp</td>
+ *       <td>volume fraction</td>
+ *      </tr><tr>
+ *       <td>\b epsi/kT</td>
+ *       <td>square well depth in units of kT</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>relative square well width, lambda >1\ntotal width Delta=2 RHS (lambda-1)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_square_well_zepeda_lopez
+ *
+ * \sa sasfit_hs_plus_shoulder_or_well.h, sq_plugins_sticky_hard_sphere
+ */
+sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_square_well_zepeda_lopez(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_square_well_zepeda_lopez
+ *
+ * \sa sasfit_hs_plus_shoulder_or_well.h, sq_plugins_sticky_hard_sphere
+ */
+sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_square_well_zepeda_lopez_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_square_well_zepeda_lopez
+ *
+ * \sa sasfit_hs_plus_shoulder_or_well.h, sq_plugins_sticky_hard_sphere
+ */
+sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_square_well_zepeda_lopez_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_square_well_zepeda_lopez ################ */
+
+
+/* ################ start sq_square_well_zepeda_lopez ################ */
+/**
+ * \defgroup sq_square_well_nonlin_orpa Square Well (nonlin. ORPA)
+ * \ingroup sq_plugins_sticky_hard_sphere
+ *
+ * \brief Square Well (nonlin. ORPA): https://.....
+ * <more detailed documentation, see 'doxygen' docs>
+ *
+ *
+ * \par Required parameters:
+ *      <table border="0"><tr>
+ *       <td>\b RHS</td>
+ *       <td>hard sphere repulsive radius</td>
+ *      </tr><tr>
+ *       <td>\b fp</td>
+ *       <td>volume fraction</td>
+ *      </tr><tr>
+ *       <td>\b epsi/kT</td>
+ *       <td>square well depth in units of kT</td>
+ *      </tr><tr>
+ *       <td>\b lambda</td>
+ *       <td>relative square well width, lambda >1\ntotal width Delta=2 RHS (lambda-1)</td>
+ *      </tr></table>
+ */
+
+/**
+ * \ingroup sq_square_well_nonlin_orpa
+ *
+ * \sa sasfit_hs_plus_shoulder_or_well.h, sq_plugins_sticky_hard_sphere
+ */
+sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_square_well_nonlin_orpa(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_square_well_nonlin_orpa
+ *
+ * \sa sasfit_hs_plus_shoulder_or_well.h, sq_plugins_sticky_hard_sphere
+ */
+sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_square_well_nonlin_orpa_f(scalar q, sasfit_param * p);
+
+/**
+ * \ingroup sq_square_well_nonlin_orpa
+ *
+ * \sa sasfit_hs_plus_shoulder_or_well.h, sq_plugins_sticky_hard_sphere
+ */
+sasfit_hs_plus_shoulder_or_well_DLLEXP scalar sasfit_sq_square_well_nonlin_orpa_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_square_well_nonlin_orpa ################ */
 
 #endif // this file
 

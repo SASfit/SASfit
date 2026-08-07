@@ -237,10 +237,10 @@ int findB1B2A1A2(double complex *B1, double complex *A1, double complex *B2, dou
       status =
         gsl_multiroot_test_residual (s->f, 1e-8);
     }
-  while (status == GSL_CONTINUE && iter < 2000);
+  while (status == GSL_CONTINUE && iter <= 6000);
 //  sasfit_out("iter=%d\n",iter);
 //  printf ("status = %s\n", gsl_strerror (status));
-  if (iter > 2000) {
+  if (iter > 6000) {
     sasfit_out("iter=%d\n",iter);
   }
   *B1 = gsl_vector_get (s->x, 0) + I*gsl_vector_get (s->x, 1);

@@ -16,6 +16,9 @@ set(SOURCE_${PRJ_NAME}
 	sasfit_sq_square_well_potential_2.c
 	sasfit_sq_thin_square_well_potential.c
 	sasfit_sq_two_piecewise_constant.c
+	squarewell_common.c
+	sasfit_sq_squarewell_nonlinear_orpa.c
+	sasfit_sq_squarewell_zepeda_lopez.c
 	interface.c
 )
 
