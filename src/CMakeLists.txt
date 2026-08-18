@@ -21,6 +21,18 @@ if(NOT DEFINED CREATE_BINARY)
     set(CREATE_BINARY TRUE)
 endif()
 
+# OpenMP is currently NOT used anywhere in SASfit's own code paths (the
+# find_package(OpenMP REQUIRED) further below predates this option and was
+# unconditional, and its result was never actually linked in -- see the fix
+# alongside this option). This option makes OpenMP support explicit and
+# opt-in, off by default to match current behaviour exactly. Plugins (see
+# sasfit_cmake_plugin() in SasfitCmakeUtils.cmake, and e.g. the robertus_shs
+# plugin) read this same variable -- via normal CMake parent/child directory
+# scoping, since plugins are added with add_subdirectory(plugins) from this
+# same configure run -- so enabling OpenMP for the whole project and for any
+# plugin that supports it is a single switch.
+option(SASFIT_WITH_OPENMP "Enable OpenMP support in SASfit and its plugins" OFF)
+
  #############################################################
 ### A target for source code documentation using doxygen    ###
  #############################################################
@@ -102,21 +114,43 @@ IF(WIN32) # for Windows
         -DNO_FPINIT
         -DCONFLICTING_ISATTY
         -DNO_FUNCTION_MACRO
-        -fopenmp
     )
+    # -fopenmp used to be added unconditionally here, regardless of
+    # SASFIT_WITH_OPENMP (see that option's definition above). That is
+    # what caused "undefined reference to GOMP_parallel" etc. at link
+    # time for any plugin using #ifdef _OPENMP code (e.g. robertus_shs)
+    # while the option was off: add_definitions() leaks the compiler
+    # flag -- and hence _OPENMP -- into EVERY target in every
+    # subdirectory added afterwards (ordinary CMake directory-scope
+    # inheritance), so the plugin's object file still got compiled with
+    # OpenMP pragmas active even though nothing downstream was linking
+    # libgomp in for it. Gated now so compile-time and link-time state
+    # can never disagree again.
+    if(SASFIT_WITH_OPENMP)
+        ADD_DEFINITIONS(-fopenmp)
+    endif()
     IF(MSVC80)
         # suppress warnings about usage of old non-limited string functions
         # has to be fixed later
         add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
-        add_definitions(-DINTEGER_STAR_8 -fopenmp) # see f2c/f2c.h
+        add_definitions(-DINTEGER_STAR_8) # see f2c/f2c.h
+        if(SASFIT_WITH_OPENMP)
+            add_definitions(-fopenmp)
+        endif()
     ELSE() # NOT MSVC80
-        add_definitions(-DNO_LONGLONG_AND_NO_LONGINT -fopenmp)
+        add_definitions(-DNO_LONGLONG_AND_NO_LONGINT)
+        if(SASFIT_WITH_OPENMP)
+            add_definitions(-fopenmp)
+        endif()
     ENDIF()
 ENDIF() # for Windows
 
 # for Unix/Linux
 IF(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-    ADD_DEFINITIONS(-DINTEGER_STAR_8 -fopenmp) # see f2c/f2c.h
+    ADD_DEFINITIONS(-DINTEGER_STAR_8) # see f2c/f2c.h
+    if(SASFIT_WITH_OPENMP)
+        ADD_DEFINITIONS(-fopenmp)
+    endif()
 #    ADD_DEFINITIONS(-DINTEGER_STAR_8 ) # see f2c/f2c.h
     add_definitions(-UNO_LONGLONG_AND_NO_LONGINT)
 ENDIF()
@@ -154,10 +188,23 @@ message(STATUS "TCL LIBRARIES: ${TCL_LIBRARIES}")
 message(STATUS "TCL SH: ${TCL_SH}")
 
 # openMP
-if(CMAKE_HOST_APPLE)
-    find_package(OPENMP  REQUIRED)
-else()
-    find_package(OpenMP  REQUIRED)
+# Gated behind SASFIT_WITH_OPENMP (default OFF, see option() above).
+# Also fixes a pre-existing bug: target_link_libraries(sasfit ...) below
+# referenced ${OpenMP_LIB}, a variable FindOpenMP.cmake never actually sets
+# (the real variable/target is OpenMP_C_FOUND / OpenMP::OpenMP_C) -- so even
+# though find_package(OpenMP REQUIRED) succeeded, nothing was ever actually
+# linked in. SASFIT_OPENMP_LINK_LIBS is the corrected replacement, empty
+# when the option is off so behaviour is unchanged from before by default.
+set(SASFIT_OPENMP_LINK_LIBS "")
+if(SASFIT_WITH_OPENMP)
+    if(CMAKE_HOST_APPLE)
+        find_package(OpenMP REQUIRED)
+    else()
+        find_package(OpenMP REQUIRED)
+    endif()
+    if(OpenMP_C_FOUND)
+        set(SASFIT_OPENMP_LINK_LIBS OpenMP::OpenMP_C)
+    endif()
 endif()
 
 
@@ -178,6 +225,16 @@ if(NOT sundials_FOUND)
 endif()
 message(STATUS "sundials INCLUDES:  ${sundials_INCLUDE_DIRS}")
 message(STATUS "sundials LIBRARIES: ${sundials_LIBRARIES}")
+
+# sundials7: an independent, separately-versioned SUNDIALS build (7.x,
+# fetched via CMake FetchContent) used ONLY by the robertus_shs plugin,
+# which needs KINSOL's modern SUNContext-based API. The bundled
+# sundials/ (2.7.0) above is untouched and still used unmodified by
+# src/sasfit_oz/sasfit_oz_solver.c. See src/sundials7/CMakeLists.txt
+# and src/plugins/robertus_shs/CMakeLists.txt for the full rationale,
+# including why linking both into the same process is safe (requires
+# -Wl,--exclude-libs=ALL on the plugin side, applied there).
+add_subdirectory(sundials7)
 
 # bestlime
 find_package(bestlime QUIET REQUIRED)
@@ -214,7 +271,29 @@ foreach(SF_MODULE f2c sasfit_common sasfit_sd sasfit_sq sasfit_ff sasfit_core sa
     endif()
 endforeach()
 
-include_directories(
+# NOTE: these were originally added via a bare, directory-scope
+# include_directories(...) call placed BEFORE add_library(sasfit...)
+# below. Changed to a target-scoped target_include_directories(sasfit
+# PRIVATE ...) call placed AFTER it instead (functionally identical for
+# the sasfit target itself), because directory-scope include_
+# directories() propagates into every add_subdirectory() processed
+# afterward -- including src/plugins/robertus_shs, whose own CMakeLists.txt
+# needs a DIFFERENT, newer version of one of these same dependencies
+# (sundials7 instead of the sundials/ 2.7.0 pulled in for sasfit/
+# sasfit_oz's own use right here). Confirmed directly: with the old
+# directory-scope call, that plugin's own (correct, newer) include path
+# lost a header-search race against this project-wide one for headers
+# that exist at the same relative path in both trees, even when the
+# plugin's own target_include_directories() used BEFORE -- BEFORE only
+# reorders within a target's own accumulated list, it does not take
+# priority over a separate directory-scope property inherited from the
+# parent. Scoping this to the sasfit target directly removes the leak
+# at its source instead, with no change in behaviour for sasfit itself.
+add_library(sasfit SHARED
+    ${SRC_FILES}
+)
+
+target_include_directories(sasfit PRIVATE
     ${SF_INC_DIRS}
     ${TCL_INCLUDE_DIRS}
     ${GSL_INCLUDE_DIRS}
@@ -224,13 +303,9 @@ include_directories(
     ${ZLIB_INCLUDE_DIRS}
 )
 
-add_library(sasfit SHARED
-    ${SRC_FILES}
-)
-
 target_link_libraries(sasfit
     ${TCL_LIBRARIES}
-    ${OpenMP_LIB}
+    ${SASFIT_OPENMP_LINK_LIBS}
     ${GSL_LIBRARIES}
     ${FFTW3_fftw3_LIBRARY}
     ${sundials_LIBRARIES}

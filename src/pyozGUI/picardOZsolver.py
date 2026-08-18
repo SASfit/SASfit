@@ -7,9 +7,9 @@ from oZsolver import OZsolver
 #This class inherits all that is needed to run the 
 #iteration and to communicate with clients from OZsolver
 class PicardOZsolver(OZsolver):
-    def __init__(self, port):
+    def __init__(self, port, **kwargs):
       #First run constructor of super class
-      OZsolver.__init__(self, port)
+      OZsolver.__init__(self, port, **kwargs)
 
     #define the specific iteration schema for this class    
     def picardIteration(self):
@@ -25,16 +25,15 @@ class PicardOZsolver(OZsolver):
           previousNorm = norm
           if relativeProgress < self.convergenceCriterion: #Defined in super class
               #pass
-              print "Picard converged after", i, "steps"
+              print("Picard converged after", i, "steps")
               break
           i += 1
           
       #endwhile
       if i == self.numberOfIterations:
-          print "Picard did not converge after", self.numberOfIterations, "steps"
+          print("Picard did not converge after", self.numberOfIterations, "steps")
 
       self.derivePhysicalQuantitiesFromFixpoint(x)
     #implement the abstract method such that this class can be instantiated
     def solve(self):
       self.picardIteration()
-      

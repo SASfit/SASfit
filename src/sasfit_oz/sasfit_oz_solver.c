@@ -2373,9 +2373,28 @@ int OZ_calculation (sasfit_oz_data *OZd) {
                     }
                     OZd->indx_max_appearent_sigma=igneg;
                 } else {
-                    OZd->indx_max_appearent_sigma=(OZd->indx_min_appearent_sigma+OZd->indx_max_appearent_sigma)/2;
-                    for (i=igneg;i<NP;i++)  {
-                        OZd->gate4g[i] = 1;
+// Fix (found and documented during Python port validation, see project
+// documentation): this branch previously computed a halved
+// indx_max_appearent_sigma but never (a) reset gate4g between that smaller
+// value and the old igneg back to 1, nor (b) re-pointed igneg at the new
+// boundary -- so the next iteration's g[igneg] check and OZ_solver() call
+// silently re-tested the SAME (larger) gate4g configuration as before,
+// never actually probing the smaller extent the halving was meant to try.
+// Also handles the edge case where indx_min_appearent_sigma and
+// indx_max_appearent_sigma are already adjacent integers: integer division
+// then rounds DOWN to indx_min_appearent_sigma, which would otherwise
+// discard a just-proven-sufficient indx_max_appearent_sigma and collapse
+// the search straight back to "no extension at all". That case is now
+// recognised directly as convergence instead.
+                    int newIndxMax = (OZd->indx_min_appearent_sigma+OZd->indx_max_appearent_sigma)/2;
+                    if (newIndxMax <= OZd->indx_min_appearent_sigma) {
+                        OZd->indx_min_appearent_sigma = OZd->indx_max_appearent_sigma;
+                    } else {
+                        for (i=newIndxMax+1;i<igneg;i++) {
+                            OZd->gate4g[i] = 1;
+                        }
+                        OZd->indx_max_appearent_sigma = newIndxMax;
+                        igneg = OZd->indx_max_appearent_sigma;
                     }
                 }
             } while ( OZd->indx_min_appearent_sigma !=  OZd->indx_max_appearent_sigma);
