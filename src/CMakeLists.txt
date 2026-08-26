@@ -321,9 +321,18 @@ target_link_libraries(sasfit
     ${FFTW3_fftw3_LIBRARY}
     sundials_kinsol_static
     sundials_core_static
-    ${bestlime_LIBRARIES}
-	${ZLIB_LIBRARIES}
+    ${ZLIB_LIBRARIES}
 )
+
+if(UNIX AND NOT APPLE)
+    target_link_libraries(sasfit
+        -Wl,--whole-archive
+        ${bestlime_LIBRARIES}
+        -Wl,--no-whole-archive
+    )
+else()
+    target_link_libraries(sasfit ${bestlime_LIBRARIES})
+endif()
 
 if(WIN32)
     list(GET bestlime_LIBRARIES 0 BESTLIME_IMPORT_LIBRARY)
