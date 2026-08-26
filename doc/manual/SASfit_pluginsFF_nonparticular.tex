@@ -20,7 +20,7 @@ with
   p_\mathrm{LN}(R,\mu,\sigma) &=  \frac{1}{R\sigma \sqrt{2 \pi}}\exp\left(-\frac{1}{2}\left(\frac{\ln R -
         \ln\mu}{\sigma}\right)^2\right)
 \end{align}
-The Debye correlation function $\gamma(r)$ needs to be expressed in terms of the covariagram function $K(r)$ and the volume fractionas $\phi_0=1-\phi_1$ of the pores or solid material. The knowledge of $\gamma(r)$ then allows to calculate the scattering intensity via
+The Debye correlation function $\gamma(r)$ needs to be expressed in terms of the covariogram function $K(r)$ and the volume fractions $\phi_0=1-\phi_1$ of the pores or solid material. Knowledge of $\gamma(r)$ then allows the scattering intensity to be calculated via
 \begin{align}
   I_Q(q) &= I(q)/\int_0^\infty I(q) 4\pi q^2 \mathrm{d}q \\
          &= \frac{1}{(2\pi)^3} \int_0^\infty \gamma(r) \frac{\sin qr}{qr}4\pi r^2\mathrm{d}r
@@ -767,7 +767,7 @@ characterizing the exponential decay of the composition fluctuations
 correlation function, with correlation length $\xi$. The Fourier
 transform of a Lorentzian function corresponds to correlations dying
 out as $\gamma(r) \simeq \frac{1}{r}exp(-r/\xi)$. Note that the
-low-$Q$ limit of this emical form reproduces the Guinier law.
+low-$Q$ limit of this empirical form reproduces the Guinier law.
 
 \hspace{1pt}\\
 \uline{Input Parameters for model \texttt{OrnsteinZernike}:}\\

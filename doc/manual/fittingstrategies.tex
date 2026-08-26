@@ -370,7 +370,7 @@ To access in \SASfit the specialized integration routines the functions \texttt{
 
 \subsection{Integration algorithms in SASfit for normal one- or multi-dimensional integration}  ~\\
 
-Within \texttt{SASfit} a configurable one dimensional integration routine as well as a multidimensional one  with a common interface for the different algorithms is supplied. Depending on the mathematical behaviour of the integrant it has turned out that the different algorithms might differ a lot in terms of efficiency. For multidimensional quadrature algorithm so far the same strategy is used for all dimensions. The routines \texttt{sasfit\_integrate()}  and \texttt{sasfit\_cubature()} have the same configuration options. For multidimensional integrations either by itself specialized multidimensional algorithms or nested calls of one-dimensional integration routines are used. \\
+Within \texttt{SASfit}, a configurable one-dimensional integration routine and a multidimensional routine with a common interface for the different algorithms are supplied. Depending on the mathematical behaviour of the integrand, the different algorithms can differ considerably in efficiency. For multidimensional quadrature algorithms, the same strategy is currently used for all dimensions. The routines \texttt{sasfit\_integrate()} and \texttt{sasfit\_cubature()} have the same configuration options. For multidimensional integrations, either specialized multidimensional algorithms or nested calls to one-dimensional integration routines are used. \\
 
 \noindent Possible options for them are:\\
 \begin{description}[font=\sffamily\bfseries, leftmargin=2.5cm,style=nextline,

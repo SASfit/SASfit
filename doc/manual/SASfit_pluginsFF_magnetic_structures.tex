@@ -277,24 +277,24 @@ scattering amplitude is based on the form factor described in
 \cite{PedersenGerstenberg96,PedersenJApplCryst2000} for block
 copolymer micelles from Pedersen et al.
 
-The different versions of form factor implemented in the plugin
-differ on one side on the model for describing the scattering of the
-molecules on the surface and on the other side how the data are
-pre-treated. At the moment three different model for the polymer
+The different form-factor versions implemented in the plugin
+differ in the model used to describe the scattering of the
+molecules on the surface and in how the data are pre-treated. At the
+moment, three different models for the polymer
 chains on the surface are implemented, namely that the chains are
-noninteracting and follow random walk behaviour \texttt{(Chain,RW)},
-secondly they are interacting due to the high grafting density and a
-model for self avoiding walk \texttt{(Chain,SAW)} is applied,
+are noninteracting and follow random-walk behaviour \texttt{(Chain,RW)};
+the second are interacting due to the high grafting density, for which
+a self-avoiding-walk model \texttt{(Chain,SAW)} is applied;
 thirdly a parabolic scattering length density profile for the outer
-shell is used \texttt{(Chain,parabolic)}. For each models a version
-for a sector cut in the direction $\psi$ (\texttt{psi}), a radial
+shell is used \texttt{(Chain,parabolic)}. For each model, a version
+for a sector cut in the direction $\psi$ (\texttt{psi}), a radially
 averaged intensity \texttt{(rad.~avg.)}, the anisotropic scattering
-contribution, which follows a $\sin^2$-law (\texttt{magnetic}), the
-angle dependent difference signal between two spin states
+contribution, which follows a $\sin^2$ law (\texttt{magnetic}), the
+angle-dependent difference signal between two spin states
 (\texttt{cross-term}), as well as the radial averaged cross term
-(\texttt{cross-term (rad.~avg.)}) has bee implemented. Also the for
-individual angle dependent cross-sections with full polarisation
-analysis are available. Finally we end up with the following
+(\texttt{cross-term (rad.~avg.)}) have been implemented. Versions for
+individual angle-dependent cross-sections with full polarisation
+analysis are also available. The possible combinations are:
 possible combinations:
 \begin{align}
 \left.
