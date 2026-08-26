@@ -19,6 +19,7 @@
 #include <gsl/gsl_spline.h>
 
 #include <nvector/nvector_serial.h>
+#include <sundials/sundials_context.h>
 #include "sasfit_oz.h"
 #define MAX_S21 100.0
 typedef double FP_Operator (void *);
@@ -77,6 +78,7 @@ typedef struct {
         double KINSetMaxNewtonStep;
 		void *FPstructure;
 		N_Vector KINConstraints;
+		SUNContext KINConstraintsCtx; /* SUNContext dedicated to KINConstraints: this vector is created once in EM_DR_Init() and reused across many separate FP_solver()/KINSol() calls, each of which creates and frees its own short-lived SUNContext (see FP_solver_by_iteration() in sasfit_fixed_point_acc.c) -- so KINConstraints needs a context of its own that outlives any single solve. Freed in EM_DR_Free(). */
 		FP_Operator * FP_Op;
 
 } sasfit_fp_data;

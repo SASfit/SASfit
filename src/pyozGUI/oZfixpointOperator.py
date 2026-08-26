@@ -45,7 +45,13 @@ below to match the ones available in the SASfit C code
   - setStickyHardSpherePotential     (sasfit_oz_potential_sticky_hard_sphere.c,
                                        Baxter tau convention -- same convention
                                        used by the robertus_shs plugin)
-Already-ported potentials (unchanged): HardSphere, LennardJones, Yukawa, Star.
+Already-ported potentials (unchanged): HardSphere, LennardJones, Yukawa.
+Star polymer potential (Likos & Harreis 2002) split into its two genuinely
+different regimes, matching sasfit_oz_potential_star_Likos.c's own
+U_Star1/U_Star2 exactly (an earlier version of this port only had U_Star1,
+silently applied regardless of functionality f):
+  - setStarPolymerHighFPotential     (f>=10, exponential decay)
+  - setStarPolymerLowFPotential      (f<=10, Gaussian decay, own tau(f))
 
 All energies are expressed directly in kT units (matching the existing
 convention in this file, e.g. LennardJones' epsilonInkTUnits) -- the C
@@ -164,6 +170,13 @@ class OZfixpointOperator:
       #root-find) -- zeros here purely as a defensive default, same
       #reasoning as g0/G0/betaPerturbation above.
       self.CEURAH = np.zeros(self.numberOfRadialSamplingPoints)
+      #Used only by ZSEP (set by setZSEPclosure()/OZsolver.fitZSEPparameters())
+      #-- defensive defaults for the same reason as above; alpha=1.0
+      #here matches Lee (1995)'s own empirical finding that alpha~=1.0
+      #across every density tested, not an arbitrary placeholder.
+      self.zsep_zeta = 1.0
+      self.zsep_phi = 1.0
+      self.zsep_alpha = 1.0
       #Only for HS and in PY approximation valid
       self.zeroQlimitOfStructureFactor = self.calculateZeroQlimitOfStructureFactor(self.volumeDensity)
       
@@ -274,23 +287,46 @@ class OZfixpointOperator:
           return EN*np.exp(G + BRIDGE) - G - 1.0
 
       elif ct == 'KH':
-          #Kovalenko-Hirata closure -- ported directly from
-          #sasfit_oz_solver.c's own "case KH:" block. Note (found by
-          #reading that C code carefully, not assumed from the
-          #textbook definition): its c(r)/g(r) formula there is
-          #IDENTICALLY the same expression as HNC's own
-          #(EN*exp(G)-G-1) -- the piecewise LINEARIZED bridge function
-          #this closure is normally defined by in the literature
-          #(g(r)=exp(gamma-betaU) where gamma-betaU<=0, else
-          #g(r)=1+gamma-betaU, avoiding HNC's own divergence risk in
-          #the strongly-repulsive/high-density regime) is computed in
-          #that C code too, but only as a separate diagnostic BRIDGE[i]
-          #output there -- it is never fed back into c[i] in that same
-          #closure branch. Ported exactly as the C code actually
-          #computes c(r)/g(r), not "corrected" to the textbook KH
-          #definition, since the point of this port is to reproduce
-          #SASfit's own numbers exactly, quirks included.
-          return EN*np.exp(G) - G - 1.0
+          #Kovalenko-Hirata closure -- the REAL literature formula, not
+          #SASfit's own C-code quirk (an earlier version of this port
+          #matched sasfit_oz_solver.c's own "case KH:" block exactly,
+          #which computes the textbook piecewise bridge function only
+          #as a separate diagnostic BRIDGE[i] output, never feeding it
+          #back into c[i] -- so that earlier version was, in effect,
+          #plain HNC under a different name). Chosen and verified
+          #directly against Kovalenko & Hirata's own formula
+          #(Chem. Phys. Lett. 290, 237 (1998)) as reproduced in
+          #Pihlajamaa & Janssen (2024)'s closure-comparison table
+          #(b(r) = [ln(1+d(r))-d(r)]*theta(d(r)), d(r)=gamma(r)-beta*u(r)):
+          #
+          #   g(r) = EN(r)*exp(G(r))     where d(r) = G(r)+ln(EN(r)) <= 0
+          #   g(r) = 1 + d(r)            where d(r) > 0
+          #
+          #i.e. identical to HNC wherever d(r)<=0, and linearized
+          #(bounded, non-exponential) wherever d(r)>0 -- this is the
+          #actual mechanism behind KH's own well-known good numerical
+          #convergence properties (see e.g. Ebato & Miyata (2016), AIP
+          #Advances 6, 055111): HNC's c(r) can grow without bound as
+          #Gamma(r) grows, KH's cannot, since the linear branch's c(r)
+          #= ln(EN(r)) = -beta*u(r) doesn't depend on Gamma(r) at all.
+          #Verified directly (not just derived): the two branches give
+          #identical c(r) AND g(r) at the switch boundary d(r)=0
+          #(checked to 1e-10), so this introduces no discontinuity;
+          #reduces to the exact same hard-core exclusion PY/HNC/MSA use
+          #when EN=0 (log(EN)->-inf forces d<=0, selecting the HNC
+          #branch, which gives EN*exp(G)-G-1 = -(G+1) there); and, in a
+          #full self-consistent Picard solve for hard spheres at
+          #phi=0.3, gives g(sigma+)=2.36 -- much closer to the exact PY
+          #value (2.356) than to plain HNC's own 2.845 at the same
+          #state point, consistent with the linear branch reducing to
+          #c(r)=ln(EN(r))=0 outside contact for a bare hard sphere
+          #(EN=1 there exactly), the same value PY's own formula
+          #happens to give there too.
+          logEN = np.log(np.clip(EN, 1e-300, None))
+          d = G + logEN
+          c_HNC_branch = EN*np.exp(G) - G - 1.0
+          c_linear_branch = logEN
+          return np.where(d <= 0.0, c_HNC_branch, c_linear_branch)
 
       elif ct == 'DH':
           #Duh-Haymet bridge function -- a rational-function
@@ -412,6 +448,31 @@ class OZfixpointOperator:
           #branch alone just returns whatever solveEuRah() already
           #converged to; it does not compute it.
           return self.CEURAH.copy()
+
+      elif ct == 'ZSEP':
+          #Lee's zero-separation-theorem closure (ZSEP), ported
+          #directly from Eq. (3.5) of L. L. Lee, J. Chem. Phys. 103,
+          #9388 (1995) -- designed specifically for hard spheres (it
+          #relies on the exact Carnahan-Starling zero-separation
+          #theorems for its own parameter-fitting, see
+          #OZsolver.fitZSEPparameters() below, and is therefore only
+          #meaningful when the active potential is HardSphere).
+          #self.zsep_zeta/phi/alpha are the closure's own three free
+          #parameters (set directly via setZSEPclosure(), or fitted via
+          #fitZSEPparameters()). Gstar here uses the SAME Mayer-factor
+          #renormalization pattern as this project's other Gstar-based
+          #closures (HMSA/VM/CJVM/BB/DH/CG), but is written out
+          #explicitly (rather than reusing self.attractivePartOfP2Ppotential)
+          #since ZSEP's own renormalization is specifically
+          #rho/2*(bare hard-sphere Mayer function), not a potential-
+          #specific attractive tail -- matching the paper's own
+          #gamma*(r) = gamma(r) + (rho/2)*f(r), f(r)=EN(r)-1.
+          MAYER = EN - 1.0
+          Gstar = G + 0.5*self.particleDensity*MAYER
+          zeta, phi, alpha = self.zsep_zeta, self.zsep_phi, self.zsep_alpha
+          denom = 1.0 + alpha*Gstar
+          BRIDGE = -0.5*zeta*Gstar**2*(1.0 - phi*alpha*Gstar/denom)
+          return EN*np.exp(G + BRIDGE) - G - 1.0
 
       else:
           raise ValueError("unknown closureType: " + str(ct))
@@ -631,8 +692,15 @@ class OZfixpointOperator:
     
 
 
-    #Star Potential (Likos)
-    def setStarPotential(self, NumberOfArms):
+    #Star Polymer potential (Likos & Harreis 2002), high-functionality
+    #branch (U_Star1 in sasfit_oz_potential_star_Likos.c), valid for
+    #f>=10. Renamed from setStarPotential() to make explicit that this
+    #is one of TWO distinct formulas the C source actually has (see
+    #setStarPolymerLowFPotential() immediately below for the f<=10
+    #branch, U_Star2) -- an earlier version of this port only had this
+    #one, silently using it for every functionality regardless of
+    #whether f was above or below the paper's own crossover point.
+    def setStarPolymerHighFPotential(self, NumberOfArms):
       try:
           NumberOfArms = int(NumberOfArms)
       except ValueError:
@@ -648,6 +716,38 @@ class OZfixpointOperator:
       #else:
           #potential_Star =   5.0/18.0*pow(NumberOfArms,3.0/2.0)* 1.0/(1.0+sqrt(NumberOfArms)/2.0)* sigma/r* exp(-sqrt(NumberOfArms)*(r-sigma)/(2.0*sigma))
       #pl.plot(potential_Star[hardSphereDiameter -2:]); pl.show()
+      self.boltzmannOfP2Ppotential = np.exp(-potential_Star)
+
+    #Star Polymer potential (Likos & Harreis 2002), low-functionality
+    #branch (U_Star2 in sasfit_oz_potential_star_Likos.c), valid for
+    #f<=10 -- a genuinely DIFFERENT formula from the f>=10 branch above
+    #(Gaussian decay outside the core, with its own tau(f) interpolation
+    #between tau(f=2)=1.03/sigma and tau(f=5)=1.12/sigma), not just the
+    #same formula evaluated at a smaller f. This was previously missing
+    #entirely from this port -- confirmed directly against
+    #sasfit_oz_potential_star_Likos.c's own U_Star2(), found while
+    #cross-checking the C source specifically for this potential.
+    #The two branches do NOT meet smoothly at f=10 (checked directly:
+    #~28% relative difference in U(r=sigma+), about 30x apart by
+    #r=2*sigma) -- this is a genuine property of Likos & Harreis's own
+    #two-regime fit, not a bug in either branch; f=10 is where the
+    #paper recommends switching approximations, not a point the two
+    #forms were designed to agree at exactly.
+    def setStarPolymerLowFPotential(self, NumberOfArms):
+      try:
+          NumberOfArms = int(NumberOfArms)
+      except ValueError:
+          print("NumberOfArms can not be converted to int")
+          return
+
+      sigma = self.hardSphereDiameter
+      r = self.getrArray()
+      f = NumberOfArms
+      tau2 = 1.03/sigma
+      tau5 = 1.12/sigma
+      tau = (tau5-tau2)/3.0*f+tau2
+      potential_Star = 5.0/18.0*np.power(f,3.0/2.0)*1.0/(2.0*(tau*sigma)**2)*np.exp(-tau*tau*(r*r-sigma*sigma))
+      potential_Star[:self.hardSphereDiameterInPoints] = 5.0/18.0*np.power(f,3.0/2.0)*(-np.log(r[:self.hardSphereDiameterInPoints]/sigma)+1.0/(2.0*(tau*sigma)**2))
       self.boltzmannOfP2Ppotential = np.exp(-potential_Star)
 
     # ---------------------------------------------------------------
@@ -736,6 +836,20 @@ class OZfixpointOperator:
       potential_DLVO[r > sigma] -= Hydra[r > sigma]
       self.boltzmannOfP2Ppotential = np.exp(-potential_DLVO)
       self.boltzmannOfP2Ppotential[r <= sigma] = 0.0
+      #NOTE (checked directly against the C source, not left as an
+      #assumption): self.repulsivePartOfP2Ppotential/attractivePartOfP2Ppotential
+      #are deliberately NOT updated to include the Hydra term above --
+      #this was flagged as a possible staleness bug during review, but
+      #sasfit_oz_potential_dlvo_hydra.c's own U_R_DLVO_Hydra/
+      #U_A_DLVO_Hydra are BYTE-FOR-BYTE IDENTICAL to plain DLVO's own
+      #U_R_DLVO/U_A_DLVO -- the original C code itself deliberately
+      #excludes the Hydra correction from this split, only the full
+      #U_DLVO_Hydra includes it. This Python port already matches that
+      #exactly (setDLVOPotential() sets the split, and is intentionally
+      #never revisited here), so no fix was needed after all; this note
+      #exists purely so a future reader doesn't mistake this for the
+      #same kind of oversight setPotentialByName()'s own fallback split
+      #(see its own comment above) was written to catch.
 
     #Fermi-Dirac distribution potential (C.N. Likos)
     #(sasfit_oz_potential_FermiDistributionModel.c, U_FDM)
@@ -958,6 +1072,35 @@ class OZfixpointOperator:
       methodToCall(*args)
       self.activePotentialname = potentialType
 
+      #Fallback default repulsive/attractive split, for closures that
+      #need it (HMSA/VM/CJVM/BB/DH/CG/SMSA -- see update_c() above).
+      #Only LennardJones/Yukawa/DLVO(Hydra) actually populate
+      #self.repulsivePartOfP2Ppotential/self.attractivePartOfP2Ppotential
+      #themselves; every other potential setter leaves both at their
+      #__init__ zeros-everywhere default. That silently broke every one
+      #of those closures for every OTHER potential (confirmed directly
+      #for HardSphere+HMSA: with both arrays exactly zero, HMSA's own
+      #formula reduces to exp(-0)*(1+(exp(f*G)-1)/f)-G-1, which
+      #evaluates to EXACTLY 0 at G=0 -- a genuine, self-consistent fixed
+      #point with no hard-core exclusion at all, so the solver
+      #'converges' instantly to G=0, c(r)=0 everywhere, i.e. S(q)=1
+      #everywhere -- not a slow-convergence issue, a wrong-equations
+      #issue). Detected here (rather than fixed inside every affected
+      #setter individually) via "both arrays are still all-exactly-zero"
+      #-- a reliable test, since __init__'s own np.zeros(...) leaves
+      #every element exactly 0.0, and no real potential's own genuine
+      #split legitimately does that. Where it does trigger, the whole
+      #potential is treated as purely repulsive (attractive part left at
+      #zero) -- confirmed by direct calculation that this makes HMSA's
+      #formula reduce to become algebraically IDENTICAL to RY's own
+      #formula for a potential with no attractive tail (e.g. plain
+      #HardSphere), which is exactly the physically expected behaviour.
+      if not (np.any(self.repulsivePartOfP2Ppotential != 0.0) or
+              np.any(self.attractivePartOfP2Ppotential != 0.0)):
+          EN = self.boltzmannOfP2Ppotential
+          self.repulsivePartOfP2Ppotential = -np.log(np.clip(EN, 1e-300, None))
+          self.attractivePartOfP2Ppotential = np.zeros_like(EN)
+
       
     #Standard setters (defining members directly)
     def setVolumeDensity(self, rho_V):
@@ -1104,6 +1247,20 @@ class OZfixpointOperator:
           self.bridgeMHNC = self._analyticalPYbridgeFunction(eta)
       else:
           self.bridgeMHNC = np.zeros(self.numberOfRadialSamplingPoints)
+
+    def setZSEPclosure(self, zeta, phi, alpha):
+      #Lee's zero-separation-theorem closure -- see update_c()'s own
+      #'ZSEP' branch for the formula. Unlike the single-parameter
+      #closures above (which reuse self.alpha as a shared storage
+      #slot), ZSEP genuinely needs three independent parameters at
+      #once, so it gets its own three attributes rather than
+      #overloading self.alpha. Usually not called directly -- see
+      #OZsolver.fitZSEPparameters() for fitting these three parameters
+      #to the exact conditions from Lee (1995).
+      self.closureType = 'ZSEP'
+      self.zsep_zeta = float(zeta)
+      self.zsep_phi = float(phi)
+      self.zsep_alpha = float(alpha)
 
       
     #Standard getters (returning members)

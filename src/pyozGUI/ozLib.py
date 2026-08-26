@@ -51,38 +51,43 @@ except ImportError:
 # right after construction (see Sundials4pyKinsolOZsolver.py's own
 # AVAILABLE_LINEAR_SOLVERS for why this is a post-construction
 # attribute, not a constructor argument).
-SOLVER_CLASSES = {
+_BASE_SOLVER_CLASSES = {
     "Picard iteration": (PicardOZsolver, None),
     "Anderson acceleration": (AndersonOZsolver, None),
     "scipy Anderson": (ScipyAndersonOZsolver, None),
     "scipy Newton-Krylov": (ScipyNewtonKrylovOZsolver, None),
-    # Hand-written (non-SUNDIALS) acceleration scheme, ported directly
-    # from sasfit_oz_solver.c's own "case BIGGS_ANDREWS:" block -- see
-    # biggsAndrewsOZsolver.py's own docstring for the full algorithm
-    # and how its KINSetMAA attribute (extrapolation order/formula
-    # choice) differs in meaning from the KINSOL solvers' own use of
-    # that same name.
     "Biggs-Andrews": (BiggsAndrewsOZsolver, None),
 }
 if _HAVE_SUNDIALS4PY:
-    # One entry per confirmed-working linear solver (matching the
-    # original Tcl GUI's own "algorithm" dropdown, which offered
-    # GMRES/FGMRES/Bi-CGStab/TFQMR as separate choices) -- see
-    # sundials4pyKinsolOZsolver.py's own AVAILABLE_LINEAR_SOLVERS and
-    # its docstring for exactly which combinations were tested and
-    # which were excluded (SUNLinSol_SPBCGS segfaults unconditionally
-    # in this sundials4py version; Bi-CGStab is therefore not offered
-    # here either).
-    SOLVER_CLASSES["sundials4py: Newton-Krylov (GMRES)"] = (Sundials4pyKinsolOZsolver, "SUNLinSol_SPGMR")
-    SOLVER_CLASSES["sundials4py: Newton-Krylov (FGMRES)"] = (Sundials4pyKinsolOZsolver, "SUNLinSol_SPFGMR")
-    SOLVER_CLASSES["sundials4py: Newton-Krylov (TFQMR)"] = (Sundials4pyKinsolOZsolver, "SUNLinSol_SPTFQMR")
-    # Anderson-accelerated fixed point (KIN_FP) -- a genuinely separate
-    # class (sundials4pyKinsolFPOZsolver.py), not just another
-    # linearSolver value, since KIN_FP needs a different sysfn
-    # convention entirely (see that file's own docstring for the full
-    # story). None here (second tuple element) since this class has no
-    # linearSolver attribute to set.
-    SOLVER_CLASSES["sundials4py: Fixed-Point (Anderson)"] = (Sundials4pyKinsolFPOZsolver, None)
+    _BASE_SOLVER_CLASSES["sundials4py: Newton-Krylov (GMRES)"] = (Sundials4pyKinsolOZsolver, "SUNLinSol_SPGMR")
+    _BASE_SOLVER_CLASSES["sundials4py: Newton-Krylov (FGMRES)"] = (Sundials4pyKinsolOZsolver, "SUNLinSol_SPFGMR")
+    _BASE_SOLVER_CLASSES["sundials4py: Newton-Krylov (TFQMR)"] = (Sundials4pyKinsolOZsolver, "SUNLinSol_SPTFQMR")
+    _BASE_SOLVER_CLASSES["sundials4py: Fixed-Point (Anderson)"] = (Sundials4pyKinsolFPOZsolver, None)
+
+_defaultSolverName = ("sundials4py: Fixed-Point (Anderson)" if _HAVE_SUNDIALS4PY
+                      else "scipy Anderson")
+# Reordered so the FIRST key is this project's recommended DEFAULT
+# solver -- oZgui.py's own dropdown uses next(iter(SOLVER_CLASSES)) as
+# its initial pre-selected value. SUNDIALS' own Anderson-accelerated
+# fixed-point strategy (KIN_FP) when sundials4py is installed --
+# SUNDIALS' production-grade implementation of the same acceleration
+# idea as this project's own hand-written "Anderson acceleration"/
+# "scipy Anderson" entries, generally more robust and faster to
+# converge for the harder closures (HMSA/RY/BPGG/CJVM/BB) than plain
+# unaccelerated Picard iteration, which is why it replaces Picard as
+# the default here. Falls back to scipy's own Anderson acceleration
+# (scipy.optimize.anderson-based, no extra dependency) when
+# sundials4py isn't installed, rather than falling all the way back to
+# plain Picard -- Picard is still fully present in the dict, just no
+# longer pre-selected. Every other key keeps its original relative
+# order from _BASE_SOLVER_CLASSES above; only the chosen default moves
+# to the front. (solve()'s own solver= keyword argument default below
+# is set to this same _defaultSolverName, not left hardcoded to
+# "Picard iteration" -- so a script calling ozLib.solve() directly,
+# without going through the GUI at all, gets the same improved default
+# rather than silently falling back to unaccelerated Picard.)
+SOLVER_CLASSES = {_defaultSolverName: _BASE_SOLVER_CLASSES.pop(_defaultSolverName)}
+SOLVER_CLASSES.update(_BASE_SOLVER_CLASSES)
 
 # Each value is (closure-setter method name, needsExtraScalarParam).
 # Closures that take one extra scalar parameter share self.alpha's
@@ -135,6 +140,34 @@ CLOSURE_SETTERS = {
     "Kovalenko-Hirata":      ("doKHclosure",    False),
     "Duh-Haymet":            ("doDHclosure",    False),
     "Choudhury-Ghosh":       ("doCGclosure",    False),
+    # ZSEP (Lee 1995, hard spheres only) is a "special" entry, like
+    # Reference HNC/Rescaled MSA above: it needs its own orchestration
+    # method (fitZSEPparameters()) rather than a plain doXXXclosure()+
+    # solve() call, since it self-fits all three of its own parameters
+    # (zeta, phi, alpha) against Lee's exact zero-separation-theorem
+    # conditions instead of taking any of them from the caller. See
+    # solve() below for exactly how it's dispatched, and
+    # oZsolver.py's own fitZSEPparameters() docstring for the physics
+    # and its documented ill-conditioning caveat.
+    "ZSEP":                  ("fitZSEPparameters", False),
+}
+
+# Closures with a single free parameter (needsExtraScalarParam==True
+# above) that ALSO have a published thermodynamic-consistency
+# condition determining that parameter automatically -- see
+# OZsolver.findThermodynamicallyConsistentParameter() (already fully
+# generic across potentials, not limited to any specific one; ported
+# directly from sasfit_oz_solver.c's own root_finding(), NOT the
+# same as the older, abandoned, LJ/Yukawa-only optimizeRYalpha.py
+# prototype elsewhere in this project). Maps this module's own
+# closure name to that method's own closureName argument. Used by
+# solve()'s new findConsistentParameter= option below -- Modified HNC
+# is included here too (it already appears above with
+# needsExtraScalarParam=True for its own eta parameter, which this
+# same consistency condition also determines).
+CONSISTENT_PARAMETER_CLOSURES = {
+    "Rogers-Young": "RY", "HMSA": "HMSA", "Modified HNC": "MHNC",
+    "BPGG": "BPGG", "CJVM": "CJVM", "BB": "BB",
 }
 
 # The 9 curves every solve derives, same set oZgui.py's own plot tabs
@@ -192,7 +225,8 @@ class OZResult:
 
 
 def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closureParam=None,
-          solver="Picard iteration", maxIterations=1000,
+          findConsistentParameter=False,
+          solver=_defaultSolverName, maxIterations=1000,
           numberOfRadialSamplingPoints=None, hardSphereDiameterInPoints=None,
           onSolverCreated=None):
     '''
@@ -212,8 +246,32 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
     closure: closure name, see CLOSURE_SETTERS above.
     closureParam: the closure's own alpha/eta value, required for
         closures where CLOSURE_SETTERS[closure][1] is True (Modified
-        HNC, Rogers-Young, HMSA, BPGG, CJVM, BB).
-    solver: solver name, see SOLVER_CLASSES above.
+        HNC, Rogers-Young, HMSA, BPGG, CJVM, BB) UNLESS
+        findConsistentParameter=True is given instead (see below).
+        Not used for ZSEP (it always self-fits all three of its own
+        parameters; see fitZSEPparameters() on OZsolver directly if
+        you want to fix one of them rather than fit all three).
+    findConsistentParameter: if True, instead of taking closureParam
+        from the caller, automatically searches for the value that
+        makes the compressibility-route and virial-route isothermal
+        compressibility agree (Rogers & Young's own thermodynamic-
+        consistency idea) -- see
+        OZsolver.findThermodynamicallyConsistentParameter() for the
+        physics and its own documented caveats (a located root can
+        occasionally be a numerical artefact rather than a genuine
+        one; that method already screens for this and falls back to
+        a closest-approach value with a printed warning when it
+        cannot find a clean one). Only valid when `closure` is one of
+        CONSISTENT_PARAMETER_CLOSURES (Rogers-Young, HMSA, Modified
+        HNC, BPGG, CJVM, BB); raises ValueError otherwise. When True,
+        closureParam is ignored (the found value is used instead).
+    solver: solver name, see SOLVER_CLASSES above. Defaults to
+        SUNDIALS' Anderson-accelerated fixed-point strategy
+        ("sundials4py: Fixed-Point (Anderson)") when sundials4py is
+        installed, otherwise "scipy Anderson" -- see SOLVER_CLASSES'
+        own comment above for why. Plain (unaccelerated) Picard
+        iteration is still available (solver="Picard iteration"), just
+        no longer the default.
     maxIterations: upper bound on iterations/function evaluations.
     numberOfRadialSamplingPoints, hardSphereDiameterInPoints: optional
         grid overrides (see oZfixpointOperator.py's own __init__) --
@@ -230,20 +288,44 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
         solve() itself only returns once the whole computation is
         already finished. Not needed for normal scripted use.
 
-    Raises ValueError for an unrecognised closure/solver name, or a
-    closure that needs closureParam when none was given -- these are
-    checked here (before touching the solver) so a mistake is reported
-    immediately rather than surfacing later as a confusing internal
-    AttributeError.
+    Raises ValueError for an unrecognised closure/solver name, a
+    closure that needs closureParam when none was given and
+    findConsistentParameter is not requested, ZSEP requested for any
+    potential other than HardSphere (see below), or
+    findConsistentParameter=True for a closure that doesn't support it
+    -- these are checked here (before touching the solver) so a
+    mistake is reported immediately rather than surfacing later as a
+    confusing internal AttributeError.
     '''
     if closure not in CLOSURE_SETTERS:
         raise ValueError(f"unknown closure {closure!r}, must be one of {list(CLOSURE_SETTERS)}")
     if solver not in SOLVER_CLASSES:
         raise ValueError(f"unknown solver {solver!r}, must be one of {list(SOLVER_CLASSES)}")
+    if closure == "ZSEP" and potential != "HardSphere":
+        # OZsolver.fitZSEPparameters() ALSO checks this itself (see that
+        # method's own docstring) -- but only via a print()ed warning
+        # and an early `return None`, not an exception. Without this
+        # check here too, that would leave solverInstance completely
+        # unsolved (radialDistributionFunction etc. still at their
+        # __init__ all-zeros defaults) and this function would still
+        # happily package that up into a normal-looking OZResult full of
+        # zeros/S(Q)=1 everywhere, with no exception and nothing wrong
+        # visible except a Log-tab message a GUI user could easily miss.
+        # ZSEP's three fitting conditions (Lee 1995) are derived from the
+        # exact Carnahan-Starling hard-sphere equation of state
+        # specifically -- there is no meaningful way to "fit" it against
+        # any other potential's own equation of state.
+        raise ValueError("closure='ZSEP' is only meaningful for potential='HardSphere' "
+                          "(Lee (1995)'s zero-separation conditions are derived from the exact "
+                          f"Carnahan-Starling hard-sphere equation of state), not {potential!r}")
 
     setterName, needsParam = CLOSURE_SETTERS[closure]
-    if needsParam and closureParam is None:
-        raise ValueError(f"closure {closure!r} needs a closureParam value")
+    if findConsistentParameter and closure not in CONSISTENT_PARAMETER_CLOSURES:
+        raise ValueError(f"findConsistentParameter=True is only supported for "
+                          f"{list(CONSISTENT_PARAMETER_CLOSURES)}, not {closure!r}")
+    if needsParam and closureParam is None and not findConsistentParameter:
+        raise ValueError(f"closure {closure!r} needs a closureParam value "
+                          f"(or findConsistentParameter=True)")
 
     solverClass, solverLinearSolver = SOLVER_CLASSES[solver]
 
@@ -267,6 +349,10 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
         solverInstance.solveRHNC()
     elif setterName == "doRMSAclosure":
         solverInstance.solveRMSA()
+    elif setterName == "fitZSEPparameters":
+        solverInstance.fitZSEPparameters()
+    elif findConsistentParameter:
+        solverInstance.findThermodynamicallyConsistentParameter(CONSISTENT_PARAMETER_CLOSURES[closure])
     else:
         if needsParam:
             getattr(solverInstance, setterName)(closureParam)

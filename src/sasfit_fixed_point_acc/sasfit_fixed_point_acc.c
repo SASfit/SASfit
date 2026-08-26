@@ -21,14 +21,19 @@
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_cblas.h>
 #include <gsl/gsl_blas.h>
+#include <sundials/sundials_context.h>
 #include <kinsol/kinsol.h>
 // #include <nvector/nvector_openmp.h>
 #include <nvector/nvector_serial.h>
-//#include <kinsol/kinsol.h>
-#include <kinsol/kinsol_spgmr.h>
-#include <kinsol/kinsol_spfgmr.h>
-#include <kinsol/kinsol_spbcgs.h>
-#include <kinsol/kinsol_sptfqmr.h>
+#include <sunlinsol/sunlinsol_spgmr.h>
+#include <sunlinsol/sunlinsol_spfgmr.h>
+#include <sunlinsol/sunlinsol_spbcgs.h>
+#include <sunlinsol/sunlinsol_sptfqmr.h>
+/* SUNDIALS 7.x port (was: bundled SUNDIALS 2.7.0) -- see the matching
+ * comment block in src/sasfit_oz/sasfit_oz_solver.c and the one in
+ * src/CMakeLists.txt next to the sundials7 add_subdirectory() for the
+ * full rationale (this file and sasfit_oz_solver.c both compile into
+ * the same `sasfit` shared library, so they had to move together). */
 
 // #include "itlin.h"
 #define ITLIN_OPT void
@@ -37,32 +42,17 @@
 #define GET_TCL(val_type, target, src_name) (sasfit_tcl_get_ ## val_type(interp, target, fpname, src_name) == TCL_OK)
 
 
-void  KINErrSASfit_fp(int error_code,
-                               const char *module, const char *function,
-                               char *msg, void *FPd_structure){
-
+/* See KINErrSASfit() in sasfit_oz_solver.c for the full explanation
+ * of this new signature (fixed by SUNContext_PushErrHandler()) and why
+ * KINInfoSASfit_fp()/KINSetInfoHandlerFn() had no replacement -- its
+ * PrintLevel==5 reporting moved to the end of FP_step() instead, using
+ * FPd->kin_mem. */
+void KINErrSASfit_fp(int line, const char *func, const char *file,
+                      const char *msg, SUNErrCode err_code,
+                      void *FPd_structure, SUNContext sunctx) {
     sasfit_fp_data *FPd;
     FPd = (sasfit_fp_data*) FPd_structure;
-    sasfit_out("optained error code %d from %s-%s:%s\n",error_code, module,function,msg);
-};
-
-void KINInfoSASfit_fp(const char *module, const char *function,
-                                char *msg, void *FPd_structure){
-
-    sasfit_fp_data *FPd;
-    long int nfe, nnlsi;
-    double fnorm;
-    int flag;
-    char sBuffer[256];
-    FPd = (sasfit_fp_data*) FPd_structure;
-    sasfit_out("Info message from %s-%s:%s\n",module,function,msg);
-    if (FPd->KINSetPrintLevel == 5) {
-        flag= KINGetNumFuncEvals(FPd->kin_mem,&nfe);
-        flag = KINGetNumNonlinSolvIters(FPd->kin_mem,&nnlsi);
-        flag = KINGetFuncNorm(FPd->kin_mem,&fnorm);
-        sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%d\t%d\t%le\"",FPd->it,FPd->gNorm, nfe, nnlsi,fnorm);
-        Tcl_EvalEx(FPd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
-    }
+    sasfit_out("optained error code %d from %s (%s:%d):%s\n",err_code,func,file,line,msg);
 };
 
 /*
@@ -373,6 +363,7 @@ int fp_addColumnToMatrixByShifting(gsl_matrix* A, const gsl_vector* c){
 // Initialization of memory needed for computation
 int FP_init(sasfit_fp_data *FPd) {
 	FPd->it=0;
+	FPd->kin_mem=NULL; /* see OZ_init() in sasfit_oz_solver.c for why this matters */
 	FPd->tm = sasfit_timer_create();
     sasfit_timer_start(FPd->tm);
 //   not used AT THE MOMENT
@@ -385,16 +376,12 @@ int KIN_sasfit_fp_configure(void *kin_mem,sasfit_fp_data *FPd) {
     flag += KINSetMaxNewtonStep(kin_mem, FPd->KINSetMaxNewtonStep);
     if (FPd->PrintProgress) sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
 
-    flag += KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit_fp, FPd);
-    flag += KINSetErrHandlerFn(kin_mem, &KINErrSASfit_fp, FPd);
-    if  (FPd->KINSetPrintLevel > 3 ) {
-        flag += KINSetPrintLevel(kin_mem,1);
-    } else if ( FPd->KINSetPrintLevel < 0) {
-        flag += KINSetPrintLevel(kin_mem,3);
-    } else {
-        flag += KINSetPrintLevel(kin_mem,FPd->KINSetPrintLevel);
-    }
-    if (FPd->PrintProgress) sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
+    /* KINSetInfoHandlerFn()/KINSetErrHandlerFn()/KINSetPrintLevel() no
+     * longer exist in SUNDIALS 7.x -- see the matching comment in
+     * KIN_sasfit_configure() in sasfit_oz_solver.c. The error handler
+     * is registered per call site via SUNContext_PushErrHandler(sunctx,
+     * KINErrSASfit_fp, FPd) instead, right after each
+     * SUNContext_Create() below. */
 
     flag += KINSetEtaForm(kin_mem, FPd->KINSetEtaForm);
     if (FPd->PrintProgress) sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
@@ -504,6 +491,24 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
   //for Anderson mixing. Both the residuals and the states
   //used for mixing are in the Krylov subspace of the problem, hence the name
   int maximalDimensionOfKrylovSpace = FPd->KINSetMAA;
+  /* Bug fix: with maximalDimensionOfKrylovSpace <= 0 (e.g. KINSetMAA/
+   * maxKrylov left at its default of 0, which can easily happen since
+   * this option isn't obviously specific to the Anderson-mixing
+   * algorithm), the very first iteration below sets
+   * isMaximalDimensionOfKrylovSpaceReached=1 before W/D_reduced/tau/
+   * a_reduced/a are ever allocated (they're declared just below
+   * without being initialized to NULL), and gsl_matrix_set_zero(D_reduced)
+   * a few lines into the loop then dereferences a garbage pointer --
+   * a hard crash, not a graceful Tcl error. The algorithm's own least-
+   * squares step further down requires at least two vectors (see the
+   * "there must be at least two vectors" comment near the
+   * dimensionOfKrylovSpace==1 check), so clamp to that minimum here. */
+  if (maximalDimensionOfKrylovSpace < 2) {
+      if (algorithm == AndersonAcc) {
+          sasfit_out("Anderson mixing: Krylov subspace size (maxKrylov) was %d; clamping to the required minimum of 2 to avoid a crash.\n",maximalDimensionOfKrylovSpace);
+      }
+      maximalDimensionOfKrylovSpace = 2;
+  }
   //To check when to switch between extend and shift
   int isMaximalDimensionOfKrylovSpaceReached = 0;
   int dimensionOfKrylovSpace = 0;
@@ -528,19 +533,19 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
   //Anderson mixed state, i.e x_A = K a - (1- b) Da
   gsl_vector* x_A;
   //vector to hold mixing coefficients
-  gsl_vector* a;
+  gsl_vector* a = NULL;
   //vector holding unconstrained lsf solution
-  gsl_vector* a_reduced;
+  gsl_vector* a_reduced = NULL;
   //helper vector for QR decomposition
-  gsl_vector* tau;
+  gsl_vector* tau = NULL;
   //Matrix to hold previous states
   gsl_matrix* K = NULL;
   //Matrix to hold previous residuals
   gsl_matrix* D = NULL;
   //helper matrix to transform constrained optimization
   //problem to unconstrained optimization problem
-  gsl_matrix* W;
-  gsl_matrix* D_reduced;
+  gsl_matrix* W = NULL;
+  gsl_matrix* D_reduced = NULL;
   gsl_vector* res_opt;
   //negative of last entry in D
   gsl_vector* d;
@@ -1450,15 +1455,20 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 free(gn1);;
                 free(gn2);
                 break;
-        case KINSOLFP:
+        case KINSOLFP: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = FPd->maxsteps/10;
-				scale = N_VNew_Serial(FPd->Npoints);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit_fp, FPd);
+				scale = N_VNew_Serial(FPd->Npoints, sunctx);
                 N_VConst_Serial(1., scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(FPd->Npoints);
+				u = N_VNew_Serial(FPd->Npoints, sunctx);
                 fp_cp_array_to_N_Vector(FPd->out,u,FPd->Npoints);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 FPd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_fp_configure(kin_mem,FPd);
@@ -1466,8 +1476,9 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
    				flag = KINInit(kin_mem,FP_step_kinsolFP,u);
                 if (FPd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSpfgmr(kin_mem, 0);
-                if (FPd->PrintProgress) sasfit_out("KINSptfqmr(flag)=%d\n",flag);
+				LS = SUNLinSol_SPFGMR(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (FPd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 
 				flag = KINSol(kin_mem,u,KIN_FP,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) FPd->failed = 1;
@@ -1478,17 +1489,26 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                FPd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (FPd->PrintProgress) sasfit_out("up to now the number of FP_step calls are: %d\n",FPd->it);
                 break;
-        case GMRES:
+                }
+        case GMRES: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = FPd->maxsteps/10;
-				scale = N_VNew_Serial(FPd->Npoints);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit_fp, FPd);
+				scale = N_VNew_Serial(FPd->Npoints, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(FPd->Npoints);
+				u = N_VNew_Serial(FPd->Npoints, sunctx);
                 fp_cp_array_to_N_Vector(FPd->out,u,FPd->Npoints);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 FPd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_fp_configure(kin_mem,FPd);
@@ -1496,8 +1516,9 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
    				flag = KINInit(kin_mem,FP_step_kinsol,u);
                 if (FPd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSpgmr(kin_mem, 0);
-                if (FPd->PrintProgress) sasfit_out("KINSpgmr(flag)=%d\n",flag);
+				LS = SUNLinSol_SPGMR(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (FPd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 
 				flag = KINSol(kin_mem,u,FPd->KINSolStrategy,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) FPd->failed = 1;
@@ -1508,17 +1529,26 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                FPd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (FPd->PrintProgress) sasfit_out("up to now the number of FP_step calls are: %d\n",FPd->it);
                 break;
-        case FGMRES:
+                }
+        case FGMRES: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = FPd->maxsteps/10;
-				scale = N_VNew_Serial(FPd->Npoints);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit_fp, FPd);
+				scale = N_VNew_Serial(FPd->Npoints, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(FPd->Npoints);
+				u = N_VNew_Serial(FPd->Npoints, sunctx);
                 fp_cp_array_to_N_Vector(FPd->out,u,FPd->Npoints);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 FPd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_fp_configure(kin_mem,FPd);
@@ -1526,8 +1556,9 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
    				flag = KINInit(kin_mem,FP_step_kinsol,u);
                 if (FPd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSpfgmr(kin_mem, 0);
-                if (FPd->PrintProgress) sasfit_out("KINSpfqmr(flag)=%d\n",flag);
+				LS = SUNLinSol_SPFGMR(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (FPd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 
 				flag = KINSol(kin_mem,u,FPd->KINSolStrategy,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) FPd->failed = 1;
@@ -1538,17 +1569,26 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                FPd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (FPd->PrintProgress) sasfit_out("up to now the number of FP_step calls are: %d\n",FPd->it);
                 break;
-        case BiCGSTAB:
+                }
+        case BiCGSTAB: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = FPd->maxsteps/10;
-				scale = N_VNew_Serial(FPd->Npoints);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit_fp, FPd);
+				scale = N_VNew_Serial(FPd->Npoints, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(FPd->Npoints);
+				u = N_VNew_Serial(FPd->Npoints, sunctx);
                 fp_cp_array_to_N_Vector(FPd->out,u,FPd->Npoints);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 FPd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 flag = KINSetMaxNewtonStep(kin_mem, FPd->Npoints*100.0);
@@ -1557,8 +1597,9 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
    				flag = KINInit(kin_mem,FP_step_kinsol,u);
                 if (FPd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSpbcg(kin_mem, 0);
-                if (FPd->PrintProgress) sasfit_out("KINSpbcg(flag)=%d\n",flag);
+				LS = SUNLinSol_SPBCGS(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (FPd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 
 				flag = KINSol(kin_mem,u,FPd->KINSolStrategy,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) FPd->failed = 1;
@@ -1569,17 +1610,26 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                FPd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (FPd->PrintProgress) sasfit_out("up to now the number of FP_step calls are: %d\n",FPd->it);
                 break;
-        case TFQMR:
+                }
+        case TFQMR: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = FPd->maxsteps/10;
-				scale = N_VNew_Serial(FPd->Npoints);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit_fp, FPd);
+				scale = N_VNew_Serial(FPd->Npoints, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(FPd->Npoints);
+				u = N_VNew_Serial(FPd->Npoints, sunctx);
                 fp_cp_array_to_N_Vector(FPd->out,u,FPd->Npoints);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 FPd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_fp_configure(kin_mem,FPd);
@@ -1587,8 +1637,9 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
                 flag = KINInit(kin_mem,FP_step_kinsol,u);
                 if (FPd->PrintProgress)sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSptfqmr(kin_mem, 0);
-                if (FPd->PrintProgress) sasfit_out("KINSptfqmr(flag)=%d\n",flag);
+				LS = SUNLinSol_SPTFQMR(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (FPd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 
 				flag = KINSol(kin_mem,u,FPd->KINSolStrategy,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) FPd->failed = 1;
@@ -1599,8 +1650,12 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                FPd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (FPd->PrintProgress) sasfit_out("up to now the number of FP_step calls are: %d\n",FPd->it);
                 break;
+                }
         case AndersonAcc:
                 //To check when to switch between extend and shift
                 isMaximalDimensionOfKrylovSpaceReached = 0;
@@ -1906,6 +1961,20 @@ double FP_step(sasfit_fp_data *FPd) {
 */
     if (FPd->KINSetPrintLevel == 4) {
         sprintf(sBuffer,"storeOZstepinfo \"it:%d\tgNorm:%lg\tKLD:%lg\tJSD%lg\tchi2:\"",FPd->it,FPd->gNorm, FPd->KLD, FPd->JSD,FPd->Chi2Norm);
+        Tcl_EvalEx(FPd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
+    }
+    /* Replaces the old KINInfoSASfit_fp() info-handler-driven reporting
+     * -- see the comment on KINErrSASfit_fp() above, and OZ_step() in
+     * sasfit_oz_solver.c for the full rationale. FPd->kin_mem is NULL
+     * unless a KINSOL-based algorithm is currently running. */
+    if (FPd->KINSetPrintLevel == 5 && FPd->kin_mem != NULL) {
+        long int nfe, nnlsi;
+        double fnorm;
+        int infoflag;
+        infoflag = KINGetNumFuncEvals(FPd->kin_mem,&nfe);
+        infoflag = KINGetNumNonlinSolvIters(FPd->kin_mem,&nnlsi);
+        infoflag = KINGetFuncNorm(FPd->kin_mem,&fnorm);
+        sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%d\t%d\t%le\"",FPd->it,FPd->gNorm, nfe, nnlsi,fnorm);
         Tcl_EvalEx(FPd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
     }
 

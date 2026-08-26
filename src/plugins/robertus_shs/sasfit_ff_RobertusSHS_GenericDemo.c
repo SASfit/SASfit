@@ -86,8 +86,14 @@ scalar sasfit_ff_RobertusSHS_GenericDemo(scalar q, sasfit_param * param)
 		sd_adapter_ctx sdctx = { demo_sd_lognormal, &sd_param };
 
 		if (rshs_make_classes_generic(&g_sys, nclass, Dmean, SIGMA_REL, PHI,
-		                               sd_adapter, &sdctx) != 0) return SASFIT_RETURNVAL_ON_ERROR;
-		if (rshs_solve(&g_sys, TAU) != 0) return SASFIT_RETURNVAL_ON_ERROR;
+		                               sd_adapter, &sdctx) != 0) {
+			sasfit_param_set_err(param, DBGINFO(SASFIT_ERR_PREFIX "%s !\n"), rshs_last_error());
+			return SASFIT_RETURNVAL_ON_ERROR;
+		}
+		if (rshs_solve(&g_sys, TAU) != 0) {
+			sasfit_param_set_err(param, DBGINFO(SASFIT_ERR_PREFIX "%s !\n"), rshs_last_error());
+			return SASFIT_RETURNVAL_ON_ERROR;
+		}
 		g_last_R=R; g_last_srel=SIGMA_REL; g_last_phi=PHI; g_last_tau=TAU;
 	}
 

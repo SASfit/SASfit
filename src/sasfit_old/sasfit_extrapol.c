@@ -77,6 +77,7 @@
 #include "../sasfit_jburkardt/include/linpack_d.h"
 #include "../sasfit_jburkardt/include/blas1_d.h"
 #include <kinsol/kinsol.h>
+#include <sundials/sundials_context.h> /* SUNContext_Create/SUN_COMM_NULL for the KINConstraints fix in EM_DR_Init() below (SUNDIALS 7.x) */
 
 #define REDFACTOR 1.2
 
@@ -4446,6 +4447,15 @@ void EM_DR_Free (void *FPd) {
     FixedPointData = (sasfit_fp_data *)FPd;
     EMparam = (EM_param_t *) FixedPointData->FPstructure;
     FP_free(FixedPointData);
+    /* KINConstraints/KINConstraintsCtx: pre-existing leak of
+     * KINConstraints itself is now also closed here, and its dedicated
+     * SUNContext (added for the SUNDIALS 7.x port, see EM_DR_Init())
+     * needs the same treatment since it's a heavier OS-level resource. */
+    if (FixedPointData->KINConstraints) {
+        N_VDestroy_Serial(FixedPointData->KINConstraints);
+        FixedPointData->KINConstraints = NULL;
+    }
+    SUNContext_Free(&FixedPointData->KINConstraintsCtx);
     free_dvector(EMparam->h,0,EMparam->nh-1);
     free_dvector(EMparam->Ih,0,EMparam->nh-1);
     free_dvector(EMparam->Ihred,0,EMparam->nh-1);
@@ -4668,7 +4678,13 @@ void EM_DR_Init (void *FPd) {
     FixedPointData->KINSetEtaConstValue = 0.1;
     FixedPointData->KINSpilsSetMaxRestarts =20;
     FixedPointData->KINSolStrategy=KIN_NONE;
-    FixedPointData->KINConstraints = N_VNew_Serial(FixedPointData->Npoints);
+    /* KINConstraints is created once here but read by many separate
+     * KINSol() calls later (each of which creates/frees its own local
+     * SUNContext -- see FP_solver_by_iteration() in
+     * sasfit_fixed_point_acc.c), so it needs a SUNContext of its own
+     * that outlives any single solve. Freed in EM_DR_Free(). */
+    SUNContext_Create(SUN_COMM_NULL, &FixedPointData->KINConstraintsCtx);
+    FixedPointData->KINConstraints = N_VNew_Serial(FixedPointData->Npoints, FixedPointData->KINConstraintsCtx);
     N_VConst_Serial(0., FixedPointData->KINConstraints);
 }
 

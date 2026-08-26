@@ -4,8 +4,7 @@
 
 AI tools used in this repository include:
 
-* ChatGPT (OpenAI)
-* GitHub Copilot (GitHub)
+* Claude
 
 ## 2. Scope of Use
 
@@ -18,7 +17,7 @@ AI tools were **not used** to:
 
 * Design core algorithms
 * Derive scientific models or physical interpretations
-* Generate or modify experimental data
+* Generate [or modify experimental data]()
 
 ## 3. Scientific Integrity
 
@@ -38,16 +37,7 @@ All AI-assisted contributions were:
 
 No code or results are accepted without human verification.
 
-## 5. Reproducibility
-
-The computational environment is defined via:
-
-* `pixi.toml` (dependency specification)
-* `pixi.lock` (fully resolved environment)
-
-AI tools were not used to generate results without reproducible code paths.
-
-## 6. Responsibility
+## 5. Responsibility
 
 The authors take full responsibility for:
 
@@ -57,7 +47,7 @@ The authors take full responsibility for:
 
 AI tools are treated strictly as assistive instruments.
 
-## 7. Disclosure in Contributions
+## 6. Disclosure in Contributions
 
 Contributors should indicate AI-assisted changes in pull requests, e.g.:
 
@@ -66,4 +56,3 @@ AI-assisted: yes (tests, documentation)
 ```
 
 Absence of this note implies fully human-authored content.
-

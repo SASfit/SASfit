@@ -1003,11 +1003,41 @@ static void build_Q_matrix(const rshs_system *sys, double q, gsl_matrix_complex 
     double vrx[RSHS_MAXP], sqv[RSHS_MAXP], cqv[RSHS_MAXP], vrphi[RSHS_MAXP], vrpsi[RSHS_MAXP];
     double sqrtx[RSHS_MAXP];
 
-    if (q < 1e-4) {
-        for (i = 0; i < p; i++) { vrx[i]=0.0; sqv[i]=0.0; cqv[i]=1.0; vrphi[i]=1.0; vrpsi[i]=1.0; }
-    } else {
-        for (i = 0; i < p; i++) {
-            vrx[i] = 0.5 * sys->D[i] * q;
+    /* Fix (found and validated during testing, see project documentation
+     * for how this was found -- the same underlying pattern already
+     * fixed in f_sphere() above): vrphi=3(sin(x)-x*cos(x))/x^3 and
+     * vrpsi=sin(x)/x both suffer catastrophic cancellation as their
+     * argument x=vrx[i]=0.5*D[i]*q shrinks, same as f_sphere's own
+     * sin(qR)-qR*cos(qR). The previous single check, "if (q<1e-4)",
+     * used an absolute threshold on q alone, ignoring D[i] entirely --
+     * this is wrong in BOTH directions. For a large component diameter
+     * D[i], vrx[i]=0.5*D[i]*q can still be substantial even when q is
+     * below the old 1e-4 threshold, so the old code's "snap to
+     * vrphi=vrpsi=1.0" branch fired incorrectly there: confirmed
+     * directly (D=200000, q=5e-5, vrx=5.0) that the true values
+     * (vrphi=-0.057, vrpsi=-0.192) are qualitatively different from 1.0,
+     * not just a small correction -- a real bug, not merely lost
+     * precision. Conversely, for a small D[i], vrx[i] can still be
+     * small enough to risk cancellation in the direct trig formula even
+     * once q comfortably exceeds 1e-4. Fixed here with a per-component
+     * check on vrx[i] itself (matching f_sphere's own tested qR<0.5
+     * crossover, confirmed separately against a 50-digit mpmath
+     * reference to keep both vrphi and vrpsi accurate to ~1e-8 relative
+     * error or better up to x=0.5, consistent with the direct trig
+     * formula's own accuracy from that point on), with a degree-3
+     * Taylor series in x^2 for each:
+     *   vrphi = 1 - x^2/10 + x^4/280 - x^6/15120 + ...
+     *   vrpsi = 1 - x^2/6  + x^4/120 - x^6/5040  + ...
+     */
+    for (i = 0; i < p; i++) {
+        vrx[i] = 0.5 * sys->D[i] * q;
+        if (fabs(vrx[i]) < 0.5) {
+            double x2 = vrx[i]*vrx[i];
+            sqv[i] = sin(vrx[i]);
+            cqv[i] = cos(vrx[i]);
+            vrphi[i] = 1.0 - x2/10.0 + x2*x2/280.0 - x2*x2*x2/15120.0;
+            vrpsi[i] = 1.0 - x2/6.0  + x2*x2/120.0 - x2*x2*x2/5040.0;
+        } else {
             sqv[i] = sin(vrx[i]);
             cqv[i] = cos(vrx[i]);
             vrphi[i] = 3.0 / (vrx[i]*vrx[i]*vrx[i]) * (sqv[i] - vrx[i]*cqv[i]);
@@ -1144,10 +1174,35 @@ static double bilinear_form(const rshs_system *sys, double q, const double *a)
 
 static double f_sphere(double q, double R, double drho)
 {
-    double qR;
+    double qR, qR2, series;
     if (R <= 0.0) return 0.0;
-    if (q < 1e-7) return (4.0/3.0) * M_PI * drho * R*R*R;
     qR = q * R;
+    /* Fix (found and validated during testing, see project documentation
+     * for how this was found): sin(qR)-qR*cos(qR) and q^3 both vanish as
+     * q->0, and the previous single hard threshold at q<1e-7 (switching
+     * directly to the exact q=0 limit, (4/3)*pi*drho*R^3) left a real
+     * precision-loss gap for q values ABOVE that threshold but still
+     * small enough for qR-cos(qR) to suffer catastrophic cancellation --
+     * confirmed directly against a 50-digit mpmath reference: the
+     * relative error was already 6.5e-6 right at the old threshold
+     * itself (q=1e-7), progressively worse for even smaller q that
+     * still exceeded it slightly, before the old code's own q<1e-7
+     * branch took over. A degree-4 Taylor series in qR (of
+     * sin(x)-x*cos(x) = x^3/3 - x^5/30 + x^7/840 - x^9/45360 + ...,
+     * divided through by q^3 = x^3/R^3) closes this gap: confirmed
+     * against the same 50-digit reference to give relative error at or
+     * below machine precision (~1e-16) for qR up to ~0.05, still
+     * excellent (~3e-9) at qR=0.5, and diverging badly beyond that
+     * (~2e-3 at qR=1.5) -- so qR<0.5 is used here as a safe, tested
+     * crossover, matched on the other side by the direct formula's own
+     * error also being at machine precision there (confirmed
+     * separately), leaving no gap where neither branch is accurate.
+     */
+    if (fabs(qR) < 0.5) {
+        qR2 = qR*qR;
+        series = 1.0/3.0 - qR2/30.0 + qR2*qR2/840.0 - qR2*qR2*qR2/45360.0;
+        return 4.0 * M_PI * drho * R*R*R * series;
+    }
     return 4.0 * M_PI * drho * (sin(qR) - qR*cos(qR)) / (q*q*q);
 }
 

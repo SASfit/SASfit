@@ -22,14 +22,40 @@
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_cblas.h>
 #include <gsl/gsl_blas.h>
+#include <sundials/sundials_context.h>
 #include <kinsol/kinsol.h>
 // #include <nvector/nvector_openmp.h>
 #include <nvector/nvector_serial.h>
-//#include <kinsol/kinsol.h>
-#include <kinsol/kinsol_spgmr.h>
-#include <kinsol/kinsol_spfgmr.h>
-#include <kinsol/kinsol_spbcgs.h>
-#include <kinsol/kinsol_sptfqmr.h>
+#include <sunlinsol/sunlinsol_spgmr.h>
+#include <sunlinsol/sunlinsol_spfgmr.h>
+#include <sunlinsol/sunlinsol_spbcgs.h>
+#include <sunlinsol/sunlinsol_sptfqmr.h>
+/* SUNDIALS 7.x port (was: bundled SUNDIALS 2.7.0). See the big comment
+ * in src/CMakeLists.txt next to the sundials7 add_subdirectory() for
+ * why this switch was necessary (sasfit_fixed_point_acc.c, compiled
+ * into this same `sasfit` shared library, is a second KINSOL consumer
+ * that had to move together with this file, not independently).
+ * kinsol_spgmr.h/kinsol_spfgmr.h/kinsol_spbcgs.h/kinsol_sptfqmr.h no
+ * longer exist -- their KINSpgmr()/KINSpfgmr()/KINSpbcg()/KINSptfqmr()
+ * convenience functions were removed in favour of the modular
+ * SUNLinearSolver framework (SUNLinSol_SPGMR() etc., above, paired
+ * with KINSetLinearSolver()) -- see each case below. KINCreate() and
+ * N_VNew_Serial() now require a SUNContext, created and freed once per
+ * solve at each call site (mirrors src/plugins/robertus_shs/
+ * robertus_shs_core.c, an existing, tested sundials7 KINSOL user in
+ * this codebase). KINSetErrHandlerFn()/KINSetInfoHandlerFn()/
+ * KINSetPrintLevel() were also removed: error handling moved to a
+ * per-SUNContext model (SUNContext_PushErrHandler(), see
+ * KINErrSASfit() below, registered per call site instead of inside
+ * KIN_sasfit_configure()); the KINSetPrintLevel==5 step-by-step
+ * reporting KINInfoSASfit() used to drive via KINSOL's now-removed
+ * info-handler callback is reproduced instead directly in OZ_step()
+ * (see its end), which already fires on every residual evaluation --
+ * the closest available substitute now that no per-solver info hook
+ * exists. There is no KINSetPrintLevel() equivalent needed otherwise:
+ * informational verbosity is now controlled by an opt-in SUNLogger
+ * that is never created here, so it stays silent by default exactly
+ * as before. */
 
 // #include "itlin.h"
 #define ITLIN_OPT void
@@ -106,32 +132,28 @@ scalar BPY(scalar r,scalar eta) {
     return -br;
 }
 
-void  KINErrSASfit(int error_code,
-                               const char *module, const char *function,
-                               char *msg, void *OZd_structure){
-
+/* SUNDIALS 7.x error handler, replacing the old KINSetErrHandlerFn()
+ * callback (signature: (error_code, module, function, msg, user_data)).
+ * The new callback signature is fixed by SUNContext_PushErrHandler();
+ * OZd is passed through as err_user_data exactly as it was before as
+ * the last argument. Registered per call site (see each case below)
+ * rather than once inside KIN_sasfit_configure(), since it's now tied
+ * to the SUNContext, not the KINSOL memory block. */
+void KINErrSASfit(int line, const char *func, const char *file,
+                   const char *msg, SUNErrCode err_code,
+                   void *OZd_structure, SUNContext sunctx) {
     sasfit_oz_data *OZd;
     OZd = (sasfit_oz_data*) OZd_structure;
-    sasfit_out("optained error code %d from %s-%s:%s\n",error_code, module,function,msg);
+    sasfit_out("optained error code %d from %s (%s:%d):%s\n",err_code,func,file,line,msg);
 };
-void KINInfoSASfit(const char *module, const char *function,
-                                char *msg, void *OZd_structure){
-
-    sasfit_oz_data *OZd;
-    long int nfe, nnlsi;
-    double fnorm;
-    int flag;
-    char sBuffer[256];
-    OZd = (sasfit_oz_data*) OZd_structure;
-    sasfit_out("Info message from %s-%s:%s\n",module,function,msg);
-    if (OZd->KINSetPrintLevel == 5) {
-        flag= KINGetNumFuncEvals(OZd->kin_mem,&nfe);
-        flag = KINGetNumNonlinSolvIters(OZd->kin_mem,&nnlsi);
-        flag = KINGetFuncNorm(OZd->kin_mem,&fnorm);
-        sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%d\t%d\t%le\"",OZd->it,OZd->GNorm, nfe, nnlsi,fnorm);
-        Tcl_EvalEx(OZd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
-    }
-};
+/* KINInfoSASfit() / KINSetInfoHandlerFn() no longer exist in SUNDIALS
+ * 7.x -- there is no per-solver info-handler hook any more. Its
+ * KINSetPrintLevel==5 step-by-step reporting (nfe/nnlsi/fnorm via
+ * KINGetNumFuncEvals/KINGetNumNonlinSolvIters/KINGetFuncNorm) has been
+ * moved to the end of OZ_step() below, using OZd->kin_mem, which is
+ * already stored there before KINSol() runs -- this fires on every
+ * residual evaluation, the closest available substitute now that no
+ * per-solver info callback exists. */
 /*
  * Check function return value...
  *    opt == 0 means SUNDIALS function allocates memory so check if
@@ -474,6 +496,7 @@ int OZ_init(sasfit_oz_data *OZd) {
    double *tp, dk, QR;
    int i;
    OZd->it=0;
+   OZd->kin_mem=NULL; /* not set until/unless a KINSOL-based algorithm runs; OZ_step()'s PrintLevel==5 reporting checks this for NULL */
    OZd->beta=1.0/(kb*T);
    r      = (double*)malloc((NP)*sizeof(double));
    k      = (double*)malloc((NP)*sizeof(double));
@@ -678,16 +701,16 @@ int KIN_sasfit_configure(void *kin_mem,sasfit_oz_data *OZd) {
     if (OZd->PrintProgress) sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
 
     flag += KINSetMAA(kin_mem, OZd->KINSetMAA);
-    flag += KINSetInfoHandlerFn(kin_mem, &KINInfoSASfit, OZd);
-    flag += KINSetErrHandlerFn(kin_mem, &KINErrSASfit, OZd);
-    if  (OZd->KINSetPrintLevel > 3 ) {
-        flag += KINSetPrintLevel(kin_mem,1);
-    } else if ( OZd->KINSetPrintLevel < 0) {
-        flag += KINSetPrintLevel(kin_mem,3);
-    } else {
-        flag += KINSetPrintLevel(kin_mem,OZd->KINSetPrintLevel);
-    }
-    if (OZd->PrintProgress) sasfit_out("KINSetPrintLevel(flag)=%d\n",flag);
+    /* KINSetInfoHandlerFn()/KINSetErrHandlerFn()/KINSetPrintLevel() no
+     * longer exist in SUNDIALS 7.x. The error handler is now registered
+     * per call site via SUNContext_PushErrHandler(sunctx, KINErrSASfit,
+     * OZd) right after each SUNContext_Create(), not here (see each
+     * case in FP4cr_EuRah()/OZ_solver_by_iteration() below). There is
+     * no equivalent needed for KINSetPrintLevel(): informational
+     * verbosity is now controlled by an opt-in SUNLogger that is never
+     * created here, so it stays silent by default exactly as before,
+     * and the OZd->KINSetPrintLevel==5 reporting this used to gate is
+     * now driven directly from OZ_step() instead (see its end). */
 
     flag += KINSetEtaForm(kin_mem, OZd->KINSetEtaForm);
     if (OZd->PrintProgress) sasfit_out("KINSetEtaForm(flag)=%d\n",flag);
@@ -718,23 +741,29 @@ int FP4cr_EuRah(sasfit_oz_data *OZd) {
     double err;
     N_Vector u, f, scale;
     void * kin_mem;
+    SUNContext sunctx;
+    SUNLinearSolver LS;
     int flag, maxlrst;
                 maxlrst = MAXSTEPS/10;
-				scale = N_VNew_Serial(NP);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit, OZd);
+				scale = N_VNew_Serial(NP, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(NP);
+				u = N_VNew_Serial(NP, sunctx);
                 cp_array_to_N_Vector(CEURAH,u,NP);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 OZd->kin_mem=kin_mem;
                 KIN_sasfit_configure(kin_mem,OZd);
 
    				flag = KINInit(kin_mem,OZ_EuRah_step_kinsol,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSpfgmr(kin_mem, 0);
-                if (OZd->PrintProgress) sasfit_out("KINSpfgmr(flag)=%d\n",flag);
+				LS = SUNLinSol_SPFGMR(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (OZd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
@@ -746,6 +775,9 @@ int FP4cr_EuRah(sasfit_oz_data *OZd) {
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                OZd->kin_mem = NULL; /* avoid a dangling OZd->kin_mem: OZ_step()'s PrintLevel==5 reporting reads this field on every call, including from later non-KINSOL algorithms that never set it */
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
 
 
@@ -1841,23 +1873,29 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 free(gn1);;
                 free(gn2);
                 break;
-        case KINSOLFP:
+        case KINSOLFP: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = MAXSTEPS/10;
-				scale = N_VNew_Serial(NP);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit, OZd);
+				scale = N_VNew_Serial(NP, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(NP);
+				u = N_VNew_Serial(NP, sunctx);
                 cp_array_to_N_Vector(G,u,NP);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 OZd->kin_mem=kin_mem;
                 KIN_sasfit_configure(kin_mem,OZd);
 
    				flag = KINInit(kin_mem,OZ_step_kinsolFP,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSpgmr(kin_mem, 0);
-                if (OZd->PrintProgress) sasfit_out("KINSpgmr(flag)=%d\n",flag);
+				LS = SUNLinSol_SPGMR(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (OZd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
 
@@ -1871,17 +1909,26 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                OZd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
-        case GMRES:
+                }
+        case GMRES: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = MAXSTEPS/10;
-				scale = N_VNew_Serial(NP);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit, OZd);
+				scale = N_VNew_Serial(NP, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(NP);
+				u = N_VNew_Serial(NP, sunctx);
                 cp_array_to_N_Vector(G,u,NP);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_configure(kin_mem,OZd);
@@ -1889,8 +1936,9 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
    				flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSpgmr(kin_mem, 0);
-                if (OZd->PrintProgress) sasfit_out("KINSpgmr(flag)=%d\n",flag);
+				LS = SUNLinSol_SPGMR(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (OZd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
 
@@ -1904,17 +1952,26 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                OZd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
-        case FGMRES:
+                }
+        case FGMRES: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = MAXSTEPS/10;
-				scale = N_VNew_Serial(NP);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit, OZd);
+				scale = N_VNew_Serial(NP, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(NP);
+				u = N_VNew_Serial(NP, sunctx);
                 cp_array_to_N_Vector(G,u,NP);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_configure(kin_mem,OZd);
@@ -1922,8 +1979,9 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
    				flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSpfgmr(kin_mem, 0);
-                if (OZd->PrintProgress) sasfit_out("KINSpfgmr(flag)=%d\n",flag);
+				LS = SUNLinSol_SPFGMR(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (OZd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 //                flag = KINSpilsSetMaxRestarts(kin_mem, maxlrst);
 //                sasfit_out("KINSpilsSetMaxRestarts(flag)=%d\n",flag);
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
@@ -1935,17 +1993,26 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                OZd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
-        case BiCGSTAB:
+                }
+        case BiCGSTAB: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = MAXSTEPS/10;
-				scale = N_VNew_Serial(NP);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit, OZd);
+				scale = N_VNew_Serial(NP, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(NP);
+				u = N_VNew_Serial(NP, sunctx);
                 cp_array_to_N_Vector(G,u,NP);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 flag = KINSetMaxNewtonStep(kin_mem, NP*100.0);
@@ -1954,8 +2021,9 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
    				flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 if (OZd->PrintProgress) sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSpbcg(kin_mem, 0);
-                if (OZd->PrintProgress) sasfit_out("KINSpbcg(flag)=%d\n",flag);
+				LS = SUNLinSol_SPBCGS(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (OZd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 
 				flag = KINSol(kin_mem,u,KIN_LINESEARCH,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
@@ -1966,17 +2034,26 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                OZd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                 if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
-        case TFQMR:
+                }
+        case TFQMR: {
+                SUNContext sunctx;
+                SUNLinearSolver LS;
                 maxlrst = MAXSTEPS/10;
-				scale = N_VNew_Serial(NP);
+                SUNContext_Create(SUN_COMM_NULL, &sunctx);
+                SUNContext_ClearErrHandlers(sunctx);
+                SUNContext_PushErrHandler(sunctx, KINErrSASfit, OZd);
+				scale = N_VNew_Serial(NP, sunctx);
                 N_VConst_Serial(1.0, scale);        /* no scaling */
                 kin_mem=NULL;
-				u = N_VNew_Serial(NP);
+				u = N_VNew_Serial(NP, sunctx);
                 cp_array_to_N_Vector(G,u,NP);
 
-				kin_mem = KINCreate();
+				kin_mem = KINCreate(sunctx);
                 OZd->kin_mem=kin_mem;
                   /* Set number of prior residuals used in Anderson acceleration */
                 KIN_sasfit_configure(kin_mem,OZd);
@@ -1984,8 +2061,9 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
                 flag = KINInit(kin_mem,OZ_step_kinsol,u);
                 if (OZd->PrintProgress)sasfit_out("KINInit(flag)=%d\n",flag);
 
-				flag = KINSptfqmr(kin_mem, 0);
-                if (OZd->PrintProgress) sasfit_out("KINSptfqmr(flag)=%d\n",flag);
+				LS = SUNLinSol_SPTFQMR(u, SUN_PREC_NONE, 0, sunctx);
+                flag = KINSetLinearSolver(kin_mem, LS, NULL);
+                if (OZd->PrintProgress) sasfit_out("KINSetLinearSolver(flag)=%d\n",flag);
 
 				flag = KINSol(kin_mem,u,OZd->KINSolStrategy,scale, scale);
                 if (flag !=  KIN_SUCCESS && flag != KIN_INITIAL_GUESS_OK && flag != KIN_LINESEARCH_NONCONV) OZd->failed = 1;
@@ -1996,8 +2074,12 @@ int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algori
 				N_VDestroy_Serial(u);
                 N_VDestroy_Serial(scale);
 				KINFree(&kin_mem);
+                OZd->kin_mem = NULL;
+                SUNLinSolFree(LS);
+                SUNContext_Free(&sunctx);
                   if (OZd->PrintProgress) sasfit_out("up to now the number of OZ_step calls are: %d\n",OZd->it);
                 break;
+                }
         case AndersonAcc:
                 //To check when to switch between extend and shift
                 isMaximalDimensionOfKrylovSpaceReached = 0;
@@ -2730,6 +2812,23 @@ double OZ_step(sasfit_oz_data *OZd) {
         Tcl_EvalEx(OZd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
 //        sasfit_out("%d\t%lg\n",OZd->it,OZd->GNorm);
     };
+    /* Replaces the old KINInfoSASfit() info-handler-driven reporting
+     * (see the comment on KINErrSASfit() above): fires once per
+     * residual evaluation, which for the KINSOL-based algorithms is
+     * exactly what OZ_step() is called from (OZ_step_kinsol() /
+     * OZ_step_kinsolFP()), and OZd->kin_mem is already set by the
+     * caller before KINSol() runs. For the non-KINSOL iterative
+     * algorithms OZd->kin_mem is NULL, so this is a no-op there. */
+    if (OZd->KINSetPrintLevel == 5 && OZd->kin_mem != NULL) {
+        long int nfe, nnlsi;
+        double fnorm;
+        int infoflag;
+        infoflag = KINGetNumFuncEvals(OZd->kin_mem,&nfe);
+        infoflag = KINGetNumNonlinSolvIters(OZd->kin_mem,&nnlsi);
+        infoflag = KINGetFuncNorm(OZd->kin_mem,&fnorm);
+        sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%d\t%d\t%le\"",OZd->it,OZd->GNorm, nfe, nnlsi,fnorm);
+        Tcl_EvalEx(OZd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
+    }
     return OZd->GNorm;
 }
 

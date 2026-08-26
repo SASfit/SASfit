@@ -465,6 +465,18 @@ function(get_package_dir PCKG_NAME CURRENT_DIR)
     unset(SOURCE_DIR)
     set_package_source_dir(PCKG_SRC_DIR ${CURRENT_DIR})
     find_configure(${PCKG_SRC_DIR})
+    if(NOT SOURCE_DIR)
+        # The exact '<PLATFORM>_<hostname>' directory (see
+        # set_package_source_dir()) wasn't found -- this also happens for
+        # a directory that was extracted/built previously under a plain
+        # '<PLATFORM>' name (no hostname suffix), e.g. by hand, or before
+        # the hostname suffix was introduced. Fall back to a wildcard
+        # search for ANY '<PLATFORM>*' directory already present, so an
+        # existing, already-built package isn't ignored and silently
+        # rebuilt from source just because of a hostname mismatch.
+        message(STATUS "Exact package dir not found, falling back to a wildcard search for '${PLATFORM}*'.")
+        find_configure(${CURRENT_DIR}/${PLATFORM}*)
+    endif()
     #message("SOURCE_DIR: '${SOURCE_DIR}' '${SUFFIX_DIR}' '${PLATFORM}'")
     if(SOURCE_DIR)
         message(STATUS "Found source dir:  '${SOURCE_DIR}'")

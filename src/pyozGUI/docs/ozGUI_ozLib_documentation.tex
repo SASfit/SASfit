@@ -3,6 +3,7 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{multirow}
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{hyperref}
@@ -63,13 +64,17 @@ re-implementation of SASfit's Ornstein--Zernike (OZ) equation solver
 mathematical formulas, every interaction potential, every closure relation, and
 every numerical solver algorithm currently implemented, together with the
 underlying Hankel-transform-based discretisation scheme and the two ways of
-using the toolkit: as an interactive Tkinter GUI (\code{ozGUI.py}) and as a plain
+using the toolkit: as an interactive Tkinter GUI (\code{oZgui.py}) and as a plain
 importable Python library (\code{ozLib.py}). Formulas throughout were ported and
 verified directly against SASfit's own C source
 (\code{src/sasfit\_oz/sasfit\_oz\_solver.c}, \code{src/plugins/*}), and, where an
 independent literature source was available, cross-checked against it as well;
 deviations, known limitations, and one deliberately-excluded closure are
-documented explicitly rather than silently omitted.
+documented explicitly rather than silently omitted. \code{oZgui.py} is
+specifically a from-scratch Tkinter port of SASfit's own built-in Tcl/Tk
+Ornstein--Zernike solver window; Section~\ref{sec:tcl-comparison} cross-
+references the two GUIs' naming conventions directly against both source
+files, rather than assuming a 1:1 correspondence.
 \end{abstract}
 
 \tableofcontents
@@ -96,7 +101,7 @@ $U(r)/k_BT$).
 Two front ends share the exact same computational core (\code{ozLib.py}), so
 results obtained through either are identical by construction:
 \begin{itemize}[nosep]
-  \item \textbf{\code{ozGUI.py}} --- an interactive Tkinter application with
+  \item \textbf{\code{oZgui.py}} --- an interactive Tkinter application with
         potential/closure/solver dropdowns, a 9-tab plot panel, run history,
         and Save/Load/ASCII/CSV/Excel/PNG export (Section~\ref{sec:gui}).
   \item \textbf{\code{ozLib.py}} --- a plain Python function,
@@ -148,13 +153,13 @@ points,
 starting at $\Delta r$ rather than $0$ (division by $r$ appears in the Hankel
 transform below, so $r=0$ is avoided by construction rather than special-cased).
 The hard-core diameter $\sigma$ is placed at grid index
-$\code{hardSphereRadiusInPoints}$ (called $n_\sigma$ below), i.e.
+$\code{hardSphereDiameterInPoints}$ (called $n_\sigma$ below), i.e.
 \begin{equation}
   \sigma = n_\sigma\,\Delta r, \qquad
   \text{total range } r_{\max} = (N-1)\Delta r = \frac{N-1}{n_\sigma}\,\sigma.
 \end{equation}
 Both $N$ and $n_\sigma$ are configurable (constructor keyword arguments
-\code{numberOfRadialSamplingPoints}, \code{hardSphereRadiusInPoints} on every
+\code{numberOfRadialSamplingPoints}, \code{hardSphereDiameterInPoints} on every
 solver class, and identically-named arguments on \code{ozLib.solve()}); the
 historical defaults are $N=4096$, $n_\sigma=100$, giving $r_{\max}\approx
 41\,\sigma$ and $\Delta r = 0.01\,\sigma$. Increasing $N$ at fixed $n_\sigma$
@@ -207,10 +212,35 @@ grid described above; all energies are in $k_BT$ units and all lengths in units
 where the hard-core diameter is $\sigma=n_\sigma\Delta r$. Potentials that
 support the repulsive/attractive potential split needed by
 switching-function closures (Rogers--Young, HMSA, and the Gstar-based bridge
-closures of Section~\ref{sec:closures}) additionally populate
-\code{repulsivePartOfP2Ppotential}/\code{attractivePartOfP2Ppotential}. All 17
+closures of Section~\ref{sec:closures}) additionally populate the arrays
+\code{repulsivePartOfP2Ppotential} and \code{attractivePartOfP2Ppotential}.
+All 18
 potentials below are available via \code{setPotentialByName(name, *args)} or
-directly as \code{set<Name>Potential(...)}.
+directly as \code{set<Name>Potential(...)} -- in 17 subsections, not 18,
+since Section~\ref{sec:starpolymer} covers both of the star polymer
+potential's two distinct setters (\code{setStarPolymerHighFPotential()},
+\code{setStarPolymerLowFPotential()}) together, one formula each.
+
+\emph{Note on counting, and on a genuine fix this made:} the GUI's own
+potential dropdown (Table~\ref{tab:potential-naming},
+Section~\ref{sec:tcl-comparison}) lists 18 named entries. An earlier version
+of this port had only 17 setters -- \code{setStarPotential()} implemented
+only the star polymer potential's $f\ge10$ formula, silently applied
+regardless of functionality, with no $f\le10$ counterpart at all,
+unlike the original Tcl GUI's two separate \code{StarPolymer (f>10)}/
+\code{StarPolymer (f<10)} dropdown entries. Checking
+\code{sasfit\_oz\_potential\_star\_Likos.c} directly (rather than assuming
+the single existing formula covered every $f$) found this is a genuinely
+different second formula (\code{U\_Star2}, Section~\ref{sec:starpolymer}),
+not just the same one evaluated at a smaller argument -- now added as
+\code{setStarPolymerLowFPotential()}, matching the Tcl GUI's count exactly.
+\code{Depl-Sph-Sph}/\code{Depl-Sph-Discs}/\code{Depl-Sph-Rods} similarly
+appear as three separate GUI choices against one Depletion subsection here
+-- checked the same way the star polymer case was: confirmed to be a
+similarly-missing split (see Section~\ref{sec:depletion}'s own
+\textbf{Known gap} note), not a single shared formula with different
+constant substitutions, though unlike star polymer this one was found but
+not fixed in this pass.
 
 \subsection{Hard Sphere}
 \begin{equation}
@@ -235,18 +265,54 @@ contact interaction strength; a hard core can optionally be added
 shifted independently as in SASfit's own construction, and the potential is
 set to $\infty$ (Boltzmann factor 0) for $r<\sigma$.
 
-\subsection{Star polymer potential (Likos)}
+\subsection{Star polymer potential (Likos \& Harreis) \cite{likos2002}}
+\label{sec:starpolymer}
+Two genuinely different formulas, one for each of two functionality
+regimes, matching \code{U\_Star1} and \code{U\_Star2} in
+\code{sasfit\_oz\_potential\_star\_Likos.c} respectively. This port calls
+them \code{setStarPolymerHigh\-FPotential()} and
+\code{setStarPolymerLow\-FPotential()}; an earlier version only had the
+first of these, silently applying it regardless of $f$.
+
+
+\textbf{High functionality, $f\ge10$} (exponential decay outside the core):
 \begin{equation}
   U(r)/k_BT =
   \begin{cases}
     \dfrac{5}{18}f^{3/2}\left[-\ln\!\dfrac{r}{\sigma}+\dfrac{1}{1+\sqrt{f}/2}\right] & r\le\sigma\\[2ex]
     \dfrac{5}{18}f^{3/2}\,\dfrac{1}{1+\sqrt{f}/2}\,\dfrac{\sigma}{r}\,
-      \exp\!\left[-\dfrac{\sqrt{f}(r-\sigma)}{2\sigma}\right] & r>\sigma,
+      \exp\!\left[-\dfrac{\sqrt{f}(r-\sigma)}{2\sigma}\right] & r>\sigma.
   \end{cases}
 \end{equation}
-where $f=$ \code{NumberOfArms} is the number of arms of the star polymer.
 
-\subsection{Depletion potential (Oversteegen \& Lekkerkerker)}
+\textbf{Low functionality, $f\le10$} (Gaussian decay outside the core, with
+its own $\tau(f)$ interpolation):
+\begin{equation}
+  \tau(f) = \tau_2 + \frac{\tau_5-\tau_2}{3}f, \qquad
+  \tau_2 = \frac{1.03}{\sigma}, \quad \tau_5 = \frac{1.12}{\sigma},
+\end{equation}
+\begin{equation}
+  U(r)/k_BT =
+  \begin{cases}
+    \dfrac{5}{18}f^{3/2}\left[-\ln\!\dfrac{r}{\sigma}+\dfrac{1}{2(\tau\sigma)^2}\right] & r\le\sigma\\[2ex]
+    \dfrac{5}{18}f^{3/2}\,\dfrac{1}{2(\tau\sigma)^2}\,
+      \exp\!\left[-\tau^2(r^2-\sigma^2)\right] & r>\sigma.
+  \end{cases}
+\end{equation}
+Here $f=$ \code{NumberOfArms} is the number of arms of the star polymer
+(the same argument name on both setters). The two branches do \emph{not}
+meet smoothly at $f=10$ -- checked directly: $\sim$28\% relative
+difference in $U(r=\sigma^+)$, about 30$\times$ apart by $r=2\sigma$.
+This is a genuine property of the original paper's own two-regime fit
+(each branch is only claimed accurate within its own stated range), not
+a bug in either formula or this port; $f=10$ is where Likos \& Harreis
+recommend switching approximations, not a point the two forms were
+designed to agree at exactly. A caller choosing between the two should
+therefore pick whichever branch matches their actual $f$, not assume
+either extrapolates sensibly across the boundary.
+
+\subsection{Depletion potential (Oversteegen \& Lekkerkerker) \cite{oversteegen2004}}
+\label{sec:depletion}
 Two-sphere overlap-volume depletion potential between big spheres (diameter
 $\sigma_1=\sigma$, the species this OZ solve is for) induced by small
 depletant spheres (diameter $\sigma_2=$ \code{sigmaRatio}$\cdot\sigma_1$, number
@@ -258,6 +324,27 @@ density $\rho_2$ set via the depletant volume fraction \code{phi2}):
 \end{equation}
 with $r_t=\sigma_2/\sigma_1$, and $U=0$ for $r\ge\sigma_1+\sigma_2$; hard core
 for $r<\sigma_1$.
+
+\textbf{Known gap, found while cross-checking the star polymer split of
+Section~\ref{sec:starpolymer} prompted a closer look at this file too:}
+\code{sasfit\_oz\_potential\_depletion.c} actually contains \emph{four}
+distinct formulas, not one -- the generic \code{U\_Depletion} above, plus
+\code{U\_DepletionOfSpheresBySpheres}, \code{U\_DepletionOfSpheresByDiscs},
+and \code{U\_DepletionOfSpheresByRods}, matching the Tcl GUI's own three
+named dropdown entries (\code{Depl-Sph-Sph}/\code{Depl-Sph-Discs}/
+\code{Depl-Sph-Rods}, Table~\ref{tab:potential-naming},
+Section~\ref{sec:tcl-comparison}) -- each geometrically distinct (sphere
+depleted by spheres/discs/rods respectively, the disc and rod cases
+involving genuinely different overlap-volume geometry, e.g.\ an
+$\arcsin$ term for discs) and parametrised differently from
+\code{U\_Depletion} (\code{sigma\_large}, \code{sigma\_small}/\code{D}/\code{L},
+and a number density \code{nb} directly, rather than
+\code{sigma1}/\code{sigma2}/a volume fraction \code{PHI2}). This Python port
+currently only has the generic \code{U\_Depletion} form -- unlike the star
+polymer fix of Section~\ref{sec:starpolymer}, this was found but
+deliberately \emph{not} fixed in this pass (out of the scope of what was
+asked, and a larger, riskier addition: three new geometries to verify,
+not one), and is recorded here so it isn't silently lost.
 
 \subsection{DLVO (electrostatic double-layer + van der Waals)}
 \label{sec:dlvo}
@@ -326,7 +413,7 @@ negative (well). This is the general $n=3$ piecewise-constant family used as
 an independent cross-check for the RFA analytical solver
 (Section~\ref{sec:rfa}).
 
-\subsection{Penetrable sphere model (Likos, Watzlawek, L\"owen)}
+\subsection{Penetrable sphere model (Likos, Watzlawek, L\"owen) \cite{likos1998}}
 \begin{equation}
   U(r)/k_BT = \begin{cases}\varepsilon & r\le\sigma\\ 0 & r>\sigma.\end{cases}
 \end{equation}
@@ -374,10 +461,12 @@ re-derived from a textbook), using that file's own notation:
 $\mathrm{EN}(r)=\exp[-U(r)/k_BT]$, $G(r)=\Gamma(r)$. Where a closure needs an
 extra scalar parameter (shared storage slot \code{self.alpha}, matching the
 C code's own \code{sBPGG}/\code{aCJVM}/\code{fBB} \code{\#define}s onto the
-same underlying variable), this is noted explicitly. \textbf{19 closures are
-offered}; a 20th (Euler--Rahman) exists in the source but is deliberately
-excluded from both the GUI and \code{ozLib.solve()}'s validated closure list
---- see Section~\ref{sec:eurah} for why.
+same underlying variable), this is noted explicitly. \textbf{20 closures are
+offered} -- 19 general-purpose ones plus ZSEP (Section~\ref{sec:zsep}, hard
+spheres only, self-fitting its own three free parameters rather than taking
+any of them from the caller); a 21st (Euler--Rahman) exists in the source
+but is deliberately excluded from both the GUI and \code{ozLib.solve()}'s
+validated closure list -- see Section~\ref{sec:eurah} for why.
 
 \subsection{Percus--Yevick (PY)}
 \begin{equation}
@@ -453,7 +542,7 @@ indirect correlation function, shared with several closures below):
   c(r) = \exp\!\big[U_{\mathrm{attr}}(r)/k_BT\big]\big[\Gamma^*(r)+1\big] - \Gamma(r) - 1.
 \end{equation}
 
-\subsection{Rogers--Young (RY)}
+\subsection{Rogers--Young (RY) \cite{rogersyoung1984}}
 Interpolates between PY ($\alpha\to\infty$) and HNC ($\alpha\to0$) via a
 switching function $f(r)=1-e^{-\alpha r}$:
 \begin{equation}
@@ -461,7 +550,7 @@ switching function $f(r)=1-e^{-\alpha r}$:
 \end{equation}
 with $\alpha$ supplied by the user (\code{doRYclosure(alpha)}).
 
-\subsection{HMSA (Zerah--Hansen)}
+\subsection{HMSA (Zerah--Hansen) \cite{zerahhansen1986}}
 Same switching-function structure as RY, but using $\Gamma^*(r)$ in the
 switching term and the full Boltzmann factor split into repulsive/attractive
 parts:
@@ -471,14 +560,14 @@ parts:
 with $\alpha$ (in $f(r)=1-e^{-\alpha r}$) supplied by the user
 (\code{doHMSAclosure(alpha)}).
 
-\subsection{Verlet}
+\subsection{Verlet \cite{verlet1980,verlet1981}}
 Empirical bridge function, no reference system or extra parameter:
 \begin{equation}
   B(r) = \frac{-\Gamma(r)^2}{2\big[1+0.8\,\Gamma(r)\big]}, \qquad
   c(r) = \mathrm{EN}(r)\,e^{\Gamma(r)+B(r)} - \Gamma(r) - 1.
 \end{equation}
 
-\subsection{Martynov--Sarkisov (MS)}
+\subsection{Martynov--Sarkisov (MS) \cite{martynovsarkisov1983}}
 \label{sec:ms}
 \begin{equation}
   B(r) = \mathrm{sgn}(1{+}2\Gamma)\sqrt{|1+2\Gamma(r)|} - \Gamma(r) - 1, \qquad
@@ -487,14 +576,14 @@ Empirical bridge function, no reference system or extra parameter:
 Used standalone, and as the reference-system closure for RHNC
 (Section~\ref{sec:rhnc}).
 
-\subsection{Vompe--Martynov (VM)}
+\subsection{Vompe--Martynov (VM) \cite{vompemartynov1994}}
 As MS, but using $\Gamma^*(r)$ in place of $\Gamma(r)$ inside the square root:
 \begin{equation}
   B(r) = \mathrm{sgn}(1{+}2\Gamma^*)\sqrt{|1+2\Gamma^*(r)|} - \Gamma^*(r) - 1, \qquad
   c(r) = \mathrm{EN}(r)\,e^{\Gamma(r)+B(r)} - \Gamma(r) - 1.
 \end{equation}
 
-\subsection{BPGG (Ballone--Pastore--Galli--Gazzillo)}
+\subsection{BPGG (Ballone--Pastore--Galli--Gazzillo) \cite{ballone1986}}
 Power-law bridge function with user parameter $s$ (\code{doBPGGclosure(s)},
 $s\ne0$; SASfit's own \code{sBPGG}):
 \begin{equation}
@@ -502,7 +591,7 @@ $s\ne0$; SASfit's own \code{sBPGG}):
   c(r) = \mathrm{EN}(r)\,e^{\Gamma(r)+B(r)} - \Gamma(r) - 1.
 \end{equation}
 
-\subsection{CJVM (Charpentier--Jakse extension of VM)}
+\subsection{CJVM (Charpentier--Jakse extension of VM) \cite{charpentierjakse2001,vompemartynov1994}}
 User parameter $a$ (\code{doCJVMclosure(a)}, $a\ne0$; SASfit's own
 \code{aCJVM}):
 \begin{equation}
@@ -512,7 +601,7 @@ User parameter $a$ (\code{doCJVMclosure(a)}, $a\ne0$; SASfit's own
   c(r) = \mathrm{EN}(r)\,e^{\Gamma(r)+B(r)} - \Gamma(r) - 1.
 \end{equation}
 
-\subsection{BB (Bomont--Bretonnet)}
+\subsection{BB (Bomont--Bretonnet) \cite{bomontbretonnet2001}}
 User parameter $f$ (\code{doBBclosure(f)}; SASfit's own \code{fBB}):
 \begin{equation}
   B(r) = \mathrm{sgn}\!\big(1{+}2\Gamma^*{+}f(\Gamma^*)^2\big)\sqrt{\big|1+2\Gamma^*(r)+f\,\Gamma^*(r)^2\big|} - \Gamma^*(r) - 1,
@@ -521,26 +610,62 @@ User parameter $f$ (\code{doBBclosure(f)}; SASfit's own \code{fBB}):
   c(r) = \mathrm{EN}(r)\,e^{\Gamma(r)+B(r)} - \Gamma(r) - 1.
 \end{equation}
 
-\subsection{Kovalenko--Hirata (KH)}
+\subsection{Kovalenko--Hirata (KH) \cite{kovalenkohirata1998}}
+\label{sec:kh}
 \begin{equation}
-  c(r) = \mathrm{EN}(r)\,e^{\Gamma(r)} - \Gamma(r) - 1.
+  d(r) = \Gamma(r) - U(r)/k_BT = \Gamma(r) + \ln\mathrm{EN}(r), \qquad
+  g(r) = \begin{cases} \mathrm{EN}(r)\,e^{\Gamma(r)} & d(r)\le0\\ 1+d(r) & d(r)>0, \end{cases}
 \end{equation}
+\begin{equation}
+  c(r) = g(r) - \Gamma(r) - 1.
+\end{equation}
+This is the real literature formula (equivalently,
+$b(r)=[\ln(1+d(r))-d(r)]\,\theta(d(r))$, matching Kovalenko \& Hirata's own
+closure \cite{kovalenkohirata1998} as reproduced independently in
+Pihlajamaa \& Janssen's (2024) closure-comparison table
+\cite{pihlajamaa2024}) -- identical to HNC wherever $d(r)\le0$, and linearised
+(bounded, non-exponential in $\Gamma(r)$) wherever $d(r)>0$. This is the
+actual mechanism behind KH's well-documented good numerical convergence
+\cite{ebato2016}: HNC's own $c(r)$ grows without bound as $\Gamma(r)$
+grows, whereas KH's linear branch, $c(r)=\ln\mathrm{EN}(r)=-U(r)/k_BT$,
+does not depend on $\Gamma(r)$ at all, and so cannot diverge that way.
+
 \begin{remark}
-Reading SASfit's own \code{case KH:} block directly (rather than assuming the
-textbook definition) revealed that its $c(r)/g(r)$ formula there is
-\emph{identical} to HNC's own. The textbook KH closure is normally a
-piecewise-linearised bridge function ($g(r)=\exp(\Gamma{-}U/k_BT)$ where this
-argument is $\le0$, else $g(r)=1+\Gamma-U/k_BT$, designed to avoid HNC's own
-divergence risk at high density); SASfit's C code computes this piecewise
-bridge function too, but only as a separate diagnostic output that is never
-fed back into $c(r)$ in that same closure branch. This is reproduced here
-exactly as the C code actually computes it, quirk included, since the purpose
-of this port is to reproduce SASfit's own numbers, not to independently
-re-derive the textbook closure. Verified numerically: KH and HNC give
-identical $g(r)$ to machine precision for every potential/density tested.
+An earlier version of this port matched SASfit's own \code{case KH:} block
+in \code{sasfit\_oz\_solver.c} exactly, rather than this formula: that C
+code computes the piecewise-linearised bridge function above too, but only
+as a separate diagnostic \code{BRIDGE[i]} output that is never fed back
+into $c(r)$ in that same closure branch -- so that earlier port was, in
+effect, plain HNC under a different name (confirmed then: identical $g(r)$
+to machine precision for every case tested). This has now been corrected to
+the formula above, chosen and verified directly against the literature
+rather than against that specific quirk of SASfit's own C source.
+
+Verified three ways. \emph{Continuity}: the two branches give identical
+$c(r)$ and $g(r)$ at the switch boundary $d(r)=0$ (checked to $10^{-10}$),
+so the correction introduces no discontinuity. \emph{Hard-core exclusion}:
+where $\mathrm{EN}(r)=0$, $\ln\mathrm{EN}(r)\to-\infty$ forces $d(r)\le0$,
+selecting the HNC branch, which reduces to the same $c(r)=-(\Gamma(r)+1)$
+hard-core exclusion PY/HNC/MSA all use -- confirmed numerically for
+\code{HardSphere}, not just algebraically. \emph{Full self-consistent
+solve}: for hard spheres at $\varphi=0.3$ (Picard iteration, this
+project's own solver), the corrected KH gives $g(\sigma^+)=2.360$, close to
+the exact PY value ($2.356$) and clearly different from plain HNC's own
+$2.845$ at the same state point -- expected, since a bare hard-sphere
+potential has $\mathrm{EN}(r)=1$ exactly for $r>\sigma$, so KH's linear
+branch there gives $c(r)=\ln(1)=0$, the same value PY's own formula happens
+to give outside contact for a hard sphere. At $\varphi=0.45$, neither the
+corrected KH, HNC, PY, nor the previous (HNC-identical) KH implementation
+converges within 2000 plain-Picard iterations -- the same already-documented
+Picard limitation at this density (Section~\ref{sec:critical-params}), not
+a KH-specific issue: all four closures hit the iteration cap with
+comparably-sized residuals, so this is not evidence either for or against
+KH's own convergence properties specifically; a fair test of that specific
+literature claim would need an accelerated solver
+(Section~\ref{sec:solvers}), which was not attempted here.
 \end{remark}
 
-\subsection{Duh--Haymet (DH)}
+\subsection{Duh--Haymet (DH) \cite{duhhaymet1995}}
 A rational-function bridge approximation:
 \begin{equation}
   B(r) = \frac{-\Gamma^*(r)^2}{2\left[1+\dfrac{5\,\Gamma^*(r)+11}{7\,\Gamma^*(r)+9}\,\Gamma^*(r)\right]}, \qquad
@@ -554,7 +679,7 @@ Lennard-Jones (a narrower numerical-stability tweak for that potential's own
 $r^{-12}$ term, not a different closure formula); this special case is not
 replicated here.
 
-\subsection{Choudhury--Ghosh (CG)}
+\subsection{Choudhury--Ghosh (CG) \cite{choudhuryghosh2002}}
 A piecewise bridge function with a density-dependent coefficient:
 \begin{equation}
   B(r) = \begin{cases} \dfrac{-\tfrac12\,\Gamma^*(r)^2}{1+\zeta(\varphi)\,\Gamma^*(r)} & \Gamma^*(r)>0\\[2ex]
@@ -568,6 +693,75 @@ Independently verified against Pihlajamaa \& Janssen (2024)
 \cite{pihlajamaa2024}, Table~1: $\zeta(\rho)=1.0175-0.275\,\rho\sigma^3$, and
 since $\rho\sigma^3=6\varphi/\pi$ for spheres, this is an exact match
 (including the same $\Gamma^*\le0$ piecewise branch).
+
+\subsection{ZSEP (Lee) \cite{lee1995,lee1999} --- hard spheres only}
+\label{sec:zsep}
+Unlike every closure above, ZSEP is not a fixed formula the caller
+parametrises: it self-fits its own three free parameters
+($\zeta,\varphi_{\mathrm{Z}},\alpha$ -- \code{zsep\_zeta}/\code{zsep\_phi}/
+\code{zsep\_alpha}, distinct from the system's own volume fraction $\varphi$
+despite the similar name) against three \emph{exact} conditions derived from
+the Carnahan--Starling hard-sphere equation of state, following Lee (1995)
+\cite{lee1995}, Eqs.~(2.6)--(2.10) and (3.7)--(3.9). Using
+$\Gamma^*(r)=\Gamma(r)+\tfrac{\rho}{2}\mathrm{MAYER}(r)$,
+$\mathrm{MAYER}(r)=\mathrm{EN}(r)-1$:
+\begin{equation}
+  B(\Gamma^*) = -\tfrac12\zeta\,(\Gamma^*)^2\left(1-\frac{\varphi_{\mathrm{Z}}\alpha\Gamma^*}{1+\alpha\Gamma^*}\right),
+  \qquad
+  c(r) = \mathrm{EN}(r)\,e^{\Gamma(r)+B(r)} - \Gamma(r) - 1,
+\end{equation}
+with $(\zeta,\varphi_{\mathrm{Z}},\alpha)$ fixed by requiring, simultaneously:
+\begin{itemize}[nosep]
+  \item[(A)] the first zero-separation theorem, $B(0)=\beta\mu_{\mathrm{ex}}-\Gamma(0)$,
+    with $\beta\mu_{\mathrm{ex}}$ and $\Gamma(0)$ both closed-form from
+    Carnahan--Starling (the latter needing one correction integral $I_C$,
+    evaluated numerically here directly from the current solve's own $g(r)$
+    and $c(r)$, rather than the original paper's own reliance on an external
+    correlation for it);
+  \item[(B)] the second zero-separation theorem,
+    $dB/d\Gamma^*|_0 = 1/y(\sigma^+)-1$ -- \textbf{sign-corrected}: the
+    original 1995 paper's own Eq.~(3.8) states the opposite sign; re-deriving
+    this directly from $B(r)=\ln y(r)-\Gamma(r)$ independently confirms the
+    later 1999 erratum's \cite{lee1999} sign instead, which is what is
+    implemented here;
+  \item[(C)] pressure consistency (compressibility route = virial route),
+    the same condition Rogers--Young-family closures use
+    (Section~\ref{sec:closures}'s own \code{findThermodynamicallyConsistentParameter()}),
+    reused here in a three-parameter-aware form.
+\end{itemize}
+Matching the validated practice of Pihlajamaa \& Janssen (2024)
+\cite{pihlajamaa2024} -- who report being unable to robustly satisfy all
+three conditions via exact simultaneous root-finding -- this port minimises
+the sum of squared residuals (\code{scipy.optimize.least\_squares}) rather
+than attempting an exact $3\times3$ nonlinear solve.
+
+\textbf{Hard spheres only, enforced twice.} ZSEP's three conditions are
+derived specifically from the exact Carnahan--Starling hard-sphere equation
+of state; they are not meaningful for any other potential. This is checked
+in two places, not one: \code{OZsolver.fitZSEPparameters()} itself refuses
+(prints a warning, returns \code{None} without solving) if the active
+potential is not \code{HardSphere}, and -- added specifically because that
+alone would otherwise let \code{ozLib.solve()} silently package up an
+all-zeros/$S(Q){=}1$-everywhere result with no exception, only an easily-
+missed Log-tab message -- \code{ozLib.solve()} now raises \code{ValueError}
+immediately if \code{closure='ZSEP'} is requested with any potential other
+than \code{'HardSphere'}, before touching the solver at all.
+
+\textbf{Known, documented ill-conditioning (not a bug).} This 3-parameter
+fit is genuinely under-determined: a whole family of
+$(\zeta,\varphi_{\mathrm{Z}},\alpha)$ triples can satisfy the three
+conditions equally well, and an unconstrained fit can land on a
+mathematically valid but unphysical-looking point (e.g.\ very large
+$\varphi_{\mathrm{Z}}$, $\alpha$ near 0) far from Lee's own reported values
+-- matching Fernaud, Lomba \& Lee (2000)'s \cite{fernaud2000} own explicit
+finding of multiple solutions to the same optimisation. Fixing
+$\alpha=1.0$ (\code{fitZSEPparameters(fixedParam=('alpha', 1.0))}, Lee's own
+empirical finding, Table~II of \cite{lee1995}: $\alpha\approx1.0$ works well
+at every density from 0.1 to 0.9) and starting near literature values gives
+good, well-behaved results in practice; fully unconstrained 3-parameter fits
+should have their output sanity-checked (all three parameters within a
+physically reasonable $\mathcal{O}(0.1)$--$\mathcal{O}(10)$ range) before
+being trusted.
 
 \subsection{Euler--Rahman (EuRah) --- not offered}
 \label{sec:eurah}
@@ -616,6 +810,204 @@ closure is excluded from standard closure-comparison studies for
 ``numerical complexity'' \cite{pihlajamaa2024}; the instability found here is
 consistent with that being a genuine property of the theory rather than an
 implementation error.
+
+\subsection{Practical guidance: which closure for which potential}
+\label{sec:recommendations}
+
+Choosing a closure is a tradeoff between accuracy, generality, and cost
+(RHNC/RMSA need a reference sub-solve; RY/HMSA/MHNC/BPGG/CJVM/BB need either
+a manually-chosen parameter or an expensive
+\code{findThermodynamicallyConsistentParameter()} search;
+ZSEP self-fits three parameters by nonlinear least squares). The guidance
+below reflects standard liquid-state-theory practice together with what has
+actually been validated in this project (Sections~\ref{sec:examples},
+\ref{sec:analytical}) -- it is a starting point for exploration, not a
+guarantee that any one closure is quantitatively correct for a given system
+without checking against an independent reference (Section~\ref{sec:analytical})
+where one is available.
+
+\begin{itemize}[nosep]
+  \item \textbf{Hard spheres, or any purely repulsive, short-ranged
+    potential} (HardSphere, SoftSphere, GGCM-n, PenetrableSphere): start with
+    \textbf{PY}. It is simple, cheap, and (Section~\ref{sec:examples}'s own
+    validation) matches the exact hard-sphere solution essentially exactly at
+    the densities tested here -- though see Section~\ref{sec:mc-literature}
+    below: against genuine Monte Carlo data (not the exact PY solution
+    itself), PY's own contact-value error is not actually small at high
+    density \cite{pihlajamaa2024}. \textbf{ZSEP} (Section~\ref{sec:zsep}) is a
+    genuinely more accurate option specifically for HardSphere (only), if its
+    known ill-conditioning (fix $\alpha=1$, check the fitted parameters look
+    physically reasonable) is acceptable for the use case.
+  \item \textbf{Attractive or narrow-well potentials}
+    (StickyHardSphere, SquareWell, LennardJones, PiecewiseConstant):
+    PY tends to be least accurate here (Section~\ref{sec:examples}'s own
+    closure comparison shows PY and HNC bracketing the true contact value
+    from opposite sides at high density, a general feature that sharpens with
+    attraction, confirmed quantitatively against Monte Carlo in
+    Section~\ref{sec:mc-literature} \cite{pihlajamaa2024}); an empirical
+    bridge-function closure (\textbf{Verlet}, \textbf{MS}, \textbf{VM},
+    \textbf{DH}, \textbf{CG}) or \textbf{HNC} itself is generally a better
+    default. \textbf{HMSA} (needs a manually chosen or fitted $\alpha$) is
+    specifically designed for exactly this case -- a potential with a genuine
+    attractive tail split from a repulsive core -- since it uses that split
+    directly (Section~\ref{sec:closures}'s own HMSA formula). For narrow/strong
+    wells specifically, cross-check against the semi-analytical references
+    built for exactly this case (Sharma--Sharma, ORPA, RFA,
+    Section~\ref{sec:analytical}) if available for the potential in use,
+    since this project's own worked examples show a naive perturbative
+    treatment (Sharma--Sharma) can degrade substantially for strong/wide
+    wells where a genuinely non-perturbative one (ORPA) does not. For
+    \textbf{StickyHardSphere} specifically, published Monte Carlo comparisons
+    \cite{gazzillo2004} find plain PY performs adequately in the parameter
+    regime typical of colloidal/protein solutions, but is out-performed by
+    more sophisticated closures elsewhere -- see
+    Section~\ref{sec:mc-literature}.
+  \item \textbf{Long-range, charged, or screened-Coulomb potentials}
+    (DLVO, DLVO Hydra, HS3Yukawa, IonicMicrogel): \textbf{MSA} is the
+    standard, cheap starting point, but can give an unphysical negative
+    contact value at strong coupling (Section~\ref{sec:critical-charged});
+    \textbf{RMSA} is the direct fix for exactly that failure mode and should
+    be preferred whenever MSA's own contact value comes out negative. Where
+    the closed-form Hayter--Penfold solution applies (a bare hard-core-Yukawa
+    potential, Section~\ref{sec:hayter-penfold}), that semi-analytical
+    reference is both faster and, being the historically canonical solution
+    for this exact problem, a useful independent check on the general
+    numerical solver's own RMSA rescaling. \textbf{HNC}, by contrast, is
+    well-documented in the plasma/charged-colloid literature to degrade, and
+    in some regimes fail to converge at all, at strong coupling
+    (Section~\ref{sec:mc-literature}) -- this is specifically why
+    Rosenfeld's variational modified HNC (VMHNC) \cite{rosenfeld1986} and
+    similar corrections exist; \textbf{BPGG} (already offered here, and
+    itself one of the corrections used in that literature) is a reasonable
+    substitute for plain HNC at strong coupling if MSA/RMSA is not
+    applicable.
+  \item \textbf{When thermodynamic consistency matters most} (equation-of-state
+    or virial-route quantities, not just $g(r)$/$S(Q)$ shape): \textbf{Rogers--Young}
+    (or \textbf{HMSA} for potentials with a genuine attractive tail) with
+    \code{findConsistentParameter=True} is specifically designed to enforce
+    this by construction, at the cost of the extra root-finding search
+    (Section~\ref{sec:ozlib}). \textbf{MHNC}, \textbf{BPGG}, \textbf{CJVM},
+    and \textbf{BB} offer the same consistency search
+    (\code{CONSISTENT\_PARAMETER\_CLOSURES}) as alternative bridge-function
+    forms, worth trying if Rogers--Young/HMSA's own search fails to find a
+    genuine root for a particular system.
+  \item \textbf{Highest achievable general accuracy, cost secondary}:
+    \textbf{RHNC} (a genuine reference-system correction, no free parameter
+    to choose) or \textbf{MHNC} (a fixed analytical PY bridge function,
+    cheaper than RHNC since no reference sub-solve is needed) are the more
+    sophisticated options among what is offered here -- consistent with
+    Section~\ref{sec:mc-literature}'s own finding that MHNC-type closures
+    (parameterised directly from simulation data) systematically outperform
+    parameter-free closures against genuine Monte Carlo benchmarks
+    \cite{pihlajamaa2024}.
+  \item \textbf{Avoid}: \textbf{Euler--Rahman} (Section~\ref{sec:eurah}) --
+    excluded from the GUI/\code{ozLib.solve()} entirely for a
+    genuine, documented convergence instability, not merely a missing
+    feature. The hand-written \textbf{Anderson acceleration} solver
+    (Section~\ref{sec:solvers}, not a closure but worth flagging here too)
+    should not be trusted uncross-checked on strongly-coupled/charged
+    systems specifically, having been found to converge silently to a wrong
+    answer there in this project's own testing
+    (Section~\ref{sec:critical-params}).
+  \item \textbf{Kovalenko--Hirata}: now implements the real literature
+    formula (Section~\ref{sec:kh}), not the SASfit-C-code quirk an
+    earlier version of this port had (which was, in effect, plain HNC
+    under a different name). Its main practical advantage over plain
+    HNC is bounded, non-exponential behaviour when $\Gamma(r)$ grows
+    large, per the literature \cite{ebato2016} -- worth trying wherever
+    HNC itself is a reasonable choice (Section~\ref{sec:mc-literature})
+    but its own exponential growth is a concern.
+\end{itemize}
+
+\subsection{Literature validation against Monte Carlo: known accurate and inaccurate combinations}
+\label{sec:mc-literature}
+
+The recommendations above draw on published, quantitative comparisons
+against Monte Carlo (MC) or molecular dynamics (MD) simulation -- the
+genuine ground truth for a given potential, as opposed to a closure's own
+internal thermodynamic consistency, which (Section~\ref{sec:closures}'s own
+introduction) can be satisfied without the correlation functions themselves
+being accurate. This section summarises what is actually documented in the
+literature for the specific potential/closure pairs offered here, including
+where combinations are \emph{known to give poor results}, not only where
+they succeed -- since a plugin's own thermodynamic self-consistency check
+passing is not, by itself, evidence of accuracy against MC.
+
+\textbf{Hard spheres.} Pihlajamaa \& Janssen (2024) \cite{pihlajamaa2024}
+performed a systematic MC comparison across many closures at
+$\rho\sigma^3=0.94$ (just below melting) and report the PY and HNC closures
+as the two \emph{worst}-performing of every closure they tested, PY
+underestimating and HNC overestimating the contact value:
+$g_{\mathrm{PY}}(\sigma)-g_{\mathrm{MC}}(\sigma)=-0.921$,
+$g_{\mathrm{HNC}}(\sigma)-g_{\mathrm{MC}}(\sigma)=+1.966$ -- confirming the
+long-known qualitative result that PY outperforms HNC for hard spheres, but
+quantifying just how large both errors are at this density. Across every
+system they tested (hard spheres, inverse-power-law, Gaussian-core, and
+Lennard-Jones, in two and three dimensions), their overall conclusion is
+that ``the well-known Percus-Yevick equation performed worse than any among
+the V[erlet], DH, and MS closures'' -- i.e.\ PY's continued popularity
+reflects familiarity and ease of implementation, not superior accuracy, a
+point their paper makes explicitly. The Lee/ZSEP closure specifically
+(Section~\ref{sec:zsep}) was found to give a \emph{better} contact value
+than the other thermodynamically-consistent closures they tested, which the
+authors attribute directly to its built-in use of the Carnahan--Starling
+equation of state -- independent confirmation, from outside this project,
+of exactly the ZSEP behaviour already documented in Section~\ref{sec:zsep}.
+
+\textbf{Sticky/adhesive hard spheres.} Gazzillo \& Giacometti (2004)
+\cite{gazzillo2004} solved Baxter's sticky-hard-sphere model analytically
+for several closures (including PY) and compared directly against MC. Their
+finding is a genuine middle-of-the-road result for PY, not a clear pass or
+fail: PY's predictions ``lie between simpler closures, which may yield less
+accurate predictions but are easily extensible to multicomponent fluids,
+and more sophisticat[ed] closures which give more precise predictions but
+can hardly be extended to mixtures.'' They further report that ``in regimes
+typical for colloidal and protein solutions,'' first-order perturbative
+closures (including PY) ``produce satisfactory results'' -- i.e.\ PY's
+adequacy for sticky spheres is regime-dependent, not universal, consistent
+with this project's own choice to offer the Baxter/PY solution
+(Section~\ref{sec:analytical}) as a validated reference specifically for
+that regime rather than as a claim of general accuracy.
+
+\textbf{Lennard-Jones.} The same Pihlajamaa \& Janssen study
+\cite{pihlajamaa2024} finds that renormalising the indirect correlation
+function ($\gamma^*(r)=\gamma(r)-\beta u_{\mathrm{LR}}(r)$, the same
+attractive/repulsive potential split this project's own HMSA/RY closures
+use, Section~\ref{sec:potentials}) is necessary for good accuracy: plain PY
+applied without this renormalisation is markedly less accurate than the
+renormalised closures (CG*, Verlet*, DH*) at their tested state point
+($\rho\sigma^3=0.8$, $k_BT/\varepsilon=1.0$, peak $g(r_{\mathrm{peak}})\approx2.6$).
+
+\textbf{Charged and screened-Coulomb (Yukawa) systems.} Unlike the
+short-ranged cases above, the literature on strongly-coupled Yukawa/one
+component-plasma systems documents outright \emph{failure} of plain HNC,
+not merely reduced accuracy: HNC is known not to have a solution at all in
+certain regions of the phase diagram approaching phase separation for
+hard-core-Yukawa and related charged systems, with the boundary of
+non-existence not coinciding with the true spinodal. This is the direct
+motivation for Rosenfeld's variational modified HNC (VMHNC)
+\cite{rosenfeld1986} and later isomorph-based modified-HNC variants, both
+explicitly constructed and validated against MD specifically because plain
+HNC's accuracy (and, in some regimes, its very convergence) degrades as
+coupling strength increases for these systems -- directly analogous to, and
+part of the same broader literature as, the MSA contact-value failure this
+project's own RMSA rescaling addresses (Section~\ref{sec:rmsa-closure}) for
+the closure actually offered here. \textbf{BPGG}
+(Section~\ref{sec:closures}), one of the closures used in that same
+strongly-coupled-Yukawa literature as an HNC alternative, is offered
+directly in this toolkit and is a reasonable next step if RMSA is not
+applicable to the potential at hand.
+
+\emph{Scope of what is, and is not, independently confirmed here:} the
+findings above are drawn directly from the cited papers' own stated
+results, not re-derived or re-run by this project. Where a cited paper
+studies a closely related but not identical system (e.g.\ the
+one-component-plasma/Yukawa HNC-convergence literature, which concerns bulk
+charged fluids rather than this project's own colloidal DLVO/HS3Yukawa
+potentials specifically), this is noted as such above rather than presented
+as a direct one-to-one validation of this project's own numerical results.
+
+
 
 \clearpage
 \section{Analytical and Semi-Analytical Cross-Validation Tools}
@@ -675,7 +1067,8 @@ its own validity.
 \label{sec:hayter-penfold}
 The full Hayter--Penfold RMSA solution for a hard-core Yukawa/screened-Coulomb
 potential, compiled as a standalone C library (\code{rmsa\_c\_source/}, from
-\code{src/plugins/RMSA/\{rmsa.c,polyroots.c,rmsa\_physical.c\}}) and wrapped via
+\code{src/plugins/RMSA/} -- \code{rmsa.c}, \code{polyroots.c},
+\code{rmsa\_physical.c}) and wrapped via
 \code{ctypes} (\code{rmsaWrapper.py}), reusing SASfit's own quartic-root
 selection and small-$\kappa$ Taylor-series logic rather than re-implementing
 it. Validated: the weak-coupling limit reproduces the exact PY hard-sphere
@@ -830,7 +1223,7 @@ more concerning outcome than an honest non-convergence report.}
 \label{sec:ozlib}
 
 \code{ozLib.py} is the single source of truth for the calculation workflow ---
-both \code{ozGUI.py}'s own ``calculate'' button and any user script call the
+both \code{oZgui.py}'s own ``calculate'' button and any user script call the
 same \code{ozLib.solve()} function, so results from the GUI and from scripts
 are identical by construction, not by two independently-maintained
 implementations happening to agree.
@@ -858,8 +1251,9 @@ result.r, result.q   # the real-/reciprocal-space grids
 \subsection{Function signature}
 \begin{lstlisting}
 def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick",
-          closureParam=None, solver="Picard iteration", maxIterations=1000,
-          numberOfRadialSamplingPoints=None, hardSphereRadiusInPoints=None,
+          closureParam=None, findConsistentParameter=False,
+          solver=_defaultSolverName, maxIterations=1000,
+          numberOfRadialSamplingPoints=None, hardSphereDiameterInPoints=None,
           onSolverCreated=None):
     ...
     return OZResult(...)
@@ -870,8 +1264,27 @@ current option lists --- print them from a script to see exactly what is
 available); an unrecognised name, or a closure needing \code{closureParam}
 without one given, raises \code{ValueError} immediately rather than failing
 confusingly deeper inside the solve. \code{numberOfRadialSamplingPoints}/
-\code{hardSphereRadiusInPoints} expose the grid configurability of
-Section~\ref{sec:theory} directly.
+\code{hardSphereDiameterInPoints} expose the grid configurability of
+Section~\ref{sec:theory} directly. \code{solver}'s default,
+\code{\_defaultSolverName}, is \emph{not} \code{"Picard iteration"} (an earlier
+version of this document, and an earlier version of the code itself, both had
+it as the default) --- it is now \code{"sundials4py: Fixed-Point (Anderson)"}
+when the optional \code{sundials4py} dependency is installed, falling back to
+\code{"scipy Anderson"} otherwise; see \code{ozLib.py}'s own comment on
+\code{SOLVER\_CLASSES} for why (SUNDIALS' production-grade Anderson-accelerated
+fixed-point strategy generally converges more reliably and faster than plain
+unaccelerated Picard for the harder closures --- Section~\ref{sec:solver-comparison}
+quantifies this). Plain Picard iteration remains fully available
+(\code{solver="Picard iteration"}), simply no longer pre-selected.
+\code{findConsistentParameter}: for closures with a free parameter that also
+have a published thermodynamic-consistency condition determining it
+automatically (Rogers--Young, HMSA, Modified HNC, BPGG, CJVM, BB --- see
+\code{ozLib.CONSISTENT\_PARAMETER\_CLOSURES}), setting this to \code{True}
+searches for that value instead of requiring \code{closureParam} from the
+caller, via \code{OZsolver.findThermodynamicallyConsistentParameter()}
+(Rogers \& Young's own compressibility-route/virial-route consistency idea,
+generalised across potentials rather than limited to any one). Raises
+\code{ValueError} if requested for a closure that doesn't support it.
 
 \subsection{Example: potential with arguments and a parametrised closure}
 \begin{lstlisting}
@@ -887,33 +1300,240 @@ result = solve(potential='HS3Yukawa', phi=0.15,
                 potentialArgs=(-0.3, 10.0, 0, 1, 0, 1),  # (K1, lambda1, ...)
                 closure='MSA',
                 numberOfRadialSamplingPoints=4*4096,      # 4x extended range
-                hardSphereRadiusInPoints=100)              # same resolution
+                hardSphereDiameterInPoints=100)              # same resolution
 \end{lstlisting}
 
 \section{The \code{ozGUI} Application}
 \label{sec:gui}
 
-\code{ozGUI.py} is a Tkinter application, run directly with \code{python
-ozGUI.py}, providing:
+\code{oZgui.py} is a Tkinter application, run directly with \code{python
+oZgui.py}, providing:
 \begin{itemize}[nosep]
   \item \textbf{Left panel:} potential dropdown (with dynamically-generated
     parameter fields, discovered by introspection --- a new potential added to
     \code{oZfixpointOperator.py} appears automatically, nothing else to edit),
-    closure dropdown (with a parameter field where needed), volume fraction,
-    solver dropdown, X-axis scale selector (\code{symlog}/\code{linear}/
-    \code{log}/\code{asinh}, with an adjustable linear-region threshold),
-    max.\ iterations, calculate/interrupt/clear/delete-last buttons,
-    Save/Load (\code{.oz} JSON format, round-trips exactly including NaN
-    entries in $B(r)$/$y(r)$), and ASCII/CSV/Excel/PNG export.
-  \item \textbf{Right panel:} a 9-tab plot notebook (S(Q), g(r), c(r),
-    $\Gamma(r)$, h(r), U(r)/kT, B(r), y(r), f(r)), overlaying every run in the
-    history list in a distinct colour.
+    closure dropdown (with a parameter field where needed, plus a ``find
+    thermodynamically consistent value'' checkbox for closures with a
+    published consistency condition, see
+    \code{CONSISTENT\_PARAMETER\_CLOSURES} in Section~\ref{sec:ozlib}, which
+    disables --- rather than hides --- the manual entry field while checked),
+    volume fraction, solver dropdown, X-axis scale selector
+    (\code{symlog}/\code{linear}/\code{log}/\code{asinh}, with an adjustable
+    linear-region threshold), grid size controls (\code{Grid points (N)}/
+    \code{Points per $\sigma$}, both defaulting to \code{"auto"} to keep this
+    project's own historical grid, Section~\ref{sec:theory}; either can be
+    overridden independently, e.g.\ to extend the range for a long-range
+    potential without losing near-contact resolution), max.\ iterations,
+    calculate/interrupt/clear/delete-last buttons, Save/Load (\code{.oz} JSON
+    format, round-trips exactly including NaN entries in $B(r)$/$y(r)$), and a
+    single format-selector export control (ASCII/CSV/Excel/PNG-all-tabs/copy-
+    to-clipboard) for the currently selected (or most recent) run.
+  \item \textbf{Right panel:} a 10-tab notebook --- the same 9 plot tabs as the
+    original Tcl GUI (S(Q), g(r), c(r), $\Gamma(r)$, h(r), U(r)/kT, B(r), y(r),
+    f(r)), overlaying every run in the history list in a distinct colour, plus
+    a \textbf{Log tab} with no Tcl-side equivalent: every status update and
+    every \code{print()} anywhere in the whole process (including diagnostic
+    output already buried inside \code{oZfixpointOperator.py}/\code{oZsolver.py},
+    e.g.\ \code{fitZSEPparameters()}'s or
+    \code{findThermodynamicallyConsistentParameter()}'s own messages) is
+    captured here via a thread-safe \code{stdout}/\code{stderr} redirector,
+    timestamped, and tee'd to the real console so nothing is lost even when
+    run windowed (no terminal at all).
 \end{itemize}
 Exported ASCII/CSV/Excel data always contains the full-precision computed
 values regardless of the current plot's axis scale (verified directly: two
 exports taken with different X-axis scale/threshold settings in between are
 byte-identical); only the PNG export reflects the currently displayed scale,
 since it is a rendered image.
+
+\subsection{Relationship to SASfit's own Tcl GUI, and naming-convention differences}
+\label{sec:tcl-comparison}
+
+\code{oZgui.py} is a direct, from-scratch port of SASfit's own built-in
+Ornstein--Zernike solver window,
+\code{sasfit.vfs/lib/app-sasfit/tcl/sasfit\_OZ\_solver.tcl} --- the same
+potential/closure/algorithm choices, the same 9 output curves, laid out as a
+Tkinter equivalent of that Tcl/Tk/BLT window rather than embedded inside
+SASfit itself. Three things were deliberately \emph{not} carried over, since
+they either depend on SASfit's own fitting engine directly or are already
+covered by a Tkinter/matplotlib equivalent: the ``assign to SQ plugin''
+mechanism (replaced by the Save/Load/export controls of
+Section~\ref{sec:gui} instead), the detailed KINSOL tuning sub-dialog (see
+Table~\ref{tab:kinsol-naming} below), and crosshair coordinate readout /
+zoom-stack (matplotlib's own toolbar under each plot covers zoom/pan/save
+already).
+
+Cross-referencing the Tcl source directly against \code{oZgui.py}/
+\code{ozLib.py} (rather than assuming a 1:1 naming correspondence) surfaced a
+number of places where the same concept is named differently on the two
+sides, summarised in Tables~\ref{tab:potential-naming}--\ref{tab:curve-naming}
+below. The general pattern: Tcl consistently favours short abbreviations
+matching the underlying SUNDIALS/mathematical-literature names exactly
+(\code{RMSA}, \code{mMSA}, \code{MS}, \code{DH}, \code{KINSetMAA}); this
+Python port consistently favours spelled-out, more self-explanatory names for
+anything user-facing (\code{Rescaled MSA}, \code{Modified MSA},
+\code{Martynov-Sarkisov}, \code{Duh-Haymet}), while keeping terse internal
+dict keys (\code{gr}, \code{cr}, \code{Sq}, \ldots) at the data-storage layer
+--- i.e.\ the renaming happens specifically at the human-facing label layer,
+not throughout.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{ll}
+\toprule
+Tcl \code{OZ(potential)} value & Python potential name \\
+\midrule
+\code{HardSphere}, \code{StickyHardSphere}, \code{SquareWell}, & same \\
+\code{PiecewiseConstant}, \code{SoftSphere}, \code{Fermi}, & same \\
+\code{LennardJones}, \code{IonicMicrogel}, \code{PenetrableSphere}, & same \\
+\code{DLVO}, \code{DLVO Hydra}, \code{GGCM-n}, \code{HS 3Yukawa} & same \\
+\code{StarPolymer (f>10)} & \code{StarPolymerHighF} (renamed, not identical) \\
+\code{StarPolymer (f<10)} & \code{StarPolymerLowF} (renamed, not identical --\\
+& previously missing entirely, Section~\ref{sec:starpolymer}) \\
+\code{Depl-Sph-Sph} & \multirow{3}{*}{\emph{not currently offered}} \\
+\code{Depl-Sph-Discs} & \\
+\code{Depl-Sph-Rods} & (Section~\ref{sec:depletion}'s Known gap) \\
+\bottomrule
+\end{tabular}
+\caption{Potential-name naming convention. Most match exactly; star polymer
+now matches in \emph{substance} (both formulas present) but not exact
+spelling, since Python identifiers can't contain spaces/parentheses/
+inequality signs; the three depletion geometry variants remain a known,
+unfixed gap. Python's own list is generated dynamically via introspection
+of \code{oZfixpointOperator.py}'s \code{set<Name>Potential()} methods, so
+it automatically includes any future addition there; Tcl's is a fixed,
+hand-written \code{-values \{...\}} string that must be edited by hand.}
+\label{tab:potential-naming}
+\end{table}
+
+\begin{table}[h]
+\centering
+\footnotesize
+\begin{tabular}{lll}
+\toprule
+Tcl \code{OZ(closure)} value & Python closure name & Relationship \\
+\midrule
+\code{Percus-Yevick} & \code{Percus-Yevick} & identical \\
+\code{Hypernetted-Chain} & \code{Hypernetted-Chain} & identical \\
+\code{Reference HNC} & \code{Reference HNC} & identical \\
+\code{modified HNC} & \code{Modified HNC} & capitalisation only \\
+\code{PLHNC} & --- & Tcl only \\
+\code{MSA} & \code{MSA} & identical \\
+\code{RMSA} & \code{Rescaled MSA} & \textbf{renamed} (abbrev.\ vs.\ spelled out) \\
+\code{mMSA} & \code{Modified MSA} & \textbf{renamed} \\
+\code{SMSA} & \code{Symmetric MSA} & \textbf{renamed} \\
+\code{HMSA} & \code{HMSA} & identical \\
+\code{Rogers-Young} & \code{Rogers-Young} & identical \\
+\code{Verlet} & \code{Verlet} & identical \\
+\code{MS} & \code{Martynov-Sarkisov} & \textbf{renamed} (initials vs.\ full) \\
+\code{DH} & \code{Duh-Haymet} & \textbf{renamed} (initials vs.\ full) \\
+\code{Vompe-Martynov} & \code{Vompe-Martynov} & identical \\
+\code{BB}, \code{BPGG}, \code{CJVM} & \code{BB}, \code{BPGG}, \code{CJVM} & identical (kept as initials both sides) \\
+\code{Choudhury-Gosh} & \code{Choudhury-Ghosh} & \textbf{spelling differs} (Python matches the standard transliteration) \\
+--- & \code{Kovalenko-Hirata} & Python only (added after checking SASfit's own \code{sasfit\_oz.h} enum directly) \\
+--- & \code{ZSEP} & Python only (Lee 1995 hard-sphere closure) \\
+\multicolumn{3}{l}{Euler-Rahman/EuRah: excluded from \emph{both} GUIs' dropdowns (Section~\ref{sec:eurah})} \\
+\bottomrule
+\end{tabular}
+\caption{Closure-name naming convention: the largest divergence of any
+category compared here.}
+\label{tab:closure-naming}
+\end{table}
+
+\begin{table}[h]
+\centering
+\footnotesize
+\begin{tabular}{lll}
+\toprule
+Tcl \code{OZ(algorithm)} value & Closest Python \code{solver=} name & Relationship \\
+\midrule
+\code{Picard iteration} & \code{Picard iteration} & identical (the one exact match) \\
+\code{Mann}/\code{Ishikawa}/\code{Noor}/\code{SP}/\code{S}/ & --- & Tcl only (many fixed-point \\
+\code{CR}/\code{Picard-S}/\code{PMH}/\code{Mann II}/ & & iteration variants not offered \\
+\code{Krasnoselskij}/\code{S*} iteration & & in this Python port) \\
+\code{dNewton} & \code{scipy Newton-Krylov} (nearest concept) & not a naming match \\
+\code{Biggs\_Andrews} & \code{Biggs-Andrews} & punctuation only (\_ vs.\ -) \\
+\code{Anderson mixing} & \code{Anderson acceleration} / \code{scipy Anderson} & \textbf{renamed}, and split into two \\
+\code{KINSOL\_FP} & \code{sundials4py: Fixed-Point (Anderson)} & \textbf{renamed and restructured} \\
+\code{GMRES}/\code{FGMRES}/\code{TFQMR} & \code{sundials4py: Newton-Krylov (GMRES/FGMRES/TFQMR)} & restructured: Python names the \\
+& & Newton-Krylov family + linear solver \\
+\code{Bi-CGStab} & --- & Tcl only (SUNLinSol\_SPBCGS segfaults \\
+& & unconditionally in tested \code{sundials4py}) \\
+--- & \code{scipy Newton-Krylov} & Python only \\
+\bottomrule
+\end{tabular}
+\caption{Solver/algorithm naming: almost no string-level overlap at all, only
+\code{Picard iteration} matches verbatim.}
+\label{tab:solver-naming}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{ll}
+\toprule
+Tcl name (literal SUNDIALS C API name) & Python equivalent \\
+\midrule
+\code{KINSetMAA} & not directly exposed in the GUI (used internally) \\
+\code{KINSetFuncNormTol} & not directly exposed (\code{self.convergenceCriterion} instead) \\
+\code{KINSetScaledSteptol} & not directly exposed \\
+\code{KINSetNumMaxIters} & \code{"Max iterations:"} $\to$ \code{maxIterations=} \\
+\code{KINSetPrintLevel} & not directly exposed (routed through the Log tab instead) \\
+\code{KINSetEtaForm} & not directly exposed \\
+\code{KINSpilsSetMaxRestarts} & not directly exposed \\
+\code{KINSolStrategy} & not directly exposed \\
+\code{KINSetMaxNewtonStep} & not directly exposed \\
+\bottomrule
+\end{tabular}
+\caption{KINSOL tuning parameters: the one naming layer where Tcl uses the
+literal underlying C API names, not a GUI-specific relabeling. Deliberately
+not mirrored 1:1 in the Python GUI -- \code{oZgui.py}'s own design choice is
+sensible per-library defaults (Section~\ref{sec:sundials-tuning}) plus the two
+simpler knobs above, not a full tuning sub-dialog.}
+\label{tab:kinsol-naming}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Physical quantity & Tcl variable(s) & Python internal key \\
+\midrule
+Structure factor & \code{OZ(res,s,x/y)}, \code{OZ(result,q/Sq)} & \code{Sq} \\
+Radial distribution function & \code{OZ(res,g,x/y)}, \code{OZ(result,r/gr)} & \code{gr} \\
+Direct correlation function & \code{OZ(res,c,x/y)}, \code{OZ(result,cr)} & \code{cr} \\
+Indirect correlation $\Gamma(r)$ & \code{OZ(res,gamma,x/y)}, \code{OZ(result,gammar)} & \code{gamma} \\
+Total correlation function & \code{OZ(res,h,x/y)}, \code{OZ(result,hr)} & \code{hr} \\
+Interaction potential/$k_BT$ & \code{OZ(res,u,x/y)}, \code{OZ(result,Ur)} & \code{Ur} \\
+Bridge function & \code{OZ(res,B,x/y)}, \code{OZ(result,Br)} & \code{Br} \\
+Cavity function & \code{OZ(res,y,x/y)}, \code{OZ(result,yr)} & \code{yr} \\
+Mayer-$f$ function & \code{OZ(res,f,x/y)}, \code{OZ(result,fr)} & \code{fr} \\
+\bottomrule
+\end{tabular}
+\caption{Output-curve naming: Python's short internal dict keys match Tcl's
+own \code{OZ(result,...)} suffixes almost character-for-character (the one
+exception being \code{gammar}$\to$\code{gamma}), even though the
+\emph{user-visible tab labels} were rewritten independently (e.g.\ Tcl's
+``indirect\textbackslash ncorrelation\textbackslash nfunct.\ gamma(r)'' vs.\
+Python's plain ``Gamma(r)''). This strongly suggests this specific naming
+layer was deliberately kept close to the original Tcl variable names even
+where the rest of the port was not.}
+\label{tab:curve-naming}
+\end{table}
+
+\emph{Not independently re-verified in this pass:} the exact Python argument
+names of \code{oZfixpointOperator.py}'s \code{set<Name>Potential()} methods
+were not individually confirmed character-for-character against the Tcl
+GUI's own hand-written parameter display labels for every one of the 18
+potentials --- most match directly (e.g.\ \code{diameter}, \code{tau},
+\code{delta}, \code{epsilon}), but three potentials (\code{SoftSphere}'s
+``stiffness n'', and the two \code{Depl-Sph-*} potentials' ``diam.\
+(large)''/``diam.\ (small)''/``n (numb.\ dens.)'' style labels) have Tcl-side
+display strings that are abbreviated prose rather than bare identifiers,
+making them the most likely spots for the actual Python argument's spelling
+to differ from what the Tcl label alone would suggest.
 
 \section{Worked Examples: Numerical vs. Analytical Validation}
 \label{sec:examples}
@@ -934,7 +1554,7 @@ $S(q)$ peak to higher $q$ with increasing density.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{fig_hardsphere_validation.png}
+\includegraphics[width=\textwidth]{fig_hardsphere_validation.pdf}
 \caption{$g(r)$ (left) and $S(q)$ (right) for hard spheres at
 $\varphi\in\{0.1,0.2,0.3,0.4\}$: numerical solve (solid lines) vs.\ the exact
 PY solution (open circles, sub-sampled for visibility).}
@@ -953,7 +1573,7 @@ between them and agree with each other almost exactly at this density.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.75\textwidth]{fig_closure_comparison.png}
+\includegraphics[width=0.75\textwidth]{fig_closure_comparison.pdf}
 \caption{Closure comparison, hard spheres, $\varphi=0.4$.}
 \label{fig:closure-comparison}
 \end{figure}
@@ -971,7 +1591,7 @@ via its own closed-form rescaling.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{fig_rmsa_hayter_penfold.png}
+\includegraphics[width=0.7\textwidth]{fig_rmsa_hayter_penfold.pdf}
 \caption{Hayter--Penfold RMSA structure factor for a charged colloid,
 $\varphi=0.1$.}
 \label{fig:rmsa-hayter-penfold}
@@ -1044,7 +1664,7 @@ above), though this has not been fully resolved.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{fig_msa_rmsa_rescue.png}
+\includegraphics[width=0.7\textwidth]{fig_msa_rmsa_rescue.pdf}
 \caption{Plain MSA's unphysical contact value vs.\ this project's own
 grow-then-bisect RMSA rescue (post-fix), general-potential numerical solver,
 DLVO potential, $\kappa\sigma=3.5$, $Z=5$, $\varphi=0.1$.}
@@ -1098,7 +1718,7 @@ iteration.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.85\textwidth]{fig_solver_speed.png}
+\includegraphics[width=0.85\textwidth]{fig_solver_speed.pdf}
 \caption{Solve time by algorithm, hard spheres + PY, $\varphi=0.4$ (log scale).}
 \label{fig:solver-speed}
 \end{figure}
@@ -1116,7 +1736,7 @@ resolution and range.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.85\textwidth]{fig_grid_smoothness.png}
+\includegraphics[width=0.85\textwidth]{fig_grid_smoothness.pdf}
 \caption{Hankel transform timing vs.\ grid size $N$: the fastest and slowest
 cases shown differ only in whether $N+1$ happens to be smooth, not in $N$'s
 own magnitude or "niceness".}
@@ -1128,7 +1748,7 @@ Formulas and algorithms throughout this document were ported directly from
 SASfit's own source code (\code{src/sasfit\_oz/}, \code{src/plugins/*}), with
 independent literature verification sought wherever practical.
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 
 \bibitem{eurah1999}
 B.~C.~Eu and K.~Rah,
@@ -1167,6 +1787,128 @@ Condens.\ Matter Phys.\ \textbf{15}, 23602 (2012).
 R.~J.~Baxter,
 \emph{Percus--Yevick equation for hard spheres with surface adhesion},
 J.\ Chem.\ Phys.\ \textbf{49}, 2770 (1968).
+
+\bibitem{rogersyoung1984}
+F.~J.~Rogers and D.~A.~Young,
+\emph{New, thermodynamically consistent, integral equation for simple
+fluids},
+Phys.\ Rev.\ A \textbf{30}, 999 (1984).
+
+\bibitem{zerahhansen1986}
+G.~Zerah and J.-P.~Hansen,
+\emph{Self-consistent integral equations for fluid pair distribution
+functions: Another attempt},
+J.\ Chem.\ Phys.\ \textbf{84}, 2336 (1986).
+
+\bibitem{verlet1980}
+L.~Verlet,
+\emph{Integral equations for classical fluids: I. The hard sphere case},
+Mol.\ Phys.\ \textbf{41}, 183 (1980).
+
+\bibitem{verlet1981}
+L.~Verlet,
+\emph{Integral equations for classical fluids: II. Hard spheres again},
+Mol.\ Phys.\ \textbf{42}, 1291 (1981).
+
+\bibitem{martynovsarkisov1983}
+G.~A.~Martynov and G.~N.~Sarkisov,
+\emph{Exact equations and the theory of liquids. V},
+Mol.\ Phys.\ \textbf{49}, 1495 (1983).
+
+\bibitem{vompemartynov1994}
+A.~G.~Vompe and G.~A.~Martynov,
+\emph{The bridge function expansion and the self-consistency problem of the
+Ornstein--Zernike equation solution},
+J.\ Chem.\ Phys.\ \textbf{100}, 5249 (1994).
+
+\bibitem{ballone1986}
+P.~Ballone, G.~Pastore, G.~Galli, and D.~Gazzillo,
+\emph{Additive and non-additive hard sphere mixtures: Monte Carlo simulation
+and integral equation results},
+Mol.\ Phys.\ \textbf{59}, 275 (1986).
+
+\bibitem{charpentierjakse2001}
+I.~Charpentier and N.~Jakse,
+\emph{Exact numerical derivatives of the pair-correlation function of simple
+liquids using the tangent linear method},
+J.\ Chem.\ Phys.\ \textbf{114}, 2284 (2001).
+
+\bibitem{bomontbretonnet2001}
+J.~M.~Bomont and J.~L.~Bretonnet,
+\emph{Renormalization of the indirect correlation function to extract the
+bridge function of simple fluids},
+J.\ Chem.\ Phys.\ \textbf{114}, 4141 (2001).
+
+\bibitem{kovalenkohirata1998}
+A.~Kovalenko and F.~Hirata,
+\emph{Three-dimensional density profiles of water in contact with a solute
+of arbitrary shape: a RISM approach},
+Chem.\ Phys.\ Lett.\ \textbf{290}, 237 (1998).
+
+\bibitem{duhhaymet1995}
+D.-M.~Duh and A.~D.~J.~Haymet,
+\emph{Integral equation theory for uncharged liquids: The Lennard-Jones
+fluid and the bridge function},
+J.\ Chem.\ Phys.\ \textbf{103}, 2625 (1995).
+
+\bibitem{choudhuryghosh2002}
+N.~Choudhury and S.~K.~Ghosh,
+\emph{Integral equation theory of Lennard-Jones fluids: A modified Verlet
+bridge function approach},
+J.\ Chem.\ Phys.\ \textbf{116}, 8517 (2002).
+
+\bibitem{likos2002}
+C.~N.~Likos and H.~M.~Harreis,
+\emph{Star polymers: From conformations to interactions to phase diagrams},
+Condens.\ Matter Phys.\ \textbf{5}, No.~1(29), 173 (2002).
+
+\bibitem{oversteegen2004}
+S.~M.~Oversteegen and H.~N.~W.~Lekkerkerker,
+\emph{On the accuracy of the Derjaguin approximation for depletion
+potentials},
+Physica A \textbf{341}, 23 (2004).
+
+\bibitem{likos1998}
+C.~N.~Likos, M.~Watzlawek, and H.~L\"owen,
+\emph{Freezing and clustering transitions for penetrable spheres},
+Phys.\ Rev.\ E \textbf{58}, 3135 (1998).
+
+\bibitem{fernaud2000}
+M.~J.~Fernaud, E.~Lomba, and L.~L.~Lee,
+\emph{A self-consistent integral equation study of the structure and
+thermodynamics of the penetrable sphere fluid},
+J.\ Chem.\ Phys.\ \textbf{112}, 810 (2000).
+
+\bibitem{lee1995}
+L.~L.~Lee,
+\emph{An accurate integral equation theory for hard spheres: Role of the
+zero-separation theorems in the closure relation},
+J.\ Chem.\ Phys.\ \textbf{103}, 9388 (1995).
+
+\bibitem{lee1999}
+L.~L.~Lee,
+\emph{Erratum: An accurate integral equation theory for hard spheres: Role
+of the zero-separation theorems in the closure relation},
+J.\ Chem.\ Phys.\ \textbf{110}, 7589 (1999).
+
+\bibitem{gazzillo2004}
+D.~Gazzillo and A.~Giacometti,
+\emph{Analytic solutions for Baxter's model of sticky hard sphere fluids
+within closures different from the Percus--Yevick approximation},
+J.\ Chem.\ Phys.\ \textbf{120}, 4742 (2004).
+
+\bibitem{rosenfeld1986}
+Y.~Rosenfeld,
+\emph{Comments on the variational modified-hypernetted-chain theory for
+simple fluids},
+J.\ Stat.\ Phys.\ \textbf{42}, 437 (1986).
+
+\bibitem{ebato2016}
+Y.~Ebato and T.~Miyata,
+\emph{A pressure consistent bridge correction of Kovalenko--Hirata closure
+in Ornstein--Zernike theory for Lennard-Jones fluids by apparently
+adjusting sigma parameter},
+AIP Advances \textbf{6}, 055111 (2016).
 
 \end{thebibliography}
 

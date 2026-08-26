@@ -60,7 +60,19 @@ if(NUM_DIRS GREATER 0)
         list(APPEND bestlime_INCLUDE_DIRS ${bestlime_BUILD_DIR}/include)
 endif()
 
-file(GLOB bestlime_STATIC_LIBS ${bestlime_BUILD_DIR}/src/*/*.a)
+# BestLime's own CMakeLists.txt (src/bestlime/windows64/CMakeLists.txt) sets
+# CMAKE_ARCHIVE_OUTPUT_DIRECTORY to "${PROJECT_BINARY_DIR}/lib", so the built
+# static/import library (e.g. libbestlime.a or, for a MinGW shared build,
+# the libbestlime.dll.a import library) lands directly in <build>/lib/, not
+# two levels below <build>/src/ as the previous glob pattern assumed (that
+# old pattern never matched anything, on any platform).
+file(GLOB bestlime_STATIC_LIBS ${bestlime_BUILD_DIR}/lib/*.a)
+
+if(NOT bestlime_STATIC_LIBS)
+    # fall back to a recursive search in case the output directory is
+    # ever reorganized again, so this doesn't silently break a 2nd time
+    file(GLOB_RECURSE bestlime_STATIC_LIBS ${bestlime_BUILD_DIR}/*.a)
+endif()
 
 if(bestlime_STATIC_LIBS)
         set(bestlime_LIBRARIES ${bestlime_STATIC_LIBS})

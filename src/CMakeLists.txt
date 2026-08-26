@@ -217,24 +217,34 @@ if(NOT FFTW3_FOUND)
     return()
 endif()
 
-# sundials
-find_package(sundials QUIET REQUIRED)
-if(NOT sundials_FOUND)
-    add_subdirectory(sundials)
-    find_package(sundials REQUIRED)
+# sundials7: SUNDIALS 7.x (built from a locally-downloaded release
+# tarball -- see src/sundials7/CMakeLists.txt), now used by BOTH the
+# main sasfit library (sasfit_oz and sasfit_fixed_point_acc modules,
+# both KINSOL consumers) and the robertus_shs plugin.
+#
+# The project's previously-bundled SUNDIALS 2.7.0 (src/sundials/) has
+# been retired from the main sasfit target: sasfit_oz_solver.c and
+# sasfit_fixed_point_acc.c were both ported from 2.7.0's pre-SUNContext
+# KINSOL API to 7.x's SUNContext-based one (KINCreate(sunctx),
+# SUNLinSol_SPGMR/SPFGMR/SPBCGS/SPTFQMR + KINSetLinearSolver replacing
+# the removed KINSpgmr/KINSpfgmr/KINSpbcg/KINSptfqmr convenience calls,
+# etc.) precisely so this switch could happen. This was NOT optional --
+# unlike robertus_shs (an isolated plugin .so/.dll that can hide its own
+# statically-linked SUNDIALS symbols via -Wl,--exclude-libs=ALL),
+# sasfit_oz and sasfit_fixed_point_acc both compile into this SAME
+# `sasfit` shared library target, so they could never have been on two
+# different, ABI-incompatible SUNDIALS versions at once -- one shared
+# library cannot contain two same-named-but-incompatible KINCreate
+# symbols. See src/sasfit_oz/sasfit_oz_solver.c and
+# src/sasfit_fixed_point_acc/sasfit_fixed_point_acc.c for the ported
+# call sites, and src/plugins/robertus_shs/CMakeLists.txt for the
+# target names (sundials_kinsol_static, sundials_core_static) reused
+# below, and for background on why -Wl,--exclude-libs=ALL is specific
+# to plugin-style isolation and not needed here (this target now links
+# sundials7 directly, not a second private copy of it).
+if(NOT TARGET sundials_kinsol_static)
+    add_subdirectory(sundials7)
 endif()
-message(STATUS "sundials INCLUDES:  ${sundials_INCLUDE_DIRS}")
-message(STATUS "sundials LIBRARIES: ${sundials_LIBRARIES}")
-
-# sundials7: an independent, separately-versioned SUNDIALS build (7.x,
-# fetched via CMake FetchContent) used ONLY by the robertus_shs plugin,
-# which needs KINSOL's modern SUNContext-based API. The bundled
-# sundials/ (2.7.0) above is untouched and still used unmodified by
-# src/sasfit_oz/sasfit_oz_solver.c. See src/sundials7/CMakeLists.txt
-# and src/plugins/robertus_shs/CMakeLists.txt for the full rationale,
-# including why linking both into the same process is safe (requires
-# -Wl,--exclude-libs=ALL on the plugin side, applied there).
-add_subdirectory(sundials7)
 
 # bestlime
 find_package(bestlime QUIET REQUIRED)
@@ -298,7 +308,8 @@ target_include_directories(sasfit PRIVATE
     ${TCL_INCLUDE_DIRS}
     ${GSL_INCLUDE_DIRS}
     ${FFTW3_INCLUDE_DIRS}
-    ${sundials_INCLUDE_DIRS}
+    ${sundials7_SOURCE_DIR}/include
+    ${sundials7_BINARY_DIR}/include
     ${bestlime_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
 )
@@ -308,7 +319,8 @@ target_link_libraries(sasfit
     ${SASFIT_OPENMP_LINK_LIBS}
     ${GSL_LIBRARIES}
     ${FFTW3_fftw3_LIBRARY}
-    ${sundials_LIBRARIES}
+    sundials_kinsol_static
+    sundials_core_static
     ${bestlime_LIBRARIES}
 	${ZLIB_LIBRARIES}
 )

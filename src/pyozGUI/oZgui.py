@@ -53,6 +53,8 @@ import threading
 import queue
 import traceback
 import json
+import sys
+import datetime
 
 import numpy as np
 import tkinter as tk
@@ -75,7 +77,7 @@ _HAVE_SUNDIALS4PY = ozLib._HAVE_SUNDIALS4PY
 # the q-array the structure factor is naturally computed on. Keys
 # match ozLib.CURVE_NAMES/OZResult.curves own keys exactly.
 CURVE_TABS = [
-    ("S(Q)",       "Sq",     "S(Q)"),
+    ("S(Q*sigma)",  "Sq",     "$S(Q\\sigma)$"),
     ("g(r)",       "gr",     "g(r)"),
     ("c(r)",       "cr",     "c(r)"),
     ("Gamma(r)",   "gamma",  "\u0393(r)"),
@@ -100,6 +102,49 @@ class RunResult:
         self.curves = {}   # name -> y array, keys matching CURVE_TABS[*][1]
 
 
+class _TkTextRedirector:
+    '''File-like object (write()/flush()) that lets print() output --
+    including the many diagnostic prints buried inside
+    oZfixpointOperator.py/oZsolver.py (fitZSEPparameters(),
+    findThermodynamicallyConsistentParameter(), the various
+    doXXXclosure() input-validation messages, etc.) -- show up in the
+    GUI's own "Log" tab, not just wherever stdout/stderr happen to be
+    going (a terminal window that may not even exist if this is ever
+    packaged as a windowed .exe via OZsolverGUI.spec).
+
+    Routed through the SAME thread-safe queue+root.after() polling
+    pattern already used elsewhere in this file for worker-thread ->
+    main-thread communication (see OZgui.__init__'s own comment on
+    why) -- write() can be called from the background worker thread
+    started in _onCalculate() (e.g. by a print() inside ozLib.solve()
+    itself), and Tk is not thread-safe, so this cannot touch the Log
+    tab's Text widget directly.
+
+    "Tees" to the real original stdout/stderr too (passed in as
+    alsoWriteTo), rather than replacing it outright -- console output
+    stays exactly as before when this is run from a terminal, this
+    only ADDS the same text to the GUI log as well.'''
+    def __init__(self, targetQueue, alsoWriteTo=None):
+        self._queue = targetQueue
+        self._alsoWriteTo = alsoWriteTo
+
+    def write(self, text):
+        if self._alsoWriteTo is not None:
+            try:
+                self._alsoWriteTo.write(text)
+            except Exception:
+                pass
+        if text:
+            self._queue.put(("log", text))
+
+    def flush(self):
+        if self._alsoWriteTo is not None:
+            try:
+                self._alsoWriteTo.flush()
+            except Exception:
+                pass
+
+
 class OZgui:
     def __init__(self, root):
         self.root = root
@@ -121,6 +166,15 @@ class OZgui:
         # standard, reliably thread-safe way to hand a result back.
         self.resultQueue = queue.Queue()
         self.root.after(100, self._pollResultQueue)
+
+        # Redirect stdout/stderr into the Log tab (built by
+        # _buildRightPanel() below), tee'd to the real originals so
+        # console output is unaffected when run from a terminal -- see
+        # _TkTextRedirector's own docstring for why this exists and
+        # why it goes through self.resultQueue rather than touching
+        # the Log tab's Text widget directly.
+        sys.stdout = _TkTextRedirector(self.resultQueue, alsoWriteTo=sys.stdout)
+        sys.stderr = _TkTextRedirector(self.resultQueue, alsoWriteTo=sys.stderr)
 
         self._buildLeftPanel()
         self._buildRightPanel()
@@ -171,10 +225,25 @@ class OZgui:
         ttk.Entry(left, textvariable=self.phiVar, width=10).grid(row=row, column=1, sticky="w")
         row += 1
 
-        ttk.Label(left, text="Solver:").grid(row=row, column=0, sticky="e")
+        ttk.Label(left, text="Solver:").grid(row=row, column=0, columnspan=2, sticky="w")
+        row += 1
         self.solverVar = tk.StringVar(value=next(iter(SOLVER_CLASSES)))
+        # Widened to fit the longest current name (e.g. "sundials4py:
+        # Newton-Krylov (FGMRES)", 36 characters) rather than a fixed
+        # guess -- computed from SOLVER_CLASSES itself so this keeps
+        # working correctly if a longer solver name is ever added,
+        # without needing another manual width tweak later. Given its
+        # own full-width row (columnspan=2, label moved above rather
+        # than sharing this row) instead of sitting in column 1
+        # alongside the label the way narrower fields do -- otherwise,
+        # since column 1 is shared by every row in this grid, this
+        # single wide combobox would silently force column 1 wider for
+        # every OTHER row too (phi, potential/closure dropdowns, the
+        # symlog threshold field), pushing them all noticeably further
+        # right of their own labels for no reason.
+        solverWidth = max(len(name) for name in SOLVER_CLASSES) + 2
         ttk.Combobox(left, textvariable=self.solverVar, values=list(SOLVER_CLASSES.keys()),
-                     state="readonly", width=22).grid(row=row, column=1, sticky="w")
+                     state="readonly", width=solverWidth).grid(row=row, column=0, columnspan=2, sticky="w")
         row += 1
 
         ttk.Label(left, text="X-axis scale:").grid(row=row, column=0, sticky="e")
@@ -247,7 +316,15 @@ class OZgui:
         row += 1
 
         ttk.Label(left, text="Label:").grid(row=row, column=0, sticky="e")
-        self.labelVar = tk.StringVar(value="run 1")
+        # Empty by default (not e.g. "run 1") so the auto-generated
+        # label in _onCalculate() -- "<n>: <potential>, <closure>,
+        # phi=<value>" -- applies from the very first calculation too,
+        # not just after the first one completes. A non-empty starting
+        # value here would otherwise be used verbatim as a literal
+        # label (see _onCalculate()'s own `self.labelVar.get() or
+        # autoLabel` fallback), silently skipping the auto-naming for
+        # run 1 specifically.
+        self.labelVar = tk.StringVar(value="")
         ttk.Entry(left, textvariable=self.labelVar, width=22).grid(row=row, column=1, sticky="w")
         row += 1
 
@@ -283,15 +360,30 @@ class OZgui:
         # the one exception: since each plot tab already overlays every
         # run at once, "export PNG" naturally means "save each tab's
         # current plot", not a single run's data.
+        #
+        # Condensed to a format-selector combobox + one "Export" button
+        # (was 5 separate buttons side by side -- ASCII.../CSV.../
+        # Excel.../PNG (all tabs).../Copy to clipboard -- which needed
+        # more horizontal space than the rest of this panel). The
+        # underlying export methods (_onExportASCII/_onExportCSV/
+        # _onExportExcel/_onExportPNG/_onCopyToClipboard) are completely
+        # unchanged; this only changes how they're triggered.
         ttk.Label(left, text="Export selected/last run:").grid(row=row, column=0, columnspan=2, sticky="w")
         row += 1
-        btnFrame3 = ttk.Frame(left)
-        btnFrame3.grid(row=row, column=0, columnspan=2, pady=(0, 8))
+        exportFrame = ttk.Frame(left)
+        exportFrame.grid(row=row, column=0, columnspan=2, sticky="w", pady=(0, 8))
         row += 1
-        ttk.Button(btnFrame3, text="ASCII...", command=self._onExportASCII).pack(side="left", padx=2)
-        ttk.Button(btnFrame3, text="CSV...", command=self._onExportCSV).pack(side="left", padx=2)
-        ttk.Button(btnFrame3, text="Excel...", command=self._onExportExcel).pack(side="left", padx=2)
-        ttk.Button(btnFrame3, text="PNG (all tabs)...", command=self._onExportPNG).pack(side="left", padx=2)
+        self.exportFormatVar = tk.StringVar(value="ASCII")
+        self._exportDispatch = {
+            "ASCII": self._onExportASCII,
+            "CSV": self._onExportCSV,
+            "Excel": self._onExportExcel,
+            "PNG (all tabs)": self._onExportPNG,
+            "Copy to clipboard": self._onCopyToClipboard,
+        }
+        ttk.Combobox(exportFrame, textvariable=self.exportFormatVar,
+                     values=list(self._exportDispatch.keys()), state="readonly", width=16).pack(side="left")
+        ttk.Button(exportFrame, text="Export", command=self._onExportSelected).pack(side="left", padx=(4, 0))
 
         ttk.Label(left, text="Run history:").grid(row=row, column=0, columnspan=2, sticky="w")
         row += 1
@@ -300,6 +392,19 @@ class OZgui:
         row += 1
 
         self.statusVar = tk.StringVar(value="ready")
+        # Every self.statusVar.set(...) call anywhere in this class
+        # (there are about a dozen) gets automatically timestamped and
+        # appended to the Log tab too via this trace, without needing
+        # to touch any of those existing call sites individually --
+        # StringVar.trace_add("write", ...) fires synchronously
+        # whenever .set() is called. Safe to append directly (not via
+        # self.resultQueue) since every .set() call on this variable
+        # already happens on the main thread in this file (status
+        # updates from the background worker thread in _onCalculate()
+        # go through self.resultQueue and are only turned into
+        # statusVar.set() calls from _onCalculateDone()/_onCalculateError(),
+        # which themselves run from _pollResultQueue() on the main thread).
+        self.statusVar.trace_add("write", self._onStatusChanged)
         ttk.Label(left, textvariable=self.statusVar, foreground="blue").grid(
             row=row, column=0, columnspan=2, sticky="w", pady=(6, 0))
 
@@ -321,13 +426,37 @@ class OZgui:
     def _rebuildClosureParam(self):
         for w in self.closureParamFrame.winfo_children():
             w.destroy()
-        _, needsParam = CLOSURE_SETTERS[self.closureVar.get()]
+        closureName = self.closureVar.get()
+        _, needsParam = CLOSURE_SETTERS[closureName]
         self.closureParamVar = None
+        self.closureParamEntry = None
+        # Always recreated fresh here (not just for consistency-capable
+        # closures) so _onCalculate() can read self.findConsistentVar.get()
+        # unconditionally without a getattr/None guard -- it simply stays
+        # False and unused for closures that don't offer this option.
+        self.findConsistentVar = tk.BooleanVar(value=False)
         if needsParam:
             ttk.Label(self.closureParamFrame, text="\u03b1 / \u03b7:").grid(row=0, column=0, sticky="e")
             self.closureParamVar = tk.StringVar(value="1.0")
-            ttk.Entry(self.closureParamFrame, textvariable=self.closureParamVar, width=10).grid(
-                row=0, column=1, sticky="w")
+            self.closureParamEntry = ttk.Entry(self.closureParamFrame, textvariable=self.closureParamVar, width=10)
+            self.closureParamEntry.grid(row=0, column=1, sticky="w")
+        # Rogers-Young/HMSA/Modified HNC/BPGG/CJVM/BB additionally offer
+        # searching for the value that makes the compressibility-route
+        # and virial-route isothermal compressibility agree (Rogers &
+        # Young's own thermodynamic-consistency idea), instead of
+        # requiring a manually-typed value -- see
+        # OZsolver.findThermodynamicallyConsistentParameter() and
+        # ozLib.solve()'s own findConsistentParameter= argument, which
+        # this checkbox drives directly. Disables (rather than hides)
+        # the manual entry field while checked, since the typed value
+        # is still there and instantly usable again if unchecked.
+        if closureName in ozLib.CONSISTENT_PARAMETER_CLOSURES:
+            def onToggleConsistent():
+                if self.closureParamEntry is not None:
+                    self.closureParamEntry.config(state="disabled" if self.findConsistentVar.get() else "normal")
+            ttk.Checkbutton(self.closureParamFrame, text="find thermodynamically consistent value",
+                            variable=self.findConsistentVar, command=onToggleConsistent).grid(
+                row=1, column=0, columnspan=2, sticky="w")
 
     # ------------------------------------------------------------------
     def _buildRightPanel(self):
@@ -358,6 +487,85 @@ class OZgui:
             toolbar.update()
             self.axes[key] = ax
             self.canvases[key] = canvas
+
+        self._buildLogTab()
+
+    def _buildLogTab(self):
+        # A 10th notebook tab, alongside the 9 curve tabs above --
+        # deliberately NOT another widget in the already-condensed left
+        # panel, since this needs real vertical room to be useful as a
+        # scrollable history, and the right panel already has that per
+        # tab. Shows every self.statusVar update (see the trace_add on
+        # that variable, and _onStatusChanged() below) AND everything
+        # written to stdout/stderr anywhere in the whole process (see
+        # _TkTextRedirector, wired up in __init__) -- including the
+        # many diagnostic print()s already inside oZfixpointOperator.py/
+        # oZsolver.py (fitZSEPparameters(), findThermodynamicallyConsistentParameter(),
+        # the doXXXclosure() input-validation messages, etc.) that
+        # previously only ever reached a terminal window, if one even
+        # existed.
+        logFrame = ttk.Frame(self.notebook)
+        self.notebook.add(logFrame, text="Log")
+
+        controlBar = ttk.Frame(logFrame)
+        controlBar.pack(fill="x")
+        ttk.Button(controlBar, text="Clear log", command=self._onClearLog).pack(side="left", padx=2, pady=2)
+        ttk.Button(controlBar, text="Save log...", command=self._onSaveLog).pack(side="left", padx=2, pady=2)
+
+        textFrame = ttk.Frame(logFrame)
+        textFrame.pack(fill="both", expand=True)
+        # state="disabled" (read-only) whenever not actively being
+        # written to by _appendLog() -- this is a log display, not
+        # something meant to be hand-edited; _appendLog() briefly
+        # flips it to "normal" to insert text and back to "disabled"
+        # immediately after, same pattern Tkinter's own documentation
+        # recommends for a read-only Text widget.
+        self.logText = tk.Text(textFrame, wrap="word", state="disabled", height=10)
+        logScrollbar = ttk.Scrollbar(textFrame, orient="vertical", command=self.logText.yview)
+        self.logText.configure(yscrollcommand=logScrollbar.set)
+        self.logText.pack(side="left", fill="both", expand=True)
+        logScrollbar.pack(side="right", fill="y")
+
+    def _appendLog(self, text):
+        # Only ever called on the main thread -- either directly from
+        # _onStatusChanged() (itself only ever fired by a statusVar.set()
+        # call that already happens on the main thread, see that
+        # variable's own trace_add() comment), or from _pollResultQueue()
+        # (which runs via root.after(), also the main thread) draining
+        # text a background-thread print() call queued up through
+        # _TkTextRedirector. Tk is not thread-safe; this method itself
+        # must never be called directly from the worker thread in
+        # _onCalculate().
+        self.logText.configure(state="normal")
+        self.logText.insert("end", text)
+        self.logText.see("end")  # auto-scroll to the newest line
+        self.logText.configure(state="disabled")
+
+    def _onStatusChanged(self, *_traceArgs):
+        timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+        self._appendLog(f"[{timestamp}] {self.statusVar.get()}\n")
+
+    def _onClearLog(self):
+        self.logText.configure(state="normal")
+        self.logText.delete("1.0", "end")
+        self.logText.configure(state="disabled")
+
+    def _onSaveLog(self):
+        content = self.logText.get("1.0", "end")
+        if not content.strip():
+            messagebox.showinfo("nothing to save", "the log is empty")
+            return
+        path = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[("ASCII text", "*.txt"), ("All files", "*.*")],
+            initialfile="oz_log.txt", title="Save log")
+        if not path:
+            return
+        try:
+            with open(path, "w") as f:
+                f.write(content)
+        except OSError as e:
+            messagebox.showerror("save failed", str(e))
 
     # ------------------------------------------------------------------
     def _onCalculate(self):
@@ -401,7 +609,8 @@ class OZgui:
         closureName = self.closureVar.get()
         _, needsParam = CLOSURE_SETTERS[closureName]
         closureParam = None
-        if needsParam:
+        findConsistent = self.findConsistentVar.get()
+        if needsParam and not findConsistent:
             try:
                 closureParam = float(self.closureParamVar.get())
             except ValueError:
@@ -409,7 +618,19 @@ class OZgui:
                 return
 
         solverName = self.solverVar.get()
-        label = self.labelVar.get() or f"run {len(self.runs)+1}"
+        # Auto-generated label: "<n>: <potential>, <closure>, phi=<value>"
+        # -- replaces the previous plain "run <n>" counter, so the run
+        # history list and every plot legend entry says what was
+        # actually computed at a glance, without needing to cross-
+        # reference back to whatever the dropdowns happened to show at
+        # the time. Still only used as a FALLBACK (self.labelVar.get()
+        # or autoLabel) -- a label the user typed by hand is always
+        # respected as-is. phi formatted to 3 significant figures
+        # (:g), not Python's raw float repr, to avoid e.g.
+        # "phi=0.30000000000000004" in the common case of an
+        # unexceptional decimal input.
+        autoLabel = f"{len(self.runs)+1}: {potentialName}, {closureName}, phi={phi:.3g}"
+        label = self.labelVar.get() or autoLabel
 
         self.calcBtn.config(state="disabled")
         self.interruptBtn.config(state="normal")
@@ -427,6 +648,7 @@ class OZgui:
 
                 result = ozLib.solve(potential=potentialName, phi=phi, potentialArgs=potArgs,
                                       closure=closureName, closureParam=closureParam,
+                                      findConsistentParameter=findConsistent,
                                       solver=solverName, maxIterations=maxIter,
                                       onSolverCreated=captureSolverInstance, **gridKwargs)
 
@@ -447,6 +669,8 @@ class OZgui:
                 kind, payload = self.resultQueue.get_nowait()
                 if kind == "done":
                     self._onCalculateDone(payload)
+                elif kind == "log":
+                    self._appendLog(payload)
                 else:
                     self._onCalculateError(payload)
         except queue.Empty:
@@ -460,7 +684,15 @@ class OZgui:
         self.calcBtn.config(state="normal")
         self.interruptBtn.config(state="disabled")
         self.statusVar.set(f"done: {run.label}")
-        self.labelVar.set(f"run {len(self.runs)+1}")
+        # Cleared, not set to a "next run" preview: since the auto-label
+        # now depends on the potential/closure/phi dropdowns (see
+        # _onCalculate()'s own autoLabel), any preview built here would
+        # immediately go stale the moment the user changes one of those
+        # before running again. Leaving this empty lets _onCalculate()'s
+        # own `self.labelVar.get() or autoLabel` fallback compute the
+        # correct, up-to-date label fresh at the moment of the next
+        # calculation instead.
+        self.labelVar.set("")
 
     def _onCalculateError(self, tb):
         self.calcBtn.config(state="normal")
@@ -558,26 +790,57 @@ class OZgui:
             return self.runs[-1]
         return None
 
-    def _writeTable(self, path, run, delimiter, commentedHeader):
-        # Shared by ASCII and CSV export -- one column per curve
-        # (r, q, then every CURVE_TABS entry in its usual order). r[i]
-        # and q[i] are the same underlying Hankel-transform grid point i
-        # expressed in real vs reciprocal space (see getqArray() in
-        # oZfixpointOperator.py), so putting both as plain columns of
-        # the same row-aligned table is correct, not a mismatch.
+    def _buildTableText(self, run, delimiter, commentedHeader):
+        # Shared by ASCII/CSV export AND clipboard copy -- one column
+        # per curve (r, q, then every CURVE_TABS entry in its usual
+        # order). r[i] and q[i] are the same underlying Hankel-transform
+        # grid point i expressed in real vs reciprocal space (see
+        # getqArray() in oZfixpointOperator.py), so putting both as
+        # plain columns of the same row-aligned table is correct, not
+        # a mismatch. Returns the whole table as one string (not
+        # written anywhere) so callers can either write it to a file
+        # or hand it to the clipboard.
+        #
+        # Header naming: "qsigma"/"Sqsigma", not the bare "q"/"Sq" an
+        # earlier version of this file used -- both q and Sq are
+        # genuinely dimensionless Q*sigma quantities throughout this
+        # toolkit (Section~theory of docs/ozGUI_ozLib_documentation.tex:
+        # the reciprocal-space grid is built from the same
+        # sigma-normalised real-space grid), matching the plot axis
+        # labels ("$Q\sigma$", CURVE_TABS' own "S(Q*sigma)" tab title)
+        # exactly -- "q"/"Sq" alone could otherwise be misread as a
+        # dimensional, unnormalised scattering vector. Every other
+        # column name (r, gr, cr, gamma, hr, Ur, Br, yr, fr) is left
+        # exactly as before; only these two were reported as
+        # inconsistent with the plot labels.
         keys = [key for _, key, _ in CURVE_TABS]
-        header = delimiter.join(["r", "q"] + keys)
+        headerNames = ["Sqsigma" if key == "Sq" else key for key in keys]
+        header = delimiter.join(["r", "qsigma"] + headerNames)
+        lines = [("# " if commentedHeader else "") + header]
         n = len(run.r)
+        for i in range(n):
+            row = [f"{run.r[i]:.10g}",
+                   f"{run.q[i]:.10g}" if run.q is not None else ""]
+            for key in keys:
+                y = run.curves.get(key)
+                val = y[i] if y is not None else float("nan")
+                row.append(f"{val:.10g}")
+            lines.append(delimiter.join(row))
+        return "\n".join(lines) + "\n"
+
+    def _writeTable(self, path, run, delimiter, commentedHeader):
         with open(path, "w") as f:
-            f.write(("# " if commentedHeader else "") + header + "\n")
-            for i in range(n):
-                row = [f"{run.r[i]:.10g}",
-                       f"{run.q[i]:.10g}" if run.q is not None else ""]
-                for key in keys:
-                    y = run.curves.get(key)
-                    val = y[i] if y is not None else float("nan")
-                    row.append(f"{val:.10g}")
-                f.write(delimiter.join(row) + "\n")
+            f.write(self._buildTableText(run, delimiter, commentedHeader))
+
+    def _onExportSelected(self):
+        # Dispatches to whichever of the 5 existing export methods
+        # matches the format currently chosen in the combobox built in
+        # _buildLeftPanel() (self._exportDispatch) -- those 5 methods
+        # are unchanged; this is just the new single entry point that
+        # replaced 5 separate buttons.
+        handler = self._exportDispatch.get(self.exportFormatVar.get())
+        if handler is not None:
+            handler()
 
     def _onExportASCII(self):
         run = self._getSelectedOrLastRun()
@@ -595,6 +858,28 @@ class OZgui:
             self.statusVar.set(f"exported '{run.label}' to {path} (ASCII)")
         except OSError as e:
             messagebox.showerror("export failed", str(e))
+
+    def _onCopyToClipboard(self):
+        run = self._getSelectedOrLastRun()
+        if run is None:
+            messagebox.showinfo("nothing to copy", "run at least one calculation first")
+            return
+        # Tab-separated, no "#"-commented header -- the most broadly
+        # paste-compatible plain-clipboard format for spreadsheet apps
+        # (Excel, LibreOffice Calc, Origin all split a pasted block on
+        # tabs/newlines automatically), matching the CSV export's own
+        # no-comment-header convention rather than the ASCII export's
+        # "# " prefix (a literal "#" landing in a spreadsheet's A1 cell
+        # is unlikely to be what someone pasting in a chart tool wants).
+        # Tkinter's clipboard_clear()/clipboard_append() are used here
+        # directly -- built into Tk itself, no extra dependency (unlike
+        # the Excel export's openpyxl) and works with the native
+        # clipboard on Windows exactly like any other application's
+        # copy/paste.
+        text = self._buildTableText(run, delimiter="\t", commentedHeader=False)
+        self.root.clipboard_clear()
+        self.root.clipboard_append(text)
+        self.statusVar.set(f"copied '{run.label}' to clipboard ({len(run.r)} rows, tab-separated)")
 
     def _onExportCSV(self):
         run = self._getSelectedOrLastRun()
@@ -645,7 +930,10 @@ class OZgui:
             sheetName = re.sub(r'[\\/*?:\[\]]', "_", run.label)[:31] or "OZ data"
             ws.title = sheetName
             keys = [key for _, key, _ in CURVE_TABS]
-            ws.append(["r", "q"] + keys)
+            # Same "qsigma"/"Sqsigma" naming fix as _buildTableText()'s
+            # own header -- see that method's comment for why.
+            headerNames = ["Sqsigma" if key == "Sq" else key for key in keys]
+            ws.append(["r", "qsigma"] + headerNames)
             n = len(run.r)
             for i in range(n):
                 row = [float(run.r[i]), float(run.q[i]) if run.q is not None else None]

@@ -3,7 +3,7 @@
  *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
  */
 
-#include <sasfit.h>
+// #include <sasfit.h>
 
 #include <sasfit_common.h>
 #include "include/private.h"
