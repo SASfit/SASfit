@@ -285,9 +285,20 @@ class OZgui:
         xThresholdEntry.bind("<FocusOut>", lambda e: self._replot())
         row += 1
 
-        ttk.Label(left, text="Grid points (N):").grid(row=row, column=0, sticky="e")
+        ttk.Label(left, text="Gridsize (2^n - 1), n:").grid(row=row, column=0, sticky="e")
         self.gridPointsVar = tk.StringVar(value="auto")
         ttk.Entry(left, textvariable=self.gridPointsVar, width=10).grid(row=row, column=1, sticky="w")
+        self.gridSizeLabelVar = tk.StringVar(value="")
+        ttk.Label(left, textvariable=self.gridSizeLabelVar, foreground="grey").grid(
+            row=row, column=2, sticky="w", padx=(4, 0))
+        # Live-updating computed-size readout, matching the equivalent
+        # field in the Tcl GUI (sasfit.vfs/lib/app-sasfit/tcl/
+        # sasfit_OZ_solver.tcl's own "gridsize (2^n - 1), n:" +
+        # OZ(gridsizeLabel) trace) -- see _updateGridSizeLabel() below
+        # and MIN_GRID_EXPONENT/MAX_GRID_EXPONENT for the shared
+        # clamping range both GUIs now use.
+        self.gridPointsVar.trace_add("write", self._updateGridSizeLabel)
+        self._updateGridSizeLabel()
         row += 1
 
         ttk.Label(left, text="Points per \u03c3:").grid(row=row, column=0, sticky="e")
@@ -407,6 +418,30 @@ class OZgui:
         self.statusVar.trace_add("write", self._onStatusChanged)
         ttk.Label(left, textvariable=self.statusVar, foreground="blue").grid(
             row=row, column=0, columnspan=2, sticky="w", pady=(6, 0))
+
+    def _updateGridSizeLabel(self, *args):
+        # Mirrors updateOZgridsizeLabel in sasfit_OZ_solver.tcl exactly
+        # (same clamp range, same message shape) -- see that proc's own
+        # comment for the FFTW/scipy.fft DST-I rationale (N+1 should be
+        # a power of 2). "auto" (this field's default) keeps
+        # oZfixpointOperator.py's own default (2**12-1=4095, n=12) --
+        # shown here rather than left blank so "auto" isn't a dead end
+        # the person has to go check the source to resolve.
+        text = self.gridPointsVar.get().strip().lower()
+        if text == "auto":
+            self.gridSizeLabelVar.set(f"= {2**12 - 1} points (auto, n=12)")
+            return
+        try:
+            n = int(text)
+        except ValueError:
+            self.gridSizeLabelVar.set("(enter an integer n, e.g. 12, or 'auto')")
+            return
+        nClamped = min(max(n, MIN_GRID_EXPONENT), MAX_GRID_EXPONENT)
+        gridsize = 2**nClamped - 1
+        if nClamped != n:
+            self.gridSizeLabelVar.set(f"= {gridsize} points (n will be clamped to {nClamped})")
+        else:
+            self.gridSizeLabelVar.set(f"= {gridsize} points")
 
     def _rebuildPotentialParams(self, probe):
         for w in self.potParamsFrame.winfo_children():

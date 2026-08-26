@@ -693,16 +693,40 @@ int sasfit_oz_calc_cmd(ClientData clientData,
 
         // get input parameters from Tcl Interpreter
 
-        ozd.Npoints = 4096;
+        ozd.Npoints = 4095; /* fallback default, matches n=12 below: 2^12-1 */
         int grid, factor;
 
         if (!GET_TCL(int, &ozd.PrintProgress, "PrintProgress")) {
                 ozd.PrintProgress = 0;
         }
 
+        /* Grid size is now 2^n-1 (n = OZ(mult) from the GUI), not n*128:
+         * OZ_step()'s FFTW transform is FFTW_RODFT00 (DST-I), whose
+         * "logical" size is 2*(NP+1) -- FFTW is fastest when that
+         * factors into small primes, ideally a power of 2, i.e. exactly
+         * when NP+1 = 2^n. The solver's own physics (dk = pi/((NP+1)*dr),
+         * buffers sized NP+1, the spline over NP+1 points) already
+         * treats NP+1 as the natural grid-resolution quantity, so this
+         * matches the code's existing intent. mindimOZ ("factor") is no
+         * longer used numerically here -- kept only for backward
+         * compatibility with the Tcl-side result log (OZ(result,mindimOZ)). */
         if (GET_TCL(int, &factor, "mindimOZ") && GET_TCL(int, &grid, "mult"))
         {
-                ozd.Npoints = factor * grid;
+                /* Backward-compat safety: old saved sessions/config files
+                 * may contain an "n" (OZ(mult)) value tuned for the old
+                 * n*128 scheme (e.g. n=32 -> old 4096 points). Under the
+                 * new 2^n-1 scheme that same n would mean an enormous,
+                 * memory-exhausting grid (n=32 -> ~4.3 billion points),
+                 * so clamp to a generous but safe range instead of
+                 * letting it try to allocate that. */
+                if (grid < 4) {
+                        sasfit_out("OZ grid exponent n=%d is too small; using the minimum of n=4 (NP=15) instead.\n",grid);
+                        grid = 4;
+                } else if (grid > 20) {
+                        sasfit_out("OZ grid exponent n=%d is implausibly large (likely a leftover value from the old n*128 grid scheme); using the maximum of n=20 (NP=1048575) instead.\n",grid);
+                        grid = 20;
+                }
+                ozd.Npoints = (1 << grid) - 1;
         }
         if (ozd.PrintProgress) PUTS("Grid length has been set to %d.\n", ozd.Npoints);
 

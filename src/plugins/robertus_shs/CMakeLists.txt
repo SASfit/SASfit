@@ -93,7 +93,7 @@ if(NOT TARGET sundials_kinsol_static)
 endif()
 target_link_libraries(${PRJ_NAME} sundials_kinsol_static sundials_core_static)
 target_include_directories(${PRJ_NAME} PRIVATE ${sundials7_SOURCE_DIR}/include ${sundials7_BINARY_DIR}/include)
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
 	target_link_options(${PRJ_NAME} PRIVATE "-Wl,--exclude-libs=ALL")
 endif()
 

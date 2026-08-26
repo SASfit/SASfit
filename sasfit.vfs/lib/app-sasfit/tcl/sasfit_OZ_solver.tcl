@@ -699,6 +699,25 @@ proc update_ozmenu {} {
 	
 }
 
+proc updateOZgridsizeLabel {args} {
+    global OZ
+    if {[catch {
+        set n $OZ(mult)
+        if {![string is integer -strict $n]} { error "not an integer" }
+        set nClamped $n
+        if {$nClamped < 4}  { set nClamped 4 }
+        if {$nClamped > 20} { set nClamped 20 }
+        set gridsize [expr {(1 << $nClamped) - 1}]
+        if {$nClamped != $n} {
+            set OZ(gridsizeLabel) "= $gridsize points (n will be clamped to $nClamped)"
+        } else {
+            set OZ(gridsizeLabel) "= $gridsize points"
+        }
+    }] } {
+        set OZ(gridsizeLabel) "(enter an integer n, e.g. 12)"
+    }
+}
+
 proc configOZalgorithm {} {
 	global OZ
 	set w .ozconfig
@@ -729,8 +748,12 @@ proc configOZalgorithm {} {
 	    -column 1 -row 15
 
 
-    label $w.gridtext -text "gridsize (n x 128), n:"  
+    label $w.gridtext -text "gridsize (2^n - 1), n:"  
     entry $w.gridvalue -textvariable OZ(mult)
+    label $w.gridsizedisplay -textvariable OZ(gridsizeLabel) -anchor w
+    catch {trace remove variable OZ(mult) write updateOZgridsizeLabel}
+    trace add variable OZ(mult) write updateOZgridsizeLabel
+    updateOZgridsizeLabel
 	ComboBox $w.mixtext \
 	    -values {"mixing parameter (const)" "mixing parameter (err)" "mixing parameter (reward/penalty)"} \
 	    -textvariable OZ(mixstrategy) -editable 0
@@ -745,6 +768,10 @@ proc configOZalgorithm {} {
 
     grid  $w.gridtext -sticky e\
 	    -column 0 -row 16
+    grid  $w.gridvalue \
+	    -column 1 -row 16
+    grid  $w.gridsizedisplay -sticky w\
+	    -column 2 -row 16
     grid  $w.mixtext -sticky e\
 	    -column 0 -row 17
     grid  $w.ittext -sticky e\
@@ -753,8 +780,6 @@ proc configOZalgorithm {} {
 	    -column 0 -row 19
     grid  $w.drdsigmatext -sticky e\
 	    -column 0 -row 20
-    grid  $w.gridvalue \
-	    -column 1 -row 16
     grid  $w.mixvalue \
 	    -column 1 -row 17
     grid  $w.itvalue \

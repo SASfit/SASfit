@@ -104,9 +104,25 @@ class OZfixpointOperator:
       #at fixed numberOfRadialSamplingPoints), or both -- see this
       #class's own getrArray()/getqArray() for how these two parameters
       #together set the whole real- and reciprocal-space grid. Passing
-      #neither keeps this class's original behaviour exactly (4096
-      #points, 100 points per hard-sphere diameter).
-      #
+      #Default of 2**12-1=4095, not a round 4096: this class's own
+      #hankelTransform() uses scipy.fft.dst(..., type=1) (DST-I), whose
+      #"logical" transform size is 2*(N+1) -- fastest when that factors
+      #into small primes, ideally a power of 2, i.e. exactly when N+1
+      #is a power of 2. This class's own getqArray()/hankelTransform()
+      #already treat N+1 as the natural grid-resolution quantity
+      #(delta_q = pi/((N+1)*Delta_r)), so N=2^n-1 matches that intent;
+      #the previous default of a plain 4096 gave N+1=4097=17*241 (two
+      #largish prime factors) -- likely one of the worst possible sizes
+      #for this transform, not just a missed optimization. Matches the
+      #equivalent fix in the C/Tcl OZ solver GUI (src/sasfit_oz/
+      #sasfit_oz_tclcmd.c, sasfit.vfs/lib/app-sasfit/tcl/
+      #sasfit_OZ_solver.tcl), which now also takes an exponent n
+      #(gridsize = 2^n-1) rather than a direct point count.
+      self.numberOfRadialSamplingPoints = (numberOfRadialSamplingPoints
+                                            if numberOfRadialSamplingPoints is not None else 2**12 - 1)   #n=12 -> N=4095, N+1=4096=2^12
+      #self.hardSphereDiameterInPoints = self.numberOfRadialSamplingPoints/2**3
+      self.hardSphereDiameterInPoints = (hardSphereDiameterInPoints
+                                          if hardSphereDiameterInPoints is not None else 100)
       #Named "diameter", not "radius": what this grid parameter
       #actually measures is sigma, the pairwise CONTACT distance
       #between two touching spheres -- i.e. the diameter, not a single
@@ -114,11 +130,6 @@ class OZfixpointOperator:
       #r<=sigma, jumping to its characteristic nonzero contact-peak
       #value at r=sigma+, exactly the excluded-volume condition for two
       #spheres of DIAMETER sigma, not radius sigma).
-      self.numberOfRadialSamplingPoints = (numberOfRadialSamplingPoints
-                                            if numberOfRadialSamplingPoints is not None else 128*32)   #(2^7*2^5 = 2^12)
-      #self.hardSphereDiameterInPoints = self.numberOfRadialSamplingPoints/2**3
-      self.hardSphereDiameterInPoints = (hardSphereDiameterInPoints
-                                          if hardSphereDiameterInPoints is not None else 100)
       #Length units is such that the 'box' has length 1
       #self.rLength = 1.0 #arbitrary
       #rLength is defined in multiples of hardSphereDiameter
