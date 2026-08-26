@@ -324,6 +324,21 @@ target_link_libraries(sasfit
     ${bestlime_LIBRARIES}
 	${ZLIB_LIBRARIES}
 )
+
+if(WIN32)
+    list(GET bestlime_LIBRARIES 0 BESTLIME_IMPORT_LIBRARY)
+    get_filename_component(BESTLIME_LIBRARY_DIRECTORY "${BESTLIME_IMPORT_LIBRARY}" DIRECTORY)
+    get_filename_component(BESTLIME_BUILD_DIRECTORY "${BESTLIME_LIBRARY_DIRECTORY}" DIRECTORY)
+    set(BESTLIME_RUNTIME_LIBRARY "${BESTLIME_BUILD_DIRECTORY}/bin/libbestlime.dll")
+    if(EXISTS "${BESTLIME_RUNTIME_LIBRARY}")
+        add_custom_command(TARGET sasfit POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${BESTLIME_RUNTIME_LIBRARY}" "${SASFIT_ROOT_DIR}/libbestlime.dll"
+            VERBATIM
+        )
+        sasfit_add2pckg(libbestlime.dll)
+    endif()
+endif()
 if(FALSE) # CMAKE_HOST_APPLE
     # seems to be needed on macOS
     get_filename_component(GSL_LIBRARY_DIR ${GSL_LIBRARY} DIRECTORY)
@@ -344,10 +359,10 @@ if(DEBUG)
     set(COMPILE_FLAGS "${COMPILE_FLAGS} -g")
 elseif(OPTIM)
     # non-debug optimized
-    set(COMPILE_FLAGS "${COMPILE_FLAGS} -march=native -O2 -pipe -fomit-frame-pointer -fforce-addr")
+    set(COMPILE_FLAGS "${COMPILE_FLAGS} -march=native -O2 -pipe -fomit-frame-pointer")
 else()
     # general purpose binary
-    set(COMPILE_FLAGS "${COMPILE_FLAGS} -O2 -pipe -fomit-frame-pointer -fforce-addr")
+    set(COMPILE_FLAGS "${COMPILE_FLAGS} -O2 -pipe -fomit-frame-pointer")
 endif()
 
 set_target_properties(sasfit PROPERTIES

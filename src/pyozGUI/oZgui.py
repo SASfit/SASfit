@@ -88,6 +88,17 @@ CURVE_TABS = [
     ("f(r)",       "fr",     "f(r)"),
 ]
 
+# Grid-size exponent n (gridsize = 2**n - 1) clamp range. Matches the
+# equivalent clamp in the C/Tcl OZ solver GUI (src/sasfit_oz/
+# sasfit_oz_tclcmd.c's "grid < 4"/"grid > 20" checks) -- kept here as
+# named constants rather than inlined so both GUIs' rationale stays in
+# sync: the floor keeps the DST-I transform meaningfully sized, the
+# ceiling guards against an old/stale large n (e.g. from before this
+# field meant an exponent) trying to allocate an astronomically large
+# grid instead of just giving a degraded-resolution result.
+MIN_GRID_EXPONENT = 4
+MAX_GRID_EXPONENT = 20
+
 
 class RunResult:
     '''One computed/solved curve set, kept in the run history list --
@@ -305,20 +316,21 @@ class OZgui:
         self.pointsPerSigmaVar = tk.StringVar(value="auto")
         ttk.Entry(left, textvariable=self.pointsPerSigmaVar, width=10).grid(row=row, column=1, sticky="w")
         # "auto" (the default for both fields) keeps this project's own
-        # original grid exactly (4096 points, 100 points per hard-sphere
-        # radius sigma) -- see oZfixpointOperator.py's own __init__ for
-        # the full rationale. Grid points (N) sets the total array size
-        # (and hence, together with points-per-sigma, the total real-
-        # space range); points-per-sigma sets the near-contact
-        # resolution. Increasing N at fixed points-per-sigma extends the
-        # range without losing resolution -- the case that matters for
-        # long-range/slowly-decaying potentials (e.g. small-kappa
-        # Yukawa/DLVO tails), where the default range can otherwise
-        # truncate the potential before it has actually decayed to zero
-        # and distort S(q) at low q (verified directly earlier in this
-        # project's own development: a 4x range extension reduced a
-        # Yukawa potential's residual value at the grid edge from
-        # ~1e-4 kT to ~1e-10 kT, and changed S(q->0) by about 33%).
+        # current default grid (2**12-1=4095 points, 100 points per
+        # hard-sphere radius sigma) -- see oZfixpointOperator.py's own
+        # __init__ for the full rationale. Gridsize (2^n-1) sets the
+        # total array size (and hence, together with points-per-sigma,
+        # the total real-space range); points-per-sigma sets the near-
+        # contact resolution. Increasing n at fixed points-per-sigma
+        # extends the range without losing resolution -- the case that
+        # matters for long-range/slowly-decaying potentials (e.g.
+        # small-kappa Yukawa/DLVO tails), where the default range can
+        # otherwise truncate the potential before it has actually
+        # decayed to zero and distort S(q) at low q (verified directly
+        # earlier in this project's own development: a 4x range
+        # extension reduced a Yukawa potential's residual value at the
+        # grid edge from ~1e-4 kT to ~1e-10 kT, and changed S(q->0) by
+        # about 33%).
         row += 1
 
         ttk.Label(left, text="Max iterations:").grid(row=row, column=0, sticky="e")
@@ -616,19 +628,24 @@ class OZgui:
             return
 
         # "auto" (or anything unparseable) keeps ozLib.solve()'s own
-        # defaults (None -> this project's original 4096-point,
-        # 100-points-per-sigma grid, see oZfixpointOperator.py); a
-        # valid positive integer overrides it. Parsed leniently (same
-        # pattern as the symlog/asinh threshold field above) rather
-        # than raising an input-error dialog for a non-numeric entry,
-        # since "auto" itself is deliberately non-numeric.
+        # default (None -> oZfixpointOperator.py's 2**12-1=4095-point,
+        # 100-points-per-sigma grid); a valid integer n is interpreted
+        # as an EXPONENT, not a direct point count -- gridsize = 2**n-1,
+        # matching the Tcl GUI's equivalent field exactly (see
+        # MIN_GRID_EXPONENT/MAX_GRID_EXPONENT and _updateGridSizeLabel()
+        # above for the shared rationale/clamp range: FFTW/scipy.fft's
+        # DST-I transform used by hankelTransform() is fastest when
+        # N+1 is a power of 2). Parsed leniently (same pattern as the
+        # symlog/asinh threshold field above) rather than raising an
+        # input-error dialog for a non-numeric entry, since "auto"
+        # itself is deliberately non-numeric.
         gridKwargs = {}
         gridPointsText = self.gridPointsVar.get().strip().lower()
         if gridPointsText != "auto":
             try:
                 parsedN = int(gridPointsText)
-                if parsedN > 1:
-                    gridKwargs["numberOfRadialSamplingPoints"] = parsedN
+                nClamped = min(max(parsedN, MIN_GRID_EXPONENT), MAX_GRID_EXPONENT)
+                gridKwargs["numberOfRadialSamplingPoints"] = 2**nClamped - 1
             except ValueError:
                 pass
         pointsPerSigmaText = self.pointsPerSigmaVar.get().strip().lower()

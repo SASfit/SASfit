@@ -1338,6 +1338,18 @@ scalar sasfit_hankel(double nu, double (*f)(double, void *), double x, void *fpa
                      &res, &nval, fparams);
             break;
         }
+        case HANKEL_BESTLIME: {
+            if (!(nu == 0.0 || nu == 1.0)) {
+                sasfit_err("BESTLIME strategy is only available for Hankel transforms J0 and J1\n");
+                return 0;
+            }
+            res = sasfit_bestlime(nu, f, x, fparams);
+            if (isnan(res)) {
+                sasfit_err("BESTLIME Hankel transform failed\n");
+                return 0;
+            }
+            break;
+        }
         case HANKEL_GUPTASARMA_97_FAST: {
             if (!(nu==0 || nu==1)) {
                 sasfit_err("GUPTASARMA_97_FAST strategy is only available for Hankel transforms J0 and J1\n");

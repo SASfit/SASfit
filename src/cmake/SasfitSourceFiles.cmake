@@ -69,6 +69,7 @@ set(SOURCE_sasfit_common
 	Ogata/FBT.cpp
 	Ogata/sasfit_FBT.cpp
 	Ogata/FBT.h
+	sasfit_bestlime.cpp
 #	Ogata/2026/hankel.c
 #	Ogata/2026/hankel.h
 #	Ogata/2026/hankel_adaptive.c

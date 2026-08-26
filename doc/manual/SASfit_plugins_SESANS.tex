@@ -59,14 +59,13 @@ and
 \int_0^\infty \tilde{\gamma}(r) 4\pi r^2 \, \mathrm{d}r =\Delta\eta^2 V_P^2 \quad \mbox{or} \quad  \int_0^\infty \gamma_0(r) 4\pi r^2 \, \mathrm{d}r = V_P
 \end{align}
 where, in the case of a spherical particle, $V_P=\frac43 \pi R^3$.
-In Fig.\ \ref{fig:FAHcycle} it is shown how the functions $\tilde{\gamma}(r)$, $\tilde{G}(\delta)$ and $I(Q)$ are related to each other. However, the cycle is mathematically only exact for a one-dimensional Fourier transformation on a radial symmetric function. Such a transformation cycle is called the projection-slice theorem which is a standard analysis in imaging \cite{Bracewell2003, Bracewell1956}. The projection-slice theorem makes use of the fact that
+Fig.\ \ref{fig:FAHcycle} shows how the functions $\tilde{\gamma}(r)$, $\tilde{G}(\delta)$, and $I(Q)$ are related. However, the cycle is mathematically exact only for a one-dimensional Fourier transformation of a radially symmetric function. This transformation cycle is called the projection-slice theorem and is a standard method in imaging \cite{Bracewell2003, Bracewell1956}. The projection-slice theorem makes use of the fact that
 \begin{align}
 \mathcal{H}\circ \mathcal{F}_{1D}\circ \mathcal{A} &
               =\mathcal{F}_{1D} \circ \mathcal{A}\circ \mathcal{H}
               =\mathcal{A}\circ \mathcal{H}\circ \mathcal{F}_{1D}=\mathcal{I}
 \end{align}
-with $\mathcal{F}_{1D}(s)=\int_{-\infty}^{\infty} \exp\left(-\imath 2\pi s r\right) f(r) \mathrm{d}r$, i.e. using the pair (1) of Fourier as well pair (1) of Hankel transform conventions as given in footnote\footref{footnote:Fourier} and footnote\footref{footnote:Hankel}.
-That the $\mathcal{FAH}$ cycle is still valid using the isotropic 3 dimensional Fourier transform $\mathcal{F}_{I,3D}$ as shown in fig.\ \ref{fig:FAHcycle} has been shown in \cite{Kohlbrecher2017}.
+with $\mathcal{F}_{1D}(s)=\int_{-\infty}^{\infty} \exp\left(-\imath 2\pi s r\right) f(r) \mathrm{d}r$, i.e., using Fourier-transform convention (1) and Hankel-transform convention (1), as given in footnotes\footref{footnote:Fourier} and \footref{footnote:Hankel}. It has been shown in \cite{Kohlbrecher2017} that the $\mathcal{FAH}$ cycle remains valid when using the isotropic three-dimensional Fourier transform $\mathcal{F}_{I,3D}$ shown in Fig.\ \ref{fig:FAHcycle}.
 
 \begin{figure}[htb]
 \begin{center}
@@ -112,7 +111,7 @@ That the $\mathcal{FAH}$ cycle is still valid using the isotropic 3 dimensional 
 \begin{center}
 \includegraphics[width=0.7\textwidth]{../images/GUI/HankelOperator.png}
 \end{center}
-\caption{\SASfit allows to perform a final transformation on the model function to convert a SANS signal into a SESANS signal}
+\caption{\SASfit allows a final transformation of the model function to convert a SANS signal into a SESANS signal.}
 \label{fig:HankelOp}
 \end{figure}
 

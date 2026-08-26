@@ -19,12 +19,12 @@ The Fredholm equation of the first kind is defined as
 \label{eq:Fredholm}
 g(t)=\int _{a}^{b}K(t,s)f(s)\,\mathrm {d} s
 \end{align}
-and the problem is, given the continuous kernel function $K(t,s)$ and the function $g(t)$, which is often an experimental measurable quantity with an error bar, to find the function $f(s)$. Sometimes the values of the Kernel scale somehow with a power law $s^\alpha$. In such a case a more stable solution can be obtained by rewriting the problem as
+The problem is to find $f(s)$, given the continuous kernel function $K(t,s)$ and the function $g(t)$, which is often an experimentally measured quantity with an error bar. Sometimes the kernel values scale with a power law $s^\alpha$. In such a case, a more stable solution can be obtained by rewriting the problem as
 \begin{align}
 \label{eq:KernelScaling}
 g(t)=\int _{a}^{b}s^{-\alpha} K(t,s) \, s^{\alpha}f(s)\,\mathrm {d} s
 \end{align}
-where now the continuous kernel function is defined as $s^{-\alpha}K(t,s)$ and the function to be determined $s^{\alpha} f(s)$.
+where the continuous kernel function is now defined as $s^{-\alpha}K(t,s)$, and the function to be determined is $s^{\alpha} f(s)$.
 
 The above Fredholm equation is one dimensional. There are several cases where the physical problem to solve is described by a multi-dimensional Fredholm integral of the form
 \begin{align}
@@ -33,9 +33,9 @@ g(\mathbf{t})=\underset{\mathds{R}^n}{\iint\cdots\int} K(\mathbf{t},\mathbf{s})f
 \end{align}
 where $\mathbf{s} \in \mathds{R}^n$ and $\mathbf{t} \in \mathds{R}^{3m}$
 
-One simple example is the smearing of the signal by a known resolution function. These folding integrals can in principle be solved in Fourier space. However, also the signal without any smearing are often described by a known or assumed function with one parameter having a distribution. The resulting signal is than an integral of the product of the known function and the probability distribution which one likes to determine. In both cases these integrals belongs to Fredholm integrals of first kind.
+One simple example is the smearing of a signal by a known resolution function. These folding integrals can, in principle, be solved in Fourier space. However, signals without smearing are also often described by a known or assumed function with a distributed parameter. The resulting signal is then an integral of the product of the known function and the probability distribution to be determined. In both cases, these integrals belong to the class of Fredholm integrals of the first kind.
 
-In small angle scattering the measured intensity $I_m$ is given as a function of the scattering vector $q=4\pi\sin(\theta)/\lambda$, with $\theta$ being the scattering vector and $\lambda$ the wavelength of the probing radiation. The smearing by limited resolution resolution for a pinhole came can be written as
+In small-angle scattering, the measured intensity $I_m$ is given as a function of the scattering vector $q=4\pi\sin(\theta)/\lambda$, where $\theta$ is the scattering angle and $\lambda$ is the wavelength of the probing radiation. The smearing due to limited resolution for a pinhole camera can be written as
 \begin{equation} \label{eq:res}
 I_m(\langle Q\rangle) = \int_0^\infty R_{av}\left(Q,\langle
 Q\rangle,\sigma\right) I(Q) \, \mathrm{d}Q
@@ -47,7 +47,7 @@ Typical tasks in the analysis of desmeared data are to determine size distributi
 \subsection{Size distribution $N(R)$}~\\
 \label{sec:N(R)}
 
-The size distribution can be determined, if the particle shape is known. For many particle shapes the scattering intensity or form factor can be calculated via an analytical expression. The scattering intensity are than describes by integrating the squared form factor $F^2(Q,s)$ over a distribution function $N(s)$, where $s$ describes the size of the scattering objects \cite{Pedersen1997}. The intensity is than given by
+The size distribution can be determined if the particle shape is known. For many particle shapes, the scattering intensity or form factor can be calculated analytically. The scattering intensity is then obtained by integrating the squared form factor $F^2(Q,s)$ over a distribution function $N(s)$, where $s$ describes the size of the scattering objects \cite{Pedersen1997}. The intensity is given by
 \begin{equation} \label{eq:SD}
 I(Q) = \int_0^\infty N(s) \abs{F(Q,s)}^2 \, \mathrm{d}s
 \end{equation}
@@ -165,12 +165,12 @@ In most cases, samples are polydisperse. Thus, the amplitude autocorrelation fun
  \begin{align}
  g_{(2)}(\tau)-1 &=\abs{g_{(1)}(\tau)}^2 = \abs{\int_0^\infty G(\Gamma) \exp(-\Gamma\tau)\,\mathrm{d}\Gamma}^2
  \end{align}
- For the analysis one has to calculate first $g_{(1)}(\tau)$ from $g_2(\tau)-1$. Often one just takes the square root of the reduced intensity autocorrelation to obtain the amplitude autocorrelation. As the amplitude autocorrelation function is always positive this is justified. However, due to noise the reduced intensity autocorrelation can also become negative for large relaxation times $\tau$ as $g_2(\tau)-1=\abs{g_1(\tau)}^2 \rightarrow 0$ for $\tau\rightarrow\infty$. Simply neglecting negative reduced intensities autocorrelation values would produce systematic errors in the analysis. A more stable and reliable strategy, even though badly mathematically justified, is to set
+For the analysis, one first has to calculate $g_{(1)}(\tau)$ from $g_2(\tau)-1$. Often, one simply takes the square root of the reduced intensity autocorrelation to obtain the amplitude autocorrelation. As the amplitude autocorrelation function is always positive, this is justified. However, due to noise, the reduced intensity autocorrelation can also become negative for large relaxation times $\tau$, as $g_2(\tau)-1=\abs{g_1(\tau)}^2 \rightarrow 0$ for $\tau\rightarrow\infty$. Simply neglecting negative reduced intensity-autocorrelation values would produce systematic errors in the analysis. A more stable and reliable strategy, although it is not well justified mathematically, is to set
 \begin{align}
 \label{eq:sqrt_g2m1}
  g_{(1)}(\tau) &= \mathrm{sign}(g_{(2)}(\tau)-1) \sqrt{\abs{g_{(2)}(\tau)-1}}
 \end{align}
-Another strategy is to make use of the faltungs theorem for Laplace transform.
+Another strategy is to make use of the convolution theorem for the Laplace transform.
 \begin{align}\label{eq:Lg2}
  g_{(2)}(\tau)-1 &=\abs{g_{(1)}(\tau)}^2 = \int_0^\infty G(x) \exp(-x\tau)\,\mathrm{d}x \times \int_0^\infty G(y) \exp(-y\tau)\,\mathrm{d}y
  \end{align}
@@ -183,7 +183,7 @@ where $G_{(2)}(\Gamma)=\int_{-\infty}^\infty G(y) G(z-y) \mathrm{d}y$ and $\math
 \begin{align}
  \mathcal{L}\left[\int_{-\infty}^\infty G(y) G(z-y) \mathrm{d}y\right] &= \mathcal{L}\left[G(y)\right] \mathcal{L}\left[G(y)\right]
 \end{align}
-Pike \cite{Pike2002}  suggests to calculate first $G_2(\Gamma)$ but than taking the square root of the Laplace transformation and afterwards the inverse of that square root
+Pike \cite{Pike2002} suggests first calculating $G_2(\Gamma)$, then taking the square root of its Laplace transform, and finally calculating the inverse transform of that square root.
 \begin{align}
 G(\Gamma) &=
 \mathcal{L}^{-1}\left[\sqrt{\mathcal{L}\left[G_{(2)}(\Gamma)\right]}\right]
@@ -192,13 +192,13 @@ The determination of $G_{(2)}(\Gamma)$ is also done by an inverse Laplace transf
 that show a significant improvement in accuracy".
 
 
- Goldin \cite{Goldin1991} is suggesting a mixture of both methods. He has shown that even when the value under the radical in eq.\ \ref{eq:sqrt_g2m1} is non-negative, calculating $g_1(\tau)$ from $\sqrt{g_2(\tau)-1}$ increases the random error (relative to $g_2(\tau)$ and introduces a systematic error. He proposes to compute the distribution of interest in two stages. In the first stage, the self-convolution of the distribution of interest $G_{(2)}(\Gamma)$ is computed from the function $g_2(\tau)-1$ like in \cite{Pike2002}. The smoothed estimation of $g_2(\tau)$ is then computed and used to compute the first order correlation function $g_1(\tau)$. This is than used to calculate $G(\Gamma)$.
+Goldin \cite{Goldin1991} suggested a combination of both methods. He showed that, even when the value under the radical in Eq.\ \ref{eq:sqrt_g2m1} is non-negative, calculating $g_1(\tau)$ from $\sqrt{g_2(\tau)-1}$ increases the random error relative to $g_2(\tau)$ and introduces a systematic error. He proposed computing the distribution of interest in two stages. In the first stage, the self-convolution of the distribution of interest, $G_{(2)}(\Gamma)$, is computed from the function $g_2(\tau)-1$, as in \cite{Pike2002}. A smoothed estimate of $g_2(\tau)$ is then computed and used to calculate the first-order correlation function $g_1(\tau)$. This is then used to calculate $G(\Gamma)$.
 
 After determining the relaxation probability $G(\Gamma)$ function the size distribution function $N_h(R_h)$ has to be determined. The relaxation time $\Gamma$ and the hydrodynamic radius are related via eq.\ \ref{eq:GammaDq2}, \ref{eq:q}, and \ref{eq:D_t}
 \begin{align}
 \Gamma = \Gamma(R_h)&= q^2 \frac{k_BT}{6\pi\eta R_h}
 \end{align}
-Furthermore  the scattering intensity of the particle $I(q,R_h)$ also contributes as a weighting factor, i.e. how much a certain size contributes to the relaxation distribution function of the corresponding relaxation time $G(\Gamma)$.
+Furthermore, the scattering intensity of the particle, $I(q,R_h)$, contributes as a weighting factor, i.e., it determines how much a given size contributes to the relaxation distribution function at the corresponding relaxation time $G(\Gamma)$.
 \begin{align}
 \label{eq:GRh}
 G(\Gamma) &= \frac{I(q,R_h) N_h(R_h) \Gamma(R_h)} {\int_0^\infty I(q,R_h) N_h(R_h) \, \mathrm{d}R_h}
@@ -208,12 +208,12 @@ so that the size distribution of the hydrodynamic radius is proportional to
 \label{eq:Nh}
 N_h(R_h) &\propto  \frac{G\left(q^2 \frac{k_BT}{6\pi\eta R_h}\right)}{\int_0^\infty I(q,R_h) N_h(R_h) \, \mathrm{d}R_h}
 \end{align}
-The volume and intensity distribution $N_v(R_h)$ and $N_i{R_h}$ are than defined as
+The volume and intensity distributions $N_v(R_h)$ and $N_i(R_h)$ are then defined as
 \begin{align}
 N_v(R_h) &= R_h^3 N_h(R_h) \\
 N_i(R_h) &= R_h^6 N_h(R_h)
 \end{align}
-Eq.\ \ref{eq:Nh} or eq.\ \ref{eq:GRh} show, that the size distribution or decay rate distribution also depend on the $q$ and size dependent scattering function $I(q,R_h)$. Analysing intensity correlation function at different angles simultaneously normally helps to get a more stable solution for the size distribution of particles.
+Equations \ref{eq:Nh} and \ref{eq:GRh} show that the size distribution or decay-rate distribution also depends on the $q$- and size-dependent scattering function $I(q,R_h)$. Analysing intensity-correlation functions at different angles simultaneously normally helps to obtain a more stable solution for the particle size distribution.
 
 \section{Expectation Maximization (EM)}
 The EM algorithm has been first explained in \cite{Dempster1977}. The method is an iterative fixed point method for positive defined functions. (Other fixed point techniques are described for example in \cite{Hanke2000}.) In \cite{Vardi1993} it has been shown how the EM method can be applied to solve Fredholm integrals for the domain of nonnegative real valued functions. The method described there is equivalent to the Lucy\hyp{}Richardson method \cite{Richardson1972,Lucy1974}. For calculating size distribution from scattering data the method has been applied e.g.\ by \cite{Yang2013,Benvenuto2016,Benvenuto2017,Bakry2019}. For inverting scattering data to pair distance distribution functions the condition of nonnegativity of the involved functions does not hold anymore as both the kernel of the Fredholm integral as well as the pair distance distribution function can take negative values. In \cite{Chae2018} it has been shown, how the EM algorithm can be reformulated for non-density functions, i.e. to functions which also can take negative values.
@@ -272,13 +272,13 @@ The roughness parameter and the goodness-of-fit parameter are then combined in f
 \caption{L-curve showing the dependency of the roughness parameters on the goodness-of-fit parameters for a constant seed value (left) and random seed values (right).\label{fig:EMLcurves}}
 \end{figure}
 
-Even though the fixed point of the EM operator does not seem to depend on the initialization of the starting values but it will probably depend on the actual noise on the data, i.e. if the curve would be measured a second time with similar statistics the two curves would differ within their noise level and the EM fixed point would then very likely be slightly different, which is caused by the ill-posed nature of the Fredholm integral. Two strategies for overcoming this problem has been tested. One strategy introducing a smoothing operator into the iteration loop and a second strategy to introduce a classical regularization term in the EM scheme, which both then require a determination of the smoothing or regularization parameter.
+Although the fixed point of the EM operator does not seem to depend on the initial values, it will probably depend on the noise in the data. If the curve were measured a second time with similar statistics, the two curves would differ within their noise levels, and the EM fixed point would therefore very likely be slightly different. This is a consequence of the ill-posed nature of the Fredholm integral. Two strategies for overcoming this problem have been tested: one introduces a smoothing operator into the iteration loop, and the other introduces a classical regularization term into the EM scheme. Both require the smoothing or regularization parameter to be determined.
 
 ~\\
 
 \subsection{EM with linear and non-linear smoothing operator}~\\
 
- Without any additional smoothing the EM scheme does not converge to a stable solution for scattering curves measured several times with the same statistics. Several stabilization methods have been suggested. One of them is to add an additional smoothing operator into the iteration sequence. In \SASfit the smoothing operation  suggested by \cite{Eggermont1999,Eggermont1995,Byrne2011} has been implemented. They suggest to add before or/and after each normal EM step (eq.\ \ref{eq:LucyRichardsonInversionMethod}) an additional smoothing step so that the EM algorithm takes the form.
+Without additional smoothing, the EM scheme does not converge to a stable solution for scattering curves measured several times with the same statistics. Several stabilization methods have been suggested. One is to add a smoothing operator to the iteration sequence. In \SASfit, the smoothing operation suggested by \cite{Eggermont1999,Eggermont1995,Byrne2011} has been implemented. The authors suggest adding a smoothing step before and/or after each normal EM step (Eq.\ \ref{eq:LucyRichardsonInversionMethod}), so that the EM algorithm takes the following form:
 \begin{align}\label{eq:smoothedEMsingle}
   x_j^{(k+1/2)} &= x_j^{(k)} + \Delta x_j^{(k)}   \\
   x_j^{(k+1)} &= \displaystyle \sum_{i=0}^{M-1} S^{(h)}_{ij} x_j^{(k+1/2)}
@@ -296,7 +296,7 @@ with the smoothing operator
   \end{pmatrix}
 \end{align}
 whereby $0 < h \lessapprox 0.3$.
-In case of a double smoothing they suggested a nonlinear smoothing operator before each EM step so that a complete smoothed EM step reads as
+In the case of double smoothing, they suggested a nonlinear smoothing operator before each EM step, so that a complete smoothed EM step reads as follows:
 \begin{align}\label{eq:smoothedEMdouble}
   x_j^{(k+1/3)} &= \exp\left(\sum_{i=0}^{M-1} S^{(h)}_{ij} \log\left(x_j^{(k)}\right)\right)\\
   x_j^{(k+2/3)} &= x_j^{(k+1/3)} + \Delta x_j^{(k+1/3)}  \\
@@ -322,7 +322,7 @@ In case of a double smoothing they suggested a nonlinear smoothing operator befo
 \includegraphics[width=0.48\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_000187_goodness_of_fit.png}
 \hspace{0.06\textwidth}
 \includegraphics[width=0.42\textwidth]{../images/form_factor/EM/EMrandom_seed_smooth_0_000187_NR.png}
-\caption{Roughness and goodness-of-fit parameters as well as the resulting volume distribution $N(R)R^3$ as a function of iterations for  a constant seed value (top) and random seed values (bottom) for an optimum soothing parameter $h=1.87\times 10^{-4}$ leading to $\chi_r^2=1$.\label{fig:EMhoptimum}}
+\caption{Roughness and goodness-of-fit parameters, as well as the resulting volume distribution $N(R)R^3$, as a function of the number of iterations for a constant seed value (top) and random seed values (bottom), for an optimum smoothing parameter $h=1.87\times 10^{-4}$ leading to $\chi_r^2=1$.\label{fig:EMhoptimum}}
 \end{figure}
 
 \begin{figure}[htb]
@@ -334,7 +334,7 @@ In case of a double smoothing they suggested a nonlinear smoothing operator befo
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.6\textwidth]{../images/form_factor/EM/EMsmoothNRR3.png}
-\caption{The smoothing parameters has been obtained by the corners of the L-curves in fig.\ \ref{fig:EMhLcurve} and the solution of the EM iteration scheme with double smoothing is compared with the exact solution.\label{fig:EMsmoothNRR3}}
+\caption{The smoothing parameters were obtained from the corners of the L-curves in Fig.\ \ref{fig:EMhLcurve}, and the solution of the EM iteration scheme with double smoothing is compared with the exact solution.\label{fig:EMsmoothNRR3}}
 \end{figure}
 
 The proper choice of the parameter $h$ arises and its selection might follow similar strategies than for the regularization parameter in ill-posed problems. In contrast to regularization methods in this iteration scheme there is not directly a cost function for strongly oscillating solution involved like the sum of first or second derivatives of the solution vector or the entropy of the solution vector like in maximum entropy methods. However, these quantity can easily be calculated from the solution vector. Figure \ref{fig:EMLcurves} shows the logarithm of a roughness term, namely the sum of 1$^\mathrm{st}$ and 2$^\mathrm{nd}$ derivatives of the resulting size distribution and the entropy against the goodness-of-fit parameter from eq.\ \ref{eq:goodnessoffit_Gtest}, namely the ``$\mathcal{G}$-test'' parameter. The optimum smoothing parameter has been defined via the corner of the L-curve defined by $(\log(\mathcal{G}),\log(|| \hat{\mathbf{L}} \mathbf{x} ||^2))$, with $\hat{\mathbf{L}}$ being the first or second-order discrete derivative operator defined in eq.\ \ref{eq:first_derivative_penalty} or \ref{eq:second_derivative_penalty} and by $(\log(\mathcal{G}),\log(S))$ with $S$ being the entropy defined in eq.\ \ref{eq:EMentropy}. The corners were determined numerically as they are defined by having the maximum curvature. They are marked in fig.\ \ref{fig:EMhLcurve} by a symbols. The whole analysis does not make use of the uncertainties of the measured intensities. If the error bars are trustable and the model for the form factor is correct the weighted sum of squared residuals should be $\chi_r^2= 1$. This can also be used as a condition for determining the smoothing parameter $h$. In the case of the present analysed data both strategies yield similar results as can be seen in fig.\ \ref{fig:EMsmoothNRR3}.
@@ -460,9 +460,9 @@ with $\lambda^{\max} \simeq 4$ so that $1\leq  \lambda^{(k)}\leq \lambda^{\max}$
 \end{algorithmic}
 \end{algorithm}
 
-Another more efficient method to accelerate the convergence rate of the EM iteration scheme is the so called Anderson acceleration \cite{Anderson1965} to solve fixed point problems (see also \cite{Walker2011,Toth2015}), which also has been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit several fixed point accelerations are supplied by making use of the sundials library \cite{Hindmarsh2005}. However, only the supplied Anderson acceleration speeds up the fixed point iterations whereas all the others like GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992} or TFQMR \cite{Freund1993} become instable and do not converge.
+Another efficient method for accelerating the convergence of the EM iteration scheme is Anderson acceleration \cite{Anderson1965}, which solves fixed-point problems (see also \cite{Walker2011,Toth2015}) and has also been suggested for the EM iteration scheme \cite{Henderson2019}. In \SASfit, several fixed-point acceleration methods are supplied using the SUNDIALS library \cite{Hindmarsh2005}. However, only the supplied Anderson acceleration speeds up the fixed-point iterations; the other methods, such as GMRES \cite{Saad1986}, FGMRES \cite{Saad1993}, Bi-CGStab \cite{Vorst1992}, and TFQMR \cite{Freund1993}, become unstable and do not converge.
 
-In \cite{Biggs1997, Biggs1995, Biggs1998, Wang2014,Jiang2017} an acceleration process has been suggested basing on vector extrapolation which does not require an extra evaluation of the fixed point operator $\mathcal{O}_\mathrm{EM}$ in eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method just needs to remember one or two previous solution vectors for calculating either the first or additionally the second derivative for guessing the next virtual solution vector, which is then used as an input vector for the next step of the fixed point iteration. The algorithm is described in alg.\ \ref{algorithm:Biggs_Andrews}. The convergence behaviour of the different acceleration schemes are shown in fig.\ \ref{fig:EMconvergenceSpeed}. Quite good acceleration has been achieved by the Biggs-Andrews method as well as Anderson acceleration, whereas other classical methods like GMRES, Bi-CGSab or TFQMR failed. The Picard iteration scheme and  overrelaxation method need orders of magnitudes more iterations to reach the true fixed point solution. The preferred acceleration scheme therefore becomes the Biggs-Andrews methods.
+In \cite{Biggs1997, Biggs1995, Biggs1998, Wang2014,Jiang2017}, a vector-extrapolation acceleration method was suggested that does not require an extra evaluation of the fixed-point operator $\mathcal{O}_\mathrm{EM}$ in Eq.\ \ref{eq:LucyRichardsonInversionMethod}. The method needs to retain only one or two previous solution vectors to calculate either the first derivative or, additionally, the second derivative, and to estimate the next virtual solution vector. This vector is then used as the input vector for the next fixed-point iteration. The algorithm is described in Alg.\ \ref{algorithm:Biggs_Andrews}. The convergence behaviour of the different acceleration schemes is shown in Fig.\ \ref{fig:EMconvergenceSpeed}. The Biggs-Andrews and Anderson methods provide good acceleration, whereas other classical methods, such as GMRES, Bi-CGStab, and TFQMR, failed. The Picard iteration scheme and the overrelaxation method require orders of magnitude more iterations to reach the true fixed point. The preferred acceleration scheme is therefore Biggs-Andrews acceleration.
 
 
 \begin{figure}[htb]

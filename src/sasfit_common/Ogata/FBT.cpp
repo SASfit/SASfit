@@ -77,11 +77,9 @@ FBT::FBT(double _nu, int _option, int _N, double _Q){
     this->option     = FBT::option_def;
   }
 
-  // Sets maximum number of nodes to about 2^15:
-  const int maxN = 32769;
-
-  //Imports zeros of the Bessel function. Initializing this way speeds up calls
- for (size_t i = 0; i < maxN; i++) {
+  // Import the zeros needed by the selected quadrature size. Initializing
+  // these values once speeds up subsequent calls.
+ for (size_t i = 0; i < static_cast<size_t>(this->N); i++) {
    //These routines compute the location of the s-th positive zero of the Bessel function J_\nu(x).
    jn_zeros0.push_back( gsl_sf_bessel_zero_Jnu(this->nu, i+1) );
    zeros.push_back( jn_zeros0[i] );
