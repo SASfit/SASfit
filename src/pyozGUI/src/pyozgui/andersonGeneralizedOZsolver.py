@@ -125,13 +125,13 @@ class AndersonGeneralizedOZsolver(OZsolver):
               relativeProgress = abs(previousNorm - norm)/(norm + np.finfo(float).eps)
               if relativeProgress < self.convergenceCriterion: #Defined in super class
                   #pass
-                  print "Generalized Anderson converged after", i, "steps"
+                  print("Generalized Anderson converged after", i, "steps")
                   break
 
           i += 1
       #end while
       if i == self.numberOfIterations:
-          print "Anderson did not converge after", self.numberOfIterations, "steps"
+          print("Anderson did not converge after", self.numberOfIterations, "steps")
     
       self.derivePhysicalQuantitiesFromFixpoint(G)
     #implement the abstract method such that this class can be instantiated

@@ -917,6 +917,61 @@ where one is available.
     large, per the literature \cite{ebato2016} -- worth trying wherever
     HNC itself is a reasonable choice (Section~\ref{sec:mc-literature})
     but its own exponential growth is a concern.
+  \item \textbf{Khanpour}: a one-parameter softening of HNC,
+    $B = \ln(1+\alpha\Gamma)/\alpha - \Gamma$, recovering HNC exactly as
+    $\alpha\to0$. Its bridge function grows only logarithmically in $\Gamma$,
+    so like Kovalenko--Hirata it is worth trying wherever HNC is a reasonable
+    choice but its exponential growth is a concern -- with the advantage over
+    KH that the single parameter can be fixed by the consistency search
+    (\code{CONSISTENT\_PARAMETER\_CLOSURES}). Not for strongly charged
+    systems: on the polydisperse charged Yukawa test case it returns
+    $g_{NN}\approx1276$, the same qualitative failure MSA (2484) and PY (292)
+    show there.
+  \item \textbf{Modified Verlet}: Verlet's bridge function with the
+    denominator switched off for $\Gamma<0$,
+    $B=-\Gamma^2/2$ there and $-(\Gamma^2/2)/(1+\alpha\Gamma/2)$ otherwise.
+    Same domain of applicability as plain Verlet -- attractive and
+    narrow-well potentials -- and worth trying as an alternative when
+    Verlet's own denominator approaches zero. Its parameter is also
+    consistency-searchable.
+  \item \textbf{Extended Rogers--Young}: the Rogers--Young construction with
+    one extra quadratic term inside the logarithm, so that $a=0$ reduces to
+    RY \emph{exactly} (verified here to $2.5\times10^{-16}$). Its value is
+    precisely that second degree of freedom: where RY's own consistency
+    search finds no root -- which happens, since the residual is often
+    monotone and already nonzero in the PY limit
+    (Section~\ref{sec:alpha}) -- the extra parameter gives the search
+    somewhere else to go. Use it as the first fallback when Rogers--Young
+    cannot be made consistent for a given system.
+  \item \textbf{Carbajal--Tinoco}: published as a thermodynamically
+    consistent integral equation for \emph{soft repulsive spheres}, which is
+    the regime to try it in; the amplitude is $r$-dependent for
+    $\lambda\le0$. Two practical cautions, both established here rather than
+    taken from the source. It is the only \emph{implicit} closure in the
+    library --- its bridge function has to be solved for at every grid point,
+    which is done by a vectorised fixed-point iteration rather than a scalar
+    root find per point. And that iteration is reliable only for
+    $\lambda\le0$: for $\lambda>0$ the map's slope at strongly negative
+    $\Gamma$ is $3+\lambda>1$, so its fixed point is repulsive and no amount
+    of damping converges. Converged solves are unaffected, since they do not
+    reach that region, but the closure should be treated as validated for
+    $\lambda\le0$ only (where it reproduces the reference implementation to
+    $2\times10^{-13}$) until a Newton step is added.
+  \item \textbf{For polydisperse systems}, the choice narrows on structural
+    grounds rather than accuracy: 19 of the 23 closures work multicomponent
+    unchanged, because their bridge functions are elementwise in $\Gamma$.
+    The four that do not --- \textbf{Reference HNC} and \textbf{Modified HNC}
+    (both need a one-component reference solve), \textbf{Rescaled MSA} (a
+    one-component rescaling procedure) and \textbf{EuRah} --- are not offered
+    at all once a polydisperse potential is selected, rather than being
+    offered and failing. Note in particular that RMSA's usual role as the fix
+    for MSA's negative contact value is therefore \emph{not} available on the
+    numerical polydisperse route; the analytic \code{polydisperse\_rmsa}
+    module remains the way to get it. \textbf{MS}, \textbf{VM} and
+    \textbf{CJVM} are offered but should be expected to fail on strongly
+    coupled charged systems: all three build a square-root bridge function
+    and $\exp(\Gamma+B)$ overflows there --- a closure-domain limit that
+    applies equally in one component.
 \end{itemize}
 
 \subsection{Literature validation against Monte Carlo: known accurate and inaccurate combinations}

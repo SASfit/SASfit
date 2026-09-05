@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+*.zip
+# LaTeX build products
+*.aux
+*.log
+*.out
+*.toc

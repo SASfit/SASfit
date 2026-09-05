@@ -140,6 +140,20 @@ CLOSURE_SETTERS = {
     "Kovalenko-Hirata":      ("doKHclosure",    False),
     "Duh-Haymet":            ("doDHclosure",    False),
     "Choudhury-Ghosh":       ("doCGclosure",    False),
+    #Added after cross-validating against OrnsteinZernike.jl (Closures.jl).
+    #All three are standalone bridge functions of Gamma, so they inherit the
+    #multicomponent path, every solver and this dropdown automatically.
+    #"Khanpour" is spelled out because "KH" above is Kovalenko-Hirata --
+    #different closure, same natural abbreviation.
+    "Khanpour":              ("doKhanpourClosure", True),
+    #Implicit bridge function (solved by fixed-point iteration inside
+    #update_c); lambda sets the amplitude and is r-dependent for lambda <= 0.
+    "Carbajal-Tinoco":       ("doCarbajalTinokoClosure", True),
+    "Modified Verlet":       ("doModifiedVerletClosure", True),
+    #Extended RY takes TWO parameters (alpha and the quadratic coefficient a);
+    #the second is set on the solver directly, so only alpha comes through the
+    #single-parameter GUI field. a = 0 reduces exactly to Rogers-Young.
+    "Extended Rogers-Young": ("doExtendedRYclosure", True),
     # ZSEP (Lee 1995, hard spheres only) is a "special" entry, like
     # Reference HNC/Rescaled MSA above: it needs its own orchestration
     # method (fitZSEPparameters()) rather than a plain doXXXclosure()+
@@ -165,9 +179,82 @@ CLOSURE_SETTERS = {
 # is included here too (it already appears above with
 # needsExtraScalarParam=True for its own eta parameter, which this
 # same consistency condition also determines).
+# Closures needing a SECOND scalar beyond closureParam, as
+#   dropdown label -> (argument name, default, short description)
+#
+# Only Extended Rogers-Young needs this so far: its bridge function is the
+# ordinary RY construction plus one extra quadratic term,
+#     phi = (exp(f*Gamma)-1)/f,  B = -Gamma + log1p(phi + a*phi^2)
+# so it carries the RY switching rate alpha AND the coefficient a. a = 0
+# reduces exactly to RY, which is why that is the default.
+#
+# Kept as its own table rather than widening CLOSURE_SETTERS to 3-tuples,
+# so every existing consumer of CLOSURE_SETTERS keeps working unchanged.
+SECOND_CLOSURE_PARAM = {
+    "Extended Rogers-Young": ("a", 0.0,
+                              "quadratic coefficient; a = 0 gives plain RY"),
+}
+
+
+def secondClosureParam(closureName):
+    """(name, default, description) or None if the closure needs only one."""
+    return SECOND_CLOSURE_PARAM.get(closureName)
+
+
+# Which closures can be used with a MULTICOMPONENT (polydisperse) potential.
+#
+# The distinction is structural, not a matter of taste. Every closure whose
+# bridge function is a plain elementwise expression in Gamma (and optionally
+# the repulsive/attractive potential split) operates on the (p,p,N) pair
+# matrices unchanged, so it is multicomponent for free. The excluded ones each
+# need something that only exists for a single component:
+#
+#   Reference HNC   needs a one-component hard-sphere reference solve (g0/G0)
+#   Modified HNC    needs an analytic one-component PY hard-sphere bridge
+#                   function at a single packing fraction; the mixture
+#                   equivalent is the Lado-type variational problem, i.e. a
+#                   research question rather than a port
+#   Rescaled MSA    is a one-component diameter-rescaling procedure; the
+#                   polydisperse counterpart is the separate analytic module
+#                   polydisperse_rmsa.py
+#   EuRah           uses a precomputed one-component HS/PY array (CEURAH)
+#   ZSEP            fixes its three parameters from the Carnahan-Starling
+#                   zero-separation theorems, which are hard-sphere specific
+#                   (fitZSEPparameters() already refuses anything else)
+#
+# Martynov-Sarkisov, Vompe-Martynov and CJVM are NOT excluded here: they are
+# structurally fine and do run, but all three build a square-root bridge
+# function and exp(G + B) overflows for strongly coupled charged systems --
+# a closure-domain limitation that applies equally in one component, so it is
+# reported as a failed solve rather than hidden as an unavailable option.
+MULTICOMPONENT_INCAPABLE_CLOSURES = {
+    "Reference HNC", "Modified HNC", "Rescaled MSA", "EuRah", "ZSEP",
+}
+
+
+def multicomponentCapableClosures():
+    """Dropdown labels usable with a polydisperse potential."""
+    return [name for name in CLOSURE_SETTERS
+            if name not in MULTICOMPONENT_INCAPABLE_CLOSURES]
+
+
+def isMulticomponentPotential(potentialName):
+    """True for potentials that set up more than one component.
+
+    A name test rather than a probe of the solver, so the GUI can filter the
+    closure list the moment a potential is chosen, before anything is built.
+    """
+    return potentialName.startswith("Polydisperse")
+
+
 CONSISTENT_PARAMETER_CLOSURES = {
     "Rogers-Young": "RY", "HMSA": "HMSA", "Modified HNC": "MHNC",
     "BPGG": "BPGG", "CJVM": "CJVM", "BB": "BB",
+    #The three closures added from OrnsteinZernike.jl each carry a single
+    #free parameter, so the same compressibility-vs-virial search applies.
+    "Khanpour": "Khanpour", "Modified Verlet": "ModifiedVerlet",
+    "Carbajal-Tinoco": "CarbajalTinoko",
+    "Extended Rogers-Young": "ExtendedRY",
 }
 
 # The 9 curves every solve derives, same set oZgui.py's own plot tabs
@@ -225,6 +312,7 @@ class OZResult:
 
 
 def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closureParam=None,
+          closureParam2=None,
           findConsistentParameter=False,
           solver=_defaultSolverName, maxIterations=1000,
           numberOfRadialSamplingPoints=None, hardSphereDiameterInPoints=None,
@@ -355,7 +443,15 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
         solverInstance.findThermodynamicallyConsistentParameter(CONSISTENT_PARAMETER_CLOSURES[closure])
     else:
         if needsParam:
-            getattr(solverInstance, setterName)(closureParam)
+            #Closures listed in SECOND_CLOSURE_PARAM take a second scalar;
+            #pass it through when the caller supplied one, otherwise let the
+            #setter apply its own default (a = 0 for Extended RY, which
+            #reduces it exactly to Rogers-Young).
+            extra = SECOND_CLOSURE_PARAM.get(closure)
+            if extra is not None and closureParam2 is not None:
+                getattr(solverInstance, setterName)(closureParam, closureParam2)
+            else:
+                getattr(solverInstance, setterName)(closureParam)
         else:
             getattr(solverInstance, setterName)()
         solverInstance.solve()

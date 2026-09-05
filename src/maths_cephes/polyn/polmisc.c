@@ -4,6 +4,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "mconf.h"
 #ifdef ANSIPROT
 extern double atan2 ( double, double );
@@ -18,7 +19,6 @@ extern void poladd ( double a[], int na, double b[], int nb, double c[] );
 extern void polsub ( double a[], int na, double b[], int nb, double c[] );
 extern int poldiv ( double a[], int na, double b[], int nb, double c[] );
 extern void polsbt ( double a[], int na, double b[], int nb, double c[] );
-extern void * malloc ( long );
 extern void free ( void * );
 #else
 double atan2(), sqrt(), fabs(), sin(), cos();

@@ -113,6 +113,15 @@ class OZsolver(OZfixpointOperator):
       else:
           #Calculate c based on the converged G_fp for Gamma based fixpoint operator
           G_fp = x_fp
+          if self.isMulticomponent():
+              G_fp = self.unpackPairs(x_fp)
+              #calculateSq() runs BEFORE calculateRDF() below and needs
+              #h = Gamma + c, so the (p,p,N) Gamma has to be available
+              #here already -- deriving it inside calculateRDF() would be
+              #too late and silently gives h = c (S^M then comes out ~20%
+              #low; caught by cross-checking against an independent
+              #implementation).
+              self.gammaMatrixMulticomponent = G_fp
           c_fp = self.update_c(G_fp)
           
       #Make results available
@@ -1306,6 +1315,15 @@ class OZsolver(OZfixpointOperator):
     #that's why they are here and not in the fixpoint operator unit.
     #If Gamma and c is given, Calculate g
     def calculateRDF(self, G, c):
+      if self.isMulticomponent():
+          #g_ij = Gamma_ij + c_ij + 1 elementwise, exactly as below; the
+          #public getter returns the number-number contraction
+          #g_NN(r) = sum_ij x_i x_j g_ij(r) (D'Aguanno eq. 10) so callers
+          #still get a 1-D curve, with the partials kept alongside.
+          gij = G + c + 1.0
+          self.partialRadialDistributionFunction = gij
+          x = self.componentFractions
+          return np.einsum('i,j,ijk->k', x, x, gij)
       g = G + c + 1.0
       #g[:self.hardSphereDiameterInPoints] = 0.0  #This is only true for potentials with a hard sphere part given
       return g
@@ -1315,16 +1333,47 @@ class OZsolver(OZfixpointOperator):
     #If we devide OZE form h^ = c^ + rho*h^c^ by c^ , there is h^/c^ = 1 + rho*h^ = 1 + rho*g^ - rho*delta. So what is calculated here
     #is not S(q) but S'(q) = S(q) - rho* delta(q). See also https://en.wikipedia.org/wiki/Radial_distribution_function#The_structure_factor
     def calculateSq(self, c):
+      if self.isMulticomponent():
+          return self.calculateSqMulticomponent(c)
       c_hat = self.hankelTransform(c, self.Delta_r)
       Sq = 1.0/(1.0 - self.particleDensity*c_hat)
       return Sq
+
+    #Multicomponent structure factors.
+    #Stores the full partial matrix S_ij(k) on self.partialStructureFactor
+    #and RETURNS the single "measured" curve S^M(k) that a scattering
+    #experiment actually sees, so every existing caller (oZgui.py's plot
+    #tabs, ozLib.solve()'s curve dict, the ASCII/CSV/Excel/clipboard
+    #export) keeps receiving a 1-D array and needs no change.
+    #  S_ij(k) = x_i delta_ij + n x_i x_j h_ij(k)          (D'Aguanno eq. 15)
+    #  S^M(k)  = sum_ij b_i b_j S_ij / sum_i x_i b_i^2     (their eq. 20)
+    #with b_i(k) the homogeneous-sphere form amplitude, b_i ~ sigma_i^2
+    #j_1(k sigma_i/2)/k  (their eq. 7).
+    def calculateSqMulticomponent(self, c):
+      from scipy.special import spherical_jn
+      x = self.componentFractions
+      n = self.particleDensity
+      h = self.gammaMatrixMulticomponent + c
+      h_hat = self.hankelTransform(h, self.Delta_r)
+      S = (np.diag(x)[:, :, None]
+           + n*(x[:, None]*x[None, :])[:, :, None]*h_hat)
+      self.partialStructureFactor = S
+      k = self.getqArray()
+      b = np.array([sig**2*spherical_jn(1, k*sig/2.0)/k
+                    for sig in self.componentDiameters])
+      numerator = np.einsum('ik,jk,ijk->k', b, b, S)
+      denominator = np.einsum('i,ik->k', x, b**2)
+      return numerator/denominator
 
 
     #**********************************************************************
     #Setter methods
     #Defining start values is as well common to all solvers
     def setStartValue(self, x_0):
-      if self.doUseGammaFixPointOperator and (x_0.size != self.numberOfRadialSamplingPoints):
+      expectedGammaSize = self.numberOfRadialSamplingPoints
+      if self.isMulticomponent():
+          expectedGammaSize *= self.numberOfUniquePairs()
+      if self.doUseGammaFixPointOperator and (x_0.size != expectedGammaSize):
          print("Size of initial array is incorrect, not set")
          return
          

@@ -1,0 +1,1304 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\sloppy
+\setlength{\emergencystretch}{3em}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={ozGUI / ozLib Supplement: Multicomponent and Polydisperse Extension},
+  pdfauthor={ozGUI/ozLib project}
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!8},
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{red!60!black},
+  language=Python,
+  showstringspaces=false
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{ozGUI / ozLib Supplement: Multicomponent Extension}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% allow line breaks inside long \texttt identifiers without seqsplit,
+% which cannot be used inside section titles / math
+\newcommand{\code}[1]{\texttt{\hspace{0pt}#1}}
+\newtheorem{remark}{Remark}
+
+\title{\bfseries ozGUI / ozLib Supplement:\\[2mm]
+Multicomponent and Polydisperse Extension\\[1mm]
+\large Polydisperse hard-core Yukawa with the Rogers--Young closure,
+adhesive hard spheres, and the SASfit plugin}
+\author{ozGUI/ozLib project}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+This supplement extends \emph{ozGUI / ozLib: Ornstein--Zernike Solver
+Toolkit} to genuinely multicomponent systems. The scalar solver is
+generalised to matrix-valued correlation functions, giving partial structure
+factors $S_{ij}(q)$ for polydisperse mixtures under \emph{any} closure already
+in the library. Concretely we add: a polydisperse hard-core Yukawa potential
+with moment-matched size classes; the Rogers--Young closure for mixtures with
+its mixing parameter fixed by thermodynamic consistency rather than supplied
+by the user; two new GUI tabs; and a C implementation shipped as a SASfit
+structure-factor plugin. Every claim below is accompanied by the numerical
+check that supports it, and \S\ref{sec:traps} documents nine defects found
+during validation, several of which produced plausible but wrong answers
+rather than obvious failures.
+\end{abstract}
+
+\tableofcontents
+
+%======================================================================
+\section{Scope and design constraint}
+
+The starting point was that the existing solver stack is strictly
+one-component: $c(r)$, $h(r)$ and $\gamma(r)$ are scalar arrays of length
+$N_r$, and every closure in \code{update\_c} acts on them elementwise.
+
+The design constraint adopted here was that \textbf{one-component behaviour
+must remain bit-identical}. This is verifiable rather than aspirational: a
+regression suite of eight potential/closure combinations is compared against
+values recorded before the change (\S\ref{sec:regression}).
+
+A second observation made the work far smaller than expected. Every solver
+class --- Picard, the two Anderson variants, the two \code{scipy} solvers,
+Biggs--Andrews and both SUNDIALS KINSOL drivers --- is \emph{already}
+agnostic to the shape of the unknown. Searching the whole solver layer for
+\code{numberOfRadialSamplingPoints} returns no hits: each iterates a flat
+vector through \code{fixPointOperator} and never inspects what it represents.
+Consequently the multicomponent problem can be carried through the existing
+acceleration machinery unchanged, packed as the $p(p+1)/2$ unique pairs of the
+symmetric $\Gamma_{ij}(r)$.
+
+%======================================================================
+\section{Multicomponent Ornstein--Zernike equations}
+
+\subsection{Matrix form}
+
+For $p$ species with number densities $\rho_i$, the OZ equations couple
+$p(p+1)/2$ independent pair functions,
+\begin{equation}
+h_{ij}(r) = c_{ij}(r)
+  + \sum_{\lambda=1}^{p}\rho_\lambda \int \mathrm{d}\mathbf{r}_1\,
+    h_{i\lambda}(r_1)\,c_{\lambda j}(|\mathbf{r}-\mathbf{r}_1|).
+\end{equation}
+In Fourier space this becomes an algebraic matrix relation. With
+$\mathsf{C}(q)$ the matrix of $\hat c_{ij}(q)$ and
+$\boldsymbol{\rho}=\mathrm{diag}(\rho_i)$,
+\begin{equation}
+\mathsf{H}(q) = \bigl[\mathsf{I}-\mathsf{C}(q)\boldsymbol{\rho}\bigr]^{-1}
+                \mathsf{C}(q),
+\qquad
+\mathsf{\Gamma}(q) = \mathsf{H}(q)-\mathsf{C}(q).
+\label{eq:ozmatrix}
+\end{equation}
+The single scalar division of the one-component code,
+$\hat\gamma = \hat c/(1-\rho\hat c) - \hat c$, is replaced by
+\eqref{eq:ozmatrix}, solved as a small dense linear system at each of the
+$N_r$ grid points. Nothing else in the fixpoint operator changes: the closure
+step and the two Hankel transforms are the same operations applied to
+$(p,p,N_r)$ arrays.
+
+\subsection{Implementation}
+
+The changes to \code{oZfixpointOperator.py} and \code{oZsolver.py} are:
+
+\begin{itemize}[nosep]
+\item the Hankel transforms act on the \emph{last} axis (\code{f.shape[-1]},
+      \code{dst(...,\,axis=-1)}), which is identical for 1-D input but also
+      accepts the pair-matrix arrays;
+\item \code{isMulticomponent()}, \code{numberOfUniquePairs()},
+      \code{packPairs()} and \code{unpackPairs()} convert between the
+      symmetric $(p,p,N_r)$ matrix and the flat vector the solvers expect;
+\item \code{fixPointOperatorForGammaMulticomponent()} implements
+      \eqref{eq:ozmatrix};
+\item \code{calculateSqMulticomponent()} and a multicomponent branch in
+      \code{calculateRDF()} produce the observables;
+\item \code{setStartValue()} accepts the longer vector.
+\end{itemize}
+
+\begin{remark}
+Because every closure in \code{update\_c} is elementwise \code{numpy}, PY,
+HNC, RY, HMSA, Verlet, BPGG and the rest all become multicomponent as soon as
+the potential arrays carry pair indices. Closures requiring an auxiliary
+reference solve (RHNC, MHNC, RMSA, EuRah) remain one-component, as do those
+reading \code{repulsivePartOfP2Ppotential} (HMSA, VM, CJVM, BB, DH, CG,
+SMSA), whose split arrays are still 1-D.
+\end{remark}
+
+\subsection{Public interface: 1-D curves preserved}
+
+The public getters deliberately continue to return \emph{one}-dimensional
+curves, so the plot tabs, \code{ozLib.solve()}'s curve dictionary and the
+ASCII/CSV/Excel/clipboard exports need no modification:
+\begin{align}
+\code{getRDF()} &\;\rightarrow\; g_{NN}(r)=\sum_{ij}x_ix_j\,g_{ij}(r),\\
+\code{getSq()}  &\;\rightarrow\; S^{M}(q) \text{ (the measured structure factor)}.
+\end{align}
+The full matrices are exposed alongside as
+\code{partialRadialDistributionFunction} and
+\code{partialStructureFactor}, both of shape $(p,p,N_r)$.
+
+%======================================================================
+\section{Structure-factor conventions}
+\label{sec:conventions}
+
+Three conventions appear in this problem and confusing them is an
+order-of-magnitude error, so they are stated explicitly.
+
+\paragraph{D'Aguanno--Klein (number-fraction) form.} Used internally by the
+solver, following \cite{daguanno1991}:
+\begin{equation}
+S^{\mathrm{DAG}}_{ij}(q) = x_i\delta_{ij} + n\,x_i x_j\,\hat h_{ij}(q).
+\end{equation}
+
+\paragraph{Ashcroft--Langreth form.} Required by
+\code{PolydisperseSASBase.I\_exact}, which builds
+$G_i=F_i\sqrt{\rho_i}$ and contracts $G\mathsf{S}G$:
+\begin{equation}
+S^{\mathrm{AL}}_{ij}(q) = \delta_{ij} + \sqrt{\rho_i\rho_j}\,\hat h_{ij}(q).
+\end{equation}
+
+\paragraph{Conversion.} The two differ by a purely kinematic factor,
+\begin{equation}
+\boxed{\;S^{\mathrm{AL}}_{ij} = S^{\mathrm{DAG}}_{ij}\big/\sqrt{x_i x_j}\;}
+\label{eq:alconv}
+\end{equation}
+which is easily checked on the diagonal: $S^{\mathrm{DAG}}_{ii}/x_i
+= 1+n x_i \hat h_{ii} = S^{\mathrm{AL}}_{ii}$.
+
+\paragraph{Measured structure factor.} What a scattering experiment sees,
+weighted by the form amplitudes $b_i(q)$:
+\begin{equation}
+S^{M}(q) = \frac{\sum_{ij} b_i b_j S_{ij}(q)}{\sum_i x_i b_i^2},
+\qquad
+b_i(q)\propto \sigma_i^2\,\frac{j_1(q\sigma_i/2)}{q}.
+\end{equation}
+
+Conversion \eqref{eq:alconv} is applied in exactly one place in each module.
+\S\ref{sec:traps} records two separate occasions on which omitting it caused
+a silent factor-of-nine error.
+
+%======================================================================
+\section{Discretising a continuous size distribution}
+\label{sec:moments}
+
+\subsection{Moment matching}
+
+A continuous distribution $F(\sigma)$ must be reduced to $p$ classes. The
+naive choice of $p$ equally spaced diameters spanning
+$\langle\sigma\rangle\pm3s$ is what the existing Robertus code uses. Following
+\cite{daguanno1992} we instead impose
+\begin{equation}
+\sum_{i=1}^{p} x_i\,\sigma_i^{\,m} = \langle\sigma^m\rangle,
+\qquad m=0,1,\dots,2p-1,
+\label{eq:moments}
+\end{equation}
+i.e.\ $2p$ equations for the $2p$ unknowns $\{\sigma_i,x_i\}$. The Schulz
+distribution is a gamma distribution, so \eqref{eq:moments} is precisely
+Gauss--generalised-Laguerre quadrature: with $t=1/s^2-1$, the nodes and
+weights of the weight function $x^{t}e^{-x}$ give
+$\sigma_i = x_i^{\mathrm{node}}\langle\sigma\rangle/(t+1)$ directly. In Python
+this is \code{scipy.special.roots\_genlaguerre}; in C,
+\code{gsl\_integration\_fixed\_laguerre}.
+
+\subsection{Verification}
+
+For $s_\sigma=0.2$ and $p=3$ the classes are
+$\sigma_i=\{0.7342,\,1.0532,\,1.4527\}$ with
+$x_i=\{0.2795,\,0.6304,\,0.0901\}$, and the first $2p-1=5$ moments are
+reproduced to eight decimal places (Table~\ref{tab:moments}).
+
+\begin{table}[htbp]
+\centering
+\caption{Moments of the discrete three-class set against the continuous
+Schulz distribution, $s_\sigma=0.2$. Exact through $m=2p-1=5$.}
+\label{tab:moments}
+\begin{tabular}{cccl}
+\toprule
+$m$ & discrete & Schulz & \\
+\midrule
+0 & 1.00000000 & 1.00000000 & exact \\
+1 & 1.00000000 & 1.00000000 & exact \\
+2 & 1.04000000 & 1.04000000 & exact \\
+3 & 1.12320000 & 1.12320000 & exact \\
+4 & 1.25798400 & 1.25798400 & exact \\
+5 & 1.45926144 & 1.45926144 & exact \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{How many classes are needed?}
+
+\cite{daguanno1992} report that $p=3$ is indistinguishable from $p=5$ up to
+$s_\sigma=0.3$. This was reproduced independently
+(Table~\ref{tab:pconv}): going from $p=1$ to $p=3$ changes $S^M$ by $0.54$,
+whereas $p=3\rightarrow5$ changes it by $0.0015$. Polydispersity is therefore
+a large effect that three moment-matched classes already capture.
+
+\begin{table}[htbp]
+\centering
+\caption{Convergence in the number of classes. Polydisperse hard-core Yukawa,
+$\langle\sigma\rangle=250$\,\AA, $Z=200$, $n^*=0.005$, $L_B=7.01$\,\AA,
+$s_\sigma=0.2$, RY with $\alpha=0.5$.}
+\label{tab:pconv}
+\begin{tabular}{lcccc}
+\toprule
+ & $g_{NN}^{\max}$ & position & $S^{M}_{\max}$ & pairs \\
+\midrule
+$p=1$ (monodisperse) & 2.0375 & 6.06 & 2.0356 & 1 \\
+$p=3$                & 1.7368 & 6.19 & 1.7478 & 6 \\
+$p=5$                & 1.7340 & 6.19 & 1.7472 & 15 \\
+\midrule
+\multicolumn{5}{l}{$\max|g_{NN}(1)-g_{NN}(3)|=0.3583$,\quad
+                   $\max|S^M(1)-S^M(3)|=0.5407$}\\
+\multicolumn{5}{l}{$\max|g_{NN}(3)-g_{NN}(5)|=0.0115$,\quad
+                   $\max|S^M(3)-S^M(5)|=0.0015$}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The peak sits at $r\approx6.2\langle\sigma\rangle$ against a mean spacing
+$n^{-1/3}=5.85\langle\sigma\rangle$, as expected for a strongly correlated
+charged system.
+
+\begin{remark}
+The moment-matching method transfers to the adhesive-sphere model, and would
+let the Robertus plugin use fewer classes for the same accuracy. The specific
+claim ``$p=3$ suffices'' does \emph{not} transfer: it was established for
+RY--Yukawa against Monte Carlo, and sticky spheres are far more sensitive to
+the contact region.
+\end{remark}
+
+%======================================================================
+\section{Polydisperse hard-core Yukawa}
+
+\subsection{Charge-parameterised form}
+
+Following \cite{daguanno1992}, the pair potential is
+\begin{equation}
+\beta\varphi_{ij}(r) = A_iA_j\,\frac{e^{-\kappa r}}{r},\qquad r>\sigma_{ij},
+\qquad
+A_i = Z_i\sqrt{L_B}\,\frac{e^{\kappa\sigma_i/2}}{1+\kappa\sigma_i/2},
+\label{eq:dkpot}
+\end{equation}
+with a hard core at $\sigma_{ij}=(\sigma_i+\sigma_j)/2$. The amplitude
+\emph{factorises per species}, because
+$\exp(\kappa\sigma_{ij}) = \exp(\kappa\sigma_i/2)\exp(\kappa\sigma_j/2)$;
+this is what allows the $A_iA_j$ form.
+
+\paragraph{Screening.} $\kappa$ is the inverse Debye length due to the
+\emph{small ions}. For a salt-free suspension with monovalent counterions,
+charge neutrality gives $n_{\text{counter}}=\sum_i n_iZ_i$ and hence
+\begin{equation}
+\kappa^2 = 4\pi L_B\sum_i n_i Z_i
+\label{eq:kappa}
+\end{equation}
+--- the \emph{first} power of $Z$. Using $Z^2$ produces a near-ideal-gas
+$S(q)$ (see \S\ref{sec:traps}).
+
+\subsection{Size dependence of the charge}
+\label{sec:charge}
+
+How the valence scales with size is genuinely unsettled, so it is a user
+input rather than a constant. \cite{daguanno1991} assume constant surface
+charge density, $Z\propto\sigma^2$, and explicitly flag it as having ``little
+precise experimental information''. Charge-renormalisation saturation
+(Alexander \emph{et al.}) and electrophoresis on highly charged low-salt
+spheres both indicate $Z\propto\sigma$ instead. Three routes are provided:
+
+\begin{center}
+\begin{tabular}{@{}p{0.30\textwidth}p{0.62\textwidth}@{}}
+\toprule
+\code{chargeExponent} & $Z_i = Z_{\text{ref}}(\sigma_i/\langle\sigma\rangle)^n$;
+  $n=2$ constant surface charge density (default), $n=1$ linear in size,
+  $n=0$ size-independent \\
+\code{componentValences} & explicit per-component array, overrides the power law \\
+\code{screeningValences} & a \emph{different} charge for $\kappa$, so screening
+  may use the bare charge while the amplitude uses the effective one \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The default $n=2$ exists only so that published D'Aguanno--Klein setups
+reproduce; it is not a recommendation. Charge renormalisation is deliberately
+\emph{not} implemented: its definition for a polydisperse system is unsettled
+(even for one component the Alexander edge-linearisation $Z_{\text{eff}}$ and
+the extrapolated point charge $Q_{\text{eff}}$ disagree), and embedding one
+choice inside a fitting routine would hide a contested assumption.
+
+\paragraph{Magnitude of the effect.} Table~\ref{tab:charge} shows the choice
+is comparable in size to the polydispersity effect itself, so it is not a
+detail. Note also that $\alpha$-scaling and screening are coupled through
+\eqref{eq:kappa}: changing the exponent moves both the amplitude prefactor
+and the screening length unless \code{screeningValences} decouples them.
+
+\begin{table}[htbp]
+\centering
+\caption{Effect of the charge-scaling exponent. $p=3$, $s_\sigma=0.2$,
+D'Aguanno--Klein parameters, RY $\alpha=0.5$.}
+\label{tab:charge}
+\begin{tabular}{lcccc}
+\toprule
+scaling & $Z_i$ & $\kappa$ & $g_{NN}^{\max}$ & $S^M_{\max}$\\
+\midrule
+$n=2$ (default) & 107.8 / 221.8 / 422.0 & 0.6054 & 1.7368 & 1.7478\\
+$n=1$           & 146.8 / 210.6 / 290.5 & 0.5936 & 1.9262 & 1.8381\\
+$n=0$           & 200 / 200 / 200        & 0.5936 & 2.0384 & 1.7724\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+An internal consistency check falls out of \eqref{eq:kappa}: $n=0$ and $n=1$
+must share a $\kappa$, because $\sum_i x_i\sigma_i=\langle\sigma\rangle=1$ by
+construction, while $n=2$ raises it by exactly
+$\sqrt{\langle\sigma^2\rangle}=\sqrt{1.04}=1.0198$. Both hold to four
+decimals.
+
+\subsection{MSA-consistent \texorpdfstring{$(z,K)$}{(z,K)} form}
+\label{sec:zk}
+
+For direct comparison with the analytic MSA/RMSA path the same convention
+must be used. From the polydisperse Yukawa specification,
+\begin{equation}
+c_{ij}(r) = K_{ij}\,\frac{e^{-z(r-\sigma_{ij})}}{r},\quad r>\sigma_{ij},
+\qquad K_{ij}=K\,\delta_i\delta_j,
+\qquad \delta_i = d_i\,e^{-z\sigma_i/2},
+\label{eq:msapot}
+\end{equation}
+with $g_{ij}(r)=0$ for $r\le\sigma_{ij}$. MSA sets $c=-\beta U$, so
+\begin{equation}
+\beta U_{ij}(r) = -K\,\delta_i\delta_j\,\frac{e^{-z(r-\sigma_{ij})}}{r},
+\end{equation}
+i.e.\ \textbf{$K>0$ is attractive and $K<0$ repulsive}, and there is
+\emph{no} $\sigma_{ij}$ prefactor. Note that
+\code{PolydisperseOneYukawaMSA} takes $\delta_i$ \emph{directly} --- its
+default \code{np.ones(N)} means $\delta_i=1$, not $d_i=1$ --- so the
+exponential in \eqref{eq:msapot} must not be applied a second time
+(\S\ref{sec:traps}, item 9).
+
+%======================================================================
+\section{Rogers--Young for mixtures}
+
+\subsection{Closure}
+
+The RY closure is applied pairwise with a \emph{single shared} mixing
+function --- there is no $ij$ subscript on $f$ in \cite{daguanno1991}:
+\begin{equation}
+h_{ij}(r) = -1 + e^{-\beta\varphi_{ij}(r)}
+  \left[1+\frac{e^{f(r)\gamma_{ij}(r)}-1}{f(r)}\right],
+\qquad
+f(r) = 1-e^{-\alpha r},
+\label{eq:ry}
+\end{equation}
+interpolating between PY ($\alpha\to0$) and HNC ($\alpha\to\infty$).
+
+\subsection{Thermodynamic consistency fixes \texorpdfstring{$\alpha$}{alpha}}
+\label{sec:alpha}
+
+$\alpha$ is not a free parameter: it is determined by requiring the
+compressibility and virial routes to the pressure to agree. For a mixture this
+is a \emph{scalar} condition --- which sidesteps the apparent difficulty that
+a mixture has a full compressibility \emph{matrix}:
+\begin{align}
+\chi^{-1}_{\text{comp}} &= 1 - n\sum_{ij}x_ix_j\,\hat c_{ij}(0),
+\label{eq:chicomp}\\
+\chi^{-1}_{\text{vir}} &= \frac{\partial(\beta P)}{\partial n},
+\label{eq:chivir}
+\end{align}
+with the virial pressure
+\begin{equation}
+\frac{\beta P}{n} = 1
+  + \frac{2\pi}{3}n\sum_{ij}x_ix_j\sigma_{ij}^3 g_{ij}(\sigma_{ij}^+)
+  - \frac{2\pi}{3}n\sum_{ij}x_ix_j\int r^3 g_{ij}(r)\,
+    \bigl(\beta U_{ij}\bigr)'(r)\,\mathrm{d}r .
+\label{eq:virial}
+\end{equation}
+
+\paragraph{The contact term.} \cite{daguanno1991}'s equation for $\beta P$
+omits the second term of \eqref{eq:virial}, legitimately, because their
+macroions are so strongly charged that $g_{ij}(\sigma_{ij}^+)\approx0$. That
+is \emph{not} safe in general: this model has a genuine hard core and $K$ may
+be small, so contact is reachable and the term is first order in the
+pressure. It is included here, with $g_{ij}$ at contact obtained by linear
+extrapolation from the first two grid points outside $\sigma_{ij}$. This
+extrapolation is the least certain step in the whole search and is flagged as
+such in the code.
+
+\paragraph{Numerics.} Two traps, both encountered:
+\begin{enumerate}[nosep]
+\item the \textbf{pair potential must be held fixed} while $n$ is perturbed.
+      In the charge-parameterised form \eqref{eq:dkpot} $\kappa$ depends on
+      the counterion density, so rebuilding the system at $n\pm\Delta n$
+      differentiates a density-dependent potential; the symptom is a residual
+      stuck near $+65$ that never crosses zero. In the $(z,K)$ form
+      \eqref{eq:msapot} the potential is density-independent and the problem
+      does not arise.
+\item \textbf{cold-start each $\alpha$}. Warm-starting across qualitatively
+      different $\alpha$ destabilises the search; warm-starting across the
+      $n\pm\Delta n$ perturbations is fine, and is what \cite{daguanno1991}
+      do, holding $\alpha$ fixed there because it varies slowly with $n$.
+\end{enumerate}
+
+\paragraph{Result.} At $\varphi=0.2$, $K=0$, $z=2$ with three classes the
+search returns $\alpha=0.2166$ with residual $1.2\times10^{-5}$ --- a clean
+root, and a plausible hard-sphere value. The residual is monotone in
+$\alpha$ (Table~\ref{tab:alpha}).
+
+\begin{table}[htbp]
+\centering
+\caption{Thermodynamic inconsistency
+$\chi^{-1}_{\text{comp}}-\chi^{-1}_{\text{vir}}$ versus $\alpha$;
+$\varphi=0.2$, $z=2$, $p=3$.}
+\label{tab:alpha}
+\begin{tabular}{lcccc}
+\toprule
+$\alpha$ & 0.20 & 0.50 & 1.00 & 2.00\\
+\midrule
+$K=0$   & $+0.0127$ & $-0.1847$ & $-0.4002$ & $-0.6054$\\
+$K=0.5$ & $-0.2219$ & $-0.3012$ & $-0.3881$ & $-0.4697$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}[A consistent $\alpha$ need not exist]
+For $K=0.5$ the residual is negative across the whole bracket: no $\alpha$
+makes the two routes agree. The implementation returns the closest endpoint
+and reports ``no consistent alpha found'' rather than presenting it as a
+solution. This is a property of the closure, not a numerical failure.
+\end{remark}
+
+\subsection{Validation against the literature}
+
+The one-component limit reproduces Table~1 of \cite{daguanno1991}
+(their test~3: $\beta\varphi(x)=(1000/x)e^{-0.95x}$, $n\sigma^3=0.01432$).
+The self-consistent $\alpha=0.3942$ gives Table~\ref{tab:dk}.
+
+\begin{table}[htbp]
+\centering
+\caption{One-component RY against \cite{daguanno1991} Table~1, test~3.}
+\label{tab:dk}
+\begin{tabular}{lrrr}
+\toprule
+quantity & this work & D'Aguanno--Klein & deviation\\
+\midrule
+$1/S(0)$   & 93.787 & 93.80 & $0.01\%$\\
+$P^{ex}$   & 36.458 & 36.45 & $0.02\%$\\
+$U^{ex}$   & 20.145 & 20.09 & $0.27\%$\\
+$g_{\max}$ &  2.069 &  2.08 & $0.54\%$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The two quantities that \emph{enter} the consistency condition agree to
+$0.01$--$0.02\%$, which is the sharpest available test. Two further checks:
+\begin{itemize}[nosep]
+\item \textbf{HNC limit.} At large $\alpha$ the solver gives
+      $g_{\max}=1.937$, $1/S(0)=77.69$, $U^{ex}=20.56$, $P^{ex}=36.94$
+      against the paper's HNC column $1.94$, $77.5$, $20.57$, $36.95$ ---
+      three-digit agreement, an independent check on the closure and the
+      transforms.
+\item \textbf{Grid insensitivity.} Results are flat to four decimal places
+      from 50 to 400 points per $\sigma$; only $1/S(0)$ shifts slightly with
+      $r_{\max}$ through the $q\to0$ extrapolation. Neither paper specifies
+      its grid, and the residual differences in $g_{\max}$/$U^{ex}$ are
+      therefore attributable to their (unreported) $\alpha$ or $\Delta n$
+      rather than to discretisation.
+\end{itemize}
+
+\subsection{Cross-validation against the analytic MSA path}
+
+Because RY and MSA both set $c=-\beta U$ outside the core, the
+\emph{derivative} $\mathrm{d}S/\mathrm{d}K$ at $K\to0$ must agree even though
+the closures differ. This is the decisive test of the potential convention of
+\S\ref{sec:zk}, and it is what exposed the $\delta_i$ double-counting bug.
+Table~\ref{tab:msary} shows agreement after the fix.
+
+\begin{table}[htbp]
+\centering
+\caption{$\mathrm{d}S_{NN}/\mathrm{d}K$ at $Q=0.5$, $z=2$, three classes.
+Agreement is near-exact where both closures reduce to the same physics and
+degrades with density where PY and RY genuinely differ.}
+\label{tab:msary}
+\begin{tabular}{lccc}
+\toprule
+$\varphi$ & MSA & RY & ratio\\
+\midrule
+0.002 & 0.03031 & 0.03085 & 1.018\\
+0.020 & 0.24025 & 0.24900 & 1.036\\
+0.100 & 0.41790 & 0.47266 & 1.131\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Before the fix the ratio was $0.14$ at all three densities, consistent with
+$1/e^{-z\sigma/2}\,^2=1/0.135=7.4$.
+
+%======================================================================
+\section{Solver strategy}
+\label{sec:solvers}
+
+Three tiers are tried in order, fastest first, each strictly more robust than
+the previous one.
+
+\paragraph{Tier 1 --- Anderson (\code{KIN\_FP}) with Picard
+pre-conditioning.} Fastest where it works. Anderson diverges from a cold
+start on this problem: a hand-written implementation was \emph{slower} than
+undamped Picard when damped enough to be stable (851 versus 677 iterations)
+and diverged otherwise, and SUNDIALS' \code{KIN\_FP} diverged too, damped or
+not. The remedy is a short run of plain undamped Picard --- which \emph{is}
+contractive here --- before handing over. Measured: 0 pre-steps diverges, 20
+already works, 40 is the time optimum; 50 is the default for margin.
+
+\paragraph{Tier 2 --- Newton--Krylov (GMRES with \code{KIN\_LINESEARCH}).}
+A different algorithm, not a variant: damped Newton steps on the residual
+$F(u)=G(u)-u$ with the Jacobian applied matrix-free through GMRES. It
+converged in \emph{every} regime tried, in a strikingly constant 31--40
+Newton iterations regardless of difficulty --- the signature of global
+convergence via linesearch. The cost is wall-clock: each Newton step requires
+many GMRES inner iterations, each a full function evaluation, so it runs
+3--6$\times$ slower than Anderson where Anderson works.
+
+Tuning follows SASfit's own \code{KIN\_sasfit\_configure()}:
+\code{MaxNewtonStep}$=100n$ (not $n$), \code{FuncNormTol}$=10^{-10}$ and
+\code{ScaledStepTol}$=10^{-13}$ (deliberately different from each other),
+\code{MaxRestarts}$=10$, \code{ETACHOICE1}.
+
+\paragraph{Tier 3 --- Picard}, undamped then progressively damped.
+
+\paragraph{The Python side.} \code{sundials4py} is available as a prebuilt
+wheel on PyPI (version 7.8.0), so no binding generation or C++ build is
+needed. Measured on the same problem, KIN\_FP is the best of the Python
+solvers on every count: it agrees with the others where they converge, is
+2--4$\times$ faster, and on the hard state point it fails to converge in
+0.9\,s rather than converging onto a spurious root.
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+state point & KIN\_FP & \code{scipy} Anderson & Picard\\
+\midrule
+$\varphi=0.02$, $K=1$ & \textbf{0.1\,s} & 0.2\,s & 0.1\,s\\
+$\varphi=0.1$, $K=0.2$ & \textbf{0.2\,s} & 0.8\,s & ---\\
+$\varphi=0.1$, $K=1$ & rejected, 0.9\,s & rejected, 5.6\,s & diverged, 56\,s\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A caution recorded earlier in this project --- that
+\code{sundials4py} might silently ignore \code{KINSetMAA} when it is called
+after \code{KINInit}, as pyozGUI does --- was \emph{tested and found to be
+unfounded}. On a deliberately slow linear fixed point, MAA${}=0$ took 757
+iterations and MAA${}=5$ took 93, \emph{identical in both call orders}, so
+Anderson acceleration is genuinely active. The C requirement is nonetheless
+real: calling \code{KINSetMAA} after \code{KINInit} segfaults on SUNDIALS
+7.1.1, so the C core keeps the documented order.
+
+\begin{table}[htbp]
+\centering
+\caption{Solver tier actually used, and wall-clock time, across seven
+parameter regimes (C implementation, SUNDIALS~7, $N_r=4095$).}
+\label{tab:tiers}
+\begin{tabular}{lcc}
+\toprule
+regime & time & tier\\
+\midrule
+$p=3$, $s=0.2$              & 0.25\,s & Anderson\\
+$p=1$ monodisperse          & 0.03\,s & Anderson\\
+$p=5$, $s=0.3$              & 6.85\,s & Newton--Krylov\\
+$p=3$, $s=0.4$              & 0.32\,s & Anderson\\
+$p=3$, $s=0.2$, $5\times$ density   & 0.29\,s & Anderson\\
+$p=3$, $s=0.2$, $0.2\times$ density & 0.25\,s & Anderson\\
+$p=7$, $s=0.25$             & 4.11\,s & Anderson\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Never trust the convergence flag.} \code{KINSol} can return
+\code{KIN\_SUCCESS} after diverging: once the RY closure's exponent clipping
+pins values near $10^{217}$ the internal stopping test is defeated. This was
+observed at $p=5$, $s_\sigma=0.3$, where $S^M$ was returned as
+$\sim10^{222}$ \emph{with a success flag}. Both KINSOL drivers therefore
+recompute the residual after \code{KINSol} returns and reject the result
+unless it really is small. With that check in place the regime correctly falls
+through to Newton--Krylov and returns the right answer.
+
+%======================================================================
+\section{The SASfit plugin}
+
+The C implementation is shipped as
+\code{src/plugins/ry\_polydisperse\_yukawa/}, exporting
+\code{sasfit\_sq\_RYPolydisperseYukawa}. It follows the established plugin
+conventions: \code{sasfit\_cmake\_plugin()}, \code{include/private.h}, Doxygen
+\code{\textbackslash defgroup}/\code{\textbackslash ingroup} with an HTML
+parameter table, \code{SASFIT\_PLUGIN\_EXP\_*} registration, and the
+\code{func}/\code{\_f}/\code{\_v} triad with \code{\_f} and \code{\_v} stubbed
+to $0$ as in SASfit's own \code{sq\_*} plugins.
+
+\paragraph{Transform.} The radial transform is a DST-I built from a radix-2
+real FFT, which is why $N_r+1$ must be a power of two; $N_r=2^{12}-1$ at 100
+points per $\sigma$ matches the Python grid exactly. The DST-I agrees with
+\code{scipy.fft.dst(type=1)} exactly.
+
+\paragraph{Caching.} A solve costs a few tenths of a second, so re-solving per
+$q$-point would make any scan or fit unusable. The solved system is cached on
+the full parameter set and successive solves warm-start from the previous
+$\gamma$; 2000 further $q$-points after the first cost effectively nothing.
+
+\paragraph{Portability.} Builds and runs against both SUNDIALS~7.1.1 and
+6.4.1 with identical results (v7 about 30\% faster). The one relevant API
+break is \code{SUNContext\_Create}, whose first argument became a typed
+\code{SUNComm} with a \code{SUN\_COMM\_NULL} sentinel in v7; this is handled
+by a macro switched on \code{SUNDIALS\_VERSION\_MAJOR}. Version~7 also
+requires \code{-lsundials\_core}, which does not exist in v6.
+
+\paragraph{Performance history.} Four measured steps, each kept as a test:
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+change & time\\
+\midrule
+initial (GSL \code{LU\_decomp} per $q$-point, damped Picard) & 15.1\,s\\
+inline small-matrix solve + upper-triangle symmetry          & 8.3\,s\\
+undamped Picard                                              & 2.3\,s\\
+Anderson (\code{KIN\_FP}) + Picard pre-conditioning          & \textbf{0.26\,s}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first version was \emph{slower than \code{numpy}}, because it performed
+3.4 million GSL $3\times3$ \code{LU\_decomp} calls, where GSL's generality
+dominates the actual arithmetic.
+
+\paragraph{Agreement with Python.} The full $S^M(q)$ curve matches the Python
+implementation to $7.1\times10^{-11}$ relative on the Picard path and
+$1.3\times10^{-8}$ on the Anderson path (the latter being the solver
+tolerance, not an error).
+
+\paragraph{$\alpha$ in the plugin.} The consistency search costs three extra
+OZ solves per trial value and is far too slow inside a fit. The plugin
+therefore takes $\alpha$ as a parameter; it should be determined once in the
+GUI (\S\ref{sec:alpha}) and then held fixed, which is justified because
+$\alpha$ varies slowly with density --- the same reasoning
+\cite{daguanno1991} use when holding it constant across their own
+finite-difference density derivative.
+
+%======================================================================
+\section{New GUI tabs}
+
+\code{oZgui.py} gained a top-level notebook and an \code{\_addExtraTabs()}
+hook driven by a registry,
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+EXTRA_TABS = [
+    ("polydisperse_yukawa_tab",     "PolydisperseYukawaTab",     "Polydisperse Yukawa"),
+    ("robertus_shs_tab",            "RobertusSHSTab",            "Robertus SHS"),
+    ("ry_polydisperse_yukawa_tab",  "RYPolydisperseYukawaTab",   "RY Polydisperse Yukawa"),
+]
+\end{lstlisting}
+Each tab is a self-contained \code{ttk.Frame} isolated by \code{try/except},
+so adding one is a single line and an import failure costs only that tab.
+
+Both new tabs follow the same pattern: a parameter panel; plot tabs for
+$I(Q)$, the approximation error, $S_{ij}(Q)$, $S(Q)$ and the size
+distribution; a Summary tab; a threaded compute handing results back through a
+queue (Tk is not thread-safe); and ASCII/CSV export.
+
+\paragraph{Approximation schemes.} Because both new SAS classes derive from
+the same \code{PolydisperseSASBase}, all six of SASfit's schemes for combining
+a structure factor with a size distribution --- monodisperse, decoupling
+(Kotlarchyk--Chen), local monodisperse (Pedersen), partial structure factors,
+scaling (Gazzillo) and van der Waals one-fluid --- come for free, and the
+error of each can be read directly off the plot. The approximation code is
+byte-identical between the tabs, so comparing them is a genuine test of how
+those approximations fare for a different interaction rather than a comparison
+of two implementations.
+
+\paragraph{Failure reporting.} An individual scheme that fails does not lose
+the run: it is marked ``unavailable'' in the summary. This matters because the
+\emph{monodisperse} reference can have no PY solution at a state point where
+the polydisperse system does. Adhesive-sphere failures are additionally
+translated into actionable advice --- \emph{increase} $\tau$, since smaller
+$\tau$ is stickier and below $\tau_c(\varphi)$ the adhesive PY closure has no
+physical solution at all.
+
+\paragraph{$\alpha$ is not exposed.} Following \S\ref{sec:alpha}, the RY tab
+has no $\alpha$ entry field. It is solved for on every Compute and reported in
+the Summary, together with the residual and an explicit warning when no
+consistent value exists.
+
+
+%======================================================================
+\section{Generic polydisperse models: any potential, any closure}
+\label{sec:generic}
+
+The multicomponent machinery of \S\ref{sec:conventions} was initially reached
+only through one bespoke potential. This section describes its generalisation
+to \emph{any} of the library's eighteen one-component potentials, combined
+with any closure that works multicomponent and any form factor.
+
+\subsection{Reusing eighteen setters unmodified}
+
+The potentials are not rewritten. \code{getrArray()} gains an override; the
+builder points it at $r/\sigma_{ij}$ and calls the ordinary one-component
+setter. Because every setter measures its hard core against
+\code{hardSphereDiameter}, which is unity in those reduced units, that core
+lands exactly at $\sigma_{ij}$ while the tail is evaluated at the reduced
+separation. The mixing rule is therefore
+\begin{equation}
+\sigma_{ij}=\tfrac12(\sigma_i+\sigma_j),
+\qquad
+u_{ij}(r) = u\!\left(r/\sigma_{ij}\right),
+\label{eq:reducedtail}
+\end{equation}
+i.e.\ every pair sees the same interaction \emph{shape} in units of its own
+contact distance. This is the assumption Robertus \emph{et al.}\ make for
+size-independent stickiness, and it is what makes the construction
+potential-agnostic: $\varepsilon$, $\delta$, $n$, $\tau$ keep their
+reduced-unit meaning for every pair, so no per-potential mixing rule need be
+invented.
+
+\begin{remark}
+Equation \eqref{eq:reducedtail} is a modelling choice, not a derivation. For
+Lennard-Jones the conventional alternative is Lorentz--Berthelot,
+$\varepsilon_{ij}=\sqrt{\varepsilon_i\varepsilon_j}$ with per-species
+$\varepsilon$; that is a different model and would require per-species tail
+parameters, which the builder deliberately does not invent.
+\end{remark}
+
+\paragraph{Charge-coupled potentials are refused.} DLVO, DLVO-Hydra,
+IonicMicrogel and the dedicated polydisperse Yukawa have amplitudes that scale
+with particle size and a $\kappa$ set by the whole distribution through the
+counterion density \eqref{eq:kappa}. The reduced-tail rule is simply wrong for
+them, so they are rejected with a message rather than silently mis-modelled.
+
+\paragraph{Verification.} With $s_\sigma=0$ and one class the generic path
+reproduces the ordinary one-component setters \textbf{bit-identically}
+(maximum difference $0.00\times10^{0}$ for hard spheres, square well and
+Lennard-Jones; the first and third reproduce the recorded values $2.3561180274$
+and $2.1635946756$). This is the sharpest available check that the
+generalisation leaves validated physics untouched.
+
+\subsection{Quadrature rule per distribution}
+\label{sec:nodes}
+
+All four supported distributions (Schulz, Gaussian, log-normal, Weibull) have
+\emph{analytic} moments, so computing $\langle\sigma^n\rangle$ is never the
+difficulty. The difficulty is the map from moments to nodes: the Golub--Welsch
+Hankel eigenproblem is classically ill-conditioned even with exact input.
+
+\begin{table}[htbp]
+\centering
+\caption{Condition number of the log-normal Hankel matrix built from exact
+moments. Double precision carries about $10^{16}$; past that Cholesky does
+\emph{not} fail, it silently returns nonsense.}
+\begin{tabular}{lccc}
+\toprule
+ & $s=0.3$ & $s=0.4$ & $s=0.5$\\
+\midrule
+$N=6$  & $1.6\times10^{7}$  & $1.7\times10^{7}$  & $1.2\times10^{8}$\\
+$N=8$  & $2.1\times10^{10}$ & $1.9\times10^{11}$ & $4.7\times10^{13}$\\
+$N=10$ & $7.0\times10^{13}$ & $1.7\times10^{16}$ & $5.4\times10^{19}$\\
+$N=12$ & $6.4\times10^{17}$ & $1.2\times10^{21}$ & $2.3\times10^{27}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A closed-form classical rule is therefore used wherever one exists, bypassing
+the Hankel step entirely: generalised Gauss--Laguerre for the Schulz/gamma
+weight and Gauss--Hermite for the Gaussian, both stable in double precision;
+Golub--Welsch with 200-digit arithmetic only for log-normal and Weibull, which
+have no classical rule. All four are moment-exact to $\sim10^{-16}$.
+
+\paragraph{A physical guard on the Gaussian.} Gauss--Hermite places its
+outermost node at $u\approx\pm2.86$, so $\sigma$ reaches zero near
+$s\approx0.35$. A form factor tolerates a vanishing bin; a structure factor
+does not, because a hard core must be placed at every $\sigma_{ij}$. Nodes
+below $10^{-3}\langle\sigma\rangle$ are dropped and the weights renormalised
+--- sacrificing moment-exactness rather than physicality. The test is
+deliberately \emph{relative}: at $s=0.35$ the node sits at $10^{-4}$, positive
+but still a zero-diameter particle, so a bare $\sigma>0$ check is insufficient.
+
+\subsection{Structure factor and form factor need different resolutions}
+\label{sec:nff}
+
+The two averages behave differently in $\sigma$. $S_{ij}(Q)$ varies smoothly
+with size, so three to five moment-matched classes suffice --- and the solve
+costs $O(p^2)$ pair transforms, so $p$ should stay small. The form-factor
+average $\langle|F|^2\rangle$ oscillates: at high $Q$ the phase $QR$ spans
+about $Q\langle\sigma\rangle s_\sigma$ radians across the distribution. The
+two class counts are therefore separated, with the rule of thumb
+$p_{\mathrm{FF}}\gtrsim Q_{\max}\langle\sigma\rangle s_\sigma$.
+
+The underlying defect was subtler than resolution, and is instructive. Since
+$S^{\mathrm{AL}}_{ij}=\delta_{ij}+\sqrt{\rho_i\rho_j}\,h_{ij}$, interpolating
+the \emph{whole} matrix onto a finer size grid smears the Kronecker delta into
+a band --- which converts the incoherent sum $\sum_i|F_i|^2$ into the coherent
+$|\sum_i F_i|^2$, and coherent addition of form factors is precisely what
+oscillates. Only $h_{ij}$ is interpolated; the delta is re-imposed exactly.
+
+\begin{table}[htbp]
+\centering
+\caption{High-$Q$ ripple against brute-force integration of
+$\langle|F|^2\rangle$ with 4000 points, $s_\sigma=0.3$.}
+\begin{tabular}{lc}
+\toprule
+ & ripple\\
+\midrule
+brute-force reference        & 0.038\\
+5 classes (before)           & 1.91\\
+$p_{\mathrm{FF}}=40$         & \textbf{0.041}\\
+$p_{\mathrm{FF}}=160$        & 0.041\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}[Two plausible wrong diagnoses]
+Both are recorded because each looked convincing. First, ``too few classes'':
+disproved by its own test, since the ripple did not converge away even at 30
+classes. Second, ``Gauss nodes are unsuited to an oscillatory integrand'': a
+true statement, and replacing them with a dense grid was the right change, but
+not the cause --- the ripple actually got \emph{worse} ($1.91\rightarrow3.14$).
+The brute-force reference is what localised the fault, by showing
+$I_{\text{dilute}}$ correct at $0.040$ while $I_{\text{exact}}$ gave $2.79$ at
+$\varphi=10^{-6}$, where $S$ must be the identity. Ten lines of direct
+integration should have been written before any quadrature was tuned.
+\end{remark}
+
+\subsection{Length scale and the radius convention}
+
+The Ornstein--Zernike equations are \emph{always} solved in reduced units
+(mean diameter unity): the radial grid spans only about 41 diameters, so a
+physical $\sigma=100$ would place every hard core off the end of it. A mean
+radius supplied by the user is applied \emph{after} the solve, to the
+diameters, the number densities ($n\propto L^{-3}$, which leaves $\varphi$
+invariant) and the $q$ axis ($q_{\text{red}}=QL$); the tail parameters are
+already reduced and are untouched.
+
+The scattering radius equals the hard-core radius, $R_i=\sigma_i/2$, for every
+class. Verified at $R=50$: the $S(Q)$ peak moves to $Q=0.06608$ while
+$Q\sigma=6.608$ (hard spheres expect $\approx2\pi$) and $QR=4.496$ at the
+first $I(Q)$ minimum (exact sphere zero $4.493$) --- both unchanged from the
+dimensionless case, confirming a pure change of units.
+
+\begin{remark}[Known limitation]
+Scattering size and interaction size are perfectly correlated by construction:
+no independent width, no offset. That is correct for charged colloids or bare
+silica, where the particle \emph{is} the hard core; it is wrong for sterically
+stabilised particles whose brush is contrast-matched ($R<\sigma/2$), for
+charged colloids at low salt where the effective core exceeds the physical
+particle, and for solvated or partially matched shells.
+\end{remark}
+
+%======================================================================
+\section{Closure suite extended and cross-validated}
+\label{sec:closures}
+
+The closure suite was checked against \code{OrnsteinZernike.jl}, an
+independently written Julia library published with a peer-reviewed review.
+Bridge functions were compared at prescribed $\gamma$ by evaluating
+$B=\ln g+\beta u-\gamma$ from this library's $c(r)$.
+
+\begin{table}[htbp]
+\centering
+\caption{Bridge functions against the independent Julia implementation.}
+\begin{tabular}{lc}
+\toprule
+closure & $\max|B_{\text{ours}}-B_{\text{Julia}}|$\\
+\midrule
+Verlet                & $1.1\times10^{-16}$\\
+BPGG                  & $1.1\times10^{-16}$\\
+Bomont--Bretonnet     & $3.3\times10^{-16}$\\
+Martynov--Sarkisov    & $2.2\times10^{-16}$\\
+Charpentier--Jackse (CJVM) & identical formula\\
+Zerah--Hansen (HMSA)  & identical after substitution\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Choudhury--Ghosh differs by parameterisation rather than error: this library
+uses a density-dependent coefficient $1.0175-0.275\cdot6\varphi/\pi$ whose
+zero-density limit is exactly Julia's constant $\alpha=1.01752$.
+
+\begin{remark}
+A first run reported Verlet as differing. The cause was mine: Julia's default
+is $B=8/5$ and it writes the denominator as $1+B\gamma/2$, which is the same
+$0.8\gamma$ used here. Checking the actual defaults before reporting a
+discrepancy is the lesson; the same pattern --- an apparent disagreement that
+is really an assumption of one's own --- recurs throughout this project.
+\end{remark}
+
+Three closures were added from that comparison: Khanpour
+($B=\ln(1+\alpha\gamma)/\alpha-\gamma$), Modified Verlet, and Extended
+Rogers--Young, whose bridge function is the ordinary RY construction with one
+extra quadratic term,
+\begin{equation}
+\phi=\frac{e^{f\gamma}-1}{f},
+\qquad
+B=-\gamma+\ln\!\left(1+\phi+a\phi^2\right),
+\end{equation}
+so that $a=0$ reduces \emph{exactly} to RY --- verified to
+$2.5\times10^{-16}$, an internal check independent of the Julia transcription.
+All three inherit the multicomponent path, every solver and the GUI dropdown
+automatically, because each is an elementwise expression in $\gamma$.
+
+\begin{remark}[Naming]
+This library's \code{KH} is Kovalenko--Hirata, which abbreviates identically
+to Khanpour but is a different closure; the new one is therefore spelled out
+in full. \code{CJVM} was confirmed to be Charpentier--Jackse, its formula
+matching Julia's exactly.
+\end{remark}
+
+\paragraph{Availability by potential.} Closures needing a one-component
+reference solve (Reference HNC, Modified HNC) or a hard-sphere-specific
+construction (Rescaled MSA, EuRah, ZSEP) cannot be used with a polydisperse
+potential, and the GUI now offers 19 of 23 rather than offering all and
+failing. Martynov--Sarkisov, Vompe--Martynov and CJVM are deliberately
+\emph{not} hidden: they are structurally fine and fail only because their
+square-root bridge overflows $\exp(\gamma+B)$ for strongly coupled charged
+systems, a limitation that applies equally in one component.
+
+%======================================================================
+\section{Consistency search for a general potential}
+\label{sec:genericalpha}
+
+The scalar condition \eqref{eq:chicomp}--\eqref{eq:virial} is available for
+any potential built by the generic route. Two points differ from
+\S\ref{sec:alpha}. First, $(\beta U)'$ is differentiated \emph{numerically},
+because the builder reuses arbitrary setters and cannot know their analytic
+derivative. Second, the reduced-tail potential \eqref{eq:reducedtail} is
+density-independent, so perturbing $\varphi$ leaves it untouched --- which is
+not automatic, and is exactly the trap that produced a residual stuck near
+$+65$ in the charge-parameterised case.
+
+\begin{table}[htbp]
+\centering
+\caption{Both routes against analytic Percus--Yevick hard spheres,
+$\eta=0.3$. Residual differences are grid discretisation.}
+\begin{tabular}{lcc}
+\toprule
+quantity & analytic & measured\\
+\midrule
+$\chi^{-1}$      & 10.6622 & 11.0678\\
+$\beta P/\rho$   & 3.8163  & 3.8896\\
+PY residual      & $+1.2482$ & $+1.3284$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Rogers--Young residual crosses zero between $\alpha=0.1$ and $0.5$ and
+converges onto the HNC limit at large $\alpha$ ($-4.1495$ against HNC
+$-4.1497$) --- exactly the behaviour that makes the closure work. A live
+search returns $\alpha=0.2441$ with residual $-6.9\times10^{-5}$.
+
+\begin{remark}[Judge the residual relatively]
+$\chi^{-1}$ is of order 10 for a dense fluid, so an absolute residual of
+$10^{-3}$ is a \emph{relative} $10^{-4}$. An absolute threshold rejected a
+perfectly good root ($\alpha=0.2443$, residual $-1.2\times10^{-3}$) as ``no
+consistent value found''. The criterion is now relative to $\chi^{-1}$.
+\end{remark}
+
+\begin{remark}[A false alarm worth recording]
+The search was first exercised at $s_\sigma=0.2$, $p=3$, $\varphi=0.3$, where
+the residual saturated near $+2.11$ with almost no $\alpha$ dependence, and
+this was read as a broken virial route. With three moment-matched classes the
+largest diameter reaches $\sigma\approx2.48$, so at $\varphi=0.3$ the biggest
+spheres are at or past their own close packing: the \emph{state} was
+unreachable, not the code wrong. Diagnosing a numerical defect from a single
+pathological point, without first checking a case with a known answer, was the
+error.
+\end{remark}
+
+%======================================================================
+\section{Defects found during validation}
+\label{sec:traps}
+
+Each of the following produced plausible-looking wrong answers rather than an
+obvious failure, which is why they are recorded.
+
+\begin{enumerate}
+\item \textbf{HMSA returned $S(q)=1$ everywhere} for hard spheres and for
+every potential except Lennard-Jones, Yukawa and DLVO. The cause:
+\code{repulsivePartOfP2Ppotential} and
+\code{attractivePartOfP2Ppotential} were never populated for those
+potentials, so $e^{-0}=1$ gave no hard-core exclusion and $c(r)=0$ became an
+exact fixed point. Fixed by a general fallback in
+\code{setPotentialByName()}. Independently re-confirmed afterwards: HMSA and
+RY are now bit-identical for hard spheres, as the physics requires (no
+attractive tail).
+
+\item \textbf{Screening used $Z^2$ instead of $Z$.} Equation
+\eqref{eq:kappa} involves the first power. The wrong version gives
+$g_{\max}\approx1.006$, i.e.\ an essentially ideal gas.
+
+\item \textbf{The virial route differentiated a density-dependent
+potential} (\S\ref{sec:alpha}).
+
+\item \textbf{\code{KINSol} reported success after diverging}
+(\S\ref{sec:solvers}).
+
+\item \textbf{\code{KINSetMAA} must precede \code{KINInit}.} The Python
+binding calls them in the opposite order; doing so in C segfaults on SUNDIALS
+7.1.1, because the Anderson depth is set without the corresponding arrays
+being allocated. That Python tolerates it suggests the setting may simply be
+ignored there --- in which case that path runs plain fixed-point iteration
+rather than the Anderson acceleration it appears to request. This is worth
+checking on the Python side.
+
+\item \textbf{DST-I factor of two.} For an odd extension,
+$\operatorname{Im}V[k+1]=-y[k]$; the factor 2 is already in the DFT.
+
+\item \textbf{Warm starting silently did nothing}, because
+\code{ryp\_build\_potential} cleared the stored guess --- precisely the case
+in which it should be kept.
+
+\item \textbf{A loop that exhausted its iteration budget returned success},
+because the status variable was overwritten by each call to the fixpoint map.
+
+
+\item \textbf{Two placeholder ``engines'' that computed nothing.} Both the
+adhesive-sphere and the Rogers--Young Python cores shipped as stubs that
+returned plausible numbers without solving anything.
+
+\code{robertus\_shs\_core\_py.py}'s \code{solve()} body was a bare
+\code{pass} under a docstring reading ``Dummy solve method for
+compatibility'' --- the multicomponent PY $\lambda_{ij}$ system was never
+formed. \code{S\_matrix()} started from \code{np.ones((p,p))} and filled
+\emph{every} element, diagonal and off-diagonal alike, from a
+\emph{single}-component expression $1/(1+24\varphi A)$ times an ad-hoc
+``sticky correction'', clamped with \code{np.maximum(S,0.1)} to force
+positivity. The size classes were therefore never coupled.
+
+The diagnostic that exposed it is worth remembering: in the dilute limit an
+Ashcroft--Langreth $\mathsf{S}$ must tend to the \emph{identity}. The
+placeholder gave diagonal $\approx1$ \emph{and off-diagonal} $\approx1$, i.e.
+an all-ones matrix. $I_{\text{exact}}$ then collapses from
+$\sum_i\rho_iF_i^2$ to $(\sum_i\sqrt{\rho_i}F_i)^2$, inflating it by
+$(\sum_i\sqrt{w_i})^2$ --- a factor depending only on the \emph{number of
+classes}. Measured $I_{\text{exact}}/I_{\text{monodisperse}}$ at
+$s_\sigma=0.01$, where every scheme must agree, was $1.00$, $1.97$, $2.53$,
+$5.69$, $8.84$, $18.2$ for $1,2,4,8,12,24$ classes, and the dilute limit gave
+$8.83$ instead of $1$.
+
+This also explains the reported symptom that ``the exact model does not
+respond to the distribution width'': polydispersity entered only through the
+class weights in that spurious sum, never through the physics. The
+approximation schemes call the real \code{PolydisperseSASBase} machinery and
+so did respond --- hence exact and approximate disagreeing in both scale and
+width dependence. Note the first diagnosis attributed this to a missing
+Ashcroft--Langreth conversion; that was wrong, since the diagonal was already
+correct, and only the off-diagonal test identified the true cause.
+
+Replaced by a faithful port of the C engine (\code{py\_compute\_ab},
+\code{py\_residual}, \code{build\_Q\_matrix},
+\code{rshs\_structure\_matrix}). Afterwards: dilute off-diagonal
+$2\times10^{-7}$, $I_{\text{exact}}/I_{\text{dilute}} = 0.99999$,
+$I_{\text{exact}}/I_{\text{monodisperse}} = 1.000$ for \emph{every} class
+count, $\lambda$ residual $2\times10^{-16}$, and $S(q)$ varying smoothly with
+width ($0.7276$, $0.7481$, $0.8050$, $0.8760$ at
+$s_\sigma=0.01,0.1,0.2,0.3$).
+
+Separately, \code{ry\_polydisperse\_core\_py.py} had no density or volume
+fraction at all in its constructor, performed no OZ iteration, and built
+$S_{ij}$ from an ad-hoc closed-form blend. It was replaced by an adapter onto
+the real multicomponent solver (\S\ref{sec:zk}).
+
+\item \textbf{Unconverged and spurious solutions returned as answers.}
+\code{picardIteration()} prints ``Picard did not converge after $N$ steps''
+and then calls \code{derivePhysicalQuantitiesFromFixpoint()} regardless,
+exposing no flag, so callers cannot tell. For an attractive Yukawa
+($K=1$, $\varphi=0.1$, $z=2$) it returned a plausible $S(Q)=2.65$ after
+diverging to a residual of $4.8\times10^{204}$.
+
+Adding a residual check is necessary but \emph{not sufficient}: the RY
+equations have multiple fixed points, and different solvers converge cleanly
+onto different ones. At that same state point the hand-written Anderson gave
+$S(0.5)=17.03$ and \code{scipy} Anderson gave $9.71$, \emph{both} with
+residual ${\sim}10^{-12}$ --- and with $\min S_{NN}(q) = -9.19$ and $-17.21$.
+A structure factor is a variance and cannot be negative, so both were
+spurious roots. A physicality screen ($\min S_{NN} \ge 0$) is therefore
+applied in addition to the residual check. Biggs--Andrews makes the same
+point from the other side: it declared convergence after 21 steps and failed
+the residual check.
+
+
+\item \textbf{The Kronecker delta must not be interpolated.} Smearing
+$\delta_{ij}$ across a finer size grid turns the incoherent $\sum_i|F_i|^2$
+into the coherent $|\sum_i F_i|^2$, reinstating exactly the form-factor
+oscillations that polydispersity should remove
+(\S\ref{sec:nff}). It presented as a physics question --- ``at
+$s_\sigma=0.3$ no oscillations should be visible'' --- and was correct as
+such.
+
+\item \textbf{A single class stored as a $(1,1,N)$ array.}
+\code{isMulticomponent()} is false either way, so the scalar code path ran on
+three-dimensional input and every derived curve came back shaped $(1,1,N)$.
+\code{getRDF().max()} still returned the right number, which is precisely why
+the bit-identical $p=1$ check passed and hid it; anything expecting a
+\emph{curve} then failed with ``object too deep for desired array''.
+
+\item \textbf{A convergence test against the wrong array.} \code{x\_0} holds
+the \emph{start} value, not the converged fixpoint, so every monodisperse
+reference solve was rejected. It surfaced as all six approximation schemes
+reporting ``no monodisperse MSA solution'' --- a message from the base class
+that looked like a physical obstruction rather than a caller's bug.
+
+\item \textbf{Two silent rejections in \code{setPotentialByName()}.} It
+counted arguments \emph{with defaults} as mandatory, making any setter that
+carries optional parameters unreachable; and array-valued parameters appeared
+in the GUI as numeric boxes defaulting to \code{1.0}, failing a length check.
+Both returned quietly after printing, leaving the potential untouched so that
+every closure produced the trivial $S(q)=1$. The array parameters are now
+keyword-only, so \code{getfullargspec()[0]} --- which the GUI builds its
+fields from --- lists only the numbers a user can type.
+
+\item \textbf{GUI defaults contradicting the documented physics.} Every
+potential parameter box was seeded with \code{1.0}, so a user who left
+\code{chargeExponent} alone silently got $n=1$ (charge linear in size) while
+the documentation promised $n=2$ (constant surface charge density) --- a
+different model, with nothing on screen to say so. Fields are now seeded from
+each setter's own defaults.
+
+\item \textbf{Tk touched from a worker thread.} Reading the solver dropdown
+inside the compute worker raised ``main thread is not in main loop'' and lost
+the entire run. Such controls are now read on the main thread and carried into
+the worker.
+
+\item \textbf{Two convention errors, each worth about an order of
+magnitude.}
+\emph{(a)} The Ashcroft--Langreth conversion \eqref{eq:alconv} was omitted in
+the adhesive-sphere SAS layer, inflating $I_{\text{exact}}$ by a factor that
+scales with the number of classes: the ratio
+$I_{\text{exact}}/I_{\text{monodisperse}}$ at $s_\sigma=0.01$, where every
+scheme must agree, was $1.00$, $1.97$, $2.53$, $5.69$, $8.84$ and $18.2$ for
+$1,2,4,8,12,24$ classes, and the dilute limit gave $8.83$ instead of $1$.
+Because the number of classes is held fixed while sweeping the width, the
+exact curve sat about nine times too high and its genuine width dependence was
+visually swamped --- the reported symptom was ``the exact model looks
+independent of the distribution width''.
+\emph{(b)} In the RY wrapper, $\exp(-z\sigma_i/2)$ was applied to
+\code{delta}, double-counting it because
+\code{PolydisperseOneYukawaMSA} takes $\delta_i$ directly. RY's $K$-response
+came out a factor $7.2$ too weak. Notably the \emph{first} implementation was
+correct and a subsequent ``correction'' made from reading the specification
+introduced the error: only the numerical cross-check of
+Table~\ref{tab:msary} settled it.
+\end{enumerate}
+
+%======================================================================
+\section{Regression testing}
+\label{sec:regression}
+
+The one-component regression suite covers eight combinations: PY, HNC, RY,
+HMSA and MSA on hard spheres; PY and RY on Yukawa; HNC on Lennard-Jones. Each
+records $g_{\max}$, $\sum g$, $c(0)$, $\sum c$, $S_{\max}$ and $S(0)$. After
+the multicomponent extension all eight are \textbf{bit-identical} to the
+pre-change baseline. The suite is re-run against the deployed files rather
+than a working copy, and should be re-run after any change to the fixpoint
+operator.
+
+%======================================================================
+\section{Known limitations}
+
+\begin{enumerate}[nosep]
+\item Closures requiring an auxiliary reference solve (RHNC, MHNC, RMSA,
+      EuRah) remain one-component.
+\item Closures reading the repulsive/attractive potential split (HMSA, VM,
+      CJVM, BB, DH, CG, SMSA) are not yet wired for the multicomponent
+      potential; those arrays remain 1-D. PY, HNC, RY, Verlet and BPGG work.
+      RY is the one that matters here.
+\item \code{ryp\_SM()} interpolates linearly between $q$-grid points, which
+      underestimates the main peak by about $0.05\%$.
+\item The plugin's cache is a single static and therefore not thread-safe.
+      SASfit evaluates a model serially in $q$, which matches how it is
+      driven.
+\item The contact-value extrapolation in \eqref{eq:virial} is the least
+      certain step of the consistency search.
+\item A thermodynamically consistent $\alpha$ does not exist everywhere in
+      parameter space; this is reported rather than hidden.
+\item Charges are effective (renormalised), not bare (\S\ref{sec:charge}).
+\end{enumerate}
+
+%======================================================================
+\begin{thebibliography}{9}
+
+\bibitem{daguanno1991}
+B.~D'Aguanno and R.~Klein,
+\emph{Structural effects of polydispersity in charged colloidal dispersions},
+J.~Chem.\ Soc.\ Faraday Trans.\ \textbf{87}, 379 (1991).
+
+\bibitem{daguanno1992}
+B.~D'Aguanno and R.~Klein,
+\emph{Integral-equation theory of polydisperse Yukawa systems},
+Phys.\ Rev.\ A \textbf{46}, 7652 (1992).
+
+\bibitem{rogersyoung1984}
+F.~J.~Rogers and D.~A.~Young,
+\emph{New, thermodynamically consistent, integral equation for simple
+fluids}, Phys.\ Rev.\ A \textbf{30}, 999 (1984).
+
+\bibitem{robertus1989}
+C.~Robertus, A.~P.~Philipse, J.~G.~H.~Joosten and Y.~K.~Levine,
+\emph{Solution of the Percus--Yevick approximation of the multicomponent
+adhesive spheres system applied to the small angle X-ray scattering from
+microemulsions}, J.~Chem.\ Phys.\ \textbf{90}, 4482 (1989).
+
+\bibitem{blumhoye1978}
+L.~Blum and J.~S.~H\o ye,
+\emph{Solution of the Ornstein--Zernike equation with Yukawa closure for a
+mixture}, J.~Stat.\ Phys.\ \textbf{19}, 317 (1978).
+
+\bibitem{blumarias2006}
+L.~Blum and M.~Arias,
+\emph{Structure of multi-component/multi-Yukawa mixtures},
+arXiv:cond-mat/0602477 (2006).
+
+\bibitem{wagner1991}
+N.~J.~Wagner, R.~Krause, A.~R.~Rennie, B.~D'Aguanno and J.~Goodwin,
+\emph{The microstructure of polydisperse, charged colloidal suspensions by
+light and neutron scattering}, J.~Chem.\ Phys.\ \textbf{95}, 494 (1991).
+
+\bibitem{rastogi1996}
+S.~R.~Rastogi, N.~J.~Wagner and S.~R.~Lustig,
+\emph{Rheology, self-diffusion, and microstructure of charged colloids under
+simple shear by massively parallel dynamic simulations},
+J.~Chem.\ Phys.\ \textbf{104}, 9249 (1996).
+
+\bibitem{lee1995}
+L.~L.~Lee,
+\emph{An accurate integral equation theory for hard spheres: role of the
+zero-separation theorems in the closure relation},
+J.~Chem.\ Phys.\ \textbf{103}, 9388 (1995).
+
+\end{thebibliography}
+
+\end{document}

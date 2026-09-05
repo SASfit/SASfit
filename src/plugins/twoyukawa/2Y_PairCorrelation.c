@@ -110,7 +110,12 @@ int PairCorrelation_GSL( double phi, double dq, double* Sq, double* dr, double* 
 //
 int PairCorrelation( double phi, double dq, double* Sq, double* dr, double* gr, int N )
 {
-	double* data = malloc( sizeof(double) * N * 2);
+	/* Allocate one extra element so that the `data-1` pointer passed to
+	   dfour1() below (Numerical Recipes' 1-based array convention) stays
+	   within the allocated block. data itself still addresses data[0..2N-1]
+	   exactly as before; only the underlying allocation/free target changes. */
+	double* data_buf = malloc( sizeof(double) * ( N * 2 + 1 ) );
+	double* data = data_buf + 1;
 	int nn,error,k;
 	double alpha,real,imag;
 	double Pi = 3.14159265358979323846264338327950288;   /* pi */
@@ -164,7 +169,7 @@ int PairCorrelation( double phi, double dq, double* Sq, double* dr, double* gr, 
 	}
 
 	// release allocated memory
-	free( data );
+	free( data_buf );
 
 //	printf(" done with FFT assignment -- Using Numerical Recipes, not GSL\n");
 

@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyozgui"
+version = "0.1.0"
+description = "Ornstein-Zernike solver toolkit with a Tk GUI: closures, polydisperse structure factors and SAS models"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+# mpmath: high-precision Golub-Welsch nodes for log-normal and Weibull size
+#   distributions (the moments-to-nodes map is ill-conditioned in float64)
+# sundials4py: KINSOL fixed-point and Newton-Krylov solvers
+full = ["mpmath", "sundials4py"]
+
+[project.scripts]
+pyozgui = "pyozgui.oZgui:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -8,6 +8,7 @@
 
 // define shortcuts for local parameters/variables
 #define R_CORE	param->p[0]
+#undef V_CORE
 #define V_CORE	param->p[1]
 
 scalar sasfit_ff_cyl_chains_rw__rc(scalar q, sasfit_param * param)

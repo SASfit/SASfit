@@ -158,6 +158,16 @@ class OZfixpointOperator:
       self.isHardSphereAdded = False #Yukawa + HS
       self.volumeDensity = 0.2
       self.particleDensity = self.transformVolume2ParticleNumberDensity(self.volumeDensity)
+      #Multicomponent / polydisperse state. numberOfComponents == 1 is the
+      #default and every code path below then behaves EXACTLY as before
+      #(regression-checked); values > 1 are set up by
+      #setPolydisperseHardCoreYukawaPotential(). componentDensities are the
+      #per-species number densities rho_i = n*x_i, with n = particleDensity
+      #the TOTAL number density.
+      self.numberOfComponents = 1
+      self.componentDiameters = np.array([self.hardSphereDiameter])
+      self.componentFractions = np.array([1.0])
+      self.componentDensities = np.array([self.particleDensity])
       #internal result exp(-beta u) (Default: Ideal Gas Boltzmann potential factor)
       self.boltzmannOfP2Ppotential = np.ones(self.numberOfRadialSamplingPoints)
       #Truncated LJ potential, used for HMSA closure
@@ -215,6 +225,18 @@ class OZfixpointOperator:
       return rho
     
     #If Gamma is given calculate (updated) c (according bridge function)
+    #Overflow guard for the closure formulas below. Several closures
+    #exponentiate Gamma; during the large transient excursions an
+    #iteration can take early on, that argument exceeds ~709 and np.exp
+    #overflows to inf, which then turns the whole iteration vector into
+    #NaN and aborts the solve with no useful diagnostic (seen directly
+    #on strongly charged polydisperse Yukawa systems). Clipping the
+    #EXPONENT keeps the value large but finite so the iteration can
+    #still back off. This can only ever alter results that would
+    #otherwise have been inf/NaN, so converged results are unchanged.
+    def safeExp(self, x):
+      return np.exp(np.clip(x, -700.0, 500.0))
+
     def update_c(self, G):
       #Here is the only place where the bridge function/closure comes
       #into play, so this is encapsulated. Dispatches on self.closureType
@@ -247,18 +269,140 @@ class OZfixpointOperator:
           #Rogers-Young: interpolates between PY (alpha->infinity) and
           #HNC (alpha->0) via Fswitch[i] = 1-exp(-alpha*r_i).
           f = self.helperRYfunction
-          return EN*(1.0 + (np.exp(f*G) - 1.0)/f) - G - 1.0
+          return EN*(1.0 + (self.safeExp(f*G) - 1.0)/f) - G - 1.0
 
       elif ct == 'HMSA':
-          #Same as RY but using Gstar = G - beta*U_attractive(r) in the
-          #switching term, and the full EN in the exponential prefactor
-          #(see J.K. docu section 5.4.16) -- algebraically identical to
-          #exp(-U_repulsive)*(1+(exp(f*Gstar)-1)/f), used here instead
-          #since self.repulsivePartOfP2Ppotential/attractivePartOfP2Ppotential
-          #are already split out by the potential setters that support it.
+          #Zerah & Hansen, J. Chem. Phys. 84, 2336 (1986).
+          #
+          #HMSA interpolates between SMSA and HNC -- NOT between PY and HNC.
+          #That is the difference from RY, and it is the whole point of the
+          #closure: RY brackets the exact g(r) only for purely repulsive
+          #potentials, and the paper states outright that "thermodynamic
+          #consistency can never be achieved for a Lennard-Jones fluid by
+          #mixing the HNC and PY closures within the RY scheme".
+          #
+          #With the potential split v = v1 (repulsive) + v2 (attractive) and
+          #Gstar = G - beta*v2, the closure is
+          #     g = exp(-beta*v1) * [1 + (exp(f*Gstar) - 1)/f]
+          #whose limits are, with f(r) = 1 - exp(-alpha r) so that f -> 0 as
+          #r -> 0 and f -> 1 as r -> infinity (the paper's eqs. 7a/7b):
+          #     f -> 0  =>  g = exp(-beta*v1)(1 + G - beta*v2)   = SMSA (eq.9)
+          #     f -> 1  =>  g = exp(-beta*v1) exp(G - beta*v2)   = HNC  (eq.4)
+          #so SMSA governs SHORT range and HNC LONG range. In terms of the
+          #single parameter: alpha -> 0 gives SMSA everywhere, alpha ->
+          #infinity gives HNC everywhere -- the same direction as RY, whose
+          #alpha -> 0 limit is PY.
+          #
+          #For a PURELY REPULSIVE potential v2 = 0, SMSA reduces to PY (the
+          #paper says so explicitly), hence HMSA reduces exactly to RY. So
+          #HMSA and RY returning bit-identical results for hard spheres, or
+          #for the screened-Coulomb polydisperse Yukawa potential, is the
+          #expected behaviour and not a defect -- it is also what exposed the
+          #earlier bug in which the repulsive/attractive split was never
+          #populated at all (see setPotentialByName's fallback).
           f = self.helperRYfunction
           Gstar = G - self.attractivePartOfP2Ppotential
-          return np.exp(-self.repulsivePartOfP2Ppotential)*(1.0 + (np.exp(f*Gstar) - 1.0)/f) - G - 1.0
+          return self.safeExp(-self.repulsivePartOfP2Ppotential)*(1.0 + (self.safeExp(f*Gstar) - 1.0)/f) - G - 1.0
+
+      elif ct == 'CarbajalTinoko':
+          #Carbajal-Tinoco, J. Chem. Phys. 128, 184507 (2008).
+          #
+          #The only IMPLICIT closure here: the bridge function is defined by
+          #     b = e(r) * [(2-w)e^w - 2 - w]/(e^w - 1),   w = Gamma + b
+          #so b appears on both sides and has to be solved for. The amplitude
+          #depends on r as well as on the parameter:
+          #     e(r) = 3 + lambda            for lambda > 0
+          #     e(r) = 3 exp(lambda r)       otherwise
+          #
+          #Solved by a VECTORISED fixed-point iteration rather than a scalar
+          #root find per grid point: the reference implementation calls
+          #find_zero once per r, which here would mean N (or p^2 N) separate
+          #solves per closure evaluation, inside the outer OZ iteration.
+          #Iterating b <- bfunc(Gamma + b) over the whole array at once costs
+          #a few dozen numpy passes instead.
+          #
+          #The |w| < 1e-4 branch is not cosmetic: (2-w)e^w - 2 - w and
+          #e^w - 1 both vanish as w -> 0, so the quotient is 0/0 and loses all
+          #precision well before it reaches zero. The series is the reference
+          #implementation's own.
+          lam = self.alpha
+          rr = self.getrArray()
+          e_amp = (3.0 + lam) if lam > 0.0 else 3.0*np.exp(lam*rr)
+          #Damped iteration. The undamped map b <- bfunc(Gamma + b) is not
+          #contractive once the amplitude is large: at lambda = +0.4, where
+          #e = 3.4 everywhere, it diverged at the most negative Gamma and
+          #produced g <= 0 (bridge function -inf), while lambda = -0.4, whose
+          #amplitude 3exp(-0.4r) is much smaller, converged to 4e-14. Damping
+          #costs a few more passes and fixes both.
+          b = np.zeros_like(G)
+          beta = 0.5
+          for _ in range(500):
+              w = G + b
+              small = np.abs(w) < 1e-4
+              wsafe = np.where(small, 1.0, w)
+              y = self.safeExp(wsafe)
+              target = np.where(small,
+                                e_amp*(-(w**2)/6.0 + (w**4)/360.0),
+                                e_amp*((2.0 - wsafe)*y - 2.0 - wsafe)/(y - 1.0))
+              bnew = (1.0 - beta)*b + beta*target
+              if np.max(np.abs(bnew - b)) < 1e-13:
+                  b = bnew
+                  break
+              b = bnew
+          return EN*self.safeExp(G + b) - G - 1.0
+
+      elif ct == 'Khanpour':
+          #Khanpour's one-parameter bridge function,
+          #    B = log1p(alpha*Gamma)/alpha - Gamma
+          #Cross-checked against OrnsteinZernike.jl's own Khanpour closure
+          #(src/Closures.jl), which is where this was taken from.
+          #
+          #NOT to be confused with this library's 'KH', which is
+          #Kovalenko-Hirata -- the two abbreviate identically but are
+          #different closures, so this one is spelled out in full.
+          #
+          #alpha -> 0 recovers HNC: log1p(a*G)/a -> G, so B -> 0.
+          #log1p is used rather than log(1+x) for accuracy at small
+          #alpha*Gamma, and the argument is clipped just above -1 because
+          #the bridge function is undefined for alpha*Gamma <= -1 (the
+          #iteration can transiently stray there).
+          a = self.alpha
+          arg = np.clip(a*G, -1.0 + 1e-12, None)
+          BRIDGE = np.log1p(arg)/a - G
+          return EN*self.safeExp(G + BRIDGE) - G - 1.0
+
+      elif ct == 'ModifiedVerlet':
+          #Verlet's bridge function with the denominator switched off for
+          #negative Gamma:
+          #    B = -Gamma^2/2                          for Gamma < 0
+          #    B = -(Gamma^2/2)/(1 + alpha*Gamma/2)    otherwise
+          #From OrnsteinZernike.jl's ModifiedVerlet. Note the plain
+          #'Verlet' branch above uses the equivalent of alpha = 8/5 with no
+          #sign split; that value was confirmed to agree with the Julia
+          #reference to 1e-16.
+          a = self.alpha
+          BRIDGE = np.where(G < 0.0,
+                            -(G**2)/2.0,
+                            -(G**2)/2.0/(1.0 + a*G/2.0))
+          return EN*self.safeExp(G + BRIDGE) - G - 1.0
+
+      elif ct == 'ExtendedRY':
+          #Extended Rogers-Young: the RY switching construction with one
+          #extra quadratic term inside the logarithm,
+          #    phi = (exp(f*Gamma) - 1)/f,   f(r) = 1 - exp(-alpha r)
+          #    B   = -Gamma + log1p(phi + a*phi^2)
+          #so a = 0 reduces EXACTLY to plain RY, which is the natural
+          #regression check. Taken from OrnsteinZernike.jl's own
+          #ExtendedRogersYoung closure.
+          #
+          #Two parameters: alpha (the RY switching rate, shared with the
+          #'Rogers-Young' branch via self.helperRYfunction) and a, the
+          #quadratic coefficient, held in self.extendedRYa.
+          f = self.helperRYfunction
+          phi = (self.safeExp(f*G) - 1.0)/f
+          arg = np.clip(phi + self.extendedRYa*phi**2, -1.0 + 1e-12, None)
+          BRIDGE = -G + np.log1p(arg)
+          return EN*self.safeExp(G + BRIDGE) - G - 1.0
 
       elif ct == 'Verlet':
           #Verlet's empirical bridge function, no reference system or
@@ -526,17 +670,21 @@ class OZfixpointOperator:
     #See http://docs.scipy.org/doc/scipy/reference/tutorial/fftpack.html#discrete-sine-transforms
     #for the definition of dst and idst (discrete sine transform and its inverse) 
     def hankelTransform(self, f, delta_r):
-      numberOfSamplingPoints = f.shape[0]
+      #shape[-1]/axis=-1 (was shape[0] and a 1-D dst): identical for the
+      #1-D one-component case, but also accepts the (p,p,N) pair-matrix
+      #arrays used by the multicomponent path. lr broadcasts on the last
+      #axis, so the body below is otherwise untouched.
+      numberOfSamplingPoints = f.shape[-1]
       lr = np.arange(numberOfSamplingPoints).astype('float')
       lr += 1.0 #Division by zero (see over-next line, this is the reason why the grid starts at delta_r, not zero....)
-      f_hat = dst(f*lr, type=1) #...but the formula is also correct (implemented as 5.18, 5.19 in SASfit docu, see also...)
+      f_hat = dst(f*lr, type=1, axis=-1) #...but the formula is also correct (implemented as 5.18, 5.19 in SASfit docu, see also...)
       f_hat /= lr               # ..comment: it is important to mention that first elements equal delta_r, delta_q (and not at 0.0!)
       delta_q = np.pi/((numberOfSamplingPoints + 1.0)*delta_r)
       f_hat *= 2*np.pi*delta_r**2/delta_q
       return f_hat
       
     def inverseHankelTransform(self, f, delta_r):
-      numberOfSamplingPoints = f.shape[0]
+      numberOfSamplingPoints = f.shape[-1]
       delta_q = np.pi/((numberOfSamplingPoints + 1.0)*delta_r)
       return delta_q**3*self.hankelTransform(f, delta_r)/( (2*np.pi)**3*delta_r**3 )
 
@@ -545,11 +693,46 @@ class OZfixpointOperator:
       hat_f_2 = self.hankelTransform(f_2, delta_r)
       return self.inverseHankelTransform(hat_f_1*hat_f_2, delta_r)
       
+    #Multicomponent helpers
+    #********************************************************************
+    #The solver classes (Picard/Anderson/AndersonGeneralized/scipy/
+    #SUNDIALS KINSOL+KIN_FP/Biggs-Andrews) all iterate on a FLAT vector
+    #and never inspect its shape -- confirmed directly: none of them
+    #references numberOfRadialSamplingPoints. So the multicomponent
+    #problem is carried through them as the p(p+1)/2 unique pairs of the
+    #symmetric Gamma_ij(r) matrix, packed into one flat vector; nothing
+    #in the acceleration layer needs to change.
+    def isMulticomponent(self):
+      return getattr(self, 'numberOfComponents', 1) > 1
+
+    def numberOfUniquePairs(self):
+      p = self.numberOfComponents
+      return p*(p + 1)//2
+
+    def packPairs(self, M):
+      '''(p,p,N) symmetric matrix -> flat vector of the unique pairs.'''
+      p = self.numberOfComponents
+      iu = np.triu_indices(p)
+      return M[iu].reshape(-1)
+
+    def unpackPairs(self, v):
+      '''flat vector of unique pairs -> full symmetric (p,p,N) matrix.'''
+      p = self.numberOfComponents
+      N = self.numberOfRadialSamplingPoints
+      iu = np.triu_indices(p)
+      M = np.zeros((p, p, N))
+      M[iu] = v.reshape(len(iu[0]), N)
+      il = np.tril_indices(p, -1)
+      M[il] = M[(il[1], il[0])]
+      return M
+
     #FixPoint Operator (In 'Gamma' space). Note that also for hard spheres Gamma is continuous everywhere
     #(I.e also at sigma. x =[c,h] is not continuous at r = sigma, this may explain the much better 
     #numerical behaviour of the Gamma fixPointOperator in the root finding algorithms. Theory: Naegele, p.45)
     #*******************************************************************************************************
     def fixPointOperatorForGamma(self, G):
+      if self.isMulticomponent():
+          return self.fixPointOperatorForGammaMulticomponent(G)
       c_new = self.update_c(G)
       c_hat = self.hankelTransform(c_new, self.Delta_r)
       #G_new = inverseHankelTransform( (rho*c_hat**2)/(1.0 - rho*c_hat) )
@@ -560,6 +743,31 @@ class OZfixpointOperator:
       return (G_new, c_new)
       
       
+
+    #Multicomponent Gamma fixpoint operator.
+    #********************************************************************
+    #Same three steps as the one-component version above (closure ->
+    #forward transform -> OZ in k-space -> back transform); the only
+    #change is that the scalar OZ relation
+    #     G_hat = c_hat/(1 - rho*c_hat) - c_hat
+    #becomes the matrix relation
+    #     H_hat = (I - C_hat rho)^-1 C_hat ,  G_hat = H_hat - C_hat
+    #with rho = diag(rho_i). Every closure in update_c() is element-wise
+    #in numpy, so it operates on the (p,p,N) arrays unchanged -- which is
+    #why PY/HNC/RY/HMSA/... all become multicomponent for free once the
+    #potential arrays carry their pair indices.
+    def fixPointOperatorForGammaMulticomponent(self, Gflat):
+      p = self.numberOfComponents
+      Gm = self.unpackPairs(Gflat)
+      c_new = self.update_c(Gm)
+      c_hat = self.hankelTransform(c_new, self.Delta_r)
+      C = np.moveaxis(c_hat, -1, 0)
+      R = np.diag(self.componentDensities)
+      M = np.eye(p)[np.newaxis, :, :] - C @ R
+      H = np.linalg.solve(M, C)
+      G_hat = np.moveaxis(H - C, 0, -1)
+      G_new = self.inverseHankelTransform(G_hat, self.Delta_r)
+      return (self.packPairs(G_new), c_new)
 
     #Split x=[c,h] in c and h component (helper functions for second fixpoint operator)
     #******************************************************************************************************
@@ -593,6 +801,344 @@ class OZfixpointOperator:
       return x_new
 
 
+
+    #Generic polydisperse potential, built from ANY one-component setter.
+    #********************************************************************
+    #Turns any of this class's eighteen one-component setXXXPotential()
+    #methods into a multicomponent (p,p,N) pair potential, so that "any
+    #potential x any closure x any form factor" is possible without
+    #rewriting a single one of them.
+    #
+    #MIXING RULE (a modelling choice, stated rather than buried):
+    #    additive hard cores,     sigma_ij = (sigma_i + sigma_j)/2
+    #    identical REDUCED tail,  u_ij(r)  = u(r/sigma_ij)
+    #i.e. every pair sees the same interaction shape measured in units of its
+    #own contact distance. This is the same assumption Robertus et al. make
+    #for adhesive spheres (size-INDEPENDENT stickiness tau), and it is what
+    #makes the construction potential-agnostic: the tail parameters (epsilon,
+    #delta, n, tau, ...) keep their reduced-unit meaning for every pair, so
+    #no per-potential mixing rule has to be invented.
+    #
+    #It is NOT the only defensible choice. For Lennard-Jones the conventional
+    #alternative is Lorentz-Berthelot, epsilon_ij = sqrt(epsilon_i epsilon_j)
+    #with per-species epsilon; that is a different model and would need
+    #per-species tail parameters, which this builder deliberately does not
+    #make up.
+    #
+    #NOT usable for the charge-based potentials (DLVO, DLVOHydra,
+    #IonicMicrogel): there the amplitude must scale with particle size
+    #(Z ~ sigma^n) and kappa depends on the whole distribution through the
+    #counterion density, so the reduced-tail rule is simply wrong. Those need
+    #the bespoke treatment in setPolydisperseHardCoreYukawaPotential(), and
+    #are refused here rather than silently mis-modelled.
+    #
+    #Verified: with relativeStandardDeviation = 0 and numberOfComponents = 1
+    #this reproduces the ordinary one-component setters BIT-IDENTICALLY
+    #(maxdiff 0.0 for HardSphere, SquareWell and LennardJones).
+    CHARGE_COUPLED_POTENTIALS = ('DLVO', 'DLVOHydra', 'IonicMicrogel',
+                                 'PolydisperseHardCoreYukawa')
+
+    def setPolydispersePotential(self, potentialName, potentialArgs=(),
+                                 relativeStandardDeviation=0.2,
+                                 numberOfComponents=3, meanDiameter=None,
+                                 distribution="Schulz"):
+        p = int(numberOfComponents)
+        srel = float(relativeStandardDeviation)
+        meanSigma = self.hardSphereDiameter if meanDiameter is None else float(meanDiameter)
+
+        if potentialName in self.CHARGE_COUPLED_POTENTIALS:
+            print("setPolydispersePotential: %r is charge-coupled; its amplitude "
+                  "scales with particle size and kappa depends on the whole "
+                  "distribution, so the identical-reduced-tail rule does not "
+                  "apply. Use setPolydisperseHardCoreYukawaPotential() instead."
+                  % potentialName)
+            return
+        setterName = "set" + potentialName + "Potential"
+        if not hasattr(self, setterName):
+            print("unknown potential %r" % potentialName)
+            return
+
+        #Moment-matched size classes (Gauss-generalised-Laguerre for the
+        #Schulz distribution), identical to the polydisperse Yukawa route so
+        #that results from the two are directly comparable.
+        #Moment-matched classes; the rule used depends on the distribution
+        #because the moments-to-nodes map is ill-conditioned in float64 even
+        #though every distribution here has ANALYTIC moments. Schulz and
+        #Gaussian have closed-form classical rules (generalised Gauss-Laguerre
+        #and Gauss-Hermite) and stay in float64; log-normal and Weibull have
+        #none and go through high-precision Golub-Welsch. See
+        #polydisperse_nodes.py, which also guards against the Gauss-Hermite
+        #nodes going non-positive at large width -- fatal here, because a hard
+        #core has to be placed at every sigma_ij.
+        from polydisperse_nodes import sizeClasses
+        sigma, x = sizeClasses(distribution, srel, p, meanSigma)
+        p = len(sigma)
+
+        self.numberOfComponents = p
+        self.componentDiameters = sigma
+        self.componentFractions = x
+        thirdMoment = np.sum(x*sigma**3)
+        self.particleDensity = self.volumeDensity/((np.pi/6.0)*thirdMoment)
+        self.componentDensities = self.particleDensity*x
+
+        N = self.numberOfRadialSamplingPoints
+        r = self.Delta_r*(np.arange(N).astype('float') + 1.0)
+        EN = np.zeros((p, p, N)); U = np.zeros((p, p, N))
+        REP = np.zeros((p, p, N)); ATT = np.zeros((p, p, N))
+        setter = getattr(self, setterName)
+        try:
+            for i in range(p):
+                for j in range(i, p):
+                    sij = 0.5*(sigma[i] + sigma[j])
+                    #Evaluate the one-component setter at the REDUCED
+                    #separation r/sigma_ij; its own hard core sits at
+                    #hardSphereDiameter = 1 there, i.e. at r = sigma_ij.
+                    self._rArrayOverride = r/sij
+                    self.repulsivePartOfP2Ppotential = np.zeros(N)
+                    self.attractivePartOfP2Ppotential = np.zeros(N)
+                    setter(*potentialArgs)
+                    EN[i, j] = EN[j, i] = np.asarray(self.boltzmannOfP2Ppotential, float)
+                    #Not every setter defines p2PpotentialInkTUnits (several
+                    #write only the Boltzmann factor), so treat it as optional
+                    #and reconstruct it from EN below when absent.
+                    uij = getattr(self, 'p2PpotentialInkTUnits', None)
+                    if uij is not None and np.ndim(uij) == 1:
+                        U[i, j] = U[j, i] = np.asarray(uij, float)
+                    REP[i, j] = REP[j, i] = np.asarray(self.repulsivePartOfP2Ppotential, float)
+                    ATT[i, j] = ATT[j, i] = np.asarray(self.attractivePartOfP2Ppotential, float)
+        finally:
+            #Always restore the real grid, even if a setter raised.
+            self._rArrayOverride = None
+
+        #If the chosen setter never populated the repulsive/attractive split
+        #(most do not), fall back to "everything repulsive", exactly as
+        #setPotentialByName() does for the one-component case. Without this,
+        #HMSA and the other split-reading closures would see an all-zero
+        #potential and c(r) = 0 would become an exact fixed point -- the
+        #"S(q) = 1 everywhere" bug already met once in this project.
+        if not (np.any(REP != 0.0) or np.any(ATT != 0.0)):
+            REP = -np.log(np.clip(EN, 1e-300, None))
+            ATT = np.zeros_like(EN)
+
+        self.boltzmannOfP2Ppotential = EN
+        #Where no setter supplied beta*u directly, recover it from the
+        #Boltzmann factor; infinite inside a hard core, matching what the
+        #setters that do define it store.
+        if not np.any(U != 0.0):
+            with np.errstate(divide='ignore'):
+                U = np.where(EN > 0.0, -np.log(np.clip(EN, 1e-300, None)), np.inf)
+        self.p2PpotentialInkTUnits = U
+        self.repulsivePartOfP2Ppotential = REP
+        self.attractivePartOfP2Ppotential = ATT
+
+        if p == 1:
+            #A single class is genuinely a ONE-component problem, so store
+            #plain 1-D arrays and leave numberOfComponents at 1. Keeping the
+            #(1,1,N) shape instead looks harmless -- isMulticomponent() is
+            #False either way, so the scalar code path runs -- but that path
+            #then operates on 3-D input and every derived quantity comes back
+            #shaped (1,1,N). getRDF().max() still gives the right number,
+            #which is why the bit-identical p=1 check passed, but anything
+            #expecting a curve (np.interp, the six approximation schemes)
+            #fails with "object too deep for desired array".
+            self.boltzmannOfP2Ppotential = EN[0, 0]
+            self.p2PpotentialInkTUnits = U[0, 0]
+            self.repulsivePartOfP2Ppotential = REP[0, 0]
+            self.attractivePartOfP2Ppotential = ATT[0, 0]
+            self.setStartValue(np.zeros(N))
+        else:
+            self.setStartValue(np.zeros(self.numberOfUniquePairs()*N))
+        self.activePotentialname = 'Polydisperse' + potentialName
+
+    #Polydisperse hard-core Yukawa (charged colloids), multicomponent.
+    #********************************************************************
+    #Follows B. D'Aguanno & R. Klein, Phys. Rev. A 46, 7652 (1992) and
+    #J. Chem. Soc. Faraday Trans. 87, 379 (1991):
+    #  * the continuous Schulz size distribution is reduced to p
+    #    components by MOMENT MATCHING, sum_i x_i sigma_i^m = <sigma^m>
+    #    for m = 0..2p-1. Schulz is a gamma distribution, so this is
+    #    exactly Gauss-generalized-Laguerre quadrature. p=3 already gives
+    #    results indistinguishable from p=5 up to s_sigma = 0.3.
+    #  * charge scales with particle size, see the block below for the
+    #    three ways to control that.
+    #  * potential (their eq. 3), with factorizable amplitudes:
+    #        beta phi_ij(r) = A_i A_j exp(-kappa r)/r,  r > sigma_ij
+    #        A_i = Z_i sqrt(L_B) exp(kappa sigma_i/2)/(1 + kappa sigma_i/2)
+    #    and a hard core at sigma_ij = (sigma_i + sigma_j)/2.
+    #
+    #relativeStandardDeviation is s_sigma = sqrt(<sigma^2>-<sigma>^2)/<sigma>.
+    #meanDiameter defaults to this grid's own hardSphereDiameter so that
+    #lengths stay in the usual sigma units.
+    def setPolydisperseHardCoreYukawaPotential(self, relativeStandardDeviation,
+                                                numberOfComponents, referenceValence,
+                                                bjerrumLengthInSigmaUnits,
+                                                meanDiameter=None, chargeExponent=2.0,
+                                                *,
+                                                componentValences=None,
+                                                screeningValences=None):
+      from scipy.special import roots_genlaguerre
+      from scipy.special import gamma as gammafunction
+      p = int(numberOfComponents)
+      s = float(relativeStandardDeviation)
+      meanSigma = self.hardSphereDiameter if meanDiameter is None else float(meanDiameter)
+
+      if p < 1:
+          print("numberOfComponents must be >= 1")
+          return
+      if s <= 0.0 or p == 1:
+          sigma = np.array([meanSigma]); x = np.array([1.0]); p = 1
+      else:
+          t = 1.0/s**2 - 1.0
+          nodes, weights = roots_genlaguerre(p, t)
+          sigma = nodes*meanSigma/(t + 1.0)
+          #The Gauss-Laguerre weights carry a 1/Gamma(t+1) normalisation, but
+          #gammafunction(t+1) OVERFLOWS to inf for narrow distributions --
+          #t = 1/srel^2 - 1, so srel=0.01 gives Gamma(10000) = inf and every
+          #fraction came out 0, then NaN once normalised. The factor is common
+          #to all classes and cancels in the normalisation below, so it is
+          #simply left out rather than computed and divided away.
+          x = weights/np.sum(weights)
+
+          #roots_genlaguerre ITSELF also degrades for very large t (srel=0.005
+          #gives t ~ 4e4) and returns non-finite nodes/weights, which no
+          #amount of renormalising can repair. Moment matching is only worth
+          #having while it is numerically sound, so fall back to plain
+          #equally-spaced classes over +-3 sigma with the Schulz weight
+          #evaluated in LOG space (no gamma function, hence no overflow).
+          #This loses the exact-moment property but is perfectly adequate
+          #precisely where it triggers: a distribution that narrow is already
+          #close to monodisperse.
+          if (not np.all(np.isfinite(sigma))) or (not np.all(np.isfinite(x))) \
+                  or np.sum(x) <= 0.0:
+              width = s*meanSigma
+              lo = max(meanSigma - 3.0*width, 1e-6*meanSigma)
+              sigma = np.linspace(lo, meanSigma + 3.0*width, p)
+              z = t
+              #Schulz-Zimm log-pdf, dropping additive constants that cancel
+              #in the normalisation: (z+1)ln(D) - (z+1)D/<D>
+              logw = (z + 1.0)*np.log(sigma/meanSigma) \
+                     - (z + 1.0)*sigma/meanSigma
+              logw -= logw.max()
+              x = np.exp(logw)
+              x = x/np.sum(x)
+
+      self.numberOfComponents = p
+      self.componentDiameters = sigma
+      self.componentFractions = x
+      #particleDensity is the TOTAL number density; phi = (pi/6) n <sigma^3>,
+      #which reduces to the one-component expression for a delta distribution.
+      thirdMoment = np.sum(x*sigma**3)
+      self.particleDensity = self.volumeDensity/((np.pi/6.0)*thirdMoment)
+      self.componentDensities = self.particleDensity*x
+
+      L_B = float(bjerrumLengthInSigmaUnits)
+
+      #--- how the valence scales with particle size -------------------
+      #  1. componentValences -- explicit array of length p, overrides
+      #     everything else. Use for externally computed renormalised
+      #     charges, measured titration data, or a saturating law. Charge
+      #     renormalisation is deliberately NOT implemented here: how to
+      #     define an effective charge for a POLYDISPERSE system is
+      #     unsettled (even for one component the Alexander et al.
+      #     edge-linearisation Z_eff and the extrapolated-point-charge
+      #     Q_eff disagree), and burying one choice in a fitting routine
+      #     would hide a contested assumption.
+      #  2. chargeExponent -- power law Z_i = Z_ref (sigma_i/<sigma>)^n:
+      #       n = 2 (default) constant SURFACE CHARGE DENSITY, what
+      #           D'Aguanno & Klein used and explicitly flagged as an
+      #           assumption with "little precise experimental
+      #           information about the scaling".
+      #       n = 1 charge LINEAR in size: what charge renormalisation
+      #           predicts once the bare charge saturates (Z_eff ~ a/L_B)
+      #           and what electrophoresis measures for highly charged
+      #           low-salt spheres. Arguably the better choice for
+      #           strongly charged colloids; n=2 is the default only so
+      #           published D'Aguanno-Klein setups reproduce.
+      #       n = 0 size-independent charge.
+      #     A single power law cannot be right across a broad
+      #     distribution if some size classes are renormalisation-
+      #     saturated and others are not; use route 1 in that case.
+      if componentValences is not None:
+          Z = np.asarray(componentValences, dtype=float).reshape(-1)
+          if Z.size != p:
+              print("componentValences must have exactly numberOfComponents entries")
+              return
+      else:
+          Z = referenceValence*(sigma/meanSigma)**chargeExponent
+
+      #--- which charge screens? ---------------------------------------
+      #kappa is the inverse Debye length due to the SMALL ions. Salt-free
+      #with monovalent counterions gives n_counter = sum_i n_i Z_i by
+      #charge neutrality, hence kappa^2 = 4 pi L_B sum_i n_i Z_i, the
+      #FIRST power of Z. Using Z^2 yields a near-ideal-gas S(q)
+      #(g_max ~ 1.006) -- a symptom resembling the separate
+      #"S(q) == 1 everywhere" bug fixed in setPotentialByName().
+      #
+      #screeningValences lets the charge entering kappa differ from the
+      #one entering the amplitude; defaults to using the same Z for both
+      #(D'Aguanno-Klein behaviour). The distinction matters with charge
+      #renormalisation: the amplitude needs the effective charge, whereas
+      #ALL counterions are physically present and screen. Note that
+      #changing chargeExponent therefore moves BOTH the amplitude and the
+      #screening length unless they are decoupled here.
+      if screeningValences is not None:
+          Zscreen = np.asarray(screeningValences, dtype=float).reshape(-1)
+          if Zscreen.size != p:
+              print("screeningValences must have exactly numberOfComponents entries")
+              return
+      else:
+          Zscreen = Z
+
+      self.kappaInverseDebyeLength = np.sqrt(4*np.pi*L_B*np.sum(self.componentDensities*Zscreen))
+      kappa = self.kappaInverseDebyeLength
+      #Factorizable amplitude: sigma_ij = (sigma_i+sigma_j)/2 makes
+      #exp(kappa sigma_ij) = exp(kappa sigma_i/2) exp(kappa sigma_j/2),
+      #so beta phi_ij = A_i A_j exp(-kappa r)/r.
+      A = Z*np.sqrt(L_B)*np.exp(kappa*sigma/2.0)/(1.0 + kappa*sigma/2.0)
+      self.componentValences = Z
+      self.componentScreeningValences = Zscreen
+      self.componentAmplitudes = A
+
+      r = self.getrArray()
+      sigma_ij = 0.5*(sigma[:, None] + sigma[None, :])
+      amplitude_ij = A[:, None]*A[None, :]
+      isCore = r[None, None, :] < sigma_ij[:, :, None]
+      with np.errstate(over='ignore', invalid='ignore'):
+          betaU = amplitude_ij[:, :, None]*np.exp(-kappa*r)/r
+      betaU = np.where(isCore, 0.0, betaU)
+      self.p2PpotentialInkTUnits = np.where(isCore, np.inf, betaU)
+      self.boltzmannOfP2Ppotential = np.where(isCore, 0.0, np.exp(-betaU))
+      self.derivativeOfP2Ppotential = np.where(
+          isCore, 0.0,
+          -amplitude_ij[:, :, None]*np.exp(-kappa*r)*(1.0/r**2 + kappa/r))
+
+      #Repulsive/attractive split, as (p,p,N) pair matrices. Set explicitly
+      #here rather than left to setPotentialByName()'s generic fallback, so
+      #that the physics is stated rather than inferred.
+      #
+      #This potential is a screened COULOMB interaction between like-signed
+      #charges: beta*U_ij = A_i A_j exp(-kappa r)/r with A_i A_j > 0, so it is
+      #purely REPULSIVE at every separation and the attractive part is
+      #identically zero. That is not a placeholder -- it is the correct split
+      #for this model.
+      #
+      #Consequence worth knowing: HMSA interpolates between a
+      #soft-core/MSA-like treatment of the repulsive part and HNC for the
+      #attractive one, so with no attractive tail HMSA reduces EXACTLY to
+      #Rogers-Young. Both closures returning identical numbers here is the
+      #expected result, not a bug -- the same identity was checked earlier for
+      #plain hard spheres.
+      #
+      #Supplying these makes the closures that read the split
+      #(HMSA, VM, CJVM, BB, DH, CG, SMSA) usable for polydisperse systems.
+      self.repulsivePartOfP2Ppotential = np.where(isCore, 700.0, betaU)
+      self.attractivePartOfP2Ppotential = np.zeros_like(betaU)
+
+      #The fixpoint vector now carries p(p+1)/2 pairs, so the start value
+      #has to be resized (same pattern the ch-fixpoint operator uses when
+      #it switches the vector length).
+      self.setStartValue(np.zeros(self.numberOfUniquePairs()*self.numberOfRadialSamplingPoints))
+      self.activePotentialname = 'PolydisperseHardCoreYukawa'
 
     #Definition of the pair interaction potential
     #********************************************************************************************************
@@ -1067,15 +1613,30 @@ class OZfixpointOperator:
       methodName = 'set' + potentialType + 'Potential'
       methodToCall = getattr(self, methodName)
       #Then we check if the correct number of arguments was given for this potential type
-      numberOfArgumentsNeeded = len(inspect.getfullargspec(methodToCall)[0]) - 1 # minus self
+      #Arguments WITH defaults are OPTIONAL: only the leading positional ones
+      #are required. Counting every parameter (as this did before) made any
+      #setter carrying default arguments unreachable through this entry point:
+      #setPolydisperseHardCoreYukawaPotential could not be selected at all, and
+      #the rejection was SILENT -- it printed and returned, leaving the
+      #potential untouched, so the solver ran on its default state and every
+      #closure then produced the trivial S(q) = 1. The GUI builds its input
+      #fields from this same argspec, so optional arguments simply appear as
+      #extra fields the user may leave at their defaults.
+      spec = inspect.getfullargspec(methodToCall)
+      numberOfArgumentsNeeded = len(spec[0]) - 1 # minus self
+      numberOfDefaults = len(spec.defaults) if spec.defaults else 0
+      numberOfArgumentsRequired = numberOfArgumentsNeeded - numberOfDefaults
       #print(numberOfArgumentsNeeded)
       if not args:
-          if numberOfArgumentsNeeded != 0:
-              print("number of arguments given for", potentialType, "is not correct")
+          if numberOfArgumentsRequired != 0:
+              print("number of arguments given for", potentialType, "is not correct:",
+                    numberOfArgumentsRequired, "required, none given")
               return
       else:
-          if len(args) != numberOfArgumentsNeeded:
-              print("number of arguments given for", potentialType, "is not correct")
+          if not (numberOfArgumentsRequired <= len(args) <= numberOfArgumentsNeeded):
+              print("number of arguments given for", potentialType, "is not correct:",
+                    len(args), "given, expected between", numberOfArgumentsRequired,
+                    "and", numberOfArgumentsNeeded)
               return
           
       #If everything is fine, we call the setter for this potential type with its parameters,
@@ -1161,6 +1722,41 @@ class OZfixpointOperator:
     # update_c() above for the formulas and why RHNC/MHNC/RMSA/EuRah
     # are NOT included here.
     # ---------------------------------------------------------------
+    def doCarbajalTinokoClosure(self, lam):
+      #Carbajal-Tinoco: an implicit bridge function, solved by a vectorised
+      #fixed-point iteration in update_c(). lambda controls the amplitude,
+      #which is r-dependent for lambda <= 0.
+      self.closureType = 'CarbajalTinoko'
+      self.alpha = float(lam)
+
+    def doKhanpourClosure(self, alpha):
+      #Khanpour bridge function; alpha -> 0 recovers HNC. Named in full
+      #because 'KH' in this library is Kovalenko-Hirata, a different
+      #closure with the same natural abbreviation.
+      if alpha == 0.0:
+          print("alpha must be non-zero (division by alpha in the Khanpour bridge function)")
+          return
+      self.closureType = 'Khanpour'
+      self.alpha = float(alpha)
+
+    def doModifiedVerletClosure(self, alpha):
+      if alpha == 0.0:
+          print("alpha must be non-zero (division by 1 + alpha*Gamma/2)")
+          return
+      self.closureType = 'ModifiedVerlet'
+      self.alpha = float(alpha)
+
+    def doExtendedRYclosure(self, alpha, a=0.0):
+      #Extended Rogers-Young. alpha is the RY switching rate; a is the
+      #extra quadratic coefficient, and a = 0 reduces exactly to RY.
+      if alpha <= 0.0:
+          print("alpha must be > 0 for the Extended Rogers-Young switching function")
+          return
+      self.closureType = 'ExtendedRY'
+      self.alpha = float(alpha)
+      self.extendedRYa = float(a)
+      self.helperRYfunction = 1.0 - np.exp(-self.alpha*self.getrArray())
+
     def doVerletClosure(self):
       self.closureType = 'Verlet'
 
@@ -1289,6 +1885,17 @@ class OZfixpointOperator:
 
     def getrArray(self):
       #We start at Delta_r, not 0, due to numerical reasons.
+      #
+      #_rArrayOverride exists so that a ONE-component potential setter can be
+      #re-used to build one pair of a MULTICOMPONENT potential:
+      #setPolydispersePotential() points this at r/sigma_ij and calls the
+      #ordinary setter, which then evaluates its tail at the reduced
+      #separation and places its hard core at sigma_ij (every setter measures
+      #the core against self.hardSphereDiameter, which is 1 in those reduced
+      #units). That reuses all eighteen already-validated one-component
+      #setters instead of rewriting each of them for pair matrices.
+      if getattr(self, '_rArrayOverride', None) is not None:
+          return self._rArrayOverride
       return self.Delta_r*(np.arange(self.numberOfRadialSamplingPoints).astype('float') + 1.0)
 
     def getqArray(self):

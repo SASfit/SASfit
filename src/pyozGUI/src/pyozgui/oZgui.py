@@ -69,7 +69,8 @@ from picardOZsolver import PicardOZsolver  # kept directly: used below only for 
                                             # potential-introspection "probe" instance,
                                             # not part of the solver dropdown machinery.
 import ozLib
-from ozLib import SOLVER_CLASSES, CLOSURE_SETTERS
+from ozLib import (SOLVER_CLASSES, CLOSURE_SETTERS,
+                   multicomponentCapableClosures, isMulticomponentPotential)
 _HAVE_SUNDIALS4PY = ozLib._HAVE_SUNDIALS4PY
 
 # Curves shown, one tab each: (tab label, y-attribute-getter, ylabel)
@@ -86,6 +87,45 @@ CURVE_TABS = [
     ("B(r)",       "Br",     "B(r)"),
     ("y(r)",       "yr",     "y(r)"),
     ("f(r)",       "fr",     "f(r)"),
+]
+
+# Optional top-level tool tabs, added alongside the "OZ solver" tab by
+# OZgui._addExtraTabs(). (module, class, tab label). Each module must
+# expose a class taking a single parent-widget argument and behaving as a
+# ttk.Frame. Listed here rather than imported at the top of the file so
+# that a missing or broken optional module degrades to one absent tab
+# instead of preventing the GUI from starting at all.
+EXTRA_TABS = [
+    #The generic tab combines ANY potential with ANY multicomponent-capable
+    #closure and ANY form factor, and replaces the two analytic special-case
+    #tabs that used to sit beside it:
+    #
+    #  "Polydisperse Yukawa"  (polydisperse_yukawa_tab)   -> Yukawa + MSA
+    #  "Robertus SHS"         (robertus_shs_tab)          -> StickyHardSphere + PY
+    #
+    #Both modules are still present and importable; only their tabs are gone.
+    #Re-add a line here to bring either back.
+    #
+    #Two capabilities do NOT survive that replacement, because the generic
+    #route solves the Ornstein-Zernike equations numerically rather than using
+    #the analytic solutions those modules implement:
+    #  - RMSA. The Hayter-Penfold rescaling is a one-component procedure and
+    #    is listed in ozLib.MULTICOMPONENT_INCAPABLE_CLOSURES, so the generic
+    #    tab offers MSA but not RMSA. polydisperse_rmsa.py still provides it
+    #    analytically.
+    #  - The exact multicomponent Percus-Yevick adhesive-sphere solution
+    #    (Baxter Q-matrix, robertus_shs_core_py.py). The generic tab reaches
+    #    the same model through a numerical PY solve, which is slower and
+    #    approximate where the analytic result is exact.
+    ("generic_polydisperse_tab", "GenericPolydisperseTab", "Polydisperse (any potential)"),
+    #KEPT DELIBERATELY: the generic builder REFUSES charge-coupled potentials
+    #(setPolydispersePotential -> CHARGE_COUPLED_POTENTIALS), because their
+    #amplitude scales with particle size and kappa depends on the whole
+    #distribution through the counterion density. The identical-reduced-tail
+    #mixing rule is simply wrong for them, so this tab is the ONLY route to a
+    #polydisperse charged Yukawa system. It is not a special case of the tab
+    #above.
+    ("ry_polydisperse_yukawa_tab", "RYPolydisperseYukawaTab", "RY Polydisperse Yukawa"),
 ]
 
 # Grid-size exponent n (gridsize = 2**n - 1) clamp range. Matches the
@@ -187,12 +227,42 @@ class OZgui:
         sys.stdout = _TkTextRedirector(self.resultQueue, alsoWriteTo=sys.stdout)
         sys.stderr = _TkTextRedirector(self.resultQueue, alsoWriteTo=sys.stderr)
 
+        # Top-level notebook. The Ornstein-Zernike solver keeps its own
+        # layout EXACTLY as it was -- left control panel, right plot
+        # notebook, same widgets, same behaviour -- it is simply built
+        # into a frame inside this notebook instead of straight into the
+        # root window. Everything that used to grid onto self.root now
+        # grids onto self._ozHost, which is that frame; that is the whole
+        # change. Additional self-contained tools get their own top-level
+        # tabs via _addExtraTabs() and cannot affect the solver tab.
+        self.mainNotebook = ttk.Notebook(root)
+        self.mainNotebook.pack(fill="both", expand=True)
+        ozFrame = ttk.Frame(self.mainNotebook)
+        self.mainNotebook.add(ozFrame, text="OZ solver")
+        self._ozHost = ozFrame
+
         self._buildLeftPanel()
         self._buildRightPanel()
+        self._addExtraTabs()
+
+    # ------------------------------------------------------------------
+    def _addExtraTabs(self):
+        """Extra tool tabs, each a plain ttk.Frame subclass in its own
+        module that knows nothing about this class. Import or construction
+        failure costs only that one tab -- the OZ solver tab is already
+        built by the time this runs, and stays usable."""
+        for moduleName, className, tabLabel in EXTRA_TABS:
+            try:
+                mod = __import__(moduleName, fromlist=[className])
+                widget = getattr(mod, className)(self.mainNotebook)
+                self.mainNotebook.add(widget, text=tabLabel)
+            except Exception:
+                print(f"[oZgui] optional tab '{tabLabel}' unavailable:")
+                traceback.print_exc()
 
     # ------------------------------------------------------------------
     def _buildLeftPanel(self):
-        left = ttk.Frame(self.root, padding=6)
+        left = ttk.Frame(self._ozHost, padding=6)
         left.grid(row=0, column=0, sticky="ns")
 
         row = 0
@@ -208,7 +278,8 @@ class OZgui:
         self.potentialCombo = ttk.Combobox(left, textvariable=self.potentialVar,
                                             values=self.potentialNames, state="readonly", width=22)
         self.potentialCombo.grid(row=row, column=1, sticky="w")
-        self.potentialCombo.bind("<<ComboboxSelected>>", lambda e: self._rebuildPotentialParams(probe))
+        self.potentialCombo.bind("<<ComboboxSelected>>",
+                                 lambda e: self._onPotentialChanged(probe))
         row += 1
 
         self.potParamsFrame = ttk.Frame(left)
@@ -219,10 +290,17 @@ class OZgui:
 
         ttk.Label(left, text="Closure:").grid(row=row, column=0, sticky="e")
         self.closureVar = tk.StringVar(value="Percus-Yevick")
-        closureCombo = ttk.Combobox(left, textvariable=self.closureVar,
+        self.closureCombo = ttk.Combobox(left, textvariable=self.closureVar,
                                      values=list(CLOSURE_SETTERS.keys()), state="readonly", width=22)
-        closureCombo.grid(row=row, column=1, sticky="w")
-        closureCombo.bind("<<ComboboxSelected>>", lambda e: self._rebuildClosureParam())
+        self.closureCombo.grid(row=row, column=1, sticky="w")
+        self.closureCombo.bind("<<ComboboxSelected>>", lambda e: self._rebuildClosureParam())
+        row += 1
+        #Note shown only while a polydisperse potential is selected, saying how
+        #many closures are being hidden and why.
+        self.closureNoteVar = tk.StringVar(value="")
+        ttk.Label(left, textvariable=self.closureNoteVar, foreground="grey",
+                  wraplength=250, justify="left").grid(
+            row=row, column=0, columnspan=2, sticky="w")
         row += 1
 
         self.closureParamFrame = ttk.Frame(left)
@@ -297,11 +375,20 @@ class OZgui:
         row += 1
 
         ttk.Label(left, text="Gridsize (2^n - 1), n:").grid(row=row, column=0, sticky="e")
+        #Entry and computed-size readout live in ONE sub-frame placed in
+        #column 1, rather than the entry in column 1 and the label in column 2.
+        #Column 1 is shared with the potential and closure comboboxes, which
+        #are 22 characters wide, so a 10-character entry there left a wide gap
+        #before anything in column 2 -- the readout ended up visually detached
+        #from the number it describes. Packing them together keeps the pair
+        #adjacent whatever the column width.
+        gridFrame = ttk.Frame(left)
+        gridFrame.grid(row=row, column=1, columnspan=2, sticky="w")
         self.gridPointsVar = tk.StringVar(value="auto")
-        ttk.Entry(left, textvariable=self.gridPointsVar, width=10).grid(row=row, column=1, sticky="w")
+        ttk.Entry(gridFrame, textvariable=self.gridPointsVar, width=10).pack(side="left")
         self.gridSizeLabelVar = tk.StringVar(value="")
-        ttk.Label(left, textvariable=self.gridSizeLabelVar, foreground="grey").grid(
-            row=row, column=2, sticky="w", padx=(4, 0))
+        ttk.Label(gridFrame, textvariable=self.gridSizeLabelVar,
+                  foreground="grey").pack(side="left", padx=(6, 0))
         # Live-updating computed-size readout, matching the equivalent
         # field in the Tcl GUI (sasfit.vfs/lib/app-sasfit/tcl/
         # sasfit_OZ_solver.tcl's own "gridsize (2^n - 1), n:" +
@@ -461,14 +548,72 @@ class OZgui:
         self.potParamVars = []
         methodName = "set" + self.potentialVar.get() + "Potential"
         import inspect
-        argNames = inspect.getfullargspec(getattr(probe, methodName))[0][1:]
+        spec = inspect.getfullargspec(getattr(probe, methodName))
+        argNames = spec[0][1:]
+        #Seed each box with the SETTER'S OWN default where it has one, instead
+        #of the blanket "1.0" used before. That blanket value silently
+        #contradicted the documented physics: setPolydisperseHardCoreYukawaPotential
+        #defaults chargeExponent to 2.0 (constant surface charge density), so a
+        #user who left the field untouched actually got 1.0, i.e. charge linear
+        #in size -- a different model, with no indication anything had changed.
+        #Only the trailing len(spec.defaults) arguments carry defaults, hence
+        #the offset. A default of None (e.g. meanDiameter, meaning "use this
+        #grid's own hardSphereDiameter") has no sensible numeric box, so it
+        #falls back to 1.0, which for that argument IS the hard-sphere diameter
+        #in the solver's own reduced units.
+        nDefaults = len(spec.defaults) if spec.defaults else 0
+        firstWithDefault = len(argNames) - nDefaults
         for i, name in enumerate(argNames):
             ttk.Label(self.potParamsFrame, text=name + ":").grid(row=i, column=0, sticky="e")
-            var = tk.StringVar(value="1.0")
+            initial = "1.0"
+            if i >= firstWithDefault:
+                value = spec.defaults[i - firstWithDefault]
+                if isinstance(value, (int, float)) and not isinstance(value, bool):
+                    initial = repr(float(value))
+                elif isinstance(value, bool):
+                    initial = str(value)
+            var = tk.StringVar(value=initial)
             ttk.Entry(self.potParamsFrame, textvariable=var, width=10).grid(row=i, column=1, sticky="w")
             self.potParamVars.append(var)
         if not argNames:
             ttk.Label(self.potParamsFrame, text="(no parameters)").grid(row=0, column=0, sticky="w")
+
+    def _onPotentialChanged(self, probe):
+        """Rebuild the potential's parameter fields AND narrow the closure list.
+
+        A polydisperse potential cannot be combined with every closure: some
+        need a one-component reference solve or a hard-sphere-specific
+        construction (see ozLib.MULTICOMPONENT_INCAPABLE_CLOSURES for the
+        per-closure reason). Previously the dropdown offered all of them
+        regardless, so choosing e.g. Reference HNC with a polydisperse
+        potential produced a confusing failure deep inside the solve instead
+        of simply not being offered.
+        """
+        self._rebuildPotentialParams(probe)
+        self._refreshClosureChoices()
+
+    def _refreshClosureChoices(self):
+        allNames = list(CLOSURE_SETTERS.keys())
+        if isMulticomponentPotential(self.potentialVar.get()):
+            allowed = multicomponentCapableClosures()
+            hidden = len(allNames) - len(allowed)
+            self.closureNoteVar.set(
+                f"{hidden} closures hidden: they need a one-component "
+                "reference solve or are hard-sphere specific.")
+        else:
+            allowed = allNames
+            self.closureNoteVar.set("")
+        self.closureCombo.configure(values=allowed)
+        #If the closure that was selected is no longer offered, fall back to
+        #Percus-Yevick rather than leaving a stale name in the box that would
+        #then be looked up and fail.
+        if self.closureVar.get() not in allowed:
+            previous = self.closureVar.get()
+            self.closureVar.set("Percus-Yevick")
+            self.statusVar.set(
+                f"'{previous}' is not available for a polydisperse "
+                "potential; switched to Percus-Yevick")
+            self._rebuildClosureParam()
 
     def _rebuildClosureParam(self):
         for w in self.closureParamFrame.winfo_children():
@@ -477,6 +622,8 @@ class OZgui:
         _, needsParam = CLOSURE_SETTERS[closureName]
         self.closureParamVar = None
         self.closureParamEntry = None
+        self.closureParam2Var = None
+        self.closureParam2Entry = None
         # Always recreated fresh here (not just for consistency-capable
         # closures) so _onCalculate() can read self.findConsistentVar.get()
         # unconditionally without a getattr/None guard -- it simply stays
@@ -487,6 +634,24 @@ class OZgui:
             self.closureParamVar = tk.StringVar(value="1.0")
             self.closureParamEntry = ttk.Entry(self.closureParamFrame, textvariable=self.closureParamVar, width=10)
             self.closureParamEntry.grid(row=0, column=1, sticky="w")
+        # A few closures carry a SECOND scalar (currently only Extended
+        # Rogers-Young's quadratic coefficient a). Declared in
+        # ozLib.SECOND_CLOSURE_PARAM, so this stays generic rather than
+        # special-casing one closure name here. Without this field the
+        # parameter was reachable only programmatically, which meant the
+        # closure silently ran at its default a = 0 -- i.e. as plain
+        # Rogers-Young -- with nothing in the GUI to say so.
+        extra = ozLib.secondClosureParam(closureName)
+        if extra is not None:
+            name, default, description = extra
+            ttk.Label(self.closureParamFrame, text=name + ":").grid(row=1, column=0, sticky="e")
+            self.closureParam2Var = tk.StringVar(value=repr(float(default)))
+            self.closureParam2Entry = ttk.Entry(
+                self.closureParamFrame, textvariable=self.closureParam2Var, width=10)
+            self.closureParam2Entry.grid(row=1, column=1, sticky="w")
+            ttk.Label(self.closureParamFrame, text=description, foreground="grey",
+                      wraplength=240, justify="left").grid(
+                row=2, column=0, columnspan=2, sticky="w")
         # Rogers-Young/HMSA/Modified HNC/BPGG/CJVM/BB additionally offer
         # searching for the value that makes the compressibility-route
         # and virial-route isothermal compressibility agree (Rogers &
@@ -507,10 +672,10 @@ class OZgui:
 
     # ------------------------------------------------------------------
     def _buildRightPanel(self):
-        right = ttk.Frame(self.root)
+        right = ttk.Frame(self._ozHost)
         right.grid(row=0, column=1, sticky="nsew")
-        self.root.columnconfigure(1, weight=1)
-        self.root.rowconfigure(0, weight=1)
+        self._ozHost.columnconfigure(1, weight=1)
+        self._ozHost.rowconfigure(0, weight=1)
 
         self.notebook = ttk.Notebook(right)
         self.notebook.pack(fill="both", expand=True)
@@ -661,12 +826,26 @@ class OZgui:
         closureName = self.closureVar.get()
         _, needsParam = CLOSURE_SETTERS[closureName]
         closureParam = None
+        closureParam2 = None
         findConsistent = self.findConsistentVar.get()
         if needsParam and not findConsistent:
             try:
                 closureParam = float(self.closureParamVar.get())
             except ValueError:
                 messagebox.showerror("input error", "closure parameter must be a number")
+                return
+        #Second closure scalar, when the closure declares one (Extended
+        #Rogers-Young's quadratic coefficient a). Read even when
+        #findConsistent is set: the consistency search determines alpha, not
+        #a, so a must still come from the field.
+        if self.closureParam2Var is not None:
+            try:
+                closureParam2 = float(self.closureParam2Var.get())
+            except ValueError:
+                extra = ozLib.secondClosureParam(closureName)
+                messagebox.showerror(
+                    "input error",
+                    f"closure parameter '{extra[0]}' must be a number")
                 return
 
         solverName = self.solverVar.get()
@@ -700,6 +879,7 @@ class OZgui:
 
                 result = ozLib.solve(potential=potentialName, phi=phi, potentialArgs=potArgs,
                                       closure=closureName, closureParam=closureParam,
+                                      closureParam2=closureParam2,
                                       findConsistentParameter=findConsistent,
                                       solver=solverName, maxIterations=maxIter,
                                       onSolverCreated=captureSolverInstance, **gridKwargs)
@@ -1108,7 +1288,9 @@ def plt_colors():
 def main():
     root = tk.Tk()
     app = OZgui(root)
-    root.geometry("1200x750")
+    # 26 px taller than before, to give the tab strip its own room rather
+    # than taking it out of the OZ solver panel's usable height.
+    root.geometry("1200x776")
     root.mainloop()
 
 

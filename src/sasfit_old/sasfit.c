@@ -1938,7 +1938,7 @@ int dF_dpar[3] = {0,0,0};
          d_a10_IntNVdR = 0.0;
 	  } else {
          strcpy(strtmp,"Sphere");
-		 for (i=0;i<=MAXPAR;i++) {
+		 for (i=0;i<MAXPAR;i++) {
 		     tDLS_l[i] = t_l[i];
 		     tDLS_a[i] = t_a[i];
 		 }
@@ -4961,7 +4961,7 @@ int Sasfit_nrCmd(clientData, interp, argc, argv)
 			dR = (Rend - Rstart) / n_intervals;
 			n_intervals_SD[i] = tmp_n_intervals;
 			dR_SD[i]     = (tmp_Rend - tmp_Rstart)/tmp_n_intervals;
-			for (j=0;j<=MAXPAR;j++) AP[i].R_moments[j] = 0.0;
+			for (j=0;j<MAXPAR;j++) AP[i].R_moments[j] = 0.0;
 			Rstart_SD[i] = tmp_Rstart;
 			Rend_SD[i]   = tmp_Rend;
 			if (Rstart > tmp_Rstart) {

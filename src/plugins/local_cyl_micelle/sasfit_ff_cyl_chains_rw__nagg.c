@@ -7,7 +7,9 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
+#undef NAGG
 #define NAGG	param->p[0]
+#undef V_CORE
 #define V_CORE	param->p[1]
 #define V_BRUSH	param->p[2]
 #define ETA_CORE	param->p[3]

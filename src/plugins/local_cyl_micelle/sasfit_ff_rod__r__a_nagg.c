@@ -7,6 +7,7 @@
 #include <sasfit_error_ff.h>
 
 // define shortcuts for local parameters/variables
+#undef NAGG
 #define NAGG	param->p[0]
 
 scalar sasfit_ff_rod__r__a_nagg(scalar q, sasfit_param * param)

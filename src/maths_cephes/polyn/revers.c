@@ -65,6 +65,7 @@ Cephes Math Library Release 2.8:  June, 2000
 Copyright 1984, 1987, 1989, 1992, 2000 by Stephen L. Moshier
 */
 
+#include <stdlib.h>
 #include "mconf.h"
 
 extern int MAXPOL; /* initialized by polini() */
@@ -75,7 +76,6 @@ void polmov ( double *, int, double * );
 void polclr ( double *, int );
 void poladd ( double *, int, double *, int, double * );
 void polmul ( double *, int, double *, int, double * );
-void * malloc ( long );
 void free ( void * );
 #else
 void polmov(), polclr(), poladd(), polmul();
