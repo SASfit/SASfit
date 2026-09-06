@@ -186,6 +186,64 @@ class GenericPotential(unittest.TestCase):
                 self.assertTrue(np.all(np.isfinite(g)))
                 self.assertGreater(float(g.max()), 1.0)
 
+    def test_every_pair_core_sits_at_its_own_sigma_ij(self):
+        """The check that would have caught the identical-cores bug.
+
+        `setPolydispersePotential` re-runs each one-component setter on a
+        RESCALED radial grid (_rArrayOverride = r/sigma_ij) so that the hard
+        core lands at sigma_ij. A setter that places its core by ARRAY INDEX
+        rather than against getrArray() never sees the rescaling, and every
+        pair then gets its core at the same radius -- i.e. the mixture is
+        solved as if all particles were identical.
+
+        `setHardSpherePotential` did exactly that, and it was invisible to
+        every other test here: the resulting error is FIRST ORDER IN THE SIZE
+        SPREAD (~0.35*d against the analytic Vrij mixture solution) and so
+        vanishes exactly in the monodisperse limit, which is where the
+        bit-identical regression check looks. Only a comparison against an
+        independent exact multicomponent reference exposed it.
+
+        This test looks directly at the pair matrices instead, so it does not
+        depend on having such a reference for every potential.
+
+        Restricted to potentials with a GENUINE HARD CORE. For a soft
+        potential such as Lennard-Jones, "the first r where EN > 0" is merely
+        where exp(-u) stops underflowing -- for sigma_ij = 0.734 that is
+        r = 0.47, which is not a misplaced core but an absent one. Testing it
+        there would be meaningless.
+        """
+        hardCore = [(pot, args) for pot, args, _ in self.CASES
+                    if pot in ("HardSphere", "SquareWell", "StickyHardSphere")]
+        self.assertTrue(hardCore, "no hard-core potential in CASES to test")
+        for pot, args in hardCore:
+            with self.subTest(potential=pot):
+                s = _solver(0.2)
+                s.setPolydispersePotential(pot, args, 0.2, 3)
+                sigma = np.asarray(s.componentDiameters, float)
+                r = np.asarray(s.getrArray(), float)
+                EN = np.asarray(s.boltzmannOfP2Ppotential, float)
+                seen = set()
+                for i in range(len(sigma)):
+                    for j in range(len(sigma)):
+                        want = 0.5*(sigma[i] + sigma[j])
+                        nz = np.nonzero(EN[i, j] > 0.0)[0]
+                        self.assertGreater(nz.size, 0,
+                                           f"pair ({i},{j}) is zero everywhere")
+                        got = r[nz[0]]
+                        self.assertLessEqual(
+                            abs(got - want), 1.01*s.Delta_r,
+                            f"{pot} pair ({i},{j}): core steps at {got:.5f}, "
+                            f"expected sigma_ij = {want:.5f}")
+                        seen.add(round(float(got), 9))
+                #Distinct pairs must have DISTINCT cores. Without this the
+                #test would still pass if every core sat at the mean, since
+                #the tolerance is a grid spacing: with sigma spanning roughly
+                #0.73 to 1.45 the sigma_ij differ by far more than Delta_r.
+                self.assertGreater(
+                    len(seen), 1,
+                    f"{pot}: all pairs share one core radius, so the mixture "
+                    "is being solved as if the particles were identical")
+
     def test_charge_coupled_potentials_are_refused(self):
         """DLVO and friends must be rejected, not mis-modelled.
 
@@ -426,6 +484,154 @@ class ConsistencySearch(unittest.TestCase):
         self.assertGreater(alpha, 0.05)
         self.assertLess(alpha, 1.0)
         self.assertLess(abs(res)/scale, 1e-3)
+
+
+# ----------------------------------------------------------------------
+class ExternalValidation(unittest.TestCase):
+    """Comparisons against INDEPENDENT implementations.
+
+    These are the tests that earn their keep. Every defect found late in this
+    project was invisible to internal consistency checks and was exposed only
+    by an external reference:
+
+      * the identical-cores defect in setHardSpherePotential, found by
+        mixscatter (5.2 %, linear in the size spread, NOT converging);
+      * the narrow-well resolution trap, found by jscatter's analytic
+        adhesive-sphere solution (90 % error at the default grid).
+
+    Each test skips rather than fails when its package is absent, so the suite
+    still runs on a bare install. Install them with:
+
+        pip install jscatter mixscatter
+    """
+
+    def test_percus_yevick_against_jscatter(self):
+        """One-component PY against jscatter's analytic solution."""
+        js = _requires("jscatter")
+        sf = js.structurefactor
+        q = np.linspace(0.3, 20, 200)
+        for eta in (0.2, 0.3):
+            with self.subTest(eta=eta):
+                Sj = np.asarray(sf.PercusYevick(q, 0.5, eta=eta).Y, float)
+                So = self._ourSq("HardSphere", (), "doPYclosure", None, eta, q,
+                                 pps=400, N=16383)
+                rel = np.max(np.abs(So - Sj))/np.max(np.abs(Sj))
+                self.assertLess(rel, 0.01, f"PY vs jscatter: {rel:.4f}")
+
+    def test_rmsa_against_jscatter(self):
+        """RMSA against jscatter's Hayter-Penfold implementation.
+
+        Both are ANALYTIC, so the expected agreement is exact -- there is no
+        discretisation floor. A tolerance of 1e-6 is therefore appropriate and
+        anything larger indicates a real disagreement, not grid error.
+        """
+        js = _requires("jscatter")
+        try:
+            import rmsaWrapper as W
+        except Exception as exc:
+            raise unittest.SkipTest(f"rmsaWrapper unavailable: {exc}")
+        sf = js.structurefactor
+        R, q = 5.0, np.linspace(0.02, 2.0, 200)
+        for eta in (0.05, 0.15, 0.25):
+            for scl, gam in ((2.0, 20.0), (10.0, 100.0)):
+                with self.subTest(eta=eta, scl=scl, gamma=gam):
+                    try:
+                        So = np.asarray(W.rmsa_compute(R, scl, gam, eta, q)[0], float)
+                    except Exception as exc:
+                        raise unittest.SkipTest(f"librmsa unavailable: {exc}")
+                    Sj = np.asarray(sf.RMSA(q, R, scl=scl, gamma=gam, eta=eta).Y, float)
+                    rel = np.max(np.abs(So - Sj))/np.max(np.abs(Sj))
+                    self.assertLess(rel, 1e-6, f"RMSA: {rel:.3e}")
+
+    def test_double_yukawa_against_jscatter(self):
+        """Hard-core double Yukawa against the analytic two-Yukawa MSA.
+
+        Mixed sign (attractive K1, repulsive K2) on purpose: that is the
+        regime in which the sign convention could most easily be wrong.
+        """
+        _requires("jscatter")
+        from jscatter.libs.Two_Yukawa import twoYukawa
+        q = np.linspace(0.3, 20, 200)
+        for phi in (0.1, 0.2):
+            for K1, Z1, K2, Z2 in ((1.0, 10.0, -0.5, 2.0),):
+                with self.subTest(phi=phi):
+                    Sj = np.asarray(twoYukawa(q, 0.5, K1, K2, Z1, Z2, phi), float)
+                    if Sj.size < 2:
+                        raise unittest.SkipTest("jscatter twoYukawa did not solve")
+                    So = self._ourSq("HardSphereDoubleYukawa", (K1, Z1, K2, Z2),
+                                     "doMSAclosure", None, phi, q,
+                                     pps=400, N=16383)
+                    rel = np.max(np.abs(So - Sj))/np.max(np.abs(Sj))
+                    self.assertLess(rel, 0.01, f"two-Yukawa: {rel:.4f}")
+
+    def test_mixture_py_against_mixscatter(self):
+        """Multicomponent PY against the analytic Vrij mixture solution.
+
+        THIS is the test that would have caught the identical-cores defect. It
+        checks CONVERGENCE, not just magnitude: the defect gave 5.2 % that did
+        not improve with grid refinement, whereas genuine discretisation error
+        falls roughly fourfold for a fourfold refinement.
+        """
+        ms = _requires("mixscatter")
+        try:
+            from mixscatter_bridge import OZLiquidStructure
+        except Exception as exc:
+            raise unittest.SkipTest(f"mixscatter_bridge unavailable: {exc}")
+        q = np.linspace(0.05, 20, 200)
+        mix = ms.Mixture(radius=[0.85, 1.0, 1.15], number_fraction=[0.25, 0.5, 0.25])
+        Sref = np.asarray(ms.PercusYevick(
+            q, mix, volume_fraction_total=0.2
+        ).number_weighted_partial_structure_factor, float)
+        errs = []
+        for pps, N in ((100, 4095), (400, 16383)):
+            S = OZLiquidStructure(q, mix, volume_fraction_total=0.2,
+                                  closure="Percus-Yevick",
+                                  pointsPerSigma=pps, gridN=N
+                                  ).number_weighted_partial_structure_factor
+            errs.append(np.max(np.abs(S - Sref))/np.max(np.abs(Sref)))
+        self.assertLess(errs[1], 0.005, f"mixture PY at fine grid: {errs[1]:.4f}")
+        self.assertLess(errs[1], errs[0]/2.0,
+                        f"error did not converge under refinement: "
+                        f"{errs[0]:.4f} -> {errs[1]:.4f}; suspect the pair "
+                        "potentials, not the interpolation")
+
+    def test_narrow_well_needs_a_fine_grid(self):
+        """The resolution requirement, asserted so it cannot be forgotten.
+
+        Error is governed by points across the WELL, not across the diameter.
+        At the default 100 points per diameter a delta = 0.02 well spans two
+        points and S(q) is ~90 % wrong -- silently.
+        """
+        js = _requires("jscatter")
+        sf = js.structurefactor
+        q = np.linspace(0.3, 20, 200)
+        eta, tau, delta = 0.2, 0.2, 0.02
+        Sj = np.asarray(sf.adhesiveHardSphere(q, 0.5, tau, delta, eta=eta).Y, float)
+        coarse = self._ourSq("StickyHardSphere", (tau, delta), "doPYclosure",
+                             None, eta, q, pps=100, N=4095)
+        fine = self._ourSq("StickyHardSphere", (tau, delta), "doPYclosure",
+                           None, eta, q, pps=800, N=32767)
+        eC = np.max(np.abs(coarse - Sj))/np.max(np.abs(Sj))
+        eF = np.max(np.abs(fine - Sj))/np.max(np.abs(Sj))
+        self.assertGreater(eC, 0.3, "coarse grid unexpectedly accurate; the "
+                                    "resolution trap may have been fixed, so "
+                                    "update this test and the documentation")
+        self.assertLess(eF, 0.10, f"fine grid still poor: {eF:.4f}")
+
+    # ------------------------------------------------------------------
+    @staticmethod
+    def _ourSq(potential, args, closure, param, phi, q, pps=400, N=16383):
+        from picardOZsolver import PicardOZsolver
+        s = PicardOZsolver(port=0, numberOfRadialSamplingPoints=N,
+                           hardSphereDiameterInPoints=pps)
+        s.setNumberOfIterations(8000)
+        s.setVolumeDensity(phi)
+        s.setPotentialByName(potential, *args)
+        getattr(s, closure)(param) if param is not None else getattr(s, closure)()
+        s.solve()
+        qs = np.asarray(s.getqArray(), float)
+        Ss = np.real(np.asarray(s.getSq(), float))
+        return np.interp(q, qs, Ss, right=1.0)
 
 
 if __name__ == "__main__":

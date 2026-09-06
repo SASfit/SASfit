@@ -30,7 +30,6 @@ Registered in `oZgui.EXTRA_TABS` as
 ---
 
 ## 1. The pair potential: 18 setters reused, none rewritten
-
 `setPolydispersePotential(potentialName, potentialArgs, srel, nbins,
 meanDiameter, distribution)` turns any one-component `setXXXPotential()` into
 a multicomponent `(p,p,N)` pair potential.
@@ -72,6 +71,43 @@ HardSphere, SquareWell and LennardJones; the first and third match the
 recorded literature values 2.3561180274 and 2.1635946756).
 
 ---
+
+### Yukawa potentials: sign and range conventions
+
+Both Yukawa methods use the SAME sign convention, with each tail's amplitude
+independently signed:
+
+    K_i > 0  ->  ATTRACTIVE tail  (beta u < 0)
+    K_i < 0  ->  REPULSIVE tail   (beta u > 0)
+
+They differ only in how the range is parameterised:
+
+| method | range parameter | tails |
+|---|---|---|
+| `HS3Yukawa(K1, lambda1, ...)` | decay length lambda | 3 |
+| `HardSphereDoubleYukawa(K1, z1, K2, z2)` | screening z = 1/lambda | 2 |
+
+so, with no sign changes anywhere,
+
+    HardSphereDoubleYukawa(K1, z1, K2, z2)
+      ==  HS3Yukawa(K1, 1/z1, K2, 1/z2, 0, 1)
+
+verified to 1e-16 across all four sign combinations. The double-Yukawa entry
+exists only because published parameters are usually quoted as screening
+parameters z; inverting them by hand is a slip that still produces a
+plausible-looking curve. Neither argument position is reserved for the
+attractive or the repulsive term -- two attractions, two repulsions, or one
+of each are all valid.
+
+The repulsive/attractive split is assigned **per term by the sign of its
+amplitude**, so the closures that read it (HMSA, SMSA, CG, Carbajal-Tinoco)
+see the real decomposition for any sign combination.
+
+**Convergence limit.** Strong attraction defeats Picard: with z1 = 1.8,
+K2 = -0.5, z2 = 6, it diverges past K1 ~ 1.5 at every volume fraction tried,
+while g_max rises smoothly (1.368, 1.444, 1.562, 2.060) below that. Use
+SUNDIALS KIN_FP or Newton-Krylov for attractive systems. If no solver
+converges, the state may genuinely be near the spinodal.
 
 ## 2. Size classes: the rule depends on the distribution
 
@@ -361,6 +397,72 @@ straddling a region where solves fail, and a derivative-free method is then
 the better tool -- DFO-LS is a one-line swap on the same `_residuals`
 callable.
 
+### Resolution smearing
+
+SANS resolution dQ/Q is of order 10 % and smears form-factor oscillations in
+exactly the way polydispersity does. Fitting without it lets the model absorb
+the instrument into `srel`. Measured on smeared synthetic data with a true
+`srel` of 0.15:
+
+| | chi2_red | R | srel | phi |
+|---|---|---|---|---|
+| without smearing | 1.073 | 47.82 | **0.1726 (15.1 % high)** | 0.1541 |
+| with smearing | 0.750 | 49.96 | **0.1497 (0.2 % high)** | 0.1490 |
+
+Note the chi-squared: without smearing the fit does not look bad, it is
+simply wrong. That is bias, not imprecision, and more data does not fix it.
+
+To use it, supply a FOURTH column of dQ and read it with
+`loadCurve(path, withResolution=True)`, then pass
+`PolydisperseFit(..., resolution=Resolution(Q, dQ))`.
+
+**Convention:** dQ is read as the Gaussian SIGMA, not the FWHM. The two
+differ by 2.355, and using the wrong one silently rescales the fitted
+polydispersity -- precisely the bias smearing exists to remove. Pass
+`Resolution(Q, dQ, fwhm=True)` if the reduction writes FWHM.
+
+**Why it is cheap here.** Smearing needs the model on an extended, denser Q
+grid, which for most models multiplies the cost several-fold. Here it is
+nearly free, because the expensive part -- the Ornstein-Zernike solve -- does
+not depend on the Q grid at all. It also leaves the scale/background
+elimination intact, since smearing is linear and the background is not
+smeared.
+
+Verified: dQ -> 0 reproduces the unsmeared curve to 1.1e-16, kernel rows
+normalise to 1.000000, and the extended grid reaches below Q_min.
+
+### Parameter uncertainties and correlations
+
+`run()` returns `uncertainty`, `correlation` and `parameterOrder` alongside
+the fitted values, computed from the Jacobian `least_squares` has already
+produced -- no extra model evaluations. On the synthetic test:
+
+    meanRadius  49.5228 +/- 0.2262
+    srel         0.2187 +/- 0.0020
+    phi          0.1657 +/- 0.0060
+
+                  meanRadius   srel    phi
+    meanRadius        1.000  -0.224   0.751
+    srel             -0.224   1.000   0.389
+    phi               0.751   0.389   1.000
+
+The correlation matrix is the useful part. **phi and R are correlated at
+0.75**: the fit can compensate a slightly small radius with a slightly small
+volume fraction, since both act on the position and height of the
+structure-factor peak. That, not noise, is why phi is the least
+well-determined parameter in the table further up. Note that `scale` does not
+appear -- it is eliminated analytically and never enters the Jacobian.
+
+With trustworthy dI the covariance is `(J^T J)^-1`; without it, it is scaled
+by chi2_red, since the absolute residual scale is then arbitrary.
+
+**Caveat.** This is a linearised estimate, so it assumes a quadratic cost
+surface near the minimum and understates the error for bounded or strongly
+correlated problems -- on the test above two parameters sit 2.1 and 2.4 sigma
+from truth on 3 % noise, which is a little far. Good for relative precision
+and for spotting correlation; for a published error bar, sample the posterior
+with `fitWithBumps(..., method="dream")`.
+
 ### Measured alternatives
 
 On the synthetic problem above, with three parameters:
@@ -369,21 +471,84 @@ On the synthetic problem above, with three parameters:
 |---|---|---|---|
 | `scipy.least_squares` (default) | 36 | 24 s | -- |
 | DFO-LS | 94 | 71 s | identical to 4 d.p. |
+| bumps `amoeba` | 158 | 80 s | identical to 4 d.p. |
 
 Derivative-free loses here because with only three parameters a
 finite-difference Jacobian is cheap and yields a genuine Gauss-Newton step.
 It should win once the parameter count grows, or where solves fail.
 
-## 8. Not done
+### Global search and uncertainties: the bumps back end
+
+`polydisperse_fit.fitWithBumps(fitter, method=...)` exposes the optimisers of
+[bumps](https://bumps.readthedocs.io) -- from the DANSE project, and the
+fitting engine behind Refl1D -- namely `dream`, `de`, `amoeba`, `newton`,
+`lm` and `pt`. It reuses the same residual machinery, including the exact
+linear elimination of scale and background, so both back ends optimise
+exactly the same objective and their results are directly comparable.
+
+Two of them do things `least_squares` cannot:
+
+* **`de`** (differential evolution) is a GLOBAL search, so it does not depend
+  on the user getting close by eye first. That matters less for a hard sphere
+  than for a charged Yukawa with a free closure parameter.
+* **`dream`** samples a POSTERIOR rather than returning a point, and adds
+  `uncertainty` and `correlation` keys to the result. This is the honest
+  answer to the 7.9 % error on `phi` in the table above: `phi` correlates
+  strongly with the scale factor, so with 3 % noise the data does not
+  constrain it well, and a correlation matrix says so where a chi-squared
+  value cannot.
+
+**Cost.** Every evaluation is one Ornstein-Zernike solve. `de` needs hundreds
+and `dream` thousands, so these are overnight tools, not interactive ones. The
+sensible pattern is a global method to find the basin, then
+`PolydisperseFit.run()` to polish -- about 30 evaluations.
+
+**State of testing, stated plainly.** `amoeba` has been run end to end and
+reproduces `least_squares` exactly. `de` and `dream` use the identical code
+path -- only the fitter string differs -- but have NOT been run to completion,
+so the `uncertainty` and `correlation` keys are untested plumbing rather than
+a demonstrated feature. `bumps` is an optional dependency: nothing else in
+the package imports it, and the default fit path does not need it.
+
+**A trap worth knowing.** bumps orders the fitted parameters alphabetically,
+not in the order they are declared, so `result.x` must be matched by label.
+An earlier version zipped it against the declared order and produced a
+plausible-looking fit (chi2_red 95 instead of 0.90) in which two parameters
+held each other's values while the third was correct. Nothing raised; it
+simply looked like a poor optimiser.
+
+## 8. Open items (and one recently closed)
 
 1. **Distribution selector** in the tab — the engine supports Schulz,
    Gaussian, log-normal and Weibull, but the tab always passes Schulz.
-2. The tab does not subsume the three older polydisperse tabs; it sits
-   alongside them.
-3. No decoupling of scattering radius from hard-core radius (see section 4).
-5. No uncertainty estimate on the fitted parameters. Given the phi/scale
-   correlation above, a posterior would be more honest than a point estimate;
-   Bumps' DREAM, reachable through FitBenchmarking, is the natural route.
-6. No global search. The fit is local, so the workflow depends on the user
-   getting close by eye first. GOFit (global, least-squares aware, already
-   shipped with Mantid) is the obvious candidate.
+2. The tab sits alongside the `RY Polydisperse Yukawa` tab rather than
+   subsuming it. Since the charged Yukawa is now reachable here (§2.3), that
+   tab is arguably redundant; removing it is one line in `EXTRA_TABS`.
+3. No decoupling of scattering radius from hard-core radius (see §4).
+4. `Carbajal-Tinoco` is ported and registered, but its fixed-point iteration
+   is validated only for lambda <= 0 (to 2e-13 against the reference). For
+   lambda > 0 the map's slope at strongly negative Gamma is 3 + lambda > 1,
+   so its fixed point is repulsive and no damping converges; it needs a
+   Newton step. Converged solves are unaffected, since they do not reach that
+   region.
+5. Uncertainty estimation is available two ways. The linearised Jacobian
+   covariance is computed on every fit and is reliable for spotting
+   correlation; the posterior route `fitWithBumps(..., method="dream")` is
+   wired but has NOT been run to completion, so its `uncertainty` and
+   `correlation` keys remain untested plumbing.
+6. No global search **from the GUI**. `fitWithBumps(..., method="de")` is
+   available programmatically but is not exposed as a control, so the tab's
+   workflow still depends on getting close by eye first. GOFit (global,
+   least-squares aware, already shipped with Mantid) is a further candidate.
+7. Resolution smearing **is** exposed in the tab: `Load data...` reads an
+   optional 4th dQ column and enables an "apply Q resolution (dQ column)"
+   checkbox, ticked by default when the column is present. Verified live:
+   loading a 4-column file gave dQ/Q 0.080..0.080, built a 320-point extended
+   grid, and fitted R, srel and phi to 0.1 %, 0.2 % and 0.7 % with
+   chi2_red = 0.750. dQ is read as the Gaussian SIGMA; use
+   `Resolution(Q, dQ, fwhm=True)` if the reduction writes FWHM.
+8. `S_partials` clamps below the solver's own q grid rather than
+   extrapolating. Smearing the lowest measured points pulls in model values
+   from there, so a structure factor with a strong low-Q upturn could be
+   biased. Worth checking against the analytic S(0) with real data -- this is
+   the main open question for fitting measured curves.

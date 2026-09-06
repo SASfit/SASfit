@@ -106,5 +106,6 @@ scalar sasfit_sd_std_beta_v(scalar u, sasfit_param * param, int dist)
         case DISTRIBUTION_MEAN:
         default: sasfit_err("parameter distr=%d not defined",dist);
     }
+    return 0.0;
 }
 

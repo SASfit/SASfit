@@ -87,6 +87,7 @@ static double call_gmdi_function_or_constant(gmdi_function_or_constant * gfc, co
     case GMDI_FUNCTION_OR_CONSTANT_TYPE_MULTI_VAR_FUNCTION:
         return CALL_GMDI_MULTI_VAR_FUNCTION(gfc->content.mf, x);
     }
+    return 0.0;
 }
 
 static double big_g(double y, void* p);

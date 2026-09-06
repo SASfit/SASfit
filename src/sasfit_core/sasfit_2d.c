@@ -414,6 +414,10 @@ int Sasfit_2DiqfitCmd(ClientData    clientData,
 	{
 		return TCL_ERROR;
 	}
+
+	// TODO: fit logic not yet implemented for this command
+	sasfit_err("sasfit_2Diqfit: not yet implemented\n");
+	return TCL_ERROR;
 }
 
 

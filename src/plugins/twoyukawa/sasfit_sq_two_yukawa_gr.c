@@ -108,6 +108,7 @@ scalar sasfit_sq_two_yukawa_gr(scalar r, sasfit_param * param)
         return gsl_spline_eval (grsteffen_T, fabs(r), acc_spline);
 	}
 	SASFIT_CHECK_COND1((!grok), param, "Could not calculatre g(r), grok(%d)\n",grok);
+	return 0.0;
 }
 
 scalar sasfit_sq_two_yukawa_gr_f(scalar q, sasfit_param * param)

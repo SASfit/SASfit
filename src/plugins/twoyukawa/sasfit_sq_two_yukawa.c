@@ -111,6 +111,7 @@ scalar sasfit_sq_two_yukawa(scalar q, sasfit_param * param)
 		return SqTwoYukawa(q*R*2.0, Z1, Z2, K1, K2, PHI, a[foundidx], b[foundidx], c1[foundidx], c2[foundidx], d1[foundidx], d2[foundidx]);
 	}
 	SASFIT_CHECK_COND1((ok==0), param, "Could not solve the equations for this set of parameters, ok(%d)\n",ok);
+	return 0.0;
 }
 
 scalar sasfit_sq_two_yukawa_f(scalar q, sasfit_param * param)

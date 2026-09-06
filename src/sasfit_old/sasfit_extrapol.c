@@ -2431,7 +2431,7 @@ struct extrapolPar EP;
 float  *h, *Ih, *DIh, u;
 float  *tx, *ty, *tsig;
 int    i;
-bool   error;
+bool   error __attribute__((unused));
 
 error = FALSE;
 
@@ -2787,7 +2787,7 @@ float  *h, *Ih, *DIh;
 float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth, dyda[4], par[4], errpar[4];
 float  **alpha, **covar;
 int    *lista,mfit,ma;
-float  ochisq, chisq, lchisq, oalambda, alambda, q;
+float  ochisq __attribute__((unused)), chisq, lchisq, oalambda, alambda, q;
 int    i,j,k,itst;
 char   errstr[256],Buffer[256];
 bool   error;
@@ -3189,7 +3189,7 @@ float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth,
        dyda[4], par[4], errpar[4];
 float  **alpha, **covar;
 int    *lista,mfit,ma;
-float  ochisq, chisq, lchisq, oalambda, alambda,q;
+float  ochisq __attribute__((unused)), chisq, lchisq, oalambda, alambda,q;
 int    i,j,k,kpos, itst;
 char   errstr[256],Buffer[256];
 bool   error;
@@ -3525,8 +3525,8 @@ float  *tx, *ty, *tsig, *x, *xx, *y, *yy, *sig, *ysig, yth,
        dyda[4], par[4], errpar[4];
 float  **alpha, **covar;
 int    *lista,mfit,ma;
-float  ochisq, chisq, lchisq, oalambda, alambda,q;
-int    i,j,k,kpos,m,itst;
+float  ochisq __attribute__((unused)), chisq, lchisq, oalambda, alambda,q;
+int    i,j,k,kpos __attribute__((unused)),m,itst;
 char   errstr[256],Buffer[256];
 bool   error;
 Tcl_DString DsBuffer;
@@ -3878,7 +3878,7 @@ float  *h, *Ih, *DIh;
 float  *tx, *ty, *tsig, *x, *y, *sig, yth, dyda[4];
 float  **alpha, **covar;
 int    *lista,mfit,ma;
-float  ochisq, chisq, oalambda, alambda;
+float  ochisq __attribute__((unused)), chisq, oalambda, alambda;
 int    i,j,k,itst;
 char   errstr[256],Buffer[256];
 bool   error;
@@ -4162,7 +4162,7 @@ double EM_DR_DoubleSmooth_Operator(void *EM_structure) {
     scalar sumIth, sumIh;
     EMparam = (EM_param_t *)EM_structure;
     int i,j,l, nr, nh;
-    scalar p1,p2,p3,PS, NormXwork, eps, chi2, S, nnlambda;
+    scalar p1,p2,p3,PS __attribute__((unused)), NormXwork __attribute__((unused)), eps, chi2, S __attribute__((unused)), nnlambda;
 
     nr=EMparam->nR;
     nh=EMparam->nh;
@@ -4693,7 +4693,7 @@ double MuCh_DR_Operator(void *EM_structure) {
     EM_param_t *EMparam;
     EMparam = (EM_param_t *)EM_structure;
     int i,j,l, nr;
-    scalar p1,p2,p3, eps, chi2;
+    scalar p1 __attribute__((unused)),p2 __attribute__((unused)),p3 __attribute__((unused)), eps, chi2;
 /*
     sasfit_out("EP_Operator: in: ");
     for (i=0;i<10;i++) sasfit_out("%lg ",EMparam->in[i]);
@@ -4789,7 +4789,7 @@ double SDM_DR_Operator(void *EM_structure) {
     EMparam = (EM_param_t *)EM_structure;
     int i,j,l, nr;
     scalar *W;
-    scalar p1,p2,p3, eps, chi2, DeltaI, trans;
+    scalar p1,p2 __attribute__((unused)),p3 __attribute__((unused)), eps, chi2, DeltaI __attribute__((unused)), trans __attribute__((unused));
     const gsl_rng_type * T;
     gsl_rng * rgen;
 
@@ -4951,7 +4951,7 @@ void MuCh_DR_Init (void *FPd) {
 }
 
 void SDM_DR_Free (void *FPd) {
-    EM_param_t *EMparam;
+    EM_param_t *EMparam __attribute__((unused));
     sasfit_fp_data *FixedPointData;
     FixedPointData = (sasfit_fp_data *)FPd;
     EMparam = (EM_param_t *) FixedPointData->FPstructure;
@@ -4995,8 +4995,8 @@ double Optimum_smooth4DR_EM(double smooth, void *FPd ) {
 
     EM_param_t *EMparam;
     sasfit_fp_data *FixedPointData;
-    int i,j, nr;
-    scalar Snorm;
+    int i,j __attribute__((unused)), nr;
+    scalar Snorm __attribute__((unused));
 
     FixedPointData = (sasfit_fp_data *)FPd;
     EMparam = (EM_param_t *) FixedPointData->FPstructure;
@@ -5026,7 +5026,7 @@ double Optimum_lambda4DR_EM_ME(double lambda, void *FPd ) {
 
     EM_param_t *EMparam;
     sasfit_fp_data *FixedPointData;
-    int i, nr;
+    int i __attribute__((unused)), nr __attribute__((unused));
 
     FixedPointData = (sasfit_fp_data *)FPd;
     EMparam = (EM_param_t *) FixedPointData->FPstructure;
@@ -5069,7 +5069,7 @@ double menger_C(double xj, double xk, double xl, double yj, double yk, double yl
 }
 
 double menger_r(double xj, double xk, double xl, double yj, double yk, double yl) {
-    double Pjk, Pkl, Plj, Ck, r;
+    double Pjk, Pkl, Plj, Ck, r __attribute__((unused));
     Pjk = gsl_hypot(xk-xj, yk-yj);
     Pkl = gsl_hypot(xl-xk, yl-yk);
     Plj = gsl_hypot(xj-xl, yj-yl);
@@ -5358,12 +5358,12 @@ sasfit_bspline_lcorner(const gsl_vector *rho,
     size_t i, j;
     gsl_bspline_workspace *bw;
     gsl_vector *B;
-    double dy, xi, yi,yerr;
+    double dy __attribute__((unused)), xi, yi,yerr;
     gsl_vector *c, *w;
     gsl_vector *x, *y;
     gsl_matrix *X, *cov;
     gsl_multifit_linear_workspace *mw;
-    double chisq, Rsq, dof, tss;
+    double chisq, Rsq __attribute__((unused)), dof __attribute__((unused)), tss __attribute__((unused));
 
     if (n != eta->size && n != Brho->size && n != Beta->size) {
       GSL_ERROR ("size of rho, eta, Brho, and Beta vectors do not match",
@@ -5424,6 +5424,7 @@ sasfit_bspline_lcorner(const gsl_vector *rho,
         gsl_permutation_free (rank);
         gsl_multifit_linear_free(mw);
     }
+    return GSL_SUCCESS;
 }
 
 int
@@ -5437,7 +5438,7 @@ sasfit_gsl_multifit_linear_lcorner(const gsl_vector *rho,
 {
   const size_t n = rho->size;
       double rmin2 = -1;
-      double rmin = -1;
+      double rmin __attribute__((unused)) = -1;
       double r;
       double lslope;
       int idx2;
@@ -5562,9 +5563,9 @@ sasfit_gsl_multifit_linear_lcorner2(const gsl_vector *reg_param, const gsl_vecto
 {
   const size_t n = reg_param->size;
   double r;
-  double rmin2 = -1;
-  double rmin1 = -1;
-  int idx2;
+  double rmin2 __attribute__((unused)) = -1;
+  double rmin1 __attribute__((unused)) = -1;
+  int idx2 __attribute__((unused));
   bool init;
 
   if (n < 3)
@@ -5581,8 +5582,8 @@ sasfit_gsl_multifit_linear_lcorner2(const gsl_vector *reg_param, const gsl_vecto
     {
       int s = GSL_SUCCESS;
       size_t i;
-      double x1, y1, u1, u2;      /* first point of triangle on L-curve */
-      double x2, y2, v1, v2;      /* second point of triangle on L-curve */
+      double x1, y1, u1 __attribute__((unused)), u2;      /* first point of triangle on L-curve */
+      double x2, y2, v1 __attribute__((unused)), v2;      /* second point of triangle on L-curve */
       double rmin = -1.0; /* minimum radius of curvature */
       double rmin2 = -1;
       double lslope;
@@ -5773,13 +5774,13 @@ int Sasfit_DR_EM_smoothing_Cmd(clientData, interp, argc, argv)
 struct extrapolPar EP;
 EM_param_t EMparam;
 sasfit_fp_data FPd;
-FILE *fptr;
-scalar p1,p2,p3, QR, eps,chi2;
-int    i,j,k,l,itst;
-scalar rmax;
+FILE *fptr __attribute__((unused));
+scalar p1 __attribute__((unused)),p2 __attribute__((unused)),p3 __attribute__((unused)), QR __attribute__((unused)), eps __attribute__((unused)),chi2 __attribute__((unused));
+int    i,j __attribute__((unused)),k __attribute__((unused)),l __attribute__((unused)),itst __attribute__((unused));
+scalar rmax __attribute__((unused));
 sasfit_Lcurve L;
-char   errstr[256],Buffer[256];
-bool   error;
+char   errstr[256] __attribute__((unused)),Buffer[256];
+bool   error __attribute__((unused));
 Tcl_DString DsBuffer;
 #define XMAX 0.35
 #define XHI 0.325
@@ -5793,7 +5794,7 @@ FPd.tm=NULL;
     gsl_min_fminimizer *smin;
 
     gsl_function F;
-    double r, sm;
+    double r, sm __attribute__((unused));
     double x_lo = XLO, x_hi = XHI, x_max=XMAX;
     double chi2_lo, chi2_hi, chi2_max;
 
@@ -6330,12 +6331,12 @@ int Sasfit_DR_EM_ME_const_Cmd(clientData, interp, argc, argv)
 struct extrapolPar EP;
 EM_param_t EMparam;
 sasfit_fp_data FPd;
-scalar p1,p2,p3, QR, eps,chi2;
-int    i,j,k,l,itst;
-scalar rmax;
+scalar p1 __attribute__((unused)),p2 __attribute__((unused)),p3 __attribute__((unused)), QR __attribute__((unused)), eps __attribute__((unused)),chi2 __attribute__((unused));
+int    i,j __attribute__((unused)),k __attribute__((unused)),l __attribute__((unused)),itst __attribute__((unused));
+scalar rmax __attribute__((unused));
 sasfit_Lcurve L;
-char   errstr[256],Buffer[256];
-bool   error;
+char   errstr[256] __attribute__((unused)),Buffer[256];
+bool   error __attribute__((unused));
 Tcl_DString DsBuffer;
 
 FPd.tm=NULL;
@@ -6347,7 +6348,7 @@ FPd.tm=NULL;
     gsl_min_fminimizer *smin;
 
     gsl_function F;
-    double r, sm;
+    double r, sm __attribute__((unused));
     double x_lo, x_hi, x_max=2;
     double chi2_lo, chi2_hi, chi2_max;
 
@@ -6878,12 +6879,12 @@ int Sasfit_DR_EM_ME_adaptive_Cmd(clientData, interp, argc, argv)
 struct extrapolPar EP;
 EM_param_t EMparam;
 sasfit_fp_data FPd;
-scalar p1,p2,p3, QR, eps,chi2;
-int    i,j,k,l,itst;
-scalar rmax;
+scalar p1 __attribute__((unused)),p2 __attribute__((unused)),p3 __attribute__((unused)), QR __attribute__((unused)), eps __attribute__((unused)),chi2 __attribute__((unused));
+int    i,j __attribute__((unused)),k __attribute__((unused)),l __attribute__((unused)),itst __attribute__((unused));
+scalar rmax __attribute__((unused));
 sasfit_Lcurve L;
-char   errstr[256],Buffer[256];
-bool   error;
+char   errstr[256] __attribute__((unused)),Buffer[256];
+bool   error __attribute__((unused));
 Tcl_DString DsBuffer;
 FPd.tm=NULL;
     int status;
@@ -6894,7 +6895,7 @@ FPd.tm=NULL;
     gsl_min_fminimizer *smin;
 
     gsl_function F;
-    double r, sm;
+    double r, sm __attribute__((unused));
     double x_lo = 0.1, x_hi = 1, x_max=10;
     double chi2_lo, chi2_hi, chi2_max;
 
@@ -7478,7 +7479,7 @@ int sasfit_svd_linpack ( int m, int n, double a[], double u[], double s[],
   int ldu;
   int ldv;
   int job;
-  int lwork;
+  int lwork __attribute__((unused));
   double *sdiag;
   double *work;
 /*
@@ -7558,11 +7559,11 @@ struct extrapolPar EP;
 EM_param_t EMparam;
 sasfit_fp_data FPd;
 
-scalar p1,p2,p3, QR, eps,chi2,lambda_opt;
-int    i,j,k,l,itst,l0,l1,l2;
-scalar rmax;
-char   errstr[256],Buffer[256];
-bool   error;
+scalar p1 __attribute__((unused)),p2 __attribute__((unused)),p3 __attribute__((unused)), QR __attribute__((unused)), eps __attribute__((unused)),chi2 __attribute__((unused)),lambda_opt;
+int    i,j,k __attribute__((unused)),l,itst __attribute__((unused)),l0,l1,l2;
+scalar rmax __attribute__((unused));
+char   errstr[256] __attribute__((unused)),Buffer[256];
+bool   error __attribute__((unused));
 Tcl_DString DsBuffer;
 gsl_matrix *L;
 gsl_vector *Gvec;
@@ -7574,8 +7575,8 @@ gsl_matrix *Xs;
 gsl_vector *y;
 gsl_vector *ys;
 gsl_vector *weights;
-double **AAA, *AAmem, *bb, *xx, *wp, *zzp, *Af2c, *Amn, *U, *S, *V;
-int infoDSVDC;
+double **AAA, *AAmem __attribute__((unused)), *bb, *xx, *wp, *zzp, *Af2c, *Amn, *U, *S, *V;
+int infoDSVDC __attribute__((unused));
 int *indexp;
 int n,m, mda, ierr;
 
@@ -8153,8 +8154,8 @@ return TCL_OK;
 double
 MEM_f (const gsl_vector *v, void *FPd)
 {
-    int i,status;
-    double xi,sumx,sump,S;
+    int i,status __attribute__((unused));
+    double xi,sumx __attribute__((unused)),sump,S;
     gsl_vector *r;
     EM_param_t *EMparam;
     sasfit_fp_data *FixedPointData;
@@ -8185,8 +8186,8 @@ void
 MEM_df (const gsl_vector *v, void *FPd,
        gsl_vector *df)
 {
-    int i,status;
-    double xi,sumx,sump,S;
+    int i,status __attribute__((unused));
+    double xi,sumx __attribute__((unused)),sump,S __attribute__((unused));
     gsl_vector *r;
     EM_param_t *EMparam;
     sasfit_fp_data *FixedPointData;
@@ -8218,8 +8219,8 @@ void
 MEM_fdf (const gsl_vector *x, void *FPd,
         double *f, gsl_vector *df)
 {
-    int i,status;
-    double xi,sumx,sump,S;
+    int i,status __attribute__((unused));
+    double xi,sumx __attribute__((unused)),sump,S;
     gsl_vector *r;
     EM_param_t *EMparam;
     sasfit_fp_data *FixedPointData;
@@ -8261,11 +8262,11 @@ sasfit_fp_data FPd;
 
 FPd.tm=NULL;
 
-scalar rmax;
-char   errstr[256],Buffer[256];
-bool   error;
+scalar rmax __attribute__((unused));
+char   errstr[256] __attribute__((unused)),Buffer[256];
+bool   error __attribute__((unused));
 Tcl_DString DsBuffer;
-double chisq, rnorm, snorm;
+double chisq, rnorm __attribute__((unused)), snorm __attribute__((unused));
 int i,j;
 int status;
 gsl_vector *x;
@@ -8273,7 +8274,7 @@ size_t iter = 0;
 gsl_multimin_function_fdf MEM_func;
 const gsl_multimin_fdfminimizer_type *T;
 gsl_multimin_fdfminimizer *solver;
-gsl_multimin_fminimizer *simplex_solver;
+gsl_multimin_fminimizer *simplex_solver __attribute__((unused));
 
 
 error = FALSE;
@@ -8399,11 +8400,11 @@ EM_param_t EMparam;
 sasfit_fp_data FPd;
 
 FPd.tm=NULL;
-scalar p1,p2,p3, QR, eps,chi2;
-int    i,j,k,l,itst;
-scalar rmax;
-char   errstr[256],Buffer[256];
-bool   error;
+scalar p1 __attribute__((unused)),p2 __attribute__((unused)),p3 __attribute__((unused)), QR __attribute__((unused)), eps __attribute__((unused)),chi2 __attribute__((unused));
+int    i,j __attribute__((unused)),k __attribute__((unused)),l __attribute__((unused)),itst __attribute__((unused));
+scalar rmax __attribute__((unused));
+char   errstr[256] __attribute__((unused)),Buffer[256];
+bool   error __attribute__((unused));
 Tcl_DString DsBuffer;
 
 
@@ -8491,11 +8492,11 @@ EM_param_t EMparam;
 sasfit_fp_data FPd;
 
 FPd.tm=NULL;
-scalar p1,p2,p3, QR, eps,chi2;
-int    i,j,k,l,itst;
-scalar rmax;
-char   errstr[256],Buffer[256];
-bool   error;
+scalar p1 __attribute__((unused)),p2 __attribute__((unused)),p3 __attribute__((unused)), QR __attribute__((unused)), eps __attribute__((unused)),chi2 __attribute__((unused));
+int    i,j __attribute__((unused)),k __attribute__((unused)),l __attribute__((unused)),itst __attribute__((unused));
+scalar rmax __attribute__((unused));
+char   errstr[256] __attribute__((unused)),Buffer[256];
+bool   error __attribute__((unused));
 Tcl_DString DsBuffer;
 
 

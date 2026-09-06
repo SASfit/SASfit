@@ -372,7 +372,7 @@ int FP_init(sasfit_fp_data *FPd) {
 
 
 int KIN_sasfit_fp_configure(void *kin_mem,sasfit_fp_data *FPd) {
-    int flag;
+    int flag = 0;
     flag += KINSetMaxNewtonStep(kin_mem, FPd->KINSetMaxNewtonStep);
     if (FPd->PrintProgress) sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
 
@@ -1878,6 +1878,15 @@ int FP_solver_by_iteration(sasfit_fp_data *FPd, sasfit_oz_root_algorithms algori
 
   //                  sasfit_out("up to now the number of FP_step calls are: %d\n",FPd->it);
                 break;
+        case dNewton:
+        case Hybrid:
+        case Hybrids:
+        case Broyden:
+        case Steffensen2_iteration:
+        case Steffensen4_iteration:
+        default:
+                sasfit_err("this algorithm is planned to be implemented\n");
+                break;
     }
 //        sasfit_out("it %d, interrupt: %d\n",FPd->it,FPd->interrupt);
 //    } while (FPd->failed == 0 && FPd->it < FPd->maxsteps  && FPd->interrupt == 0);
@@ -1960,7 +1969,7 @@ double FP_step(sasfit_fp_data *FPd) {
     sasfit_out("it. %d KLD %lg JSD %lg\n",FPd->it, FPd->KLD, FPd->JSD);
 */
     if (FPd->KINSetPrintLevel == 4) {
-        sprintf(sBuffer,"storeOZstepinfo \"it:%d\tgNorm:%lg\tKLD:%lg\tJSD%lg\tchi2:\"",FPd->it,FPd->gNorm, FPd->KLD, FPd->JSD,FPd->Chi2Norm);
+        sprintf(sBuffer,"storeOZstepinfo \"it:%d\tgNorm:%lg\tKLD:%lg\tJSD%lg\tchi2:%lg\"",FPd->it,FPd->gNorm, FPd->KLD, FPd->JSD,FPd->Chi2Norm);
         Tcl_EvalEx(FPd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
     }
     /* Replaces the old KINInfoSASfit_fp() info-handler-driven reporting
@@ -1974,7 +1983,7 @@ double FP_step(sasfit_fp_data *FPd) {
         infoflag = KINGetNumFuncEvals(FPd->kin_mem,&nfe);
         infoflag = KINGetNumNonlinSolvIters(FPd->kin_mem,&nnlsi);
         infoflag = KINGetFuncNorm(FPd->kin_mem,&fnorm);
-        sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%d\t%d\t%le\"",FPd->it,FPd->gNorm, nfe, nnlsi,fnorm);
+        sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%ld\t%ld\t%le\"",FPd->it,FPd->gNorm, nfe, nnlsi,fnorm);
         Tcl_EvalEx(FPd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
     }
 
@@ -2253,6 +2262,7 @@ int help_diagnose_set(int status,sasfit_param *param){
     }
     sasfit_out("x:%lg: yl:%lg, yu:%lg, Q(yl)-x: %lg, Q(yu)-x: %lg\n",ipar.u,ipar.vgl,ipar.vgu,ipar.vl,ipar.vu);
     sasfit_err("could not initialize root solver\n%s\n",gsl_strerror (status));
+    return status;
 }
 
 int sasfit_invert_set(scalar u, sasfit_func_vol_t * func, int dist, scalar bl, scalar bu, scalar *vguess, sasfit_param *param) {

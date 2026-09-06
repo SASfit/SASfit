@@ -97,7 +97,7 @@ scalar fatique_mode(sasfit_param * param) {
 
     if (status == GSL_SUCCESS) return mode;
     sasfit_out("could not find mode for fartique life distribution\n");
-
+    return mode;
 
  /*
 

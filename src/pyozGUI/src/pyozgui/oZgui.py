@@ -126,6 +126,19 @@ EXTRA_TABS = [
     #polydisperse charged Yukawa system. It is not a special case of the tab
     #above.
     ("ry_polydisperse_yukawa_tab", "RYPolydisperseYukawaTab", "RY Polydisperse Yukawa"),
+    #Places the numerical solver beside INDEPENDENT ANALYTIC references --
+    #mixscatter's Vrij mixture PY, and the exact polydisperse charged-hard-
+    #sphere MSA of Gazzillo et al. (arXiv:cond-mat/9909153, Appendix A).
+    #
+    #This exists because a defect that gave every pair in a mixture the same
+    #hard core survived every internal consistency test in this package and
+    #was found only by exactly this comparison. The tab reports the
+    #coarse/fine grid ratio, because the diagnostic signature of that defect
+    #was an error that did NOT shrink under refinement -- ordinary grid error
+    #falls roughly fourfold for a fourfold refinement.
+    #
+    #mixscatter is optional; without it that curve is simply omitted.
+    ("mixture_validation_tab", "MixtureValidationTab", "Mixture validation"),
 ]
 
 # Grid-size exponent n (gridsize = 2**n - 1) clamp range. Matches the

@@ -29,6 +29,7 @@ scalar sasfit_sd_n_l_c__f(scalar x, sasfit_param * param)
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
+	return 0.0;
 
 }
 
@@ -97,9 +98,6 @@ scalar sasfit_sd_n_l_c__v(scalar u, sasfit_param * param, int dist)
         case DISTRIBUTION_VARIANCE:
         default: sasfit_err("parameter distr=%d not defined",dist);
     }
-	switch (dist) {
-        case 0:
-        default: sasfit_err("parameter distr=%d not defined",dist);
-    }
+    return 0.0;
 }
 

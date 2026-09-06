@@ -281,6 +281,7 @@ scalar FFphi(scalar x, sasfit_param *param)
             return sum;
             break;
     }
+    return 0.0;
 }
 
 scalar FFAcor(scalar q, scalar s, scalar Rco, scalar Rch,sasfit_param *param)

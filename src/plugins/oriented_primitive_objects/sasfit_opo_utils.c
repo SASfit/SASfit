@@ -372,8 +372,9 @@ scalar opo_Fc(opo_data *opod) {
                 *opo_J1x_x(Qxy);
 }
 
-scalar opo_Fprism3(opo_data *opod) {
-    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+void opo_Fprism3(opo_data *opod) {
+    // TODO: not yet implemented — should compute and store the triangular-prism form factor into *opod
+    scalar Qx, Qy, Qz;
     Qx = opod->Qhat[0];
     Qy = opod->Qhat[1];
     Qz = opod->Qhat[2];
@@ -1006,8 +1007,9 @@ scalar opo_Fcone6(opo_data *opod) {
 }
 
 
-scalar opo_Fpyramid(opo_data *opod) {
-    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+void opo_Fpyramid(opo_data *opod) {
+    // TODO: not yet implemented — should compute and store the pyramid form factor into *opod
+    scalar Qx, Qy, Qz;
     Qx = opod->Qhat[0];
     Qy = opod->Qhat[1];
     Qz = opod->Qhat[2];
@@ -1216,8 +1218,9 @@ scalar opo_Ftetrahedron(opo_data *opod) {
     return gsl_hypot(FtetrahedronRe,FtetrahedronIm);
 }
 
-scalar opo_Fcubooctahedron(opo_data *opod) {
-    scalar Qx, Qy, Qz, Qx2_Qy2, Qx2_Qz2, Qy2_Qz2;
+void opo_Fcubooctahedron(opo_data *opod) {
+    // TODO: not yet implemented — should compute and store the cuboctahedron form factor into *opod
+    scalar Qx, Qy, Qz;
     Qx = opod->Qhat[0];
     Qy = opod->Qhat[1];
     Qz = opod->Qhat[2];
@@ -1284,7 +1287,7 @@ int opo_Fsth_cub_dtp(unsigned ndim, const double *x, void *pam,
 	return 0;
 }
 
-scalar call_opo_Fsth_cub_dtp(scalar x1, scalar x2, scalar *fval, void *pam) {
+void call_opo_Fsth_cub_dtp(scalar x1, scalar x2, scalar *fval, void *pam) {
     scalar fv[2], x[2];
     x[0]=x1;
     x[1]=x2;
@@ -1613,14 +1616,14 @@ scalar opo_ImFratss_cub_dtp(const double *x, size_t ndim, void * pam)
     Ir2SinQR = DJSS3D*Ir2SinQR;
 	return Ir2SinQR;
 }
-scalar call_opo_Fss_cub_dtp(scalar x1, scalar x2, scalar *fval, void *pam) {
+void call_opo_Fss_cub_dtp(scalar x1, scalar x2, scalar *fval, void *pam) {
     scalar fv[2], x[2];
     x[0]=x1;
     x[1]=x2;
     opo_Fss_cub_dtp(2,x,pam,2,fval);
 }
 
-scalar call_opo_Fratss_cub_dtp(scalar x1, scalar x2, scalar *fval, void *pam) {
+void call_opo_Fratss_cub_dtp(scalar x1, scalar x2, scalar *fval, void *pam) {
     scalar fv[2], x[2];
     x[0]=x1;
     x[1]=x2;
@@ -1705,7 +1708,7 @@ int opo_Fratss_cub_drtp(unsigned ndim, const double *x, void *pam,
 	return 0;
 }
 
-scalar call_opo_Fss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
+void call_opo_Fss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
     scalar x[3];
     x[0]=x1;
     x[1]=x2;
@@ -1713,7 +1716,7 @@ scalar call_opo_Fss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void
     opo_Fss_cub_drtp(3,x,pam,2,fval);
 }
 
-scalar call_opo_Fsth_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
+void call_opo_Fsth_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
     scalar x[3];
     x[0]=x1;
     x[1]=x2;
@@ -1721,7 +1724,7 @@ scalar call_opo_Fsth_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, voi
     opo_Fsth_cub_drtp(3,x,pam,2,fval);
 }
 
-scalar call_opo_Fratss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
+void call_opo_Fratss_cub_drtp(scalar x1, scalar x2, scalar x3, scalar *fval, void *pam) {
     scalar x[3];
     x[0]=x1;
     x[1]=x2;

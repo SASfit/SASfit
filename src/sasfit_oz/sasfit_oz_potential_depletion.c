@@ -54,7 +54,7 @@ double U_DepletionOfSpheresBySpheres(double r, double T, double *p) {
 
 double U_R_DepletionOfSpheresBySpheres(double r, double T, double *p) {
     if (r<sigma_large)      return GSL_POSINF;
-    if (r>sigma_large)    return 0.0;
+    if (r>=sigma_large)    return 0.0;
 }
 double U_Ref_DepletionOfSpheresBySpheres(double r, double T, double *p) {
     return U_R_DepletionOfSpheresBySpheres(r,T,p);
@@ -65,9 +65,9 @@ double U_SR_DepletionOfSpheresBySpheres(double r, double T, double *p) {
 
 double U_A_DepletionOfSpheresBySpheres(double r, double T, double *p) {
     if (r<sigma_large) {
-        U_DepletionOfSpheresBySpheres(sigma_large,T,p); 
+        return U_DepletionOfSpheresBySpheres(sigma_large,T,p); 
     } else {
-        U_DepletionOfSpheresBySpheres(r,T,p);
+        return U_DepletionOfSpheresBySpheres(r,T,p);
     }
 }
 double U_Pert_DepletionOfSpheresBySpheres(double r, double T, double *p) {
@@ -99,7 +99,7 @@ double U_DepletionOfSpheresByDiscs(double r, double T, double *p) {
 }
 double U_R_DepletionOfSpheresByDiscs(double r, double T, double *p) {
     if (r<sigma_large)      return GSL_POSINF;
-    if (r>sigma_large)    return 0.0;
+    if (r>=sigma_large)    return 0.0;
 }
 double U_Ref_DepletionOfSpheresByDiscs(double r, double T, double *p) {
     return U_R_DepletionOfSpheresByDiscs(r,T,p);
@@ -109,9 +109,9 @@ double U_SR_DepletionOfSpheresByDiscs(double r, double T, double *p) {
 }
 double U_A_DepletionOfSpheresByDiscs(double r, double T, double *p) {
     if (r<sigma_large) {
-        U_DepletionOfSpheresByDiscs(sigma_large,T,p); 
+        return U_DepletionOfSpheresByDiscs(sigma_large,T,p); 
     } else {
-        U_DepletionOfSpheresByDiscs(r,T,p);
+        return U_DepletionOfSpheresByDiscs(r,T,p);
     }
 }
 double U_Pert_DepletionOfSpheresByDiscs(double r, double T, double *p) {
@@ -140,7 +140,7 @@ double U_DepletionOfSpheresByRods(double r, double T, double *p) {
 }
 double U_R_DepletionOfSpheresByRods(double r, double T, double *p) {
     if (r<sigma_large)      return GSL_POSINF;
-    if (r>sigma_large)    return 0.0;
+    if (r>=sigma_large)    return 0.0;
 }
 double U_Ref_DepletionOfSpheresByRods(double r, double T, double *p) {
     return U_R_DepletionOfSpheresByRods(r,T,p);
@@ -150,9 +150,9 @@ double U_SR_DepletionOfSpheresByRods(double r, double T, double *p) {
 }
 double U_A_DepletionOfSpheresByRods(double r, double T, double *p) {
     if (r<sigma_large) {
-        U_DepletionOfSpheresByRods(sigma_large,T,p); 
+        return U_DepletionOfSpheresByRods(sigma_large,T,p); 
     } else {
-        U_DepletionOfSpheresByRods(r,T,p);
+        return U_DepletionOfSpheresByRods(r,T,p);
     }
 }
 double U_Pert_DepletionOfSpheresByRods(double r, double T, double *p) {

@@ -144,6 +144,8 @@ int select_str(char *str)
 	{
 			return SchultzZimm;
 	}
+	sasfit_err("select_str: unrecognized distribution name '%s'\n",str);
+	return -1;
 }
 
 void which_len(Tcl_Interp *interp,
@@ -4883,6 +4885,9 @@ int Sasfit_nrGlobalCmd(clientData, interp, argc, argv)
     int        argc;
     const char  **argv;
 {
+	// TODO: not yet implemented
+	sasfit_err("sasfit_nrGlobal: not yet implemented\n");
+	return TCL_ERROR;
 }
 
 /*#########################################################################*/

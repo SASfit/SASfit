@@ -693,6 +693,7 @@ int OZ_first_order_divided_difference (sasfit_oz_data *OZd, double *x, double *y
     free(Fu);
     free(Fv);
 
+    return TRUE;
 }
 
 int KIN_sasfit_configure(void *kin_mem,sasfit_oz_data *OZd) {
@@ -786,6 +787,7 @@ int FP4cr_EuRah(sasfit_oz_data *OZd) {
         sasfit_err("could not solve OZ equations\n");
         return TCL_ERROR;
     }
+    return TCL_OK;
 };
 
 int OZ_solver_by_iteration(sasfit_oz_data *OZd, sasfit_oz_root_algorithms algorithm) {

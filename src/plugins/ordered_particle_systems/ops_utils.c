@@ -53,7 +53,7 @@ void set_l(ordered_particles_param *ospparam, sasfit_param *param)
     LMOD = D*tan(VARTHETA);
 }
 
-scalar set_q_via_l(ordered_particles_param *ospparam, sasfit_param *param)
+void set_q_via_l(ordered_particles_param *ospparam, sasfit_param *param)
 {
     scalar k;
 

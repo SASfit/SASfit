@@ -63,6 +63,7 @@ scalar sasfit_ff_f_funct_homo_polym(scalar q, sasfit_param * param)
         case 3: return sasfit_integrate(0,GSL_POSINF,&Paf_exact,param);
         default: sasfit_err("approximation: %d unknown!\n",lround(APPROX));
     }
+    return 0.0;
 }
 
 scalar sasfit_ff_f_funct_homo_polym_f(scalar q, sasfit_param * param)

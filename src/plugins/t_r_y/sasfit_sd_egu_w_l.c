@@ -131,6 +131,7 @@ scalar sasfit_sd_egu_w_l_v(scalar u, sasfit_param * param, int dist)
         case DISTRIBUTION_VARIANCE:
         default: sasfit_err("parameter distr=%d not defined",dist);
     }
+    return 0.0;
 
 }
 

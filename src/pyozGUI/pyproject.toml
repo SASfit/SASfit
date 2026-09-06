@@ -18,7 +18,9 @@ dependencies = [
 # mpmath: high-precision Golub-Welsch nodes for log-normal and Weibull size
 #   distributions (the moments-to-nodes map is ill-conditioned in float64)
 # sundials4py: KINSOL fixed-point and Newton-Krylov solvers
-full = ["mpmath", "sundials4py"]
+# bumps: global optimisers (differential evolution) and posterior sampling
+#   (DREAM) for fitting; the default fit path uses scipy only
+full = ["mpmath", "sundials4py", "bumps"]
 
 [project.scripts]
 pyozgui = "pyozgui.oZgui:main"

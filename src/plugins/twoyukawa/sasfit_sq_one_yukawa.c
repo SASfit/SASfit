@@ -80,6 +80,7 @@ scalar sasfit_sq_one_yukawa(scalar q, sasfit_param * param)
 		return SqOneYukawa(q*R*2.0, Z1, K1, PHI, a[foundidx], b[foundidx], c[foundidx], d[foundidx]);
 	}
 	SASFIT_CHECK_COND1((ok==0), param, "Could not solve the equations for this set of parameters, ok(%d)\n",ok);
+	return 0.0;
 }
 
 scalar sasfit_sq_one_yukawa_f(scalar q, sasfit_param * param)

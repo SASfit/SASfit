@@ -5,6 +5,9 @@
 
 #include "include/private.h"
 #include <sasfit_error_ff.h>
+#include <math.h>
+#include <gsl/gsl_sf_gamma.h>
+#include <gsl/gsl_sf_hyperg.h>
 
 scalar exp_kappa(scalar x, sasfit_param * param) {
     if (KAPPA == 0) return exp(x);
@@ -22,11 +25,30 @@ scalar erf_kernel(scalar x, sasfit_param * param) {
     return exp_kappa(-x*x,param);
 }
 
+double erf1(double x)
+{
+    double g = gsl_sf_gamma(0.25);
+
+    double norm = 8.0 * sqrt(M_PI) / (g * g);
+
+    double F = gsl_sf_hyperg_2F1(
+                    -0.5,   /* a */
+                     0.25,  /* b */
+                     1.25,  /* c */
+                    -pow(x,4));
+
+    return norm * (x * F - x*x*x/3.0);
+}
+
 scalar erf_kappa(scalar x, sasfit_param * param) {
     if (KAPPA == 0) return gsl_sf_erf(x);
     if (KAPPA > 0 && KAPPA < 1)
         return (2+KAPPA)*sqrt(2*KAPPA/M_PI)*exp(gsl_sf_lngamma(0.5/KAPPA+0.25)-gsl_sf_lngamma(0.5/KAPPA-0.25))
                 * sasfit_integrate(0,x,&erf_kernel,param);
+    if (KAPPA==1) return erf1(x);
+    // for kappa >=1 and kappa<2 there is a mathematical solution available but should not be relevant here.
+    // Therefore NAN is returned.
+    return NAN;
 }
 
 scalar mode_kappa(sasfit_param * param) {

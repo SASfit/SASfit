@@ -59,7 +59,7 @@ try:
     from generic_polydisperse_sas import GenericPolydisperseSAS
     from polydisperse_yukawa_sas import Sphere, CoreShell
     from polydisperse_tab_controls import PolydisperseTabControls
-    from polydisperse_fit import PolydisperseFit, loadCurve
+    from polydisperse_fit import PolydisperseFit, loadCurve, Resolution
 except Exception as _exc:                                  # pragma: no cover
     IMPORT_ERROR = _exc
     PolydisperseTabControls = object                       # so the class body parses
@@ -298,6 +298,12 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         ttk.Button(dbtn, text="Load data...", command=self._onLoadData).pack(side="left", padx=2)
         self.fitBtn = ttk.Button(dbtn, text="Fit", command=self._onFit, state="disabled")
         self.fitBtn.pack(side="left", padx=2)
+        #Enabled only when the loaded file carries a 4th (dQ) column.
+        self.smearVar = tk.BooleanVar(value=False)
+        self.smearCheck = ttk.Checkbutton(
+            left, text="apply Q resolution (dQ column)",
+            variable=self.smearVar, state="disabled")
+        self.smearCheck.grid(row=r, column=0, columnspan=2, sticky="w"); r += 1
         #Which parameters to vary. The current field values are the starting
         #guess, so the workflow is Compute first to get roughly right by eye,
         #then tick and Fit -- which matters because every fit evaluation is a
@@ -462,13 +468,29 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         if not path:
             return
         try:
-            Q, I, dI = loadCurve(path)
+            Q, I, dI, dQ = loadCurve(path, withResolution=True)
         except Exception as e:
             messagebox.showerror("load failed", str(e))
             return
         self.data = (Q, I, dI)
-        self.dataLabelVar.set(f"{len(Q)} points, Q {Q.min():.4g}..{Q.max():.4g}"
-                              + (", with dI" if dI is not None else ", no dI"))
+        #A FOURTH column is taken as the Q resolution. It is read as the
+        #Gaussian SIGMA, not the FWHM -- the two differ by 2.355 and the wrong
+        #one silently rescales the fitted polydispersity, which is exactly the
+        #bias smearing exists to remove. The checkbox lets it be switched off
+        #so the effect can be seen; it is not there to be left off.
+        self.dQ = dQ
+        bits = [f"{len(Q)} points", f"Q {Q.min():.4g}..{Q.max():.4g}"]
+        bits.append("with dI" if dI is not None else "no dI")
+        if dQ is not None:
+            frac = dQ/np.where(Q > 0, Q, np.nan)
+            bits.append(f"dQ/Q {np.nanmin(frac):.3f}..{np.nanmax(frac):.3f}")
+            self.smearCheck.configure(state="normal")
+            self.smearVar.set(True)
+        else:
+            bits.append("no dQ column")
+            self.smearCheck.configure(state="disabled")
+            self.smearVar.set(False)
+        self.dataLabelVar.set(", ".join(bits))
         self.fitBtn.configure(state="normal")
         self._replot()
 
@@ -531,6 +553,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 parameters=params, fixed=fixed,
                 nbins=p["nbins"], nFF=p["nFF"],
                 distribution="Schulz",
+                resolution=p["resolution"],
                 shouldStop=lambda: getattr(self, "_abortFit", False))
             self.resultQueue.put(("status", f"fitting {len(params)} parameters..."))
             out = fitter.run(maxNfev=200)
@@ -620,6 +643,12 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #reads a Tk StringVar, and Tk may only be touched from the thread that
         #owns the interpreter -- calling it inside _worker() raised
         #"main thread is not in main loop" and lost the whole run.
+        #Built on the MAIN thread: it only touches numpy, but the Tk variable
+        #that decides whether to use it may not be read from the worker.
+        p["resolution"] = None
+        if self.smearVar.get() and getattr(self, "dQ", None) is not None:
+            Q = self.data[0]
+            p["resolution"] = Resolution(Q, self.dQ)
         p["solverClass"] = self.selectedSolverClass()
         return p
 
