@@ -1,3 +1,193 @@
+\clearpage \section{Resolution Function} 
+
+The resolution treatment is based on the analytical approach of Pedersen~\cite{Pedersen1990}. The original derivation assumes circular pinhole collimation and derives the beam divergence from the overlap of two circular apertures. In the present implementation an RMS-based description is used instead. This formulation naturally accommodates rectangular or circular source apertures, rectangular or circular sample apertures, as well as square or rectangular detector pixels. The resolution model is formulated in terms of root-mean-square (RMS) widths. For a random variable $x$ with mean value $\langle x \rangle$, the RMS width (standard deviation) is defined as 
+\begin{equation} 
+\sigma_x = \sqrt{ \left\langle \left( x-\langle x\rangle \right)^2 \right\rangle }. 
+\end{equation} 
+Independent resolution contributions can be combined in quadrature, which makes the RMS representation particularly convenient for resolution calculations. 
+
+\subsection{Geometrical beam divergence} 
+
+For a rectangular aperture of width $w$ and height $h$ the RMS beam dimensions are 
+\begin{align} \sigma_x &= \frac{w}{\sqrt{12}}, \\ \sigma_y &= \frac{h}{\sqrt{12}}. 
+\end{align} 
+The factor $1/\sqrt{12}$ follows directly from the variance of a uniform distribution over a rectangular opening. For a circular aperture of radius $r$ 
+\begin{align} 
+\sigma_x &= \sigma_y = \frac{r}{2}. 
+\end{align} 
+This follows from the variance of a uniformly illuminated disk, for which 
+\begin{equation} 
+\langle x^2 \rangle = \langle y^2 \rangle = \frac{r^2}{4}. 
+\end{equation} 
+Let the source aperture (or neutron guide exit) and the sample aperture be separated by the collimation length $L_C$. Their RMS dimensions are denoted by 
+\begin{align} 
+(\sigma_{1x},\sigma_{1y}),\\ (\sigma_{2x},\sigma_{2y}). 
+\end{align} 
+The RMS beam divergences are then 
+\begin{align} 
+\sigma_{\theta,x} &= \frac{ \sqrt{\sigma_{1x}^2+\sigma_{2x}^2} }{L_C}, \\ 
+\sigma_{\theta,y} &= \frac{ \sqrt{\sigma_{1y}^2+\sigma_{2y}^2} }{L_C}. 
+\end{align} 
+Using 
+\begin{equation} 
+k=\frac{2\pi}{\lambda}, 
+\end{equation} 
+the corresponding reciprocal-space contributions become 
+\begin{align} 
+\sigma_{Q,x}^{(\mathrm{geom})} &= k\,\sigma_{\theta,x}, \\ 
+\sigma_{Q,y}^{(\mathrm{geom})} &= k\,\sigma_{\theta,y}. 
+\end{align} 
+For radially averaged scattering data a single isotropic geometric resolution width is required. The effective geometric contribution is therefore 
+\begin{equation} 
+\sigma_{Q,\mathrm{geom}} = \sqrt{ \frac{ \left( \sigma_{Q,x}^{(\mathrm{geom})} \right)^2 + \left( \sigma_{Q,y}^{(\mathrm{geom})} \right)^2 }{2} }. 
+\end{equation} 
+
+\subsection{Detector contribution} 
+
+For detector pixels of size $p_x \times p_y$ the RMS pixel dimensions are 
+\begin{align} 
+\sigma_{\mathrm{pix},x} &= \frac{p_x}{\sqrt{12}}, \\ 
+\sigma_{\mathrm{pix},y} &= \frac{p_y}{\sqrt{12}}. 
+\end{align} 
+Using the sample-detector distance $l$, the detector contribution in reciprocal space becomes
+\begin{align} 
+\sigma_{Q,x}^{(\mathrm{det})} &= k \frac{\sigma_{\mathrm{pix},x}}{l}, \\ 
+\sigma_{Q,y}^{(\mathrm{det})} &= k \frac{\sigma_{\mathrm{pix},y}}{l}. 
+\end{align} 
+The effective detector contribution used for radial averaging is 
+\begin{equation} 
+\sigma_{Q,\mathrm{det}} = \sqrt{ \frac{ \left( \sigma_{Q,x}^{(\mathrm{det})} \right)^2 + \left( \sigma_{Q,y}^{(\mathrm{det})} \right)^2 }{2} }. 
+\end{equation} 
+
+\subsection{Wavelength contribution} 
+
+Following Pedersen, the wavelength spread contributes only along the radial direction in reciprocal space. Its contribution is 
+\begin{equation} 
+\sigma_{\lambda} = \langle Q\rangle \frac{\Delta\lambda}{\lambda} \frac{1}{2\sqrt{2\ln 2}}.
+\end{equation} 
+Unlike the geometric and detector contributions, the wavelength term increases linearly with $Q$ and therefore dominates the resolution at large momentum transfer. 
+
+\subsection{Total resolution width} 
+
+The total resolution width assigned to each reduced $Q$ bin is 
+\begin{equation} 
+\sigma_Q = \sqrt{ \sigma_{\lambda}^2 + \sigma_{Q,\mathrm{geom}}^2 + \sigma_{Q,\mathrm{det}}^2 }. 
+\end{equation} 
+
+\subsection{Radially averaged resolution kernel} 
+
+For radially averaged scattering data the resolution function is given by 
+\begin{equation} 
+R_{\mathrm{av}} \left( Q,\langle Q\rangle \right) = \frac{Q}{\sigma_Q^2} \exp \left[ -\frac{ Q^2+\langle Q\rangle^2 } {2\sigma_Q^2} \right] I_0 \left( \frac{ Q\langle Q\rangle } {\sigma_Q^2} \right), 
+\end{equation} 
+where $I_0$ denotes the modified Bessel function of the first kind of order zero. For numerical calculations the kernel is evaluated in its equivalent scaled form in order to avoid overflow of the Bessel function for large arguments. Using 
+\begin{equation} 
+I_0(x) = e^{x} I_0^{\mathrm{scaled}}(x), 
+\end{equation} 
+with 
+\begin{equation} 
+I_0^{\mathrm{scaled}}(x) = e^{-x}I_0(x), 
+\end{equation} 
+the resolution kernel becomes 
+\begin{equation} 
+R_{\mathrm{av}} \left( Q,\langle Q\rangle \right) = \frac{Q}{\sigma_Q^2} \exp \left[ -\frac{ \left( Q-\langle Q\rangle \right)^2 } {2\sigma_Q^2} \right] I_0^{\mathrm{scaled}} \left( \frac{ Q\langle Q\rangle } {\sigma_Q^2} \right). 
+\end{equation} 
+This form is mathematically identical to the original expression but remains numerically stable for large values of $Q\langle Q\rangle/\sigma_Q^2$. In the implementation the scaled Bessel function is evaluated using \begin{verbatim} gsl_sf_bessel_I0_scaled() \end{verbatim} from the GNU Scientific Library (GSL).
+
+\subsection{Resolution smearing} 
+
+The measured intensity is obtained by convolution of the ideal cross section with the resolution kernel 
+\begin{equation} 
+I(\langle Q\rangle) = \int_0^\infty R_{\mathrm{av}} \left( Q,\langle Q\rangle \right) \, \frac{d\sigma}{d\Omega}(Q) \, dQ. 
+\end{equation} 
+The model scattering cross section is 
+\begin{equation} 
+\frac{d\sigma}{d\Omega}(Q) = \int_0^\infty N(R) F^2(Q,R) \, dR. 
+\end{equation}
+
+
+
+\subsection{Implementation details}
+
+The SASfit implementation follows the analytical treatment of
+Pedersen~\cite{Pedersen1990} for the wavelength and collimation
+contributions. The detector contribution, however, is calculated from
+the RMS uncertainty associated with the detector pixel size rather than
+from a Gaussian detector FWHM.
+The wavelength contribution is
+\begin{equation}
+\sigma_W=\langle Q \rangle\frac{\Delta\lambda}{\lambda}\frac{1}{2\sqrt{2\ln 2}}.
+\end{equation}
+
+The collimation contribution is obtained from the aperture geometry via
+the angular width $\Delta\beta_1$ derived by Pedersen:
+\begin{equation}
+\sigma_{C1}=k\cos(\theta)\frac{\Delta\beta_1}{2\sqrt{2\ln 2}}.
+\end{equation}
+For a detector pixel size $D$, the detector uncertainty is assumed to
+correspond to a uniform probability distribution across the pixel. The
+corresponding RMS uncertainty is
+\begin{equation}
+\sigma_{\mathrm{pix}}=\frac{D}{\sqrt{12}}.
+\end{equation}
+The detector contribution to the radial resolution width therefore
+becomes
+\begin{equation}
+\sigma_{D1}=k\cos(\theta)\cos^2(2\theta)\frac{D}{l\sqrt{12}}.
+\end{equation}
+Likewise, the contribution arising from the finite width of the radial
+averaging bin $\Delta D$ is
+\begin{equation}
+\sigma_{\mathrm{av}}=k\cos(\theta)\cos^2(2\theta)\frac{\Delta D}{l\sqrt{12}}.
+\end{equation}
+The effective one-dimensional resolution width assigned to each
+momentum-transfer value is
+\begin{equation}
+\sigma_Q=\sqrt{\sigma_W^2+\sigma_{C1}^2+\sigma_{D1}^2+\sigma_{\mathrm{av}}^2}.
+\end{equation}
+The transverse contributions $\sigma_{C2}$ and $\sigma_{D2}$ describing
+the broadening perpendicular to the scattering vector are calculated
+internally but are not used in the radial averaging approximation.
+The original Pedersen expression for the radially averaged resolution
+kernel is
+\begin{equation}
+R_{\mathrm{av}}\left(Q,\langle Q\rangle\right)
+=\frac{Q}{\sigma_Q^2}\exp\left[-\frac{Q^2+\langle Q\rangle^2}{2\sigma_Q^2}\right]
+I_0\left(\frac{Q\langle Q\rangle}{\sigma_Q^2}\right).
+\end{equation}
+Direct evaluation of this expression can overflow for large values of
+\begin{equation}
+x=\frac{Q\langle Q\rangle}{\sigma_Q^2}.
+\end{equation}
+To avoid numerical overflow, the implementation uses the exponentially
+scaled modified Bessel function
+\begin{equation}
+I_0^{\mathrm{scaled}}(x)=e^{-x}I_0(x).
+\end{equation}
+Using
+\begin{equation}
+-\frac{Q^2+\langle Q\rangle^2}{2\sigma_Q^2}+\frac{Q\langle Q\rangle}{\sigma_Q^2}=
+-\frac{\left(Q-\langle Q\rangle\right)^2}{2\sigma_Q^2},
+\end{equation}
+the kernel can be rewritten as
+\begin{equation}
+R_{\mathrm{av}}\left(Q,\langle Q\rangle\right)=
+\frac{Q}{\sigma_Q^2}
+\exp\left[-\frac{\left(Q-\langle Q\rangle\right)^2}{2\sigma_Q^2}\right]
+I_0^{\mathrm{scaled}}
+\left(\frac{Q\langle Q\rangle}{\sigma_Q^2}\right).
+\end{equation}
+
+This expression is mathematically identical to the original Pedersen
+kernel and is the form used internally by SASfit. The scaled Bessel
+function is provided by the GNU Scientific Library (GSL) through
+\verb"gsl_sf_bessel_I0_scaled()"
+and is evaluated directly in the resolution function.
+
+
+
+
+\begin{comment}
 \clearpage
 \section{Resolution Function}
 The resolution function is taken from \cite{Pedersen1990}.
@@ -43,3 +233,4 @@ Q\rangle\right) \frac{d\sigma}{d\Omega}(Q) \, dQ
 \begin{equation}
 \frac{d\sigma}{d\Omega}(Q) = \int_0^\infty N(R) F^2(Q,R) \, dR
 \end{equation}
+\end{comment}
