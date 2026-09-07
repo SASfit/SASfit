@@ -9,7 +9,6 @@
 // define shortcuts for local parameters/variables
 #define RG	param->p[0]
 #define DUMMY	param->p[1]
-#define PSI_DEG	param->p[2]
 #define XI	param->p[3]
 #define BX	param->p[4]
 #define BZ	param->p[5]

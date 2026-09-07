@@ -243,7 +243,18 @@ endif()
 # to plugin-style isolation and not needed here (this target now links
 # sundials7 directly, not a second private copy of it).
 if(NOT TARGET sundials_kinsol_static)
+    # SUNDIALS 7.8.0 emits many -Wdeprecated-declarations warnings for its
+    # own Work-space functions (N_VSpace, SUNMatSpace, SUNLinSolSpace, etc.,
+    # slated for removal in SUNDIALS 8.0.0) that SASfit does not call and
+    # cannot fix -- this is vendored upstream source, not ours to edit.
+    # Suppressed only for the duration of this add_subdirectory() call so
+    # it does not leak into any target configured afterwards (matching the
+    # scoping approach used elsewhere in this file, e.g. the
+    # target_include_directories(sasfit PRIVATE ...) note above).
+    set(SASFIT_CFLAGS_BEFORE_SUNDIALS7 "${CMAKE_C_FLAGS}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
     add_subdirectory(sundials7)
+    set(CMAKE_C_FLAGS "${SASFIT_CFLAGS_BEFORE_SUNDIALS7}")
 endif()
 
 # bestlime
