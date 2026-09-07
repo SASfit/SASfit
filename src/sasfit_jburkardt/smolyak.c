@@ -377,10 +377,7 @@ void frei ( struct tnode *p )
   {
     for ( i = 0; i < SP.maxind; i++ )
     {
-      if ( !( p->left+i == NULL ) )
-      {
-        frei ( p->left +i );
-      }
+      frei ( p->left +i );
     }
     free ( p->left );
   }
@@ -1379,10 +1376,7 @@ void cc_frei ( struct cc_tnode *p )
   {
     for ( i = 0; i < SP.maxind; i++ )
     {
-      if ( !( p->left+i == NULL ) )
-      {
-        cc_frei ( p->left + i );
-      }
+      cc_frei ( p->left + i );
     }
     free ( p->left );
   }
@@ -1391,10 +1385,7 @@ void cc_frei ( struct cc_tnode *p )
   {
     for ( i = 0; i <= SP.d; i++ )
     {
-      if ( !( p->left+i == NULL ) )
-      {
-        cc_frei ( p->right + i );
-      }
+      cc_frei ( p->right + i );
     }
     free ( p->right );
   }

@@ -116,6 +116,7 @@ double sasfit_Soergel_d(double *p, double *q, int dim){
 	double DS,tmp;
 	int i;
 	DS=0;
+	tmp=0;
 	for (i=0;i<dim;i++) {
 		DS=DS+fabs(p[i]-q[i]);
 		tmp=tmp+GSL_MAX(p[i],q[i]);
@@ -128,6 +129,7 @@ double sasfit_Kulczynski_d(double *p, double *q, int dim){
 	double DK,tmp;
 	int i;
 	DK=0;
+	tmp=0;
 	for (i=0;i<dim;i++) {
 		DK=DK+fabs(p[i]-q[i]);
 		tmp=tmp+GSL_MIN(p[i],q[i]);
@@ -223,6 +225,7 @@ double sasfit_Czekanowski_d(double *p, double *q, int dim){
 	double DC,tmp;
 	int i;
 	DC=0;
+	tmp=0;
 	for (i=0;i<dim;i++) {
 		DC=DC+fabs(p[i]-q[i]);
 		tmp=tmp+p[i]+q[i];
@@ -237,6 +240,7 @@ double sasfit_Motyka_s(double *p, double *q, int dim){
 	double SM,tmp;
 	int i;
 	SM=0;
+	tmp=0;
 	for (i=0;i<dim;i++) {
 		SM=SM+(p[i]+q[i]);
         if (GSL_MIN(p[i],q[i]) > 0) {
@@ -354,6 +358,7 @@ double sasfit_Jaccard_d(double *p, double *q, int dim){
     CS=0;
     sum_p=0;
     sum_q=0;
+    sumpq=0;
 	for (i=0;i<dim;i++) {
 		CS=CS+gsl_pow_2(p[i]-q[i]);
 		sum_p=sum_p+p[i]*p[i];
@@ -691,6 +696,7 @@ double sasfit_HistogrammIntersection_Distance(double *p, double *q, int dim){
 	double DHI,tmp;
 	int i;
 	DHI=0;
+	tmp=0;
 	for (i=0;i<dim;i++) {
 		 DHI=DHI+GSL_MIN(p[i],q[i]);
 		 tmp=tmp+q[i];
@@ -717,7 +723,7 @@ double sasfit_HistogrammCorrelation_Distance(double *p, double *q, int dim){
 		qtmp=(q[i]-qavg);
 		DHC=DHC+ptmp*qtmp;
 		pvar=pvar+ptmp*ptmp;
-		qavg=qavg+qtmp*qtmp;
+		qvar=qvar+qtmp*qtmp;
 	}
 	return 1-DHC/sqrt(pvar*qvar);
 }
@@ -752,7 +758,7 @@ int first_nonzero(double *vec, int dim) {
 
 double move_dirt(double *dirt,int di, double *holes, int hi) {
   // move as much dirt at [di] as possible to h[hi]
-  double flow, dist;
+  double flow = 0.0, dist;
   if (dirt[di] <= holes[hi]) { 		// use all dirt
     flow = dirt[di];
     dirt[di] = 0.0;            		// all dirt got moved
@@ -1033,7 +1039,8 @@ double sasfit_weighted_compare(double *p, double*q, double *sigma, int dim,
 double sasfit_compare_strategies(double *x, double *p, double*q, double *sigma, int dim,
                       sasfit_distance_metric_struct *compare, sasfit_param *param) {
 
-    double comparevalue;
+    // TODO: not yet implemented
+    double comparevalue = -1;
 
     return comparevalue;
 }
@@ -1044,7 +1051,8 @@ double sasfit_compare_pre_treat(double *px, double *p, double *sigma_p, int dim_
                                 double *qx_out, double *q_out, double *sigma_q_out, int dim_q_out,
                                 sasfit_distance_metric_struct *compare, sasfit_param *param) {
 
-    double comparevalue;
+    // TODO: not yet implemented
+    double comparevalue = -1;
 
     return comparevalue;
 }

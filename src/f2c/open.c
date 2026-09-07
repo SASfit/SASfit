@@ -268,11 +268,13 @@ integer f_open(olist *a)
 		opnerr(a->oerr,108,"open")
 #endif
 	if(b->useek)
+	{
 		if (a->orl)
 			rewind(b->ufd);
 		else if ((s = a->oacc) && (*s == 'a' || *s == 'A')
 			&& FSEEK(b->ufd, 0L, SEEK_END))
 				opnerr(a->oerr,129,"open");
+	}
 	return(0);
 }
 

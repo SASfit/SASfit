@@ -741,7 +741,7 @@ int uertst_(integer * ier, integer * name__)
 		 ' ', 'S', ' ', ' ', ' ', 'E', ' ', ' ', ' ', 'T', ' ', ' ', 
 		' '}, 0 };
 
-#define namset ((integer *)&equiv_20)
+#define namset ((int *)&equiv_20)
 
     static struct {
 	char e_1[24];
@@ -750,7 +750,7 @@ int uertst_(integer * ier, integer * name__)
 		 ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
 		' '}, 0 };
 
-#define nameq ((integer *)&equiv_21)
+#define nameq ((int *)&equiv_21)
 
     static integer level = 4;
     static integer ieqdf = 0;
@@ -759,7 +759,7 @@ int uertst_(integer * ier, integer * name__)
 	integer e_2;
 	} equiv_22 = { {'=', ' ', ' ', ' '}, 0 };
 
-#define ieq (*(integer *)&equiv_22)
+#define ieq (*(int *)&equiv_22)
 
 
     /* Format strings */
@@ -985,7 +985,7 @@ int uspkd_(integer * packed, integer * nchars, integer * unpakd, integer * nchmt
 	integer e_2;
 	} equiv_9 = { {' ', ' ', ' ', ' '}, 0 };
 
-#define iblank (*(integer *)&equiv_9)
+#define iblank (*(int *)&equiv_9)
 
 
     /* Format strings */

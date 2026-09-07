@@ -547,6 +547,7 @@ x_rsne(cilist *a)
  mustend:
 			GETC(ch);
 			if (readall)
+			{
 				if (iva >= ivae)
 					readall = 0;
 				else for(;;) {
@@ -559,6 +560,7 @@ x_rsne(cilist *a)
 						}
 					break;
 					}
+			}
 			if (ch == '/' || ch == '$' || ch == '&') {
 				f__lquit = 1;
 				return 0;

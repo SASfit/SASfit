@@ -83,7 +83,7 @@ scalar sasfit_ff_torus(scalar q, sasfit_param * param)
 	// insert your code here
 	Q=q;
 	P=2;
-	sum = sum=sasfit_integrate(0.0, M_PI_2, Torus_kernel_int_theta, param);
+	sum=sasfit_integrate(0.0, M_PI_2, Torus_kernel_int_theta, param);
 	return sum;
 }
 

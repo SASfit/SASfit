@@ -252,7 +252,7 @@ rd_F(ufloat *p, int w, int d, ftnlen len)
 	switch(ch) {
 		case '-': *sp++ = ch; sp1++; spe++;
 		case '+':
-			if (!w) goto zero;
+			if (!w) { goto zero; }
 			--w;
 			GET(ch);
 		}

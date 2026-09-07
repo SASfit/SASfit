@@ -292,10 +292,12 @@ l_C(Void)
 			return 0;
 			}
 		if (rd_count(ch))
+		{
 			if(!f__cf || !feof(f__cf))
 				errfl(f__elist->cierr,112,"complex format");
 			else
 				err(f__elist->cierr,(EOF),"lread");
+		}
 		if(GETC(ch)!='*')
 		{
 			if(!f__cf || !feof(f__cf))
@@ -436,10 +438,12 @@ l_L(Void)
 	{
 		rd_count(ch);
 		if(GETC(ch)!='*')
+		{
 			if(!f__cf || !feof(f__cf))
 				errfl(f__elist->cierr,112,"no star");
 			else
 				err(f__elist->cierr,(EOF),"lread");
+		}
 		GETC(ch);
 	}
 	sawdot = 0;

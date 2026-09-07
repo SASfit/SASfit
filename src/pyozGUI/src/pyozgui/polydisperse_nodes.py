@@ -157,7 +157,23 @@ def sizeClasses(distribution, srel, p, meanSigma=1.0, allowTruncated=True):
         t = 1.0/srel**2 - 1.0
         nodes, w = roots_genlaguerre(p, t)
         sigma = nodes*meanSigma/(t + 1.0)
-        x = w/w.sum()
+        #The RAW Laguerre weights carry a factor Gamma(alpha+p+1) and overflow
+        #for a narrow distribution: 9e155 at alpha = 99 (s = 0.10), 1.7e274 at
+        #alpha = 155 (s = 0.08), and +inf at alpha = 203 (s = 0.07). The NODES
+        #stay finite throughout, so the failure is invisible until w.sum()
+        #turns the normalised weights into NaN -- whereupon the solver reports
+        #"Percus-Yevick solve diverged" and the real cause is hidden.
+        #
+        #s < 0.08 is not exotic: monodisperse-looking colloids sit there. Fall
+        #back to the high-precision Golub-Welsch path already used for the
+        #log-normal and Weibull weights, which has no such overflow because
+        #mpmath carries the large factor symbolically.
+        w = np.asarray(w, float)
+        if not np.all(np.isfinite(w)) or not np.isfinite(w.sum()) or w.sum() <= 0.0:
+            sigma, x = _golubWelsch(
+                analyticMoments(distribution, srel, 2*p + 1, meanSigma), p)
+        else:
+            x = w/w.sum()
 
     elif distribution == "Gaussian":
         # Closed-form Gauss-Hermite; exact, but can place non-positive nodes.

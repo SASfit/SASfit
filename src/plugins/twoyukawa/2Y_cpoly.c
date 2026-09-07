@@ -292,6 +292,7 @@ static void fxshft( const int l2, double *zr, double *zi, int *conv )
 		// Test for convergence unless stage 3 has failed once or this
 		// is the last H Polynomial
 		if( !( bol || !test || j == 12 ) )
+		{
 			if( cmod( tr - otr, ti - oti ) < 0.5 * cmod( *zr, *zi ) )
             {
 				if( pasd )
@@ -325,6 +326,7 @@ static void fxshft( const int l2, double *zr, double *zi, int *conv )
             }
 			else
 				pasd = 0;
+		}
 	}
 	
 	// Attempt an iteration with final H polynomial from second stage

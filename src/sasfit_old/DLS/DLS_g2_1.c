@@ -746,7 +746,7 @@ int save_DLSpar(clientData,interp,argv,DLSParData)
     Tcl_SetVar2(interp,argv[1],"chisqr", sBuffer,0);
 
     float_to_string(sBuffer,(*DLSParData).iter_d);
-	sprintf(tsBuffer," no. of used iter (%s)",sBuffer);
+	snprintf(tsBuffer,sizeof(tsBuffer)," no. of used iter (%s)",sBuffer);
     Tcl_SetVar2(interp,argv[1],"iter_d", tsBuffer,0);
 
 	return TCL_OK;

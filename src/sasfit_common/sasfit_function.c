@@ -128,9 +128,7 @@ void sasfit_print_param(sasfit_param * param)
 int sasfit_valid_fct(sasfit_function * f)
 {
 	if ( 		       f != 0 &&
-			  f->fct != 0 &&
-		      f->typestr != 0 &&
-		f->params.errStr != 0 )
+			  f->fct != 0 )
 	{
 		return 1;
 	}

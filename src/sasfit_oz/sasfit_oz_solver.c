@@ -697,7 +697,7 @@ int OZ_first_order_divided_difference (sasfit_oz_data *OZd, double *x, double *y
 }
 
 int KIN_sasfit_configure(void *kin_mem,sasfit_oz_data *OZd) {
-    int flag;
+    int flag = 0;
     flag += KINSetMaxNewtonStep(kin_mem, OZd->KINSetMaxNewtonStep);
     if (OZd->PrintProgress) sasfit_out("KINSetMaxNewtonStep(flag)=%d\n",flag);
 

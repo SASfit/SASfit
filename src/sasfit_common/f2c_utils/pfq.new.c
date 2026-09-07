@@ -30,7 +30,7 @@ struct {
 
 struct {
     doublereal e_1[6];
-    } consts_ = { 0., .5, 1., 2., 10., 1e-10 };
+    } consts_ = { { 0., .5, 1., 2., 10., 1e-10 } };
 
 
 /* Table of constant values */
@@ -193,7 +193,7 @@ static doublereal c_b64 = 10.;
     *ierr=1;
     ret_val->r=-1;
     ret_val->i=-1;
-    sprintf(errstr, "IP=%d, IQ=%d AND ABS(Z)=%lf WHICH IS GREATER THAN ONE--\n SERIES DOES NOT CONVERGE\n", *ip, *iq, z_abs(z__));
+    sprintf(errstr, "IP=%ld, IQ=%ld AND ABS(Z)=%lf WHICH IS GREATER THAN ONE--\n SERIES DOES NOT CONVERGE\n", *ip, *iq, z_abs(z__));
     return;
 	s_stop("", (ftnlen)0);
     }
@@ -801,7 +801,7 @@ L10:
 	    *ierr = 1;
         ret_val->r=-1;
         ret_val->i=-1;
-        sprintf(errstr, "ERROR - ARGUMENT B(%d) WAS EQUAL TO ZERO\n",i1);
+        sprintf(errstr, "ERROR - ARGUMENT B(%ld) WAS EQUAL TO ZERO\n",i1);
         return;
 	    s_stop("", (ftnlen)0);
 	}
@@ -824,7 +824,7 @@ L10:
 	    *ierr = 1;
         ret_val->r=-1;
         ret_val->i=-1;
-        sprintf(errstr, "ERROR - ARGUMENT B(%d) WAS A  NEGATIVE INTEGER\n",i1);
+        sprintf(errstr, "ERROR - ARGUMENT B(%ld) WAS A  NEGATIVE INTEGER\n",i1);
         return;
 		s_stop("", (ftnlen)0);
 	    }
@@ -937,7 +937,7 @@ L110:
     *ierr = 1;
     ret_val->r=-1;
     ret_val->i=-1;
-    sprintf(errstr, "ERROR IN FN HYPER: L MUST BE 0<L<25000, L=%d\n",1);
+    sprintf(errstr, "ERROR IN FN HYPER: L MUST BE 0<L<25000, L=%ld\n",l);
     return;
 	s_stop("", (ftnlen)0);
     }
@@ -2124,7 +2124,7 @@ L1:
 	do_fio(&c__1, (char *)&itnmax, (ftnlen)sizeof(integer));
 	e_wsfe();
     *ierr=1;
-    sprintf(errstr, "ERROR - VALUE OF EXPONENT REQUIRED FOR SUMMATION WAS LARGER THAN THE MAXIMUM MACHINE EXPONENT %d\nSUGGESTIONS: 1) RE-RUN USING LNPFQ=1. IF YOU ARE USING A VAX, TRY USING THE FORTRAN /G_FLOATING OPTION\n",itnmax);
+    sprintf(errstr, "ERROR - VALUE OF EXPONENT REQUIRED FOR SUMMATION WAS LARGER THAN THE MAXIMUM MACHINE EXPONENT %ld\nSUGGESTIONS: 1) RE-RUN USING LNPFQ=1. IF YOU ARE USING A VAX, TRY USING THE FORTRAN /G_FLOATING OPTION\n",itnmax);
     return 0;
 	s_stop("", (ftnlen)0);
     } else if (cae[6] < -tenmax) {
@@ -2345,7 +2345,7 @@ integer ipremax_(doublecomplex *a, doublecomplex *b, integer *ip, integer *iq,
     static doublereal pi;
 
 
-    if (z__->r == consts_1.one && d_imag(z__) == consts_1.zero || z_abs(z__)
+    if ((z__->r == consts_1.one && d_imag(z__) == consts_1.zero) || z_abs(z__)
 	    == consts_1.zero) {
 	z__1.r = consts_1.zero, z__1.i = consts_1.zero;
 	 ret_val->r = z__1.r,  ret_val->i = z__1.i;
