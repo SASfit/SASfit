@@ -28,4 +28,23 @@ echo
 echo "## Install extra development packages"
 echo
 set -x
-sudo apt-get -y install build-essential cmake zlib1g-dev libgsl-dev libfftw3-dev libx11-dev libboost-all-dev  libomp-dev #gcc-14 g++-14 # for testing
+sudo apt-get -y install build-essential cmake zlib1g-dev libgsl-dev libfftw3-dev libx11-dev libboost-all-dev libomp-dev
+set +x
+
+echo
+echo "## Install a newer GCC than jammy's default (gcc-11), best-effort"
+echo
+# Ubuntu 22.04's own repos only carry gcc-9..gcc-12, so this project's
+# CMake config -- and the exact compiler warnings/behaviour it was last
+# checked against -- assumed gcc-14 from either an image that already
+# bundles it, or (as attempted here) the ubuntu-toolchain-r/test PPA. This
+# whole block is deliberately non-fatal: if the PPA can't be reached or
+# gcc-14 isn't packaged for this release after all, the build continues
+# with whatever gcc is already available (4_build.sh picks the newest
+# installed gcc-N automatically, it does not hardcode this version).
+(
+    set -x
+    sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
+    sudo apt-get update && \
+    sudo apt-get -y install gcc-14 g++-14
+) || echo "Could not install gcc-14/g++-14, continuing with whatever gcc is already available."

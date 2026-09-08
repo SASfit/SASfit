@@ -53,8 +53,14 @@ else # macOS or Linux
         # lookup below always runs for macOS instead.
     else # on Linux
         NUM_LOGICAL_CORES="$(awk '/processor/' /proc/cpuinfo | wc -l)"
-        export CC=$(which gcc)
-        export CXX=$(which g++)
+        # Deliberately do NOT do `export CC=$(which gcc)` here: plain "gcc"
+        # is whatever update-alternatives (or the distro default) currently
+        # points at, e.g. Ubuntu 22.04's stock gcc-11, even when a newer
+        # gcc-N (12/13/14/...) is also installed alongside it -- silently
+        # picking up an older compiler than intended, with no error or
+        # warning. Leaving CC/CXX unset here means the versioned
+        # findCmdInPath lookup below always runs for Linux too, picking
+        # whichever gcc-N is actually the newest available.
     fi
     # find latest gcc and g++ compilers and set them as global variables
     [ -f "$CC" ]  || export CC="$( sh "$findCmdInPath" '/gcc(-(mp-)?[0-9]+)?$')"
