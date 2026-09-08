@@ -116,7 +116,7 @@ scalar sasfit_sd_lognorm_fp_f(scalar X, sasfit_param * param)
 
 scalar sasfit_sd_lognorm_fp_v(scalar X, sasfit_param * param, int dist)
 {
-    scalar Vav,V;
+    scalar Vav __attribute__((unused));
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
 	// insert your code here
@@ -161,7 +161,7 @@ scalar sasfit_sd_lognorm_fp_v(scalar X, sasfit_param * param, int dist)
             Vav = M_PI*LENGTH3*gsl_pow_2(X);
 	        break;
         case 14: // CylShell1 d DeltaR;  volume fraction of core
-            V = M_PI*LENGTH3*gsl_pow_2(LENGTH2) ;
+            Vav = M_PI*LENGTH3*gsl_pow_2(LENGTH2) ;
 	        break;
         case 15: // CylShell1 dL;  volume fraction of core
             Vav =  M_PI*X*gsl_pow_2(LENGTH2);
@@ -179,5 +179,9 @@ scalar sasfit_sd_lognorm_fp_v(scalar X, sasfit_param * param, int dist)
             sasfit_err("UNKNOWN shape parameter, SHAPE in [1,18]\n");
 	        return 0;
 	}
+	// TODO: not yet implemented -- Vav is computed above but this function
+	// never branches on dist (mean/variance/quantile/...) the way its
+	// sibling _v() functions do, and never uses Vav to produce a result.
+	return 0.0;
 }
 

@@ -2828,7 +2828,7 @@ double OZ_step(sasfit_oz_data *OZd) {
         infoflag = KINGetNumFuncEvals(OZd->kin_mem,&nfe);
         infoflag = KINGetNumNonlinSolvIters(OZd->kin_mem,&nnlsi);
         infoflag = KINGetFuncNorm(OZd->kin_mem,&fnorm);
-        sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%d\t%d\t%le\"",OZd->it,OZd->GNorm, nfe, nnlsi,fnorm);
+        sprintf(sBuffer,"storeOZstepinfo \"%d\t%le\t%ld\t%ld\t%le\"",OZd->it,OZd->GNorm, nfe, nnlsi,fnorm);
         Tcl_EvalEx(OZd->interp,sBuffer,-1,TCL_EVAL_DIRECT);
     }
     return OZd->GNorm;

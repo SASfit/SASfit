@@ -359,7 +359,7 @@ int Sasfit_2DiqCmd(ClientData    clientData,
 				DetIth[i][j]=log(1+255*DetIth[i][j])/log(256)*255;
 			} else
                 DetIth[i][j] = fabs(DetIth[i][j])*255.;
-			sprintf(sBuffer,"%d",lround(DetIth[i][j]));
+			sprintf(sBuffer,"%ld",lround(DetIth[i][j]));
 			Tcl_DStringAppendElement(&DsBuffer,sBuffer);
 		}
 		Tcl_DStringEndSublist(&DsBuffer);

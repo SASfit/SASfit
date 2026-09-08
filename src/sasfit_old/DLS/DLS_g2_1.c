@@ -709,7 +709,8 @@ int save_DLSpar(clientData,interp,argv,DLSParData)
     char             **argv;
     struct DLSPar    *DLSParData;
 {
- 	char    sBuffer[256],tsBuffer[256];
+ 	char    sBuffer[256],tsBuffer[300]; // tsBuffer sized with headroom above sBuffer's
+	// worst-case length so snprintf below can never truncate, not just never overflow
      
     float_to_string(sBuffer,(*DLSParData).Par[0]);
     Tcl_SetVar2(interp,argv[1],"Par1", sBuffer,0);

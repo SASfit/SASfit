@@ -63,9 +63,9 @@ int value;
 char *sBuffer;
 {
 	char *stopBuffer;
-	sprintf(sBuffer,"%ld",value);
+	sprintf(sBuffer,"%d",value);
 	value = strtol(sBuffer,&stopBuffer,10);
-	sprintf(sBuffer,"%ld",value);
+	sprintf(sBuffer,"%d",value);
 	return;
 }
 

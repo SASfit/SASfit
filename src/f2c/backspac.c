@@ -44,7 +44,8 @@ integer f_back(alist *a)
 
 	if(b->ufmt==0)
 	{	FSEEK(f,-(OFF_T)sizeof(uiolen),SEEK_CUR);
-		fread((char *)&n,sizeof(uiolen),1,f);
+		if (fread((char *)&n,sizeof(uiolen),1,f) != 1)
+			err(a->aerr,errno,"backspace")
 		FSEEK(f,-(OFF_T)n-2*sizeof(uiolen),SEEK_CUR);
 		return(0);
 	}

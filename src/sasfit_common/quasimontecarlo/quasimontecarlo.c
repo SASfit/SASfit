@@ -63,8 +63,9 @@ int quasi_monte_integrate(gsl_monte_function* f, const double xl[], const double
             GSL_ERROR(errmsg, GSL_EINVAL);
         }
         if (xu[i] - xl[i] > GSL_DBL_MAX) {
-            char errmsg[80];
-            snprintf(errmsg, 80, "integration range (%e,%e) is larger than limit %e", xl[i], xu[i], GSL_DBL_MAX);
+            char errmsg[128]; // sized with headroom: %e's worst case (no
+            // explicit precision) plus the literal text can exceed 80
+            snprintf(errmsg, sizeof(errmsg), "integration range (%e,%e) is larger than limit %e", xl[i], xu[i], GSL_DBL_MAX);
             GSL_ERROR(errmsg, GSL_EINVAL);
         }
     }
@@ -120,8 +121,9 @@ int randomized_quasi_monte_integrate(gsl_monte_function* f, const double xl[], c
             GSL_ERROR(errmsg, GSL_EINVAL);
         }
         if (xu[i] - xl[i] > GSL_DBL_MAX) {
-            char errmsg[80];
-            snprintf(errmsg, 80, "integration range (%e,%e) is larger than limit %e", xl[i], xu[i], GSL_DBL_MAX);
+            char errmsg[128]; // sized with headroom: %e's worst case (no
+            // explicit precision) plus the literal text can exceed 80
+            snprintf(errmsg, sizeof(errmsg), "integration range (%e,%e) is larger than limit %e", xl[i], xu[i], GSL_DBL_MAX);
             GSL_ERROR(errmsg, GSL_EINVAL);
         }
     }
