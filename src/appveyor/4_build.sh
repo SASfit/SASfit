@@ -37,14 +37,14 @@ else # macOS or Linux
         # the keg-only prefix directly instead, so this is self-contained
         # regardless of PATH state or exactly which script installed it.
         if command -v brew >/dev/null 2>&1; then
-            GCC_KEG_PREFIX="$(brew --prefix gcc@15 2>/dev/null || brew --prefix gcc 2>/dev/null)"
+            GCC_KEG_PREFIX="$(brew --prefix gcc@12 2>/dev/null || brew --prefix gcc 2>/dev/null)"
             if [ -n "$GCC_KEG_PREFIX" ] && [ -d "$GCC_KEG_PREFIX/bin" ]; then
                 PATH="$GCC_KEG_PREFIX/bin:$PATH"
             fi
         fi
         # Deliberately do NOT do `export CC=$(which gcc)` here as the
         # Linux branch below does: Homebrew's gcc formulae only ever
-        # provide version-suffixed binaries (gcc-15, not gcc), so a bare
+        # provide version-suffixed binaries (gcc-12, not gcc), so a bare
         # "gcc" found on PATH at this point can only be Apple's
         # /usr/bin/gcc clang wrapper -- which IS a real, executable file,
         # so it would silently satisfy the "[ -f "$CC" ]" check below and
