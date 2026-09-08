@@ -11,7 +11,18 @@ echo
 set -x
 
 export HOMEBREW_NO_INSTALL_CLEANUP=1
-brew update
+# Deliberately NOT calling a bare `brew update` here: on this AppVeyor macOS
+# image, `brew update` alone (no other brew command involved) triggers
+# AppVeyor's own baked-in reconciliation of its pre-provisioned tools
+# (PowerShell, dotnet, openssl@3, ...) against a curated Brewfile -- a
+# known AppVeyor macOS quirk, unrelated to anything this project installs.
+# That reconciliation can itself hit a bottle-less formula and fall back to
+# compiling from source (this time openssl@3, previously it was gcc
+# itself), stalling the whole job long before it ever reaches this
+# script's own installs. HOMEBREW_NO_AUTO_UPDATE=1 additionally prevents
+# the brew install/link calls below from implicitly triggering the same
+# thing on their own.
+export HOMEBREW_NO_AUTO_UPDATE=1
 # Pinned to gcc@15 rather than the rolling 'gcc' formula: as of this writing
 # the unversioned 'gcc' formula resolves to 16.2.0, whose patch definition
 # has a known Homebrew bug ("Patch file must be within the formula
