@@ -51,23 +51,49 @@ sasfit_cmake_plugin()
 # working 2.7.0 usage was out of scope and not something this plugin's
 # own testing could validate anyway.
 #
-# -Wl,--exclude-libs=ALL is REQUIRED here, not optional: both SUNDIALS
+# Hiding this plugin's statically-linked SUNDIALS 7.x symbols from the
+# dynamic symbol table is REQUIRED here, not optional: both SUNDIALS
 # versions export same-named-but-incompatible-ABI symbols (e.g. KINCreate
 # takes no arguments in 2.7.0, requires a SUNContext in 7.x), and both this
-# plugin's .so and the main SASfit binary/library (which contains the OZ
-# solver's statically-linked 2.7.0 copy) end up loaded in the same process
-# at runtime. Verified directly while developing this: WITHOUT this flag,
-# a minimal reproduction of exactly this scenario (one shared library with
-# each SUNDIALS version statically linked, both loaded via dlopen) segfaults
-# immediately during dynamic symbol resolution, before either version's own
-# code runs at all. WITH it, this plugin's statically-linked SUNDIALS 7.x
-# symbols are kept out of the dynamic symbol table entirely -- callable
-# internally, invisible externally -- and both versions solve correctly
-# side by side regardless of load order. This is a GNU ld/gold-specific
-# flag; on Windows, DLL exports are explicit rather than automatic, so the
-# underlying collision risk this addresses does not arise there the same
-# way, and the flag is simply a harmless no-op location if ever built with
-# a linker that does not recognise it (guarded below just in case).
+# plugin's .so/.dylib and the main SASfit binary/library (which contains
+# the OZ solver's statically-linked 2.7.0 copy) end up loaded in the same
+# process at runtime. Verified directly while developing this on Linux:
+# WITHOUT hiding these symbols, a minimal reproduction of exactly this
+# scenario (one shared library with each SUNDIALS version statically
+# linked, both loaded via dlopen) segfaults immediately during dynamic
+# symbol resolution, before either version's own code runs at all. WITH
+# it, this plugin's statically-linked SUNDIALS 7.x symbols are kept out of
+# the dynamic symbol table entirely -- callable internally, invisible
+# externally -- and both versions solve correctly side by side regardless
+# of load order. On Windows, DLL exports are explicit rather than
+# automatic, so the underlying collision risk this addresses does not
+# arise there the same way, and nothing extra is needed.
+#
+# The mechanism is necessarily linker-specific, and CMAKE_C_COMPILER_ID
+# alone is NOT a reliable proxy for which linker is actually invoked: a
+# genuine GNU gcc (CMAKE_C_COMPILER_ID "GNU") on macOS -- e.g. Homebrew's
+# gcc@12, as used for this project's macOS builds -- still drives Apple's
+# native ld64 by default, not GNU ld/gold, and ld64 does not understand
+# GNU ld's --exclude-libs. That combination (GNU compiler ID, non-GNU
+# linker) is exactly what a compiler-ID-only check would get wrong, so
+# this is keyed off the target platform instead:
+#   - Linux (GNU ld/gold): -Wl,--exclude-libs=ALL, verified as above.
+#   - macOS (Apple ld64): -Wl,-load_hidden,<path-to-archive> per static
+#     archive, ld64's own equivalent (present since ld64-609, i.e. long
+#     available in any Xcode this project targets; also reimplemented in
+#     LLVM's lld-macho for compatibility) -- takes a path rather than a
+#     -lNAME-style short name, hence the $<TARGET_FILE:...> generator
+#     expressions below rather than plain library names. This achieves
+#     the same intent but, unlike the Linux flag above, has NOT been
+#     verified here against the actual two-SUNDIALS-versions-in-one-
+#     process crash scenario (no Mac available while writing this) -- if
+#     a similar segfault ever surfaces on macOS specifically, re-check
+#     this first rather than assuming it is proven equivalent to the
+#     Linux case.
+#   - any other platform (currently just Windows, per above): nothing
+#     extra needed, matching the original "harmless no-op" fallback intent
+#     -- just made explicit/platform-based rather than relying on a
+#     compiler-ID check that does not actually track the linker.
 #
 # Plain (non-keyword) target_link_libraries signature below, deliberately:
 # sasfit_cmake_plugin() (in SasfitCmakeUtils.cmake) already called
@@ -93,8 +119,12 @@ if(NOT TARGET sundials_kinsol_static)
 endif()
 target_link_libraries(${PRJ_NAME} sundials_kinsol_static sundials_core_static)
 target_include_directories(${PRJ_NAME} PRIVATE ${sundials7_SOURCE_DIR}/include ${sundials7_BINARY_DIR}/include)
-if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	target_link_options(${PRJ_NAME} PRIVATE "-Wl,--exclude-libs=ALL")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	target_link_options(${PRJ_NAME} PRIVATE
+		"-Wl,-load_hidden,$<TARGET_FILE:sundials_kinsol_static>"
+		"-Wl,-load_hidden,$<TARGET_FILE:sundials_core_static>")
 endif()
 
 # ---------------------------------------------------------------------------
