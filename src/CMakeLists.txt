@@ -46,7 +46,7 @@ add_custom_command(OUTPUT Doxyfile
         -D "REPLACEMENT=\\\\1${SASFIT_VERSION}"
         -P cmake/replace_text_in_file.cmake
     WORKING_DIRECTORY ${CURRENT_DIR}
-    BYPRODUCTS Doxyfile
+    #    BYPRODUCTS Doxyfile
     DEPENDS Doxyfile.template.txt
 )
 

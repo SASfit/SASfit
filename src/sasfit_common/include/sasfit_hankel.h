@@ -29,3 +29,4 @@ scalar sasfit_FBT(scalar x, double (*intKern_fct)(double, void *), void *) ;
 scalar sasfit_qwe(double nu, double (*f)(double, void *), double x, void *fparams, int nIntervalsMax, scalar rtol, scalar atol);
 scalar sasfit_HankelChave(double nu, double (*f)(double, void *), double x,  void *fparams, int nIntervalsMax, scalar rtol, scalar atol);
 scalar sasfit_bestlime(double nu, double (*f)(double, void *), double x, void *fparams);
+scalar sasfit_fftlog(double nu, double (*f)(double, void *), double x, void *fparams);
