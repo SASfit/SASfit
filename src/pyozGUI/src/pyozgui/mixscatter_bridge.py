@@ -100,7 +100,7 @@ class OZLiquidStructure:
                  closure="Percus-Yevick", closureParam=None,
                  closureParam2=None, potential="HardSphere",
                  potentialArgs=(), solverClass=None, gridN=4095,
-                 pointsPerSigma=100, maxIterations=6000):
+                 pointsPerSigma=100, maxIterations=6000, transformType=1):
         import ozLib
 
         self.wavevector = np.atleast_1d(np.asarray(wavevector, float))
@@ -125,10 +125,31 @@ class OZLiquidStructure:
             solverClass = PicardOZsolver
         sol = solverClass(port=0, numberOfRadialSamplingPoints=gridN,
                           hardSphereDiameterInPoints=pointsPerSigma)
+        #Set BEFORE the potential: getrArray() depends on transformType, so a
+        #potential built on one grid and transformed on the other is
+        #evaluated at the wrong radii.
+        if transformType not in (1, 4):
+            raise ValueError(
+                f"transformType must be 1 or 4, got {transformType!r}")
+        sol.transformType = int(transformType)
         sol.setNumberOfIterations(maxIterations)
         sol.setVolumeDensity(self.volume_fraction_total)
 
         self._buildPotential(sol, potential, potentialArgs, sigmaReduced, x)
+        #Type 4 is second order only when every pair core falls BETWEEN grid
+        #points, and for a mixture that has to be checked rather than
+        #assumed -- a misaligned type-4 grid silently reverts to first order.
+        #
+        #Note this is generally UNSATISFIABLE for classes that come from
+        #moment-matched quadrature, whose sigma_i are irrational: all
+        #p(p+1)/2 values of sigma_ij would have to land between grid points
+        #at once. It IS satisfiable for equally spaced classes, where
+        #sigma_ij takes only 2p-1 evenly spaced values -- which is why this
+        #bridge is the right place to measure whether equally spaced classes
+        #under type 4 beat quadrature classes under type 1. See
+        #docs/NEXT_SESSION.md.
+        if sol.transformType == 4:
+            sol.checkTransformAlignment()
         self._applyClosure(sol, ozLib, closure, closureParam, closureParam2)
         sol.solve()
         self._verify(sol)
@@ -153,7 +174,14 @@ class OZLiquidStructure:
         """
         p = len(sigmaReduced)
         N = sol.numberOfRadialSamplingPoints
-        r = sol.Delta_r*(np.arange(N).astype(float) + 1.0)
+        #getrArray(), NOT a hand-built grid. This line used to read
+        #    r = sol.Delta_r*(np.arange(N).astype(float) + 1.0)
+        #which hardcodes the TYPE-1 grid. Under transformType = 4 the grid is
+        #(n + 1/2)*Delta_r, so the potential was being evaluated at different
+        #radii from the ones the transform assumes -- a half-cell shift in
+        #every hard core. Going through the accessor keeps the two in step
+        #whatever the transform type.
+        r = np.asarray(sol.getrArray(), float)
 
         sol.numberOfComponents = p
         sol.componentDiameters = sigmaReduced

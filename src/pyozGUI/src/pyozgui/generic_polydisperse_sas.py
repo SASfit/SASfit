@@ -57,7 +57,8 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
                  formfactor=None, meanDiameter=1.0,
                  solverClass=None, gridN=4095, pointsPerSigma=100,
                  maxIterations=6000, converged_tol=1e-6,
-                 nFF=None, distribution="Schulz", meanRadius=None):
+                 nFF=None, distribution="Schulz", meanRadius=None,
+                 transformType=1):
         """nFF: number of size classes used for the FORM-FACTOR average.
 
         The structure factor and the form-factor average need very different
@@ -96,6 +97,20 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         #honest for a potential that has no screening parameter: the
         #diagnostic then shows 0 rather than inventing a number.
         self.z = 0.0
+        #transformType: 1 (default) or 4. Type 4 uses a half-offset grid and
+        #is SECOND order rather than first, because the hard core then falls
+        #between grid points instead of on one -- about 140x more accurate at
+        #100 points per diameter. It is not yet the default because switching
+        #moves every recorded reference value; see docs/NEXT_SESSION.md.
+        #
+        #For a MIXTURE it additionally requires that every pair core sigma_ij
+        #sit between grid points. That is checked in _solve() and raises if
+        #violated, because a misaligned type-4 grid silently drops back to
+        #first order.
+        if transformType not in (1, 4):
+            raise ValueError(
+                f"transformType must be 1 or 4, got {transformType!r}")
+        self._transformType = int(transformType)
         self._solverKw = dict(solverClass=solverClass, gridN=gridN,
                               pointsPerSigma=pointsPerSigma,
                               maxIterations=maxIterations,
@@ -159,6 +174,11 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
             solverClass = PicardOZsolver
         sol = solverClass(port=0, numberOfRadialSamplingPoints=gridN,
                           hardSphereDiameterInPoints=pointsPerSigma)
+        #transformType must be set BEFORE the potential, because getrArray()
+        #depends on it: type 4 puts the grid at (n+1/2)*Delta_r rather than
+        #(n+1)*Delta_r, so a potential built under one and transformed under
+        #the other is evaluated on the wrong radii.
+        sol.transformType = self._transformType
         sol.setNumberOfIterations(maxIterations)
         return sol
 
@@ -219,6 +239,17 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
                                          self.distribution)
         if getattr(sol, "numberOfComponents", 1) < 1:
             raise RuntimeError("potential setup failed")
+        #Type 4 is second order ONLY when every pair core sigma_ij falls
+        #between grid points. For one component that is automatic; for a
+        #mixture sigma_ij takes p(p+1)/2 values and alignment has to be
+        #checked. A misaligned type-4 grid silently reverts to FIRST order --
+        #measured at three orders of magnitude worse -- so this raises rather
+        #than warns, and suggests a pointsPerSigma that works.
+        #
+        #Must be called HERE, after the potential has set componentDiameters,
+        #not in _makeSolver where they do not exist yet.
+        if self._transformType == 4:
+            sol.checkTransformAlignment()
         self._applyClosure(sol)
         sol.solve()
         # Never trust the driver: picardIteration() prints a warning on
@@ -417,8 +448,28 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         units) or one whose amplitude is size-coupled, because then the
         reduced problem differs per class. The generic polydisperse builder
         refuses charge-coupled potentials, so those cases cannot arrive here;
-        the assertion below guards against a future one that could.
+        the check below guards against a future one that could.
+
+        Verified bit-identical against the per-sigma cache across three
+        potentials and all six approximation schemes: worst relative change
+        0.00e+00.
         """
+        #A size-coupled potential would make the reduced one-component problem
+        #differ per class, and a single cached solve would then be silently
+        #wrong rather than merely slow. Fail loudly instead.
+        #
+        #CHARGE_COUPLED_POTENTIALS lives in oZfixpointOperator, not here --
+        #imported locally so this module keeps working if that name moves.
+        try:
+            from oZfixpointOperator import CHARGE_COUPLED_POTENTIALS as _CC
+        except Exception:
+            _CC = ('DLVO', 'DLVOHydra', 'IonicMicrogel')
+        if self.potential in _CC:
+            raise RuntimeError(
+                f"{self.potential} couples its parameters to particle size, so "
+                "the reduced one-component solve is NOT the same for every "
+                "diameter and _mono_S's single-solve cache would be wrong. "
+                "The approximation schemes are not available for it.")
         key = (self.potential, tuple(np.atleast_1d(self.potentialArgs).ravel())
                if np.size(self.potentialArgs) else (),
                self.closure, self.closureParam, round(float(self.phi), 12))

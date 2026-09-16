@@ -316,7 +316,9 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
           findConsistentParameter=False,
           solver=_defaultSolverName, maxIterations=1000,
           numberOfRadialSamplingPoints=None, hardSphereDiameterInPoints=None,
-          onSolverCreated=None):
+          onSolverCreated=None, verify=True,
+          verifyWith=("Biggs-Andrews", "Picard iteration"),
+          verifyTolerance=1e-3, residualTolerance=1e-6):
     '''
     Run one full OZ solve and return an OZResult with every derived
     curve. This is the exact same workflow oZgui.py's own "calculate"
@@ -478,6 +480,225 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
     with np.errstate(invalid="ignore", divide="ignore"):
         curves["Br"] = np.where(y > 0, np.log(y) - curves["gamma"], np.nan)
 
-    return OZResult(solverInstance.getrArray(), solverInstance.getqArray(),
+    result = OZResult(solverInstance.getrArray(), solverInstance.getqArray(),
                      potential, tuple(potentialArgs), closure, closureParam,
                      phi, solver, curves, solverInstance)
+
+    #VERIFICATION IS ON BY DEFAULT. A converged residual is not evidence that
+    #the answer is right: the closure equations admit multiple fixed points,
+    #and this package has produced cases where a solver reported convergence
+    #and returned a root 34 % away from the correct one, finite and
+    #plausible. Reliability matters more here than speed, so the result is
+    #cross-checked against an INDEPENDENT solver from a COLD START before it
+    #is returned.
+    #
+    #Pass verify=False for an interactive sweep where the cost of a second
+    #solve matters and the states are already known to be well behaved. Note
+    #that the second solve must NOT be warm-started from the first: a wrong
+    #root is still a root, so a warm-started check agrees with anything it is
+    #given. See solveWithConsensus() for the measurement.
+    if verify and verifyWith:
+        #verifyWith may be a single name or a sequence tried in order.
+        #
+        #BIGGS-ANDREWS FIRST, PICARD AS FALLBACK. Picard was first here on
+        #independence grounds -- no acceleration, no history vectors, so it
+        #cannot share an acceleration failure mode. That reasoning is sound
+        #but was outweighed by two measurements:
+        #
+        #  * it is the SLOWEST solver available, 0.0886 s against 0.0075 s
+        #    for the fastest, so verification cost a factor of ten;
+        #  * it was the one solver that returned a NON-SOLUTION while
+        #    reporting success (BPGG alpha=0.5, phi=0.4: g_max = 3.0039 with
+        #    a residual of 19.4). That specific defect is now fixed -- the
+        #    convergence test compares the increment rather than successive
+        #    norms -- but a verifier should be the sturdiest solver
+        #    available, not the one with the most recent repair.
+        #
+        #Biggs-Andrews is also a fixed-point method, so it still does not
+        #share a Newton-family failure mode, and it converged to the correct
+        #root on every case tested. Note it converges to ~5e-11 on hard
+        #spheres where accelerated solvers reach 1e-13; a verifier's own
+        #tolerance sets the floor on the disagreement it can detect.
+        #
+        #DO NOT use a Newton-Krylov method as the verifier. Measured at the
+        #Lennard-Jones state, all four Newton-Krylov variants converge to
+        #negative-compressibility branches (min S(Q) ~ -38) while every
+        #fixed-point method finds the physical root. Such a verifier would
+        #report disagreement everywhere near a fold, and be wrong itself.
+        names = ([verifyWith] if isinstance(verifyWith, str)
+                 else list(verifyWith))
+        names = [n for n in names if n != solver and n in SOLVER_CLASSES]
+        if not names:
+            raise ValueError(
+                f"no usable verifier for solver {solver!r}: tried "
+                f"{verifyWith!r}. Pass verify=False to accept an unverified "
+                f"result.")
+        check, lastExc = None, None
+        for nm in names:
+            try:
+                check = solve(potential, phi, potentialArgs, closure,
+                              closureParam, closureParam2,
+                              findConsistentParameter, solver=nm,
+                              maxIterations=maxIterations,
+                              numberOfRadialSamplingPoints=numberOfRadialSamplingPoints,
+                              hardSphereDiameterInPoints=hardSphereDiameterInPoints,
+                              verify=False)
+                b = np.real(np.asarray(check.curves["Sq"], float))
+                if np.all(np.isfinite(b)):
+                    verifyWith = nm
+                    break
+                lastExc = RuntimeError(f"{nm} returned a non-finite S(Q)")
+                check = None
+            except Exception as exc:
+                lastExc, check = exc, None
+        try:
+            if check is None:
+                raise lastExc or RuntimeError("no verifier succeeded")
+            a = np.real(np.asarray(curves["Sq"], float))
+            b = np.real(np.asarray(check.curves["Sq"], float))
+            scale = max(float(np.max(np.abs(a))), 1e-30)
+            d = float(np.max(np.abs(a - b)))/scale
+            if d > verifyTolerance:
+                raise ValueError(
+                    f"solver {solver!r} and {verifyWith!r} disagree by "
+                    f"{d:.3g} (tolerance {verifyTolerance:g}) on S(Q) for "
+                    f"{potential} at phi={phi}, closure {closure}. Both "
+                    f"'converged'. This is the signature of multiple fixed "
+                    f"points -- do not use either result without an "
+                    f"independent reference. Pass verify=False to override.")
+        except ValueError:
+            raise
+        except Exception as exc:
+            #The verifier failing is not the same as a disagreement, and must
+            #not silently pass as agreement.
+            raise ValueError(
+                f"could not verify the result of {solver!r}: the independent "
+                f"solver {verifyWith!r} failed with "
+                f"{type(exc).__name__}: {exc}. Pass verify=False to accept "
+                f"the unverified result.") from exc
+
+    return result
+
+
+# ----------------------------------------------------------------------
+def solveWithConsensus(potential, potentialArgs=(), closure="doPYclosure",
+                       closureParam=None, volumeDensity=0.3,
+                       solvers=("Anderson acceleration", "Biggs-Andrews",
+                                "Picard iteration"),
+                       tolerance=1e-3, gridN=4095, pointsPerSigma=100,
+                       maxIterations=8000, transformType=1, quantity="Sq"):
+    """Solve with several solvers and return a result only if they AGREE.
+
+    A converged residual is not evidence that the answer is right. The
+    closure equations admit multiple fixed points, and this project has
+    produced three separate cases where a solver reported convergence and
+    returned a wrong answer:
+
+      * two accelerated solvers converging to residuals ~1e-12 and returning
+        S(Q) = 17.0 and 9.7, both with min S(Q) < 0;
+      * a polydisperse hard-sphere mixture solved as though every particle
+        had the same diameter (the identical-cores defect), which looked
+        entirely normal;
+      * Lennard-Jones at epsilon = 0.8, phi = 0.3 under HNC, where
+        `scipy Anderson` returns g_max = 1.43 against the correct 2.16 --
+        and does so for every value of its alpha tried (1.22, 1.43, 1.60),
+        so it is not a misconfiguration.
+
+    The last is reachable from a DEFAULT configuration with a standard
+    potential, not an exotic state point. Its wrong root IS caught by the
+    min S(Q) >= 0 screen (min S(Q) = -46.5 there), but only because S(Q) is
+    the quantity screened: g_max alone is 1.43 and entirely plausible. This
+    function does not rely on any single screen.
+
+    Returns (solverInstance, report). Raises ValueError when no two solvers
+    agree, reporting every difference rather than picking a majority
+    silently -- three different answers is something the caller needs to see,
+    not a coin toss.
+
+    COST. Two to three solves. With Anderson at well under a second that is
+    cheap beside being silently wrong by a third. Reduce `solvers` to two for
+    speed, but keep them from different families: in testing
+    `Anderson acceleration` and `Biggs-Andrews` agreed on every case tried,
+    while both scipy wrappers proved unreliable on soft potentials.
+
+    DO NOT WARM-START THE LATER SOLVERS from the first one's answer. It is
+    the obvious optimisation, it IS faster -- 0.005 s against 0.017 s when
+    tried -- and it destroys the check entirely. Measured on the
+    Lennard-Jones case above: started from scipy Anderson's wrong root
+    (g_max = 1.430723), `Anderson acceleration` STAYS THERE and returns
+    1.430723, where from a cold start the same solver finds the correct
+    2.163595. The two would then "agree" and this function would accept the
+    wrong answer.
+
+    The reason is structural. A wrong root is still a ROOT: any solver
+    started on it sees a vanishing residual and has no reason to move. Warm
+    starting asks "is this a fixed point?", which the first solver's own
+    residual already answered. The question worth asking is "do independent
+    searches from different starting points land in the same basin?", and
+    that requires the starting points to be independent. The cost of the
+    cold starts is not overhead to be optimised away -- it is the entire
+    content of the check.
+    """
+    results, failures = {}, {}
+    for name in solvers:
+        if name not in SOLVER_CLASSES:
+            failures[name] = "not installed"
+            continue
+        cls, _linear = SOLVER_CLASSES[name]
+        try:
+            s = cls(port=0, numberOfRadialSamplingPoints=gridN,
+                    hardSphereDiameterInPoints=pointsPerSigma)
+            s.transformType = transformType
+            s.setNumberOfIterations(maxIterations)
+            s.setVolumeDensity(volumeDensity)
+            s.setPotentialByName(potential, *potentialArgs)
+            if closureParam is not None:
+                getattr(s, closure)(closureParam)
+            else:
+                getattr(s, closure)()
+            s.solve()
+            y = np.real(np.asarray(getattr(s, "get" + quantity)(), float))
+            if not np.all(np.isfinite(y)):
+                failures[name] = "non-finite result"
+                continue
+            if quantity == "Sq" and np.min(y) < 0.0:
+                failures[name] = f"unphysical: min S(Q) = {np.min(y):.3g} < 0"
+                continue
+            results[name] = (s, y)
+        except Exception as exc:
+            failures[name] = f"{type(exc).__name__}: {exc}"
+
+    if len(results) < 2:
+        raise ValueError(
+            f"fewer than two solvers produced a usable result, so nothing can "
+            f"be verified. Failures: {failures}")
+
+    names = list(results)
+    ref = results[names[0]][1]
+    scale = max(float(np.max(np.abs(ref))), 1e-30)
+    diffs = {n: float(np.max(np.abs(results[n][1] - ref)))/scale
+             for n in names}
+    agreeing = [n for n in names if diffs[n] <= tolerance]
+    if len(agreeing) < 2:
+        #The first solver may itself be the outlier, so try each as the
+        #reference before concluding that nothing agrees.
+        for cand in names:
+            r = results[cand][1]
+            sc = max(float(np.max(np.abs(r))), 1e-30)
+            grp = [n for n in names
+                   if float(np.max(np.abs(results[n][1] - r)))/sc <= tolerance]
+            if len(grp) >= 2:
+                agreeing, ref = grp, r
+                diffs = {n: float(np.max(np.abs(results[n][1] - r)))/sc
+                         for n in names}
+                break
+    if len(agreeing) < 2:
+        raise ValueError(
+            f"no two solvers agree to {tolerance:g}. This is the signature of "
+            f"multiple fixed points: every one of them 'converged'. Relative "
+            f"differences {diffs}; failures {failures}. Do NOT use any of "
+            f"these results without an independent reference.")
+
+    report = dict(agreeing=agreeing, differences=diffs, failures=failures,
+                  disagreeing=[n for n in names if n not in agreeing])
+    return results[agreeing[0]][0], report

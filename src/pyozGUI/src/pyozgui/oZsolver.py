@@ -791,7 +791,27 @@ class OZsolver(OZfixpointOperator):
       #can never masquerade as a found root in the first place.
       signChange = (refNew*refOld < 0.0) and self._isGenuineZeroCrossing(
           freshResidual, alphaLeft, alphaRight, refNew, refOld)
-      scpFallback = alphaLeft if abs(refNew) < abs(refOld) else alphaRight
+      #Running best over EVERY evaluated point, for the no-sign-change
+      #fallback. Two things were wrong here before, and both made the
+      #fallback fail to do what it says:
+      #
+      #  1. refOld is overwritten each iteration (it has to be, for the
+      #     sign-change test), so comparing abs(refTrial) < abs(refOld)
+      #     compared against the IMMEDIATELY PRECEDING trial only. The value
+      #     finally returned reflected the last pairwise comparison, not the
+      #     smallest residual found anywhere in the scan.
+      #  2. it assigned newLo/newHi -- bracket ENDPOINTS -- rather than
+      #     trialAlpha, the point at which the residual was actually
+      #     evaluated. newHi is the PREVIOUS trial point, so the returned
+      #     parameter could be one whose residual was never the smallest, or
+      #     in the log-spaced branch one never evaluated at all.
+      #
+      #Tracking an explicit running minimum of |residual| over the evaluated
+      #points fixes both and is what "closest residual to zero" means.
+      if abs(refNew) < abs(refOld):
+          scpFallback, bestAbsResidual = alphaLeft, abs(refNew)
+      else:
+          scpFallback, bestAbsResidual = alphaRight, abs(refOld)
       bracketLo, bracketHi = alphaLeft, alphaRight
 
       i = 0
@@ -816,13 +836,18 @@ class OZsolver(OZfixpointOperator):
               signChange = True
               bracketLo, bracketHi = min(newLo, newHi), max(newLo, newHi)
           else:
-              scpFallback = newLo if abs(refTrial) < abs(refOld) else newHi
+              #Running minimum over evaluated points, recording the point
+              #actually evaluated. See the note where bestAbsResidual is
+              #initialised.
+              if abs(refTrial) < bestAbsResidual:
+                  scpFallback, bestAbsResidual = trialAlpha, abs(refTrial)
               refOld = refTrial
           i += 1
 
       if not signChange:
           print("findThermodynamicallyConsistentParameter: no genuine sign change found after",
-                scanSteps, "scan steps -- using closest-residual-to-zero fallback:", scpFallback)
+                scanSteps, "scan steps -- using the smallest |residual| found:",
+                scpFallback, "(|residual| = %.6g)" % bestAbsResidual)
           setClosureParam(scpFallback)
           self._robustInlineSolve(startFrom=self.x_0.copy())
           return scpFallback

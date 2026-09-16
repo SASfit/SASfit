@@ -148,6 +148,7 @@ proc setHankelStrategy2int {} {
 		"SINC_SEO"		{set ::FitPrecision(HankelStrategy_int) 14}
 		"BESTLIME"		{set ::FitPrecision(HankelStrategy_int) 15}
 		"FFTLOG"		{set ::FitPrecision(HankelStrategy_int) 16}
+		"QDHT"		    {set ::FitPrecision(HankelStrategy_int) 17}
 
 		default 		{set ::FitPrecision(HankelStrategy_int) 0}
 	}
@@ -250,7 +251,7 @@ proc CustomizeCmd { analytpar tanalytpar } {
 	grid $w.sphavgStrat_value -row 5 -column 3 -sticky w
 	
 	label $w.hankelStrat_label -text "Hankel transform strategy"
-	ComboBox $w.hankelStrat_value -values {"OOURA_DEO" "SINC_SEO" "OGATA_2005" "FBT0" "FBT1" "FBT2" "BESTLIME" "FFTLOG" "GSL_QAWF" "GUPTASARMA_97_FAST" "GUPTASARMA_97" "KEY_51" "KEY_101" "KEY_201" "ANDERSON_801" "QWE"  "CHAVE"} \
+	ComboBox $w.hankelStrat_value -values {"OOURA_DEO" "SINC_SEO" "OGATA_2005" "FBT0" "FBT1" "FBT2" "BESTLIME" "FFTLOG" "QDHT" "GSL_QAWF" "GUPTASARMA_97_FAST" "GUPTASARMA_97" "KEY_51" "KEY_101" "KEY_201" "ANDERSON_801" "QWE"  "CHAVE"} \
 				-width 25 \
 				-textvariable ::FitPrecision(HankelStrategy) \
 				-modifycmd setHankelStrategy2int

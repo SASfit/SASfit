@@ -13,6 +13,7 @@
 \usepackage{parskip}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
+\usepackage{comment}
 \sloppy
 \setlength{\emergencystretch}{3em}
 
@@ -930,7 +931,9 @@ $B=\ln g+\beta u-\gamma$ from this library's $c(r)$.
 
 \begin{table}[htbp]
 \centering
-\caption{Bridge functions against the independent Julia implementation.}
+\caption{Bridge functions against the independent Julia implementation,
+measured at $\gamma > 0$. See the remark below: for BPGG and Duh--Haymet
+this range concealed a missing $\gamma < 0$ branch.}
 \begin{tabular}{lc}
 \toprule
 closure & $\max|B_{\text{ours}}-B_{\text{Julia}}|$\\
@@ -948,6 +951,31 @@ Zerah--Hansen (HMSA)  & identical after substitution\\
 Choudhury--Ghosh differs by parameterisation rather than error: this library
 uses a density-dependent coefficient $1.0175-0.275\cdot6\varphi/\pi$ whose
 zero-density limit is exactly Julia's constant $\alpha=1.01752$.
+
+\begin{remark}
+The agreement above was measured at $\gamma > 0$ only, and for BPGG and
+Duh--Haymet that hid a defect. Table~I of the accompanying paper gives
+$b = -\gamma^2/2$ for $\gamma < 0$ for BPGG, MV, DH and CG; of these only CG
+implemented it here. BPGG instead continued its power law to negative
+$\gamma$ through $\mathrm{sign}(\cdot)|\cdot|^{1/s}$, which produces neither
+an overflow nor a NaN --- so nothing appeared wrong --- but is a numerical
+continuation rather than the published closure. Duh--Haymet was worse: its
+rational form is singular at negative $\gamma^*$, with poles at
+$\gamma^* = -9/7$ and $\gamma^* \approx -0.6$ and $\max|B| = \infty$.
+
+Both now take the published branch. The effect on results is small at low
+density and grows with coupling: for hard spheres, BPGG changes by
+$1\times10^{-5}$ at $\varphi = 0.1$ and Duh--Haymet by $2\times10^{-3}$ at
+$\varphi = 0.4$. A Yukawa fluid at $\varphi = 0.2$ is unchanged to
+$7\times10^{-15}$, which is the expected signature of a branch that fires
+only where it should. For $\gamma^* \ge 0$ no pole is possible in the
+Duh--Haymet form, since $7\gamma^*+9 > 0$ and $(5\gamma^*+11)\gamma^* \ge 0$,
+so the branch removes the singularities as well as matching the publication.
+
+The general point is that agreement to $10^{-16}$ over a restricted range of
+an argument says nothing about the rest of it. Cross-validation is only as
+good as the states at which it is performed.
+\end{remark}
 
 \begin{remark}
 A first run reported Verlet as differing. The cause was mine: Julia's default
@@ -1227,6 +1255,209 @@ than a working copy, and should be re-run after any change to the fixpoint
 operator.
 
 %======================================================================
+\section{Solver reliability: multiple solutions and verification}
+
+The work described above assumed throughout that a converged solve returns
+the right answer. That assumption does not hold in general, and the failure
+is not a defect in any particular solver.
+
+\subsection{The Ornstein--Zernike equation has several solutions}
+
+The number of solutions of the OZ equation with a given closure changes with
+density and temperature. Beardmore, Peplow \& Bresme (SIAM J.\ Sci.\ Comput.
+\textbf{29}, 2442, 2007) analysed the bifurcation structure for a
+Lennard-Jones fluid under HNC: a subcritical isotherm carries at least one
+\emph{fold bifurcation} in density, and pairs of branches collide at what
+they call pseudospinodals --- one branch with positive compressibility, the
+other negative and therefore unphysical. They state that this explains
+``previous inconclusive attempts to compute solutions using Newton--Picard
+methods that are popular in the physical chemistry literature'', which is
+precisely what this package uses. Peplow \emph{et al.} (Phys.\ Rev.\ E
+\textbf{74}, 046705, 2006) show further that solutions exist inside the
+so-called no-solution region which direct iteration cannot reach at all, and
+recover them by pseudo-arclength continuation.
+
+We reproduce this. At $k_BT/\varepsilon = 1.25$, $\rho\sigma^3 = 0.57$ ---
+well inside their problem region, and at lower temperature and roughly twice
+the density of their published examples --- two of the five available solvers
+return $g_{\max} = 1.13$ and $1.43$ against the correct $2.16$, finite,
+converged, and with no error raised. The $1.43$ root has
+$\min S(Q) = -46.5$: it is not a failed calculation but a converged solution
+on the negative-compressibility branch the bifurcation analysis identifies.
+
+\subsection{What the library does about it}
+
+\paragraph{The physicality test is the discriminator, not a diagnostic.}
+Since a structure factor is a variance it cannot be negative, and
+$\min S(Q) \ge 0$ is the same criterion the bifurcation studies use to reject
+branches. It is applied unconditionally. A user who disabled it would obtain
+a converged, finite, entirely wrong answer.
+
+\paragraph{Verification by an independent solver, on by default.}
+\code{ozLib.solve()} now takes \code{verify=True}: the solve is repeated with
+an independent solver from a \emph{cold start} and the result returned only if
+the two agree on $S(Q)$ to $10^{-3}$. Disagreement raises, naming both solvers
+and the size of the difference. \code{ozLib.solveWithConsensus()} is the more
+general form, running any number of solvers and requiring at least two to
+agree. Cost is two solves --- 0.14\,s against 0.05\,s for hard spheres.
+
+The verifier is chosen for \emph{independence} rather than speed. Plain
+Picard iteration carries no acceleration and no history of previous iterates,
+so it cannot share an acceleration failure mode with the primary solver;
+Biggs--Andrews, which does keep a history, is the fallback when Picard fails.
+
+\paragraph{The cold start cannot be optimised away.} Warm-starting the
+verifier from the first answer is about three times faster and destroys the
+check. A wrong root is still a root: started from the erroneous $1.43$ above,
+the otherwise reliable solver stays at $1.43$, the two ``agree'', and the
+wrong answer is certified. The question the check must ask is whether
+independent searches from different starting points reach the same basin.
+
+\paragraph{Limitation.} Detecting disagreement is not the same as resolving
+it. Where a branch must be \emph{followed} through a fold, pseudo-arclength
+continuation is the appropriate tool and is not implemented here.
+
+\subsection{Solver behaviour, measured}
+
+Measured over five test cases (hard spheres at $\varphi = 0.3$ and $0.45$,
+Lennard-Jones, square well, Yukawa):
+
+\begin{center}\small
+\begin{tabular}{lcl}
+\toprule
+Solver & solves & note\\
+\midrule
+Anderson acceleration & 5/5 & correct, fastest (0.12\,s total)\\
+Biggs--Andrews & 5/5 & correct\\
+Picard iteration & 5/5 & correct\\
+\code{scipy} Anderson & 5/5 & \textbf{wrong root} for Lennard-Jones\\
+\code{scipy} Newton--Krylov & 4/5 & fails Lennard-Jones; slowest\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two corrections to earlier statements in this report follow from these
+measurements. First, Anderson acceleration does \emph{not} require Picard
+pre-conditioning: it converges from $\Gamma = 0$ at every state point tested,
+and no pre-conditioning step exists anywhere in the code. Second, the Picard
+fallback was described as ``damped'' when it was not; it is now implemented in
+the averaged (Mann, or Krasnoselskii--Mann) form
+$\Gamma_{n+1} = (1-\alpha)\Gamma_n + \alpha T(\Gamma_n)$ with $\alpha = 1$ as
+the default, so existing results are unchanged, and \code{mannAlpha} available
+to damp. The averaging matters: the Lennard-Jones case above diverges at
+$\alpha = 1$ and converges at $\alpha = 0.5$ on one discretisation, while on
+another the two exchange roles.
+
+A third correction concerns cost rather than correctness. \code{scipy}'s
+Anderson implementation was the slowest solver available --- 30\,s where
+others took 0.5\,s --- purely because its initial inverse-Jacobian scale was
+left unset. Setting it makes that solver the fastest, a factor of 15 to 66,
+with the fixed point unchanged to $10^{-9}$. Note that this is purely a cost
+effect: with the scale set, that solver converges to the same physical root
+as the other fixed-point methods on every case tested, so speed and branch
+selection are independent questions.
+
+\subsection{A converged flag is a claim; the residual is evidence}
+
+Throughout this section $\Gamma(r) = h(r) - c(r)$ denotes the indirect
+correlation function --- the quantity every solver here actually iterates on,
+rather than $g(r)$ or $S(Q)$, because it is smooth across the hard core where
+$h$ and $c$ are not. $h(r) = g(r) - 1$ is the total correlation function and
+$c(r)$ the direct correlation function.
+
+Writing the closure as $c = \mathcal{C}[\Gamma]$ and the Ornstein--Zernike
+relation in Fourier space as $\hat\Gamma = \rho\hat c^{\,2}/(1 - \rho\hat c)$,
+the two compose into a single \emph{fixed-point map}
+\begin{equation}
+ T(\Gamma) \;=\; \mathcal{F}^{-1}\!\left[
+   \frac{\rho\,\hat c^{\,2}}{1 - \rho\,\hat c}\right],
+ \qquad \hat c = \mathcal{F}\big[\mathcal{C}[\Gamma]\big],
+ \label{eq:fixedpointmap}
+\end{equation}
+where $\mathcal{F}$ is the three-dimensional radial Fourier transform and
+$\rho$ the total number density. A solution of the Ornstein--Zernike system
+is exactly a fixed point of this map, $T(\Gamma) = \Gamma$, and the
+\emph{residual}
+\begin{equation}
+ \|T(\Gamma) - \Gamma\|_2
+ \label{eq:residual}
+\end{equation}
+is therefore zero at a solution and nowhere else. For a multicomponent system
+the same holds with $\Gamma$, $c$ and $h$ replaced by $p\times p$ matrices
+$\Gamma_{ij}$, $c_{ij}$, $h_{ij}$, the scalar division by a matrix inverse,
+and $\rho$ by $\sqrt{\rho_i\rho_j}$.
+
+The distinction that matters below is that a solver's own convergence flag
+reports whether \emph{its own} stopping criterion was met --- which may test
+the change between iterates, or their norms, or an internal estimate --- while
+\eqref{eq:residual} tests whether the answer solves the equations. The two
+are not the same, and the difference is not academic.
+
+The two situations above look identical from the outside --- solvers
+disagreeing, every one of them reporting success --- and are distinguished
+only by evaluating \eqref{eq:residual} at each claimed solution. Measured
+across all nine available solvers on a $4095$-point grid:
+
+\begin{center}\small
+\begin{tabular}{lll}
+\toprule
+State & Outcome & Residual\\
+\midrule
+Lennard-Jones, $\varepsilon = 0.8$, & 5 fixed-point solvers, $g_{\max} = 2.1636$ & $< 10^{-11}$\\
+$\varphi = 0.3$, HNC & 4 Newton--Krylov, $g_{\max} = 1.13$--$1.22$ & $< 10^{-11}$\\
+\midrule
+BPGG $\alpha = 0.5$, & 8 solvers, $g_{\max} = 5.2528$ & $< 10^{-12}$\\
+$\varphi = 0.4$ & Picard, $g_{\max} = 3.0046$ & $\mathbf{19.4}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The Lennard-Jones state has genuinely distinct solutions: all nine points are
+fixed points, and the Newton--Krylov family simply lands on branches with
+$\min S(Q) \approx -38$, which are unphysical but real. The BPGG state has
+ONE solution; the ninth value is not a fixed point at all.
+
+The cause of that last case was a defect in the Picard convergence test,
+which compared successive \emph{norms} of $\Gamma$ rather than the change in
+$\Gamma$. Two different vectors of similar norm pass such a test, so an
+iterate still moving but whose norm has momentarily plateaued is reported as
+converged. It now tests the increment, and exposes a \code{converged}
+attribute that defaults to false, since exhausting the iteration limit
+previously returned the last iterate with nothing a caller could check.
+
+Two practical consequences. First, recompute the residual after every solve;
+it costs one operator evaluation and is the only thing that distinguishes the
+two rows above. Second, when using one solver to verify another, note that
+\code{Picard iteration} and \code{Biggs--Andrews} converge to residuals of
+$\sim 5\times10^{-11}$ on hard spheres where the others reach
+$10^{-13}$--$10^{-14}$; a verifier's own tolerance sets the floor on the
+disagreement it can detect.
+
+Where the question is not whether a point is a solution but whether OTHER
+solutions exist, the appropriate tool is deflation
+\citep{FarrellBirkissonFunke2015}. Given a known root $r$ of the residual
+$F(\Gamma) = T(\Gamma) - \Gamma$, one forms the \emph{deflated residual}
+\begin{equation}
+ G(\Gamma) \;=\; M(\Gamma; r)\, F(\Gamma),
+ \qquad
+ M(\Gamma; r) \;=\; \frac{1}{\|\Gamma - r\|^{p}} + \alpha ,
+ \label{eq:deflation}
+\end{equation}
+and re-solves \emph{from the same initial guess}. The exponent $p$ (here
+$p = 2$) controls how sharply the known root is excluded, and the shift
+$\alpha$ (here $\alpha = 1$) is essential rather than cosmetic: with
+$\alpha = 0$ the deflated residual tends to zero as
+$\|\Gamma - r\| \to \infty$, so a solver can report convergence having simply
+run away. Because $M$ is finite and non-zero at every other root, those are
+left reachable, and repeating with one factor per known root discovers them
+in turn.
+
+The method is not a guarantee --- it finds distinct solutions where they
+exist and the solver converges, but does not certify that none remain --- and
+the authors note it is sensitive to $\alpha$, with no a priori guidance.
+Applied to the BPGG state above, deflating the single root yields nothing
+further, consistent with there being only one.
+
 \section{Known limitations}
 
 \begin{enumerate}[nosep]
@@ -1249,6 +1480,7 @@ operator.
 \end{enumerate}
 
 %======================================================================
+\begin{comment}
 \begin{thebibliography}{9}
 
 \bibitem{daguanno1991}
@@ -1300,5 +1532,5 @@ zero-separation theorems in the closure relation},
 J.~Chem.\ Phys.\ \textbf{103}, 9388 (1995).
 
 \end{thebibliography}
-
+\end{comment}
 \end{document}

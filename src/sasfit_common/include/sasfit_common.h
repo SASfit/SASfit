@@ -126,6 +126,7 @@
 #define HANKEL_SINC_SEO 14
 #define HANKEL_BESTLIME 15
 #define HANKEL_FFTLOG 16
+#define HANKEL_QDHT 17
 
 #define QUAD_OSC_SINC_A_B 0
 #define QUAD_OSC_SIN_A_B 1
