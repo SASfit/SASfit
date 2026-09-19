@@ -256,7 +256,47 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         # failure but returns results anyway, with no flag for callers. Check
         # the residual of the fixpoint map itself.
         self._verify(sol)
+        self._verifyPhysical(sol)
         return sol
+
+    def _verifyPhysical(self, sol):
+        """Reject a converged but UNPHYSICAL solution.
+
+        The residual check above establishes that the solver found a fixed
+        point. It does not establish that the fixed point is a physical one,
+        and those are different questions: the closure equations admit
+        several solutions, and at a Lennard-Jones state tested during
+        development every Newton-Krylov variant converged to residuals below
+        1e-11 on branches with min S(Q) near -38. Genuine roots, entirely
+        unphysical.
+
+        A structure factor is a variance, so S(Q) >= 0 for every Q. That is
+        the criterion the bifurcation literature uses to discard branches,
+        and it is the only cheap discriminator available here -- g_max, by
+        contrast, looks perfectly reasonable on those branches (1.43 against
+        a correct 2.16), so screening the wrong quantity catches nothing.
+
+        This matters most during a FIT, where the optimiser explores
+        parameter space and will follow a wrong branch happily, reporting a
+        good chi-squared. Raising here turns that into a failed evaluation,
+        which the fitter already handles by penalising the point.
+        """
+        try:
+            S = np.real(np.asarray(sol.getSq(), float))
+        except Exception:
+            return              # nothing to screen; the residual check stands
+        if S.size == 0 or not np.all(np.isfinite(S)):
+            return
+        worst = float(np.min(S))
+        #A small negative excursion is discretisation noise, not a different
+        #branch: the wrong branches are negative by tens, not by 1e-9.
+        if worst < -1e-6:
+            raise RuntimeError(
+                f"{self.closure} converged to an UNPHYSICAL solution for "
+                f"{self.potential} at phi={self.phi:g}: min S(Q) = "
+                f"{worst:.4g} < 0. The residual is small, so this is a "
+                f"genuine root of the closure equations on a "
+                f"negative-compressibility branch, not a failed solve.")
 
     def _verify(self, sol):
         tol = self._solverKw["converged_tol"]

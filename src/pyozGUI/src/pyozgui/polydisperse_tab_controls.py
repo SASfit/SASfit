@@ -161,17 +161,62 @@ class PolydisperseTabControls:
         self.statusVar.set(f"{len(self.runs)} run(s) left")
 
     # ------------------------------------------------------------------
+    #Session file identity. Each tab holds a different model with a
+    #different parameter set, so a file saved from one tab cannot be
+    #restored into another -- the entries would half-match and the rest
+    #would be silently dropped, which looks like a successful load.
+    #
+    #A tab sets SESSION_TAB_INDEX (an int, used in the file EXTENSION so the
+    #mismatch is visible in the file manager) and SESSION_TAB_NAME (checked
+    #on load). A tab that sets neither falls back to its class name and the
+    #plain ".oz" extension, so existing tabs keep working.
+    SESSION_TAB_INDEX = None
+    SESSION_TAB_NAME = None
+
+    def _sessionTabName(self):
+        return self.SESSION_TAB_NAME or type(self).__name__
+
+    def _sessionExtension(self):
+        idx = self.SESSION_TAB_INDEX
+        return ".oz" if idx is None else f".oz{int(idx)}"
+
     def _onSaveAll(self):
         if not self.runs:
             messagebox.showinfo("nothing to save", "compute something first")
             return
+        ext = self._sessionExtension()
         path = filedialog.asksaveasfilename(
-            defaultextension=".oz",
-            filetypes=[("Ornstein-Zernike GUI data", "*.oz"), ("All files", "*.*")],
+            defaultextension=ext,
+            filetypes=[(f"{self._sessionTabName()} session", f"*{ext}"),
+                       ("Ornstein-Zernike GUI data", "*.oz*"),
+                       ("All files", "*.*")],
             title="Save all runs")
         if not path:
             return
-        payload = {"format": "sasfit_polydisperse_tab_save_v1", "runs": []}
+        payload = {"format": "sasfit_polydisperse_tab_save_v2",
+                   "tab": self._sessionTabName(),
+                   "tabIndex": self.SESSION_TAB_INDEX,
+                   "runs": []}
+        #SESSION STATE. The runs alone give curves to look at but not a
+        #session to resume: the measured data, every input field, the fit
+        #flags and the fit result all live on the TAB, not in `runs`, so a
+        #reload used to leave you re-entering everything by hand and
+        #re-loading the data file.
+        #
+        #The controls deliberately know nothing about which fields a given
+        #tab has. A tab that wants its state saved provides `sessionState()`
+        #returning a JSON-able dict, and `restoreSessionState(d)` to take it
+        #back; tabs that do not are unaffected.
+        #This class is a MIXIN -- `self` IS the tab -- so the hooks are
+        #looked up on self, not on an owner attribute.
+        getState = getattr(self, "sessionState", None)
+        if callable(getState):
+            try:
+                payload["session"] = getState()
+            except Exception as exc:                       # pragma: no cover
+                #A failure to capture state must not lose the runs, which are
+                #the expensive part.
+                payload["sessionError"] = f"{type(exc).__name__}: {exc}"
         for r in self.runs:
             entry = {"label": r.label}
             for key, val in vars(r).items():
@@ -197,16 +242,36 @@ class PolydisperseTabControls:
             messagebox.showerror("save failed", str(e))
 
     def _onLoadAll(self):
+        ext = self._sessionExtension()
         path = filedialog.askopenfilename(
-            filetypes=[("Ornstein-Zernike GUI data", "*.oz"), ("All files", "*.*")],
+            filetypes=[(f"{self._sessionTabName()} session", f"*{ext}"),
+                       ("Ornstein-Zernike GUI data", "*.oz*"),
+                       ("All files", "*.*")],
             title="Load runs")
         if not path:
             return
         try:
             with open(path) as fh:
                 payload = json.load(fh)
-            if payload.get("format") != "sasfit_polydisperse_tab_save_v1":
+            if payload.get("format") not in ("sasfit_polydisperse_tab_save_v1",
+                                             "sasfit_polydisperse_tab_save_v2"):
                 messagebox.showerror("load failed", "unrecognised file format")
+                return
+            #REFUSE a file from a different tab. Loading it would set the
+            #entries whose names happen to match and quietly ignore the
+            #rest, leaving a state that is half one model and half another
+            #-- and it would look like a successful load. A file with no tab
+            #recorded predates this check and is accepted, since it can only
+            #have come from the tab that had saving at the time.
+            saved = payload.get("tab")
+            mine = self._sessionTabName()
+            if saved is not None and saved != mine:
+                messagebox.showerror(
+                    "wrong tab",
+                    f"This file was saved from '{saved}' but this is "
+                    f"'{mine}'.\n\nThe two hold different models, so the "
+                    f"settings cannot be transferred. Open it in the tab it "
+                    f"came from.")
                 return
             for entry in payload["runs"]:
                 obj = _LoadedRun()
@@ -219,11 +284,30 @@ class PolydisperseTabControls:
                     else:
                         setattr(obj, key, val)
                 self.registerRun(obj, obj.label)
-            self._replot()
-            self.statusVar.set(f"loaded {len(payload['runs'])} run(s)")
+            #Restore the session AFTER the runs, so a tab that rebuilds its
+            #plots on restore sees them.
+            restored = ""
+            session = payload.get("session")
+            setState = getattr(self, "restoreSessionState", None)
+            if session and callable(setState):
+                try:
+                    setState(session)
+                    restored = ", session restored"
+                except Exception as exc:
+                    restored = f", session NOT restored ({type(exc).__name__})"
+            #Redraw separately. A plotting failure must not be reported as a
+            #failed LOAD: the runs and the session are already in place, and
+            #discarding them because one curve could not be drawn loses the
+            #measured data too. That is what a bare KeyError('Q') from a
+            #restored fit result used to do.
+            try:
+                self._replot()
+            except Exception as exc:
+                restored += f", replot failed ({type(exc).__name__}: {exc})"
+            self.statusVar.set(
+                f"loaded {len(payload['runs'])} run(s){restored}")
         except (OSError, json.JSONDecodeError, KeyError) as e:
             messagebox.showerror("load failed", str(e))
-
     # ------------------------------------------------------------------
     def _onExportSelected(self):
         handler = self._exportDispatch.get(self.exportFormatVar.get())

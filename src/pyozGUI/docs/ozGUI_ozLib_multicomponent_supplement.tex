@@ -721,15 +721,44 @@ finite-difference density derivative.
 hook driven by a registry,
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
 EXTRA_TABS = [
-    ("polydisperse_yukawa_tab",     "PolydisperseYukawaTab",     "Polydisperse Yukawa"),
-    ("robertus_shs_tab",            "RobertusSHSTab",            "Robertus SHS"),
+    ("generic_polydisperse_tab",    "GenericPolydisperseTab",    "Polydisperse (any potential)"),
     ("ry_polydisperse_yukawa_tab",  "RYPolydisperseYukawaTab",   "RY Polydisperse Yukawa"),
+    ("mixture_validation_tab",      "MixtureValidationTab",      "Mixture validation"),
 ]
 \end{lstlisting}
 Each tab is a self-contained \code{ttk.Frame} isolated by \code{try/except},
-so adding one is a single line and an import failure costs only that tab.
+so adding one is a single line and an import failure costs only that tab. The
+generic tab replaced the two analytic special-case tabs that preceded it
+(\code{polydisperse\_yukawa\_tab} and \code{robertus\_shs\_tab}); both modules
+remain importable, and restoring either is one line here.
 
-Both new tabs follow the same pattern: a parameter panel; plot tabs for
+The tabs are numbered in their labels --- \code{0: OZ solver},
+\code{1: Polydisperse (any potential)}, \code{2: RY Polydisperse Yukawa},
+\code{3: Mixture validation} --- and the number is taken from each widget's
+own \code{SESSION\_TAB\_INDEX} rather than from its position in the registry.
+The two can disagree: if a tab fails to import, the remainder shift up, and
+the label must continue to match what the tab's own \emph{files} claim.
+
+\paragraph{Sessions are saved per tab, not globally.} Each tab writes its own
+file with the extension carrying its index (\code{.oz1}, \code{.oz2},
+\code{.oz3}), holding the computed runs, every input field, which parameters
+were free, the measured data \emph{including} the resolution column, and the
+last fit result. Saving the data with the file rather than a path to it costs
+little and survives the data being moved.
+
+A combined all-tabs save was considered and rejected. The tabs hold different
+models with different parameter sets, so one file would be a bag of unrelated
+sessions and loading it would overwrite work in tabs the user was not thinking
+about. Per-tab, a load affects only what is in front of them.
+
+That makes it possible to open a file in the wrong tab, so the tab NAME is
+written into every file and checked on load; a mismatch is refused outright.
+Without that check the load would set whichever entries happened to share a
+name and silently ignore the rest --- a state half one model and half another,
+reported as success. The extension is a convenience for the file manager; the
+name inside is the guard, and it survives the tabs being reordered.
+
+Both modelling tabs follow the same pattern: a parameter panel; plot tabs for
 $I(Q)$, the approximation error, $S_{ij}(Q)$, $S(Q)$ and the size
 distribution; a Summary tab; a threaded compute handing results back through a
 queue (Tk is not thread-safe); and ASCII/CSV export.
@@ -756,6 +785,63 @@ physical solution at all.
 has no $\alpha$ entry field. It is solved for on every Compute and reported in
 the Summary, together with the residual and an explicit warning when no
 consistent value exists.
+
+\paragraph{The generic tab's model.} What is computed is
+\begin{equation}
+  I(Q) \;=\; \mathrm{scale}\times I_{\mathrm{model}}(Q) \;+\;
+  \mathrm{background},
+\end{equation}
+with the scale and background entering linearly and therefore solved exactly
+by weighted linear least squares at every iteration rather than handed to the
+nonlinear optimiser --- which would add the two most strongly correlated
+parameters (scale against volume fraction, background against everything at
+high $Q$) for no gain. Both appear in the interface so the solved values are
+visible, and either can be held fixed when known independently. A scale far
+from its expected value is a diagnostic in itself: since
+$I = n\langle|F|^2 S\rangle$, the prefactor is the particle number density
+together with the conversion implied by the chosen units of $Q$ and of the
+scattering length density.
+
+The form factor may be a sphere or a core--shell particle. The core--shell
+form is polydisperse in the CORE radius with a constant shell thickness
+$\Delta R$, so that $R_{\mathrm{outer}} = R_{\mathrm{core}} + \Delta R$ and the
+interaction diameter is $2(R_{\mathrm{core}} + \Delta R)$. That is a different
+model from one polydisperse in the outer radius: with a constant shell the
+outer distribution is the core distribution \emph{shifted} rather than scaled,
+so its relative width is narrower by $R_c/(R_c+\Delta R)$, and fitting the
+wrong one biases both the recovered polydispersity and the effective volume
+fraction. It is parametrised by $\Delta R$ rather than by a core/outer ratio
+because $\Delta R$ is directly comparable with an independently known layer
+thickness.
+
+The radius, relative width, volume fraction, shell thickness, both scattering
+length densities, the closure parameter and the potential's own arguments may
+all be fitted. The scattering length densities are deliberately unbounded:
+their units are the user's choice and span many orders --- a typical value in
+$\mathrm{cm}^{-2}$ is $\sim10^{10}$ --- and, more importantly, an opposite sign
+between core and shell must be an outcome of the fit rather than something the
+bounds impose. Scale, core and shell density cannot be fitted together, since
+the intensity depends on the scale times the squared contrast; the interface
+refuses that combination rather than letting the optimiser wander along a flat
+valley and report a converged fit whose parameters are meaningless.
+
+The size distribution is selectable among Schulz, Gaussian, log-normal and
+Weibull. The quadrature nodes are moment-matched for each, so the choice costs
+nothing numerically, but it changes the tail --- and $\langle\sigma^6\rangle$
+governs $I(Q\to0)$. Two distributions with the same mean and relative width
+can differ by tens of per cent in the computed intensity, which is a reason to
+try more than one on measured data rather than to assume Schulz.
+
+\paragraph{Resolution.} Where a fourth data column supplies $\mathrm{d}Q$, the
+smearing is applied to every curve or to none: the exact result and all six
+approximations are evaluated on the kernel's extended grid and smeared back
+onto the measured $Q$ points. Smearing only the exact curve would be worse
+than not smearing at all, since part of the apparent difference between the
+schemes would then be instrumental rather than a property of the
+approximation --- and precisely near a form-factor minimum, where smearing
+fills the minimum in and where the schemes differ most. $S(Q)$ and the partial
+structure factors are left unsmeared: they are diagnostics rather than
+observables.
 
 
 %======================================================================

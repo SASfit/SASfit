@@ -126,6 +126,17 @@ EXTRA_TABS = [
     #polydisperse charged Yukawa system. It is not a special case of the tab
     #above.
     ("ry_polydisperse_yukawa_tab", "RYPolydisperseYukawaTab", "RY Polydisperse Yukawa"),
+    #Validation tab: compares the numerical multicomponent route against the
+    #ANALYTIC mixture solutions (mixscatter's Vrij Percus-Yevick, and the
+    #Gazzillo charged and adhesive models). It is a checking tool rather than
+    #a modelling one, so it carries no Save/Load -- it is a plain ttk.Frame,
+    #not a PolydisperseTabControls subclass, and has no session to store.
+    #
+    #Its charged path deliberately omits the numerical curve: the
+    #polydisperse builder cannot make a charge-coupled potential, so the
+    #curve would be a hard-sphere mixture and NOT comparable with the charged
+    #reference. Showing it would invite exactly the wrong conclusion.
+    ("mixture_validation_tab", "MixtureValidationTab", "Mixture validation"),
     #Places the numerical solver beside INDEPENDENT ANALYTIC references --
     #mixscatter's Vrij mixture PY, and the exact polydisperse charged-hard-
     #sphere MSA of Gazzillo et al. (arXiv:cond-mat/9909153, Appendix A).
@@ -251,7 +262,16 @@ class OZgui:
         self.mainNotebook = ttk.Notebook(root)
         self.mainNotebook.pack(fill="both", expand=True)
         ozFrame = ttk.Frame(self.mainNotebook)
-        self.mainNotebook.add(ozFrame, text="OZ solver")
+        #The OZ solver tab is index 0 because it is FIRST in the notebook.
+        #The numbering is for the user's eye -- it has to match the order on
+        #screen, or it helps nobody. The extra tabs below carry their own
+        #SESSION_TAB_INDEX and must be numbered from 1 for the same reason.
+        #
+        #This tab has its own Save/Load (see _onSaveAll further down) which
+        #does NOT go through PolydisperseTabControls, so it has neither the
+        #indexed extension nor the wrong-tab guard the others have. Worth
+        #giving it both, but it is a separate piece of work.
+        self.mainNotebook.add(ozFrame, text="0: OZ solver")
         self._ozHost = ozFrame
 
         self._buildLeftPanel()
@@ -268,7 +288,19 @@ class OZgui:
             try:
                 mod = __import__(moduleName, fromlist=[className])
                 widget = getattr(mod, className)(self.mainNotebook)
-                self.mainNotebook.add(widget, text=tabLabel)
+                #Show the session index in the LABEL, so the tab a file
+                #belongs to is readable both here and in the file name: a
+                #tab shown as "0: Polydisperse ..." saves and loads ".oz0".
+                #
+                #The number comes from the widget's own SESSION_TAB_INDEX
+                #rather than from this loop's position, deliberately. Those
+                #two can disagree -- if a tab fails to import, the remaining
+                #ones shift up -- and the label must match what the FILE
+                #says, not where the tab happens to sit today. A tab that
+                #declares no index is labelled as before.
+                index = getattr(widget, "SESSION_TAB_INDEX", None)
+                text = tabLabel if index is None else f"{int(index)}: {tabLabel}"
+                self.mainNotebook.add(widget, text=text)
             except Exception:
                 print(f"[oZgui] optional tab '{tabLabel}' unavailable:")
                 traceback.print_exc()

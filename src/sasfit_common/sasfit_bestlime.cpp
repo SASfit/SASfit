@@ -3,8 +3,27 @@
 #include <vector>
 #include <functional>
 #include <limits>
+// bestlime's own header chain (Bessel_integrator.hpp -> Grid_types.hpp
+// -> Grid_1d.hpp) has Bessel_integrator<Grid_type>::discretize()'s
+// std::function<...> member run a SFINAE probe against Grid_type
+// while bestlime::Grid_1d is still only forward-declared, before
+// Grid_types.hpp (included later in the SAME bestlime header) gives
+// it a full definition. Pre-existing in bestlime's vendored headers
+// (src/bestlime/windows64/include), surfaced by GCC >= 12's newer
+// -Wsfinae-incomplete check; not introduced by, or specific to, this
+// file. Suppressed locally (push/pop around just these two includes)
+// rather than patched in the vendored headers, which would be
+// overwritten by the next bestlime update.
+#if defined(__GNUC__) && __GNUC__ >= 12
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsfinae-incomplete"
+#endif
 #include <bestlime/Bessel_integrator.hpp>
 #include <bestlime/Grid_types.hpp>
+#if defined(__GNUC__) && __GNUC__ >= 12
+#pragma GCC diagnostic pop
+#endif
+#include "sasfit_lru_cache.h"
 extern "C"
 {
     #include "sasfit_constants.h"
@@ -18,6 +37,26 @@ struct sasfit_bestlime_params {
     double (*function)(double, void *);
     void *fparams;
 };
+
+namespace {
+
+// Multi-slot LRU cache payload (see sasfit_lru_cache.h): trivial --
+// unlike sasfit_qdht/sasfit_fftlog, sasfit_bestlime rebuilds the actual
+// Bessel_integrator on every call regardless of cache hit or miss (see
+// below), so this only caches the r0/edge probe result and the
+// anchor-ratio validation state, not the integrator itself.
+struct BestlimeCacheEntry {
+    double r0 = 1.0;
+    double edge = -1.0;
+    double anchor_lo = 0.0, anchor_hi = 0.0, ratio = 0.0;
+};
+
+struct BestlimeCacheKey {
+    double (*f)(double, void*) = nullptr;
+    void* fparams = nullptr;
+};
+
+} // namespace
 
 scalar sasfit_bestlime(double nu, double (*f)(double, void *), double x, void *fparams) {
     if (f == NULL || !(x > 0.0) || (nu != 0.0 && nu != 1.0)) {
@@ -87,22 +126,23 @@ scalar sasfit_bestlime(double nu, double (*f)(double, void *), double x, void *f
         //     of genuine shape changes, a silent stale-cache bug. Using
         //     the actual peak location (and half of it), both sampled
         //     as part of the same probe pass, avoids this by construction.
-        static double (*cached_f)(double, void *) = nullptr;
-        static void *cached_fparams = nullptr;
-        static double cached_r0 = 1.0;
-        static double cached_edge = -1.0;
-        static double cached_anchor_lo = 0.0, cached_anchor_hi = 0.0;
-        static double cached_ratio = 0.0;
+        static SasfitLruCache<BestlimeCacheKey, BestlimeCacheEntry> cache(8);
 
-        double r0 = cached_r0;
-        double edge = cached_edge;
+        BestlimeCacheKey key{};
+        key.f = f;
+        key.fparams = fparams;
+
+        BestlimeCacheEntry* entry = cache.lookup(key);
+
+        double r0 = entry ? entry->r0 : 1.0;
+        double edge = entry ? entry->edge : -1.0;
         bool cache_hit = false;
-        if (cached_f == f && cached_fparams == fparams) {
-            const double val_lo = f(cached_anchor_lo, fparams);
-            const double val_hi = f(cached_anchor_hi, fparams);
+        if (entry) {
+            const double val_lo = f(entry->anchor_lo, fparams);
+            const double val_hi = f(entry->anchor_hi, fparams);
             const double ratio = val_hi / (val_lo + 1e-300);
             constexpr double tol = 1e-3;
-            if (std::fabs(ratio - cached_ratio) <= tol * (std::fabs(ratio) + std::fabs(cached_ratio) + 1e-300)) {
+            if (std::fabs(ratio - entry->ratio) <= tol * (std::fabs(ratio) + std::fabs(entry->ratio) + 1e-300)) {
                 cache_hit = true;
             }
         }
@@ -189,15 +229,14 @@ scalar sasfit_bestlime(double nu, double (*f)(double, void *), double x, void *f
                 edge = bracket_hi;
             }
 
-            cached_f = f;
-            cached_fparams = fparams;
-            cached_r0 = r0;
-            cached_edge = edge;
-            cached_anchor_lo = 0.5 * peak_r;
-            cached_anchor_hi = peak_r;
-            const double v_lo = f(cached_anchor_lo, fparams);
-            const double v_hi = f(cached_anchor_hi, fparams);
-            cached_ratio = v_hi / (v_lo + 1e-300);
+            BestlimeCacheEntry& new_entry = cache.insert(key);
+            new_entry.r0 = r0;
+            new_entry.edge = edge;
+            new_entry.anchor_lo = 0.5 * peak_r;
+            new_entry.anchor_hi = peak_r;
+            const double v_lo = f(new_entry.anchor_lo, fparams);
+            const double v_hi = f(new_entry.anchor_hi, fparams);
+            new_entry.ratio = v_hi / (v_lo + 1e-300);
         }
 
         // Single integrator, one coherent domain [0, infinity) split into

@@ -235,12 +235,47 @@ class Resolution:
 
 
 # ----------------------------------------------------------------------
-def _linearScaleAndBackground(model, obs, weight):
+def _linearScaleAndBackground(model, obs, weight, fixedScale=None,
+                              fixedBackground=None):
     """Exact weighted least-squares scale and background for a fixed shape.
 
-    Minimises sum w^2 (a*model + b - obs)^2 over (a, b). Returns (a, b).
+    Minimises sum w^2 (a*model + b - obs)^2 over whichever of (a, b) are
+    free. Returns (a, b).
+
+    `fixedScale` and `fixedBackground` hold either parameter at a given
+    value; the remaining one is still solved EXACTLY, as a smaller least-
+    squares problem rather than a special case:
+
+      both free          the 2x2 normal equations below
+      scale fixed        b = weighted mean of (obs - a*model)
+      background fixed   a = <w^2 m (obs-b)> / <w^2 m^2>
+      both fixed         nothing to solve
+
+    Why bother. A measured incoherent background is often known
+    independently -- it is visible directly as the flat tail at high Q -- and
+    fixing it removes a degree of freedom that would otherwise absorb high-Q
+    misfit, which is where an over-wide polydispersity likes to hide. Fixing
+    the scale turns a free amplitude into a check against an
+    absolute-intensity measurement.
     """
     w2 = weight**2
+    if fixedScale is not None and fixedBackground is not None:
+        return float(fixedScale), float(fixedBackground)
+
+    if fixedScale is not None:
+        a = float(fixedScale)
+        S1 = np.sum(w2)
+        if not np.isfinite(S1) or S1 <= 0:
+            return a, 0.0
+        return a, float(np.sum(w2*(obs - a*model))/S1)
+
+    if fixedBackground is not None:
+        b = float(fixedBackground)
+        Smm = np.sum(w2*model*model)
+        if not np.isfinite(Smm) or Smm < 1e-300:
+            return 1.0, b
+        return float(np.sum(w2*model*(obs - b))/Smm), b
+
     S1 = np.sum(w2)
     Sm = np.sum(w2*model)
     Smm = np.sum(w2*model*model)
@@ -268,13 +303,78 @@ class PolydisperseFit:
         Anything not listed is held fixed at the value given in `fixed`.
     """
 
-    SHAPE_KEYS = ("meanRadius", "srel", "phi", "closureParam", "closureParam2")
+    #"shell" is here so a shell thickness can be FITTED. It is not consumed
+    #by GenericPolydisperseSAS -- it reaches the model only through
+    #formfactorFactory, which receives every shape key as a keyword. Any
+    #future form-factor parameter should be added the same way.
+    SHAPE_KEYS = ("meanRadius", "srel", "phi", "closureParam",
+                  "closureParam2", "shell", "rhoCore", "rhoShell",
+                  #linkC is the proportionality in delta = c * dR. It reaches
+                  #the model only through linkedArg, never as a potential
+                  #argument in its own right.
+                  "linkC")
 
     def __init__(self, Q, I, dI=None, potential="HardSphere",
                  potentialArgs=(), closure="Percus-Yevick",
                  parameters=None, fixed=None, nbins=3, nFF=60,
                  distribution="Schulz", logResiduals=True, shouldStop=None,
-                 resolution=None):
+                 resolution=None, formfactorFactory=None,
+                 fixedScale=None, fixedBackground=None, solverClass=None,
+                 linkedArg=None):
+        #linkedArg: (index, c, sourceKey) or None. When given, the potential
+        #argument at `index` is not independent -- it is recomputed at every
+        #iteration as c times the current value of the shape parameter
+        #`sourceKey`.
+        #
+        #The case this exists for is a square-well or sticky-sphere `delta`,
+        #the well WIDTH as an absolute length, tied to a core-shell particle's
+        #shell thickness: if the attraction comes from the surface layer then
+        #the interaction range and the layer are the same physical quantity,
+        #and fitting them independently invites them to trade against each
+        #other while both drift.
+        #
+        #It MUST be recomputed per iteration rather than set once, or delta
+        #would be frozen at the starting shell thickness while the shell
+        #itself refined away from it -- leaving the potential inconsistent
+        #with the form factor and no sign that anything was wrong.
+        self.linkedArg = linkedArg
+        #solverClass: the OZ solver to use, or None for the package default
+        #(Picard). Previously there was NO such parameter, so the fitter
+        #always used the default however the interface was set: the GUI read
+        #the user's choice, passed it to the calculate path, and silently
+        #dropped it here. The symptom was a solver that appeared to fall back
+        #to Picard and never recover.
+        #
+        #Prefer a FIXED-POINT method here. A fit wanders through parameter
+        #space, including regions near folds, and the Newton-Krylov family
+        #converges to negative-compressibility branches there -- genuine
+        #roots, but unphysical ones. A wrong branch during a fit is worse
+        #than a slow one, because the optimiser will happily follow it.
+        self.solverClass = solverClass
+        #fixedScale / fixedBackground: hold either linear parameter at a
+        #given value instead of solving for it. Both default to None, i.e.
+        #solved exactly as before, so existing behaviour is unchanged.
+        #
+        #These stay OUT of the nonlinear optimiser deliberately. They enter
+        #the model linearly, so a weighted linear solve is exact and free,
+        #whereas giving them to the optimiser would add the two most strongly
+        #correlated parameters -- scale against volume fraction, background
+        #against everything at high Q -- for no gain.
+        self.fixedScale = fixedScale
+        self.fixedBackground = fixedBackground
+        #formfactorFactory: callable taking the current shape parameters as
+        #keyword arguments and returning a form-factor object, or None for a
+        #plain sphere. A FACTORY rather than an instance, because the form
+        #factor may depend on fitted parameters -- a shell thickness, say --
+        #and must therefore be rebuilt at every iteration.
+        #
+        #Before this existed the GUI constructed a CoreShell instance and
+        #then never passed it: PolydisperseFit had no formfactor argument at
+        #all, so every fit silently used a solid sphere no matter what the
+        #interface displayed. It raised nothing, converged, and reported a
+        #chi-squared. That is the failure mode this whole package is built to
+        #guard against, and it survived here in the fitter itself.
+        self.formfactorFactory = formfactorFactory
         self.Q = np.asarray(Q, float)
         self.I = np.asarray(I, float)
         # Weights. With uncertainties, standard chi-squared weighting; without
@@ -337,7 +437,27 @@ class PolydisperseFit:
             v = self._value(key, vector)
             if v is not None:
                 kw[key] = v
+        #Apply the link AFTER both the potential arguments and the shape
+        #parameters have been read, since it depends on one to set the other.
+        if self.linkedArg is not None:
+            idx, c, sourceKey = self.linkedArg
+            #c itself may be a fitted parameter. Prefer the value from the
+            #current vector, falling back to the constant supplied at
+            #construction.
+            cNow = kw.get("linkC", self.fixed.get("linkC", c))
+            source = kw.get(sourceKey, self.fixed.get(sourceKey))
+            if source is not None and 0 <= idx < len(args):
+                args[idx] = float(cNow)*float(source)
         try:
+            #Rebuild the form factor from the CURRENT parameter vector. It
+            #cannot be built once outside the loop: a fitted shell thickness
+            #would then be frozen at its starting value and would appear to
+            #be refined while doing nothing.
+            ff = None
+            if self.formfactorFactory is not None:
+                ffKw = dict(self.fixed)
+                ffKw.update(kw)
+                ff = self.formfactorFactory(**ffKw)
             sas = GenericPolydisperseSAS(
                 self.potential, tuple(args),
                 phi=kw.get("phi", self.fixed.get("phi", 0.1)),
@@ -347,6 +467,8 @@ class PolydisperseFit:
                 closureParam=kw.get("closureParam"),
                 closureParam2=kw.get("closureParam2"),
                 meanRadius=kw.get("meanRadius"),
+                formfactor=ff,
+                solverClass=self.solverClass,
                 distribution=self.distribution)
             self.nEvaluations += 1
             if self.resolution is not None:
@@ -365,7 +487,8 @@ class PolydisperseFit:
         model = self._modelShape(vector)
         if model is None or not np.all(np.isfinite(model)):
             return np.full(self.Q.size, 1e3)
-        a, b = _linearScaleAndBackground(model, self.I, self.weight)
+        a, b = _linearScaleAndBackground(model, self.I, self.weight,
+                                         self.fixedScale, self.fixedBackground)
         fit = a*model + b
         r = self._logResid(fit) if self.logResiduals else self.weight*(fit - self.I)
         cost = float(np.dot(r, r))
@@ -416,7 +539,8 @@ class PolydisperseFit:
             success, message = False, f"interrupted by user ({exc})"
 
         model = self._modelShape(xbest)
-        a, b = _linearScaleAndBackground(model, self.I, self.weight)
+        a, b = _linearScaleAndBackground(model, self.I, self.weight,
+                                         self.fixedScale, self.fixedBackground)
         fit = a*model + b
         ndof = max(self.Q.size - len(names) - 2, 1)
         if self.dI is not None:
@@ -539,7 +663,9 @@ def fitWithBumps(fitter, method="de", steps=None, pop=10, burn=100,
             #inf or nan would poison the population rather than merely making
             #this point unattractive.
             return np.full_like(fitter.I, np.max(fitter.I)*1e3)
-        a, b = _linearScaleAndBackground(shape, fitter.I, fitter.weight)
+        a, b = _linearScaleAndBackground(shape, fitter.I, fitter.weight,
+                                         getattr(fitter, "fixedScale", None),
+                                         getattr(fitter, "fixedBackground", None))
         return a*shape + b
 
     #bumps introspects the model signature to discover the parameter names,
@@ -583,7 +709,9 @@ def fitWithBumps(fitter, method="de", steps=None, pop=10, burn=100,
     xbest = np.array([byLabel[n] for n in names], float)
 
     model_shape = fitter._modelShape(xbest)
-    a, b = _linearScaleAndBackground(model_shape, fitter.I, fitter.weight)
+    a, b = _linearScaleAndBackground(model_shape, fitter.I, fitter.weight,
+                                     getattr(fitter, "fixedScale", None),
+                                     getattr(fitter, "fixedBackground", None))
     fit = a*model_shape + b
     ndof = max(fitter.Q.size - len(names) - 2, 1)
     if fitter.dI is not None:

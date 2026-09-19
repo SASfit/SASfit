@@ -57,7 +57,7 @@ try:
     import ozLib
     from picardOZsolver import PicardOZsolver
     from generic_polydisperse_sas import GenericPolydisperseSAS
-    from polydisperse_yukawa_sas import Sphere, CoreShell
+    from polydisperse_yukawa_sas import Sphere, CoreShell, CoreShellFixedShell
     from polydisperse_tab_controls import PolydisperseTabControls
     from polydisperse_fit import PolydisperseFit, loadCurve, Resolution
 except Exception as _exc:                                  # pragma: no cover
@@ -98,6 +98,14 @@ class _Result:
 
 
 class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
+    #Session file identity. The index appears in the file EXTENSION (.oz0)
+    #so a file from another tab is recognisable before it is opened, and the
+    #NAME is checked on load -- the extension is a convenience, the name is
+    #the guard. Keep the index in step with the position in oZgui.EXTRA_TABS;
+    #if the order ever changes, old files keep loading because the check is
+    #on the name, and only the extension becomes stale.
+    SESSION_TAB_INDEX = 1
+    SESSION_TAB_NAME = "Polydisperse (any potential)"
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         if IMPORT_ERROR is not None:
@@ -241,9 +249,26 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             r += 1
             return v
 
-        ttk.Label(left, text="Size distribution (Schulz)",
+        ttk.Label(left, text="Size distribution",
                   font=("TkDefaultFont", 9, "bold")).grid(
             row=r, column=0, columnspan=2, sticky="w"); r += 1
+        #The engine has supported four distributions all along
+        #(polydisperse_nodes.DISTRIBUTIONS); the tab passed "Schulz" as a
+        #literal, so the other three were unreachable from the interface.
+        #
+        #The quadrature nodes are moment-matched for every one of them, so
+        #the choice costs nothing numerically -- but it changes the TAIL,
+        #and the tail is what the high-order moments see. <sigma^6> governs
+        #I(Q -> 0), so two distributions fitted to the same mean and relative
+        #width can still differ visibly at low Q. That is a reason to try
+        #more than one on real data rather than to assume Schulz.
+        ttk.Label(left, text="Distribution:").grid(row=r, column=0, sticky="e")
+        self.distVar = tk.StringVar(value="Schulz")
+        ttk.Combobox(left, textvariable=self.distVar, width=12,
+                     state="readonly",
+                     values=["Schulz", "Gaussian", "LogNormal", "Weibull"]
+                     ).grid(row=r, column=1, sticky="w")
+        r += 1
         self.meanRadiusVar = entry("Mean radius:", "50.0")
         ttk.Label(left, text="sets the length scale; Q is then a genuine inverse "
                              "length. The scattering radius equals the HARD-CORE "
@@ -269,15 +294,61 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                             state="readonly", values=["Sphere", "Core-shell"])
         fbox.grid(row=r, column=1, sticky="w"); r += 1
         fbox.bind("<<ComboboxSelected>>", lambda e: self._syncFormFactor())
-        self.shellVar = entry("Core/outer:", "0.6")
+        #Shell THICKNESS, not a core/outer ratio. The label used to read
+        #"Core/outer: 0.6", which was ambiguous -- it did not say whether the
+        #number was a ratio or a length, nor which radius carried the size
+        #distribution. The model is now unambiguous: the polydispersity is on
+        #the CORE radius, every particle carries the same shell, and the
+        #interaction diameter is 2(R_core + dR). Units are whatever the
+        #radius uses, i.e. the reciprocal of Q's.
+        self.shellVar = entry("Shell dR:", "2.7")
+        #LINK the potential's range parameter to the shell thickness.
+        #
+        #For SquareWell and StickyHardSphere the second argument `delta` is
+        #the well WIDTH as an absolute length: the well runs from sigma to
+        #sigma+delta, in the same units as the radius. So it is directly
+        #comparable with the shell thickness, and for a particle whose
+        #attraction comes from its surface layer the two should not be free
+        #of one another.
+        #
+        #When linked, delta = c * dR is recomputed at EVERY iteration from
+        #the current dR, so it tracks the shell as the fit moves it rather
+        #than being set once. delta then stops being an independent fit
+        #parameter -- which is the point: fitting both a shell thickness and
+        #an unrelated interaction range invites them to trade against each
+        #other.
+        #
+        #c is the user's choice: 1 if the attraction range IS the layer, 2
+        #if two layers overlap when particles touch (the usual brush or
+        #depletion geometry).
+        self.linkDeltaVar = tk.BooleanVar(value=False)
+        ttk.Checkbutton(left, text="link delta = c x dR",
+                        variable=self.linkDeltaVar,
+                        command=self._syncLinkDelta).grid(
+            row=r, column=0, columnspan=2, sticky="w")
+        r += 1
+        self.linkCVar = entry("   c:", "2.0")
         self.rhoCoreVar = entry("SLD core:", "2.0")
         self.rhoShellVar = entry("SLD shell:", "1.0")
-        self._ffEntries = []
-        for w in left.winfo_children():
-            if isinstance(w, ttk.Entry):
-                self._ffEntries.append(w)
-        self._ffEntries = self._ffEntries[-3:]
+        #Capture the core-shell entries HERE, before any further entries are
+        #added. This used to read `self._ffEntries[-3:]` after the fact,
+        #which silently grabbed whichever three entries happened to be last
+        #-- adding the scale and background boxes below would have greyed
+        #THOSE out for a plain sphere while leaving the SLD boxes editable.
+        self._ffEntries = [w for w in left.winfo_children()
+                           if isinstance(w, ttk.Entry)][-3:]
 
+        #Scale and background apply to EVERY form factor, so they live here
+        #with the general model parameters rather than in the core-shell
+        #block, and are captured after _ffEntries so they are never greyed
+        #out with it.
+        #
+        #Their fit checkboxes are NOT here: they sit under "Fit to measured
+        #data" with the other parameters, so that one list shows everything
+        #that is free. Ticked means free, unticked means held at the value in
+        #the entry -- the same meaning as for every other parameter.
+        self.scaleVar = entry("scale:", "1.0")
+        self.backgroundVar = entry("background:", "0.0")
         ttk.Separator(left, orient="horizontal").grid(
             row=r, column=0, columnspan=2, sticky="ew", pady=6); r += 1
         self.QminVar = entry("Q min:", "1e-4")
@@ -337,6 +408,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         for w in self.potFrame.winfo_children():
             w.destroy()
         self.potParamVars = []
+        self._potEntries = []
         setter = getattr(self._probe, "set" + self.potentialVar.get() + "Potential")
         spec = inspect.getfullargspec(setter)
         names = spec[0][1:]
@@ -365,11 +437,29 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 if isinstance(v, (int, float)) and not isinstance(v, bool):
                     initial = repr(float(v))
             var = tk.StringVar(value=initial)
-            ttk.Entry(self.potFrame, textvariable=var, width=10).grid(
+            entryWidget = ttk.Entry(self.potFrame, textvariable=var, width=10)
+            entryWidget.grid(
                 row=i, column=1, sticky="w")
+            self._potEntries.append(entryWidget)
             self.potParamVars.append(var)
         if not names:
             ttk.Label(self.potFrame, text="(no parameters)").grid(row=0, column=0, sticky="w")
+        #Refresh the fit checkboxes: the potential's own parameters appear
+        #there as pot0, pot1, ... and that list is built from potParamVars,
+        #which has just been rebuilt. Without this the boxes are whatever the
+        #PREVIOUS potential had -- or none at all, if the flags happened to
+        #be built while potParamVars was still empty.
+        #
+        #This used to work only by accident of ordering, and adding another
+        #caller of _rebuildFitFlags elsewhere broke it. Rebuild explicitly
+        #wherever the underlying list changes.
+        if hasattr(self, "fitVarFrame"):
+            self._rebuildFitFlags()
+        #Re-apply the delta link: the entries were just recreated, and
+        #whether one of them is linkable depends on the potential that has
+        #only now been selected.
+        if hasattr(self, "linkDeltaVar"):
+            self._syncLinkDelta()
 
     def _onClosureChanged(self):
         for w in self.closureFrame.winfo_children():
@@ -414,10 +504,49 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             self._alphaEntry.configure(
                 state="disabled" if self.findAlphaVar.get() else "normal")
 
+    def _syncLinkDelta(self):
+        """Grey out the linked potential argument and refresh the fit flags.
+
+        The linked parameter is no longer independently adjustable, so it is
+        disabled rather than left editable with its value silently ignored --
+        an entry that accepts a number and then discards it is worse than no
+        entry at all.
+        """
+        linked = self.linkDeltaVar.get() and self._deltaParamIndex() is not None
+        idx = self._deltaParamIndex()
+        for i, w in enumerate(getattr(self, "_potEntries", [])):
+            try:
+                w.configure(state="disabled" if (linked and i == idx)
+                            else "normal")
+            except Exception:
+                pass
+        if hasattr(self, "fitVarFrame"):
+            self._rebuildFitFlags()
+
+    def _deltaParamIndex(self):
+        """Index of the potential argument that is a range, or None.
+
+        Only the potentials whose second argument is an absolute well WIDTH
+        qualify. Linking anything else would be meaningless -- a Yukawa
+        screening length is an inverse length, and a Lennard-Jones epsilon is
+        an energy.
+        """
+        if self.potentialVar.get() in ("SquareWell", "StickyHardSphere"):
+            return 1 if len(getattr(self, "potParamVars", [])) > 1 else None
+        return None
+
     def _syncFormFactor(self):
         state = "normal" if self.ffVar.get() == "Core-shell" else "disabled"
         for w in self._ffEntries:
             w.configure(state=state)
+        #Rebuild the fit checkboxes too: "shell", "rhoCore" and "rhoShell"
+        #are offered only for a core-shell form factor, so switching the
+        #combobox has to refresh that list or the checkboxes never appear.
+        #
+        #Guarded because this also runs during construction, before the fit
+        #frame exists.
+        if hasattr(self, "fitVarFrame"):
+            self._rebuildFitFlags()
 
     # ------------------------------------------------------------------
     #Fitting
@@ -428,19 +557,90 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
     #would add the two most strongly correlated parameters -- scale against
     #volume fraction, background against everything at high Q -- for no gain.
     FIT_BOUNDS = {"meanRadius": (1e-3, 1e5), "srel": (1e-3, 0.6),
-                  "phi": (1e-4, 0.6), "closureParam": (1e-3, 50.0)}
+                  #phi is a volume fraction, so 0 < phi < 1 is the physical
+                  #range and the bound says exactly that. It is NOT narrowed
+                  #to the hard-sphere packing limit (~0.64): a fitted phi
+                  #that runs above it is a RESULT -- it says the model is
+                  #wrong for this data -- and a bound that hid it would turn
+                  #a diagnosis into a silent clamp.
+                  "phi": (1e-9, 1.0), "closureParam": (1e-3, 50.0),
+                  #Shell thickness is STRICTLY positive. Zero is not merely
+                  #an edge case: at dR = 0 the core-shell form factor
+                  #degenerates to a sphere and the two SLDs stop being
+                  #separately identifiable, so the optimiser can park there
+                  #and report convergence on a model with fewer effective
+                  #parameters than it thinks. The lower bound is small
+                  #rather than zero for that reason.
+                  "shell": (1e-9, 1e4),
+                  #c in delta = c * dR. Bounded 0 to 2 (Joachim): 0 removes
+                  #the attraction entirely, 1 means the interaction range IS
+                  #the layer, 2 means two layers overlap when particles
+                  #touch. Values above 2 would put the well beyond the
+                  #combined coatings, which the linked parametrisation is not
+                  #meant to describe.
+                  "linkC": (0.0, 2.0),
+                  #SLDs ARE UNBOUNDED, deliberately, on both counts.
+                  #
+                  #Sign: the opposite sign of the shell contrast must be an
+                  #OUTCOME of the fit, not something the bounds impose. If
+                  #the refined shell SLD comes out opposite to the core with
+                  #the data free to choose otherwise, that is evidence;
+                  #bounded to one side it would be an assumption wearing the
+                  #costume of a result. (A starting value of opposite sign is
+                  #a different matter and is fine -- it says where the search
+                  #begins, not where it may go.)
+                  #
+                  #Magnitude: the units are the user's choice and span many
+                  #orders. In 1/cm^2 a typical SLD is ~2e10, so ANY finite
+                  #bound picked here would be wrong for some convention --
+                  #a limit of 1e3 would clamp such a value at the bound on
+                  #the first step, and the fit would report convergence while
+                  #pinned there. There is no honest finite choice, so there
+                  #is none.
+                  #
+                  #Unbounded also sidesteps the fallback heuristic below
+                  #(x/50, x*50), which inverts or collapses for a negative
+                  #start.
+                  "rhoCore": (-np.inf, np.inf),
+                  "rhoShell": (-np.inf, np.inf)}
 
     def _rebuildFitFlags(self):
         for w in self.fitVarFrame.winfo_children():
             w.destroy()
         self.fitFlags = {}
         names = ["meanRadius", "srel", "phi"]
+        #Scale and background belong in this list for every form factor.
+        #They are not handed to the nonlinear optimiser -- they enter the
+        #model linearly and are solved EXACTLY by weighted least squares at
+        #each iteration, which is both free and better conditioned. Ticking
+        #them means "solve them"; unticking means "hold at the entry value".
+        #Both default to ticked, which reproduces the previous behaviour.
+        names += ["scale", "background"]
+        #The shell thickness is fittable ONLY for a core-shell form factor,
+        #and adding it to FIT_BOUNDS is not enough on its own: this list is
+        #what the interface actually offers, so a parameter missing here can
+        #never be selected however the rest of the machinery is wired.
+        if self.ffVar.get() == "Core-shell":
+            names += ["shell", "rhoCore", "rhoShell"]
+        #c is fittable only when the link is active -- otherwise it does
+        #nothing, and offering it would invite fitting a parameter with no
+        #effect on the model.
+        if (getattr(self, "linkDeltaVar", None) is not None
+                and self.linkDeltaVar.get()
+                and self._deltaParamIndex() is not None):
+            names.append("linkC")
         if self.closureParamVar is not None:
             names.append("closureParam")
         for i in range(len(self.potParamVars)):
+            #A linked potential argument is not independently fittable: it is
+            #computed from the shell thickness, so offering a checkbox for it
+            #would let the user fit a quantity that is then overwritten.
+            if self.linkDeltaVar.get() and i == self._deltaParamIndex():
+                continue
             names.append("pot%d" % i)
         for i, n in enumerate(names):
-            v = tk.BooleanVar(value=(n in ("meanRadius", "srel", "phi")))
+            v = tk.BooleanVar(value=(n in ("meanRadius", "srel", "phi",
+                                           "scale", "background")))
             ttk.Checkbutton(self.fitVarFrame, text=n, variable=v).grid(
                 row=i//2, column=i % 2, sticky="w")
             self.fitFlags[n] = v
@@ -460,6 +660,194 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         self.statusVar.set("interrupt requested; stopping after the current "
                            "solve...")
 
+    # ------------------------------------------------------------------
+    #Session save/restore. The controls call these if they exist; see
+    #polydisperse_tab_controls._onSaveAll.
+    #
+    #Everything that makes a session RESUMABLE lives here: the input fields,
+    #which parameters were free, the measured data, and the last fit result.
+    #Saving the computed runs alone gives curves to look at but leaves you
+    #re-entering every field and re-loading the data file by hand -- which is
+    #precisely the friction that stops people re-running a fit with one
+    #parameter changed.
+
+    #Every Tk entry worth restoring, as attribute name -> saved key. Listed
+    #explicitly rather than swept up by introspection, so adding a field is a
+    #deliberate act and a renamed one fails loudly instead of silently
+    #dropping out of the save.
+    _SESSION_VARS = (
+        "meanRadiusVar", "srelVar", "phiVar", "nbinsVar", "nFFVar",
+        "shellVar", "rhoCoreVar", "rhoShellVar", "scaleVar", "backgroundVar",
+        "QminVar", "QmaxVar", "nQVar", "ffVar", "potentialVar",
+        "closureVar", "closureParamVar", "closureParam2Var", "distVar",
+        "linkDeltaVar", "linkCVar",
+        #smearVar decides whether the dQ column is USED. Omitting it would
+        #restore the data and the resolution array but silently lose the
+        #choice to apply them -- and an unsmeared fit biases the
+        #polydispersity high by ~15 % without any sign in chi-squared.
+        "smearVar",
+    )
+
+    def sessionState(self):
+        state = {"entries": {}, "fitFlags": {}, "data": None, "fit": None}
+        for name in self._SESSION_VARS:
+            var = getattr(self, name, None)
+            if var is not None:
+                try:
+                    state["entries"][name] = var.get()
+                except Exception:
+                    pass
+        for name, var in getattr(self, "fitFlags", {}).items():
+            try:
+                state["fitFlags"][name] = bool(var.get())
+            except Exception:
+                pass
+        for name in ("potParamVars",):
+            vs = getattr(self, name, None)
+            if vs:
+                state[name] = [v.get() for v in vs]
+        #The measured data travel WITH the file. Storing only a path would
+        #break the moment the file moved, and these arrays are small beside
+        #the runs already being written.
+        data = getattr(self, "data", None)
+        if data is not None:
+            Q, I, dI = data
+            state["data"] = {
+                "Q": np.asarray(Q, float).tolist(),
+                "I": np.asarray(I, float).tolist(),
+                "dI": (None if dI is None
+                       else np.asarray(dI, float).tolist()),
+                "dQ": (None if getattr(self, "dQ", None) is None
+                       else np.asarray(self.dQ, float).tolist()),
+                "path": getattr(self, "dataPath", None)}
+        fit = getattr(self, "fitResult", None)
+        if isinstance(fit, dict):
+            #The fit result carries NUMPY ARRAYS (Q and the fitted curve)
+            #that the plotting code reads back as fr["Q"] and fr["fit"].
+            #An earlier version filtered the dict to JSON-safe scalars, which
+            #dropped exactly those two -- so a restored session had a
+            #fitResult without "Q", and redrawing raised KeyError('Q')
+            #outside the restore's own error handling, killing the whole
+            #load and taking the data with it.
+            saved = {}
+            for k, v in fit.items():
+                if isinstance(v, np.ndarray):
+                    saved[k] = {"__ndarray__": v.tolist()}
+                elif isinstance(v, (int, float, str, bool, type(None),
+                                    dict, list)):
+                    saved[k] = v
+            state["fit"] = saved
+        return state
+
+    def restoreSessionState(self, state):
+        for name, value in (state.get("entries") or {}).items():
+            var = getattr(self, name, None)
+            if var is not None:
+                try:
+                    var.set(value)
+                except Exception:
+                    pass
+        #REBUILD THE DEPENDENT WIDGETS FIRST, and in this order.
+        #
+        #_onPotentialChanged destroys and recreates potParamVars from the
+        #potential just restored, so it MUST run before those values are
+        #written back -- an earlier version restored them first, zipping
+        #against the previous potential's (often empty) list, so the values
+        #vanished and the potential appeared unset.
+        #
+        #_rebuildFitFlags runs last because the checkbox list is built from
+        #everything above it: the form factor decides whether shell and the
+        #SLDs appear, the potential decides how many pot0..potN there are.
+        for hook in ("_onPotentialChanged", "_onClosureChanged",
+                     "_syncFormFactor", "_rebuildFitFlags"):
+            fn = getattr(self, hook, None)
+            if callable(fn):
+                try:
+                    fn()
+                except Exception:
+                    pass
+        #Closure parameters are recreated by _onClosureChanged, so restore
+        #them after it rather than with the other entries.
+        for name in ("closureParamVar", "closureParam2Var"):
+            value = (state.get("entries") or {}).get(name)
+            var = getattr(self, name, None)
+            if value is not None and var is not None:
+                try:
+                    var.set(value)
+                except Exception:
+                    pass
+        vals = state.get("potParamVars")
+        if vals:
+            for v, value in zip(getattr(self, "potParamVars", []), vals):
+                try:
+                    v.set(value)
+                except Exception:
+                    pass
+        for name, value in (state.get("fitFlags") or {}).items():
+            var = getattr(self, "fitFlags", {}).get(name)
+            if var is not None:
+                try:
+                    var.set(bool(value))
+                except Exception:
+                    pass
+        d = state.get("data")
+        if d:
+            Q = np.asarray(d["Q"], float)
+            I = np.asarray(d["I"], float)
+            dI = None if d.get("dI") is None else np.asarray(d["dI"], float)
+            self.data = (Q, I, dI)
+            self.dQ = (None if d.get("dQ") is None
+                       else np.asarray(d["dQ"], float))
+            self.dataPath = d.get("path")
+            #Enable the Fit button. It starts disabled and is otherwise only
+            #enabled by _onLoadData, so a session that restored the data
+            #still left it greyed out -- the data were there, the fit was
+            #not reachable. Anything _onLoadData enables on receiving data
+            #has to be enabled here too.
+            if hasattr(self, "fitBtn"):
+                try:
+                    self.fitBtn.configure(state="normal")
+                except Exception:
+                    pass
+            #The smear checkbox is disabled until a dQ column exists, so it
+            #must be re-enabled here or the restored smearVar cannot take
+            #effect and the entry silently reverts.
+            if self.dQ is not None and hasattr(self, "smearCheck"):
+                try:
+                    self.smearCheck.configure(state="normal")
+                except Exception:
+                    pass
+            #Rebuild the data description line. The attribute is
+            #`dataLabelVar`; an earlier version guessed `dataInfoVar`, which
+            #does not exist, so the hasattr guard silently skipped it and the
+            #line stayed blank after a restore.
+            if hasattr(self, "dataLabelVar"):
+                try:
+                    bits = [f"{Q.size} points",
+                            f"Q {Q.min():.4g}..{Q.max():.4g}",
+                            "with dI" if dI is not None else "no dI"]
+                    if self.dQ is not None:
+                        frac = self.dQ/np.where(Q > 0, Q, np.nan)
+                        bits.append(f"dQ/Q {np.nanmin(frac):.3f}.."
+                                    f"{np.nanmax(frac):.3f}")
+                    bits.append("restored from session")
+                    self.dataLabelVar.set(", ".join(bits))
+                except Exception:
+                    pass
+        if state.get("fit") is not None:
+            #Decode the arrays written by sessionState. Anything that still
+            #lacks "Q" came from an older save, and plotting it would raise
+            #KeyError -- so drop it rather than restore a fitResult that
+            #cannot be drawn.
+            fit = {}
+            for k, v in state["fit"].items():
+                if isinstance(v, dict) and "__ndarray__" in v:
+                    fit[k] = np.asarray(v["__ndarray__"], float)
+                else:
+                    fit[k] = v
+            self.fitResult = fit if ("Q" in fit and "fit" in fit) else None
+
+    # ------------------------------------------------------------------
     def _onLoadData(self):
         from tkinter import filedialog
         path = filedialog.askopenfilename(
@@ -473,6 +861,9 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             messagebox.showerror("load failed", str(e))
             return
         self.data = (Q, I, dI)
+        #Remembered for the session save, so a restored file can say where
+        #the data came from.
+        self.dataPath = path
         #A FOURTH column is taken as the Q resolution. It is read as the
         #Gaussian SIGMA, not the FWHM -- the two differ by 2.355 and the wrong
         #one silently rescales the fitted polydispersity, which is exactly the
@@ -503,6 +894,20 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             return float(self.phiVar.get())
         if name == "closureParam":
             return float(self.closureParamVar.get())
+        #Both of these are reachable from the fit-flag list, so omitting them
+        #here raises KeyError the moment the box is ticked.
+        if name == "shell":
+            return float(self.shellVar.get())
+        if name == "rhoCore":
+            return float(self.rhoCoreVar.get())
+        if name == "rhoShell":
+            return float(self.rhoShellVar.get())
+        if name == "linkC":
+            return float(self.linkCVar.get())
+        if name == "scale":
+            return float(self.scaleVar.get())
+        if name == "background":
+            return float(self.backgroundVar.get())
         if name.startswith("pot"):
             return float(self.potParamVars[int(name[3:])].get())
         raise KeyError(name)
@@ -520,8 +925,42 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         if not free:
             messagebox.showinfo("nothing to fit", "tick at least one parameter")
             return
+        #scale and background are ticked like the rest, but they must NOT go
+        #to the nonlinear optimiser: they enter the model linearly and are
+        #solved exactly by weighted least squares inside the fitter. Their
+        #flags are read separately in _readInputs and passed as fixedScale /
+        #fixedBackground. Leaving them in `params` would hand the optimiser
+        #the two most strongly correlated parameters for nothing.
+        LINEAR = ("scale", "background")
+        nonlinearFree = [n for n in free if n not in LINEAR]
+        #The amplitude is degenerate. I(Q) carries an overall factor of
+        #scale times the squared contrast, so scale, rhoCore and rhoShell
+        #cannot all three be determined at once: any change in the contrasts
+        #can be undone by the scale. What breaks the degeneracy is the SHAPE
+        #-- above all where the sign change puts the form-factor minimum --
+        #and that constrains the RATIO of the two SLDs, not their absolute
+        #size.
+        #
+        #Refuse it rather than let the optimiser wander along a flat valley
+        #and report a converged fit whose parameters are meaningless.
+        if "scale" in free and "rhoCore" in free and "rhoShell" in free:
+            messagebox.showerror(
+                "degenerate parameter set",
+                "scale, SLD core and SLD shell cannot all be fitted "
+                "together: the intensity depends on scale times the squared "
+                "contrast, so a change in the contrasts is exactly "
+                "compensated by the scale.\n\n"
+                "Fix one of them -- normally the core SLD, which is usually "
+                "known -- and fit the other two.")
+            return
+        if not nonlinearFree:
+            messagebox.showinfo(
+                "nothing to fit",
+                "scale and background are solved exactly rather than fitted.\n"
+                "Tick at least one other parameter.")
+            return
         params = {}
-        for n in free:
+        for n in nonlinearFree:
             x = self._currentValue(n)
             lo, hi = self.FIT_BOUNDS.get(n, (x/50.0 if x > 0 else -abs(x)*50,
                                              abs(x)*50 + 1.0))
@@ -541,10 +980,38 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
     def _fitWorker(self, p, params):
         try:
             Q, I, dI = self.data
-            ff = (CoreShell(p["shell"], p["rhoCore"], p["rhoShell"])
-                  if p["ff"] == "Core-shell" else Sphere())
+            #KEYWORDS, not positional. This read
+            #    CoreShell(p["shell"], p["rhoCore"], p["rhoShell"])
+            #but the signature is
+            #    CoreShell(rho_core, rho_shell, rho_solvent, thickness, ratio)
+            #so the shell THICKNESS was passed as rho_core, rho_core as
+            #rho_shell, rho_shell as rho_solvent, and `thickness` was left
+            #None -- which the constructor's own guard rejects, since it
+            #requires exactly one of thickness and ratio. The core-shell path
+            #could therefore never have produced a fit.
+            #A FACTORY, not an instance: the shell thickness may itself be a
+            #fitted parameter, so the form factor has to be rebuilt from the
+            #current vector at every iteration. Passing an instance here is
+            #what froze the thickness before.
+            #
+            #CoreShellFixedShell puts the polydispersity on the CORE, with
+            #R_outer = R_core + shell. The older CoreShell is polydisperse in
+            #the OUTER radius instead; the two are different physical models
+            #and give different polydispersity and effective volume fraction.
+            if p["ff"] == "Core-shell":
+                def makeFF(shell=p["shell"], rhoCore=p["rhoCore"],
+                           rhoShell=p["rhoShell"], **_ignored):
+                    return CoreShellFixedShell(rho_core=rhoCore,
+                                               rho_shell=rhoShell,
+                                               thickness=shell)
+            else:
+                makeFF = None
             fixed = {"phi": p["phi"], "srel": p["srel"],
                      "meanRadius": p["meanRadius"],
+                     "shell": p["shell"],
+                     "rhoCore": p["rhoCore"],
+                     "rhoShell": p["rhoShell"],
+                     "linkC": p["linkC"],
                      "closureParam": p["closureParam"],
                      "closureParam2": p["closureParam2"]}
             fitter = PolydisperseFit(
@@ -552,8 +1019,16 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 potentialArgs=p["potentialArgs"], closure=p["closure"],
                 parameters=params, fixed=fixed,
                 nbins=p["nbins"], nFF=p["nFF"],
-                distribution="Schulz",
+                distribution=p["distribution"],
                 resolution=p["resolution"],
+                formfactorFactory=makeFF,
+                solverClass=p["solverClass"],
+                linkedArg=((p["deltaIndex"], p["linkC"], "shell")
+                           if p["linkDelta"] and p["deltaIndex"] is not None
+                           else None),
+                fixedScale=(p["scale"] if p["fixScale"] else None),
+                fixedBackground=(p["background"] if p["fixBackground"]
+                                 else None),
                 shouldStop=lambda: getattr(self, "_abortFit", False))
             self.resultQueue.put(("status", f"fitting {len(params)} parameters..."))
             out = fitter.run(maxNfev=200)
@@ -618,6 +1093,17 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         p = {}
         p["potential"] = self.potentialVar.get()
         p["potentialArgs"] = tuple(f(v, "potential parameter") for v in self.potParamVars)
+        #delta = c * dR, applied here so the CALCULATE path is consistent
+        #with the fit. The fitter recomputes it per iteration from the
+        #current dR; this sets it for a single evaluation.
+        p["linkDelta"] = bool(self.linkDeltaVar.get())
+        p["linkC"] = f(self.linkCVar, "c", lo=0.0)
+        p["deltaIndex"] = self._deltaParamIndex()
+        if p["linkDelta"] and p["deltaIndex"] is not None:
+            args = list(p["potentialArgs"])
+            args[p["deltaIndex"]] = p["linkC"]*f(self.shellVar, "Shell dR",
+                                                 lo=0.0)
+            p["potentialArgs"] = tuple(args)
         p["closure"] = self.closureVar.get()
         p["findAlpha"] = bool(self.findAlphaVar.get())
         p["closureParam"] = (None if p["findAlpha"] else
@@ -631,9 +1117,27 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         p["nFF"] = int(f(self.nFFVar, "Classes (form f.)", lo=1, hi=1000))
         p["phi"] = f(self.phiVar, "Volume fraction", lo=1e-9, hi=0.74)
         p["ff"] = self.ffVar.get()
-        p["shell"] = f(self.shellVar, "Core/outer", lo=0.0, hi=1.0)
+        p["distribution"] = self.distVar.get()
+        #Shell THICKNESS in the same length units as the radius, NOT a
+        #core/outer ratio. The bound used to be hi=1.0, which silently
+        #rejected any real thickness -- 2.7 nm on a 32 nm core would have
+        #been refused as out of range.
+        p["shell"] = f(self.shellVar, "Shell dR", lo=0.0)
         p["rhoCore"] = f(self.rhoCoreVar, "SLD core")
         p["rhoShell"] = f(self.rhoShellVar, "SLD shell")
+        #Scale and background: the VALUE is used only when the matching box
+        #is ticked, otherwise it is solved exactly and the entry just
+        #displays the last solved value.
+        p["scale"] = f(self.scaleVar, "scale")
+        p["background"] = f(self.backgroundVar, "background")
+        #Ticked means FREE, so "fixed" is the negation. Read through
+        #fitFlags with a default of True so a missing flag means free, which
+        #is the previous behaviour.
+        p["fixScale"] = not bool(
+            self.fitFlags["scale"].get() if "scale" in self.fitFlags else True)
+        p["fixBackground"] = not bool(
+            self.fitFlags["background"].get()
+            if "background" in self.fitFlags else True)
         p["Qmin"] = f(self.QminVar, "Q min", lo=1e-12)
         p["Qmax"] = f(self.QmaxVar, "Q max", lo=1e-12)
         p["nQ"] = int(f(self.nQVar, "Points", lo=2, hi=5000))
@@ -672,7 +1176,14 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
 
     def _worker(self, p):
         try:
-            ff = (CoreShell(p["shell"], p["rhoCore"], p["rhoShell"])
+            #Must match the FIT path exactly (see _fitWorker): the same
+            #CoreShellFixedShell, polydisperse in the CORE. If calculate and
+            #fit used different form factors the fitted curve would not
+            #reproduce on recalculation, which is the kind of discrepancy
+            #that gets blamed on the solver for weeks.
+            ff = (CoreShellFixedShell(rho_core=p["rhoCore"],
+                                      rho_shell=p["rhoShell"],
+                                      thickness=p["shell"])
                   if p["ff"] == "Core-shell" else Sphere())
             alphaNote = ""
             if p["findAlpha"]:
@@ -681,12 +1192,16 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 #the pressure to agree. Each trial value costs three OZ
                 #solves, hence the progress messages.
                 import generic_polydisperse_sas as _gsas
+                #The consistency search solves the same model, so it must use
+                #the same distribution -- omitting it here would tune alpha
+                #for a Schulz system and then apply it to a Weibull one.
                 searchKw = dict(potential=p["potential"],
                                 potentialArgs=p["potentialArgs"],
                                 srel=p["srel"], nbins=p["nbins"],
                                 closure=p["closure"], phi=p["phi"],
                                 closureParam2=p["closureParam2"],
                                 meanRadius=p["meanRadius"],
+                                distribution=p["distribution"],
                                 formfactor=ff, solverClass=p["solverClass"])
                 alpha, resid, scale = _gsas.solveAlpha(
                     progress=lambda m: self.resultQueue.put(("status", m)),
@@ -710,22 +1225,79 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 nbins=p["nbins"], nFF=p["nFF"], closure=p["closure"],
                 meanRadius=p["meanRadius"],
                 closureParam=p["closureParam"], closureParam2=p["closureParam2"],
+                distribution=p["distribution"],
                 formfactor=ff, solverClass=p["solverClass"])
             self.solver = sas.solver          # so Interrupt can reach it
-            Q = np.logspace(np.log10(p["Qmin"]), np.log10(p["Qmax"]), p["nQ"])
+            #RESOLUTION SMEARING, applied to EVERY curve or none.
+            #
+            #When a resolution is active the curves are evaluated on the
+            #kernel's extended grid and smeared back onto the DATA Q points,
+            #so the output is directly comparable with the measurement.
+            #Otherwise the usual logarithmic grid is used.
+            #
+            #Applying it to the exact curve alone would be worse than not
+            #applying it at all: the whole purpose of plotting the six
+            #approximations beside the exact result is to show how much each
+            #approximation costs, and if only one of them were smeared, part
+            #of the difference would be instrumental rather than a property
+            #of the approximation. Near a form-factor minimum -- where
+            #smearing fills the minimum in, and where the approximations
+            #differ most -- the two effects would be entirely confounded.
+            resolution = p.get("resolution")
+            if resolution is not None:
+                Qout, Qmodel = resolution.Q, resolution.Qext
+                smear = resolution
+            else:
+                Qout = np.logspace(np.log10(p["Qmin"]), np.log10(p["Qmax"]),
+                                   p["nQ"])
+                Qmodel, smear = Qout, None
             res = _Result()
-            res.Q = Q
-            res.I_exact = sas.I_exact(Q)
-            res.S = sas.S_partials(Q)
-            res.S_number = sas.S_number(Q)
+            res.Q = Qout
+            res.smeared = smear is not None
+            #APPLY SCALE AND BACKGROUND. The model returns I in its own
+            #internal units; what a measurement sees is
+            #
+            #    I_obs(Q) = scale * I_model(Q) + background
+            #
+            #The calculate path used to store I_model raw, so changing the
+            #scale entry had no visible effect and the curve could not be
+            #placed on the same axes as measured data. The fit path applied
+            #both all along -- solved by linear least squares -- so the two
+            #paths disagreed by exactly this factor.
+            #
+            #What the scale MEANS: I(Q) = n <|F|^2 S(Q)>, so the prefactor is
+            #the particle NUMBER DENSITY together with whatever conversion
+            #the chosen units of Q and of the SLD imply. It is not a free
+            #fudge: given the SLD convention and the fitted phi it is
+            #predictable, and a fitted scale far from that prediction says
+            #something is wrong with the contrast, the concentration or the
+            #absolute calibration. Worth comparing rather than accepting.
+            scale = float(p.get("scale", 1.0))
+            background = float(p.get("background", 0.0))
+            res.scale, res.background = scale, background
+
+            def observable(curve):
+                """model -> what a measurement would see, smeared if active."""
+                return scale*(smear(curve) if smear is not None else curve) \
+                    + background
+
+            res.I_exact = observable(sas.I_exact(Qmodel))
+            #S(Q) and the partials are diagnostics, not observables, so they
+            #stay on the output grid unsmeared and unscaled -- smearing them
+            #would misrepresent the structure factor itself.
+            res.S = sas.S_partials(Qout)
+            res.S_number = sas.S_number(Qout)
             res.sigma = sas.sigma.copy()
             res.w = sas.w.copy()
             res.label = (f"{p['potential']}, {p['closure']}, "
+                         f"{p['distribution']}, "
                          f"phi={p['phi']:g}, s={p['srel']:g}")
             notes = ""
             for label, method in APPROX_SCHEMES:
                 try:
-                    res.approx[label] = getattr(sas, method)(Q)
+                    #Same grid, same smearing, same scale and background as
+                    #the exact curve -- see the note above.
+                    res.approx[label] = observable(getattr(sas, method)(Qmodel))
                 except Exception as e:
                     #One unavailable scheme must not lose the run: the
                     #monodisperse reference can have no solution at a state
@@ -784,10 +1356,35 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                                 self.phiVar.set(f"{v:.6g}")
                             elif k == "closureParam":
                                 self.closureParamVar.set(f"{v:.6g}")
+                            elif k == "shell":
+                                self.shellVar.set(f"{v:.6g}")
+                            elif k == "rhoCore":
+                                self.rhoCoreVar.set(f"{v:.6g}")
+                            elif k == "rhoShell":
+                                self.rhoShellVar.set(f"{v:.6g}")
+                            elif k == "linkC":
+                                self.linkCVar.set(f"{v:.6g}")
                             elif k.startswith("pot"):
                                 self.potParamVars[int(k[3:])].set(f"{v:.6g}")
                         except Exception:
                             pass
+                    #Write the SOLVED scale and background back too. They are
+                    #not fitted by the optimiser, so they never appear in
+                    #payload["parameters"] and would otherwise stay invisible
+                    #-- yet a scale far from unity, or a negative background,
+                    #is a diagnostic worth seeing. Skipped where the user has
+                    #fixed the value, so a ticked box is never overwritten by
+                    #the number it forced.
+                    try:
+                        if "scale" not in self.fitFlags or \
+                                self.fitFlags["scale"].get():
+                            self.scaleVar.set(f"{payload['scale']:.6g}")
+                        if "background" not in self.fitFlags or \
+                                self.fitFlags["background"].get():
+                            self.backgroundVar.set(
+                                f"{payload['background']:.6g}")
+                    except Exception:
+                        pass
                     lines.append("")
                     lines.append(payload["message"])
                     self.summaryText.delete("1.0", "end")

@@ -164,6 +164,12 @@ def _explain(exc):
 
 
 class RYPolydisperseYukawaTab(PolydisperseTabControls, ttk.Frame):
+    #Session file identity -- see GenericPolydisperseTab. Index 2 matches the
+    #position in the notebook: the OZ solver tab is 0, the generic
+    #polydisperse tab 1, this one 2. The numbering counts TABS ON SCREEN,
+    #not entries in EXTRA_TABS, because it exists for the user to read.
+    SESSION_TAB_INDEX = 2
+    SESSION_TAB_NAME = "RY Polydisperse Yukawa"
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
 

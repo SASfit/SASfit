@@ -76,6 +76,7 @@
 #include <sasfit_plugin_backend.h>
 #include <sasfit_oz.h>
 #include <sasfit_frida.h>
+#include <sasfit_hankel.h>
 //#include <omp.h>
 
 #define NRES 30
@@ -1702,6 +1703,411 @@ scalar imMSAStransform(scalar r, void *par){
     return im;
 }
 
+/*
+ * MSASROUND: an alternative implementation of the MSAS (case 3)
+ * multiple-scattering correction, built on the self-reciprocal QDHT
+ * grid (sasfit_qdht_plan / sasfit_qdht_forward_grid / _inverse_grid,
+ * see sasfit_qdht.cpp) instead of two independent sasfit_hankel()
+ * calls per requested Q. Added specifically for side-by-side testing
+ * against case 3 (MSAS) -- case 3 itself is untouched and remains the
+ * reference implementation; switch sasfit_get_iq_or_gz() to this new
+ * case's value (4) to exercise this path instead.
+ *
+ * Mirrors imMSAStransform()/Gztransform()'s computation exactly (same
+ * physics, same im(r) formula), but:
+ *   - computes H(r) = int I(Q) J0(Qr) Q dQ for ALL of one shared
+ *     grid's r-nodes in a single inverse_grid() call, instead of one
+ *     independent sasfit_hankel() call per r (there, "per r" means
+ *     per r visited internally by whichever quadrature/series
+ *     sasfit_hankel()'s currently-selected strategy uses -- for THIS
+ *     ONE requested Q -- so this is not simply moving work around,
+ *     it is doing the whole r-array at once);
+ *   - transforms the corrected im(r_nodes) back to Q-space for ALL
+ *     k_nodes in a single forward_grid() call;
+ *   - caches the (plan, spline-over-I_MSAS(k_nodes)) result keyed on
+ *     the parameter VALUES that determine I(Q)'s shape (not just
+ *     pointer identity -- l/s/a are typically mutated in place across
+ *     fit iterations, so a pointer-only key would risk a stale hit;
+ *     see sasfit_lru_cache.h's fingerprint discussion), so repeated
+ *     calls for different Q within one q-scan reuse the same result;
+ *   - interpolates the requested Q against the cached k_nodes/I_MSAS
+ *     arrays (linear interpolation for now -- the grid's own Bessel-
+ *     zero-spaced k_nodes essentially never land exactly on a
+ *     measured Q).
+ *
+ * H(0) (needed for the i0 term) is still computed via the existing
+ * direct GSL integration (sasfit_integrate over IQ4HT_Hankel with
+ * z=0), unchanged from Gztransform() -- r=0 is not one of the grid's
+ * own nodes, and this is a single one-off scalar per parameter set,
+ * so nothing is gained by routing it through the grid too; keeping it
+ * identical to the reference also avoids a second source of numerical
+ * difference when comparing the two cases.
+ *
+ * CAVEAT -- the r-domain scale R below (SASFIT_MSASROUND_R_MARGIN *
+ * Rend) is a simple placeholder, NOT validated the way the R/N
+ * heuristics in sasfit_qdht.cpp / sasfit_fftlog.cpp / sasfit_bestlime.cpp
+ * were (those have measured error numbers backing their margins; this
+ * one does not yet). If MSASROUND disagrees with MSAS, this margin
+ * (and/or SASFIT_MSASROUND_N) is the first thing to tune -- e.g. by
+ * comparing H(r) from both paths directly before trusting the full
+ * round trip.
+ */
+
+#define SASFIT_MSASROUND_N 1024*2
+#define SASFIT_MSASROUND_R_MARGIN 5.0*4
+#define SASFIT_MSASROUND_CACHE_SIZE 32
+
+typedef struct {
+    scalar a[MAXPAR];
+    scalar l[MAXPAR];
+    scalar s[MAXPAR];
+    sasfit_function *SD, *FF, *SQ;
+    int distr, SQ_how, nintervals;
+    scalar Rstart, Rend;
+    scalar lambda, thickness;
+    int dF_dpar[3];
+} sasfit_msasround_key;
+
+static sasfit_qdht_cache *sasfit_msasround_cache_instance(void) {
+    static sasfit_qdht_cache *cache = NULL;
+    if (!cache) {
+        cache = sasfit_qdht_cache_create(SASFIT_MSASROUND_CACHE_SIZE,
+                                          sizeof(sasfit_msasround_key));
+    }
+    return cache;
+}
+
+scalar imMSASround_transform(scalar Q, sasfit_param *param) {
+    sasfit_param4int *param4int;
+    sasfit_msasround_key key;
+    sasfit_qdht_cache *cache;
+    sasfit_qdht_plan *plan;
+    gsl_spline *spline;
+    gsl_interp_accel *accel;
+    int i, N;
+    double R, k0, k02, t, lambda, G0, H0, kmin, kmax, result;
+
+    param4int = ( sasfit_param4int *) param->moreparam;
+
+    memset(&key, 0, sizeof(key));
+    for (i = 0; i < MAXPAR; i++) {
+        key.a[i] = param4int->a[i];
+        key.l[i] = param4int->l[i];
+        key.s[i] = param4int->s[i];
+    }
+    key.SD = param4int->SD;
+    key.FF = param4int->FF;
+    key.SQ = param4int->SQ;
+    key.distr = param4int->distr;
+    key.SQ_how = param4int->SQ_how;
+    key.nintervals = param4int->nintervals;
+    key.Rstart = param4int->Rstart;
+    key.Rend = param4int->Rend;
+    lambda = sasfit_get_MSASlambda();
+    t = sasfit_get_MSASthickness();
+    key.lambda = lambda;
+    key.thickness = t;
+    for (i = 0; i < 3; i++) key.dF_dpar[i] = param4int->dF_dpar[i];
+
+    cache = sasfit_msasround_cache_instance();
+
+    if (!sasfit_qdht_cache_lookup(cache, &key, &plan, &spline, &accel)) {
+        double *k_nodes, *IQ_vals, *H_r, *im_r, *IMSAS_k;
+
+        N = SASFIT_MSASROUND_N;
+        R = SASFIT_MSASROUND_R_MARGIN * param4int->Rend;
+        if (!(R > 0.0)) R = 1000.0; /* fallback if Rend is degenerate */
+
+        plan = sasfit_qdht_build_plan(N, 0.0, R);
+        if (!plan) {
+            param4int->error = TRUE;
+            sasfit_err("MSASROUND: failed to build QDHT plan (N=%d, R=%lg)\n", N, R);
+            return 0.0;
+        }
+
+        k_nodes = (double *) malloc(sizeof(double) * N);
+        IQ_vals = (double *) malloc(sizeof(double) * N);
+        H_r     = (double *) malloc(sizeof(double) * N);
+        im_r    = (double *) malloc(sizeof(double) * N);
+        IMSAS_k = (double *) malloc(sizeof(double) * N);
+
+        for (i = 0; i < N; i++) {
+            k_nodes[i] = sasfit_qdht_plan_k_node(plan, i);
+            IQ_vals[i] = IQ4HTvoid(k_nodes[i], (void *) param);
+        }
+        /* Q -> r: the "inverse" leg, matching Gztransform()'s
+         * sasfit_hankel(0,&IQ4HTvoid,r,param) call. Index i of H_r
+         * corresponds to r = sasfit_qdht_plan_r_node(plan, i), should
+         * that pairing ever be needed for debugging against
+         * Gztransform()'s own r/H(r) values. */
+        sasfit_qdht_inverse_grid(plan, IQ_vals, H_r);
+
+        /* H(0): unchanged from Gztransform() -- see the caveat above. */
+        param4int->z = 0;
+        H0 = sasfit_integrate(0, GSL_POSINF, &IQ4HT_Hankel, param);
+        G0 = H0 / (2*M_PI);
+
+        k0 = 2*M_PI/lambda;
+        k02 = k0*k0;
+        {
+            double i0 = gsl_pow_2(2*M_PI) * t * G0;
+            for (i = 0; i < N; i++) {
+                double Gz = H_r[i] / (2*M_PI);
+                double i1 = gsl_pow_2(2*M_PI) * t * Gz;
+                im_r[i] = exp(-i0/k02) * k02 * expm1(i1/k02);
+            }
+        }
+
+        /* r -> Q: the "forward" leg, matching
+         * integral_IQ_incl_Gztransform()'s
+         * sasfit_hankel(0,&imMSAStransform,Q,&param) call. */
+        sasfit_qdht_forward_grid(plan, im_r, IMSAS_k);
+        for (i = 0; i < N; i++) {
+            IMSAS_k[i] /= (2*M_PI*t);
+        }
+
+        accel = gsl_interp_accel_alloc();
+        spline = gsl_spline_alloc(gsl_interp_linear, N);
+        gsl_spline_init(spline, k_nodes, IMSAS_k, N);
+
+        sasfit_qdht_cache_insert(cache, &key, plan, spline, accel);
+
+        free(k_nodes); free(IQ_vals);
+        free(H_r); free(im_r); free(IMSAS_k);
+    }
+
+    N = sasfit_qdht_plan_size(plan);
+    kmin = sasfit_qdht_plan_k_node(plan, 0);
+    kmax = sasfit_qdht_plan_k_node(plan, N-1);
+    if (Q < kmin || Q > kmax) {
+        param4int->error = TRUE;
+        sasfit_err("MSASROUND: Q=%lg outside computed range [%lg,%lg]; increase SASFIT_MSASROUND_N or the R margin\n", Q, kmin, kmax);
+        return 0.0;
+    }
+    result = gsl_spline_eval(spline, Q, accel);
+    return result;
+}
+
+/*
+ * FFTLOGROUND: the same idea as MSASROUND, but built on FFTLog's
+ * self-reciprocal grid (sasfit_fftlog_plan / sasfit_fftlog_transform_grid,
+ * see sasfit_fftlog.cpp) instead of QDHT's kernel matrix. For
+ * side-by-side testing against case 3 (MSAS) and case 4 (MSASROUND);
+ * not the default.
+ *
+ * The key structural difference from MSASROUND: FFTLog has no separate
+ * forward/inverse entry point -- sasfit_fftlog_transform_grid() is
+ * called TWICE on the SAME plan (once Q->r, once r->Q), which is what
+ * "self-reciprocal" means for FFTLog (see sasfit_fftlog.cpp's comment
+ * on FFTLogPlanImpl for why this works and where it's only
+ * approximate, not exact to machine precision like QDHT's kernel).
+ *
+ * The x_min/x_max (here: Qmin/Qmax) domain-sizing heuristic is ALSO
+ * different from MSASROUND's, deliberately: QDHT's R-margin heuristic
+ * does not transfer here. This reuses the SAME probe-and-pad logic
+ * sasfit_fftlog() itself already uses and documents as validated
+ * (log-spaced peak search + persistent-zero edge detection + a 500x
+ * margin) -- applied to I(Q) directly, over Q rather than r, since
+ * here the FIRST leg's input domain (Qmin,Qmax) is what needs padding
+ * against FFT ringing, not any real-space scale.
+ *
+ * H(0) is identical to MSASROUND/Gztransform() -- see MSASROUND's
+ * comment above for why it stays a direct GSL integration rather than
+ * being routed through the grid.
+ */
+
+#define SASFIT_FFTLOGROUND_N 2048
+#define SASFIT_FFTLOGROUND_CACHE_SIZE 8
+
+typedef struct {
+    scalar a[MAXPAR];
+    scalar l[MAXPAR];
+    scalar s[MAXPAR];
+    sasfit_function *SD, *FF, *SQ;
+    int distr, SQ_how, nintervals;
+    scalar Rstart, Rend;
+    scalar lambda, thickness;
+    int dF_dpar[3];
+} sasfit_fftloground_key;
+
+static sasfit_fftlog_cache *sasfit_fftloground_cache_instance(void) {
+    static sasfit_fftlog_cache *cache = NULL;
+    if (!cache) {
+        cache = sasfit_fftlog_cache_create(SASFIT_FFTLOGROUND_CACHE_SIZE,
+                                            sizeof(sasfit_fftloground_key));
+    }
+    return cache;
+}
+
+scalar imFFTLOGround_transform(scalar Q, sasfit_param *param) {
+    sasfit_param4int *param4int;
+    sasfit_fftloground_key key;
+    sasfit_fftlog_cache *cache;
+    sasfit_fftlog_plan *plan;
+    gsl_spline *spline;
+    gsl_interp_accel *accel;
+    int i, N;
+    double k0, k02, t, lambda, G0, H0, ymin, ymax, result;
+
+    param4int = ( sasfit_param4int *) param->moreparam;
+
+    memset(&key, 0, sizeof(key));
+    for (i = 0; i < MAXPAR; i++) {
+        key.a[i] = param4int->a[i];
+        key.l[i] = param4int->l[i];
+        key.s[i] = param4int->s[i];
+    }
+    key.SD = param4int->SD;
+    key.FF = param4int->FF;
+    key.SQ = param4int->SQ;
+    key.distr = param4int->distr;
+    key.SQ_how = param4int->SQ_how;
+    key.nintervals = param4int->nintervals;
+    key.Rstart = param4int->Rstart;
+    key.Rend = param4int->Rend;
+    lambda = sasfit_get_MSASlambda();
+    t = sasfit_get_MSASthickness();
+    key.lambda = lambda;
+    key.thickness = t;
+    for (i = 0; i < 3; i++) key.dF_dpar[i] = param4int->dF_dpar[i];
+
+    cache = sasfit_fftloground_cache_instance();
+
+    if (!sasfit_fftlog_cache_lookup(cache, &key, &plan, &spline, &accel)) {
+        double *x_nodes, *IQ_vals, *H_r, *im_r, *IMSAS_y, *y_nodes;
+        double peak_Q = 1.0, best_val = -1.0, Qmin, Qmax;
+        double samples_Q[121], samples_val[121];
+        int nsamp = 0, j;
+
+        /* Same probe-and-pad heuristic as sasfit_fftlog() itself
+         * (validated there), applied to I(Q) over Q, not to a
+         * real-space scale. */
+        for (j = -60; j <= 60; j++) {
+            double Qtest = pow(10.0, j / 15.0);
+            double val = fabs(Qtest * IQ4HTvoid(Qtest, (void *) param));
+            if (isfinite(val)) {
+                samples_Q[nsamp] = Qtest;
+                samples_val[nsamp] = val;
+                if (val > best_val) { best_val = val; peak_Q = Qtest; }
+                nsamp++;
+            }
+        }
+        {
+            double Q0 = peak_Q * 2.0;
+            double edge = -1.0;
+            double bracket_lo = -1.0, bracket_hi = -1.0;
+            const double zero_threshold = 1e-300;
+
+            for (j = 0; j < nsamp; j++) {
+                if (samples_Q[j] < Q0) continue;
+                if (samples_val[j] < zero_threshold) {
+                    int k, persistent = 1;
+                    for (k = j; k < nsamp; k++) {
+                        if (samples_val[k] >= zero_threshold) { persistent = 0; break; }
+                    }
+                    if (persistent) {
+                        bracket_hi = samples_Q[j];
+                        bracket_lo = (j > 0) ? samples_Q[j - 1] : 0.0;
+                        break;
+                    }
+                }
+            }
+            if (bracket_hi > 0.0) {
+                int iter;
+                for (iter = 0; iter < 60; iter++) {
+                    double mid = 0.5 * (bracket_lo + bracket_hi);
+                    double val = fabs(mid * IQ4HTvoid(mid, (void *) param));
+                    if (val < zero_threshold) bracket_hi = mid; else bracket_lo = mid;
+                }
+                edge = bracket_hi;
+            }
+
+            {
+                double natural_min = peak_Q * 1e-6;
+                double natural_max = (edge > 0.0 ? edge : peak_Q) * 500.0;
+                Qmin = fmin(natural_min, 0.1 / Q);
+                Qmax = fmax(natural_max, 10.0 / Q);
+            }
+        }
+
+        N = SASFIT_FFTLOGROUND_N;
+        plan = sasfit_fftlog_build_plan(N, 0.0, Qmin, Qmax);
+        if (!plan) {
+            param4int->error = TRUE;
+            sasfit_err("FFTLOGROUND: failed to build FFTLog plan (N=%d, Qmin=%lg, Qmax=%lg)\n", N, Qmin, Qmax);
+            return 0.0;
+        }
+
+        x_nodes = (double *) malloc(sizeof(double) * N);
+        IQ_vals = (double *) malloc(sizeof(double) * N);
+        H_r     = (double *) malloc(sizeof(double) * N);
+        im_r    = (double *) malloc(sizeof(double) * N);
+        IMSAS_y = (double *) malloc(sizeof(double) * N);
+
+        for (i = 0; i < N; i++) {
+            x_nodes[i] = sasfit_fftlog_plan_x_node(plan, i);
+            IQ_vals[i] = IQ4HTvoid(x_nodes[i], (void *) param);
+        }
+        /* Q -> r: first application of the self-reciprocal transform,
+         * matching Gztransform()'s sasfit_hankel(0,&IQ4HTvoid,r,param)
+         * call. */
+        sasfit_fftlog_transform_grid(plan, IQ_vals, H_r);
+
+        /* H(0): unchanged from Gztransform()/MSASROUND. */
+        param4int->z = 0;
+        H0 = sasfit_integrate(0, GSL_POSINF, &IQ4HT_Hankel, param);
+        G0 = H0 / (2*M_PI);
+
+        k0 = 2*M_PI/lambda;
+        k02 = k0*k0;
+        {
+            double i0 = gsl_pow_2(2*M_PI) * t * G0;
+            for (i = 0; i < N; i++) {
+                double Gz = H_r[i] / (2*M_PI);
+                double i1 = gsl_pow_2(2*M_PI) * t * Gz;
+                im_r[i] = exp(-i0/k02) * k02 * expm1(i1/k02);
+            }
+        }
+
+        /* r -> Q: SECOND application of the SAME transform (not a
+         * separate inverse call -- see the function comment above),
+         * matching integral_IQ_incl_Gztransform()'s
+         * sasfit_hankel(0,&imMSAStransform,Q,&param) call. */
+        sasfit_fftlog_transform_grid(plan, im_r, IMSAS_y);
+        for (i = 0; i < N; i++) {
+            IMSAS_y[i] /= (2*M_PI*t);
+        }
+
+        /* The second call's output lands on the plan's y_nodes (the
+         * reciprocal grid), NOT back on x_nodes exactly -- use the
+         * plan's own y_node() accessor for the spline's independent
+         * variable, per FFTLog's approximate (not exact) self-
+         * reciprocity (see sasfit_fftlog.cpp). */
+        y_nodes = (double *) malloc(sizeof(double) * N);
+        for (i = 0; i < N; i++) y_nodes[i] = sasfit_fftlog_plan_y_node(plan, i);
+
+        accel = gsl_interp_accel_alloc();
+        spline = gsl_spline_alloc(gsl_interp_linear, N);
+        gsl_spline_init(spline, y_nodes, IMSAS_y, N);
+
+        sasfit_fftlog_cache_insert(cache, &key, plan, spline, accel);
+
+        free(x_nodes); free(IQ_vals); free(H_r); free(im_r);
+        free(IMSAS_y); free(y_nodes);
+    }
+
+    N = sasfit_fftlog_plan_size(plan);
+    ymin = sasfit_fftlog_plan_y_node(plan, 0);
+    ymax = sasfit_fftlog_plan_y_node(plan, N - 1);
+    if (Q < fmin(ymin, ymax) || Q > fmax(ymin, ymax)) {
+        param4int->error = TRUE;
+        sasfit_err("FFTLOGROUND: Q=%lg outside computed range [%lg,%lg]\n", Q, ymin, ymax);
+        return 0.0;
+    }
+    result = gsl_spline_eval(spline, Q, accel);
+    return result;
+}
+
 scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
 			    int dF_dpar[],
 			    scalar l[],
@@ -1770,6 +2176,51 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
             param4int.res=0;
             param.moreparam=&param4int;
             return sasfit_hankel(0,&imMSAStransform,Q,&param)/(2*M_PI*sasfit_get_MSASthickness());
+            break;}
+        case 4: { /* MSASROUND: same physics as case 3, computed via the
+                   * self-reciprocal QDHT grid (imMSASround_transform)
+                   * instead of two independent sasfit_hankel() calls.
+                   * For side-by-side testing against case 3 -- not the
+                   * default. */
+            param4int.interp=interp;
+            param4int.dF_dpar=dF_dpar;
+            param4int.l=l;
+            param4int.s=s;
+            param4int.a=a;
+            param4int.SD=SD;
+            param4int.FF=FF;
+            param4int.SQ=SQ;
+            param4int.Rstart=Rstart;
+            param4int.Rend=Rend;
+            param4int.nintervals=nintervals;
+            param4int.distr=distr;
+            param4int.SQ_how=SQ_how;
+            param4int.res=0;
+            param.moreparam=&param4int;
+            return imMSASround_transform(Q,&param);
+            break;}
+        case 5: { /* FFTLOGROUND: same physics as case 3, computed via
+                   * the self-reciprocal FFTLog grid
+                   * (imFFTLOGround_transform) instead of two
+                   * independent sasfit_hankel() calls. For
+                   * side-by-side testing against case 3 (MSAS) and
+                   * case 4 (MSASROUND) -- not the default. */
+            param4int.interp=interp;
+            param4int.dF_dpar=dF_dpar;
+            param4int.l=l;
+            param4int.s=s;
+            param4int.a=a;
+            param4int.SD=SD;
+            param4int.FF=FF;
+            param4int.SQ=SQ;
+            param4int.Rstart=Rstart;
+            param4int.Rend=Rend;
+            param4int.nintervals=nintervals;
+            param4int.distr=distr;
+            param4int.SQ_how=SQ_how;
+            param4int.res=0;
+            param.moreparam=&param4int;
+            return imFFTLOGround_transform(Q,&param);
             break;}
         default: {
             return integral_IQ_int_core(interp,dF_dpar,l,s,Q,a,SD,FF,SQ,distr,SQ_how,Rstart,Rend,nintervals,error);
@@ -3560,7 +4011,7 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 	}
 
 	sasfit_ap2paramlist(&lista,&ma,&mfit,&a,AP,NULL,max_SD);
-    if (sasfit_get_iq_or_gz()==4) sasfit_set_iq_or_gz(1);
+//    if (sasfit_get_iq_or_gz()==5) sasfit_set_iq_or_gz(1);
 
 	Ith = dvector(0,ndata-1);
 	Ihsubstract = dvector(0,ndata-1);
@@ -3575,13 +4026,13 @@ int Sasfit_iqCmd(clientData, interp, argc, argv)
 
 //     sasfit_out("max num threads %d\n",omp_get_num_procs());
 //     omp_set_num_threads((omp_get_num_procs()>1)?omp_get_num_procs()-1:1);
- //    omp_set_num_threads(1);
+//     omp_set_num_threads(1);
 
     sasfit_int_ws_init();
 //{
- //   #pragma omp  parallel for
+//    #pragma omp  parallel for
 //	for (i=0;i<ndata;i++) {
- //       IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
+//        IQ(interp,h[i],res[i],a,&Ith[i],&Ihsubstract[i],dydpar,max_SD,AP,error_type,0,&error);
 //      #pragma omp atom
 //        sasfit_out("nthreads: %d, i:%d\n",omp_get_num_threads(),i);
 //	}
@@ -3817,7 +4268,7 @@ int Sasfit_global_iqCmd(clientData, interp, argc, argv)
 
 
 sasfit_ap2paramlist(&lista,&ma,&mfit,&a,GAP,&GCP,max_SD);
-if (sasfit_get_iq_or_gz()==4) sasfit_set_iq_or_gz(1);
+//if (sasfit_get_iq_or_gz()==5) sasfit_set_iq_or_gz(1);
 
 dydpar = dvector(0,ma-1);
 Isub = (scalar **) Tcl_Alloc((unsigned) (GCP.nmultset)*sizeof(scalar*));

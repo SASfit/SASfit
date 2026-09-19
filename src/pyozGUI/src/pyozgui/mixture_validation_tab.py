@@ -40,6 +40,7 @@ DEPENDENCIES
 mixscatter is optional; without it that curve is simply omitted. The Gazzillo
 reference is implemented in this package and always available.
 """
+import json
 import queue
 import threading
 import traceback
@@ -67,6 +68,12 @@ except Exception:
 
 
 class MixtureValidationTab(ttk.Frame):
+    #Session file identity -- see GenericPolydisperseTab. Index 3 matches the
+    #position in the notebook (0: OZ solver, 1: Polydisperse, 2: RY Yukawa).
+    #This tab has NO Save/Load: it is a validation tool with nothing worth
+    #persisting, so the index serves only to number the label.
+    SESSION_TAB_INDEX = 3
+    SESSION_TAB_NAME = "Mixture validation"
     def __init__(self, master, **kw):
         super().__init__(master, **kw)
         if IMPORT_ERROR is not None:
@@ -154,6 +161,11 @@ class MixtureValidationTab(ttk.Frame):
                                      command=self._onCompare)
         self.computeBtn.pack(side="left", padx=2)
         ttk.Button(btns, text="Clear", command=self._onClear).pack(side="left", padx=2)
+        #Save/load for this tab is self-contained -- see _onSave. The file
+        #keeps the settings and the computed curves, which is the whole
+        #state here.
+        ttk.Button(btns, text="Save...", command=self._onSave).pack(side="left", padx=2)
+        ttk.Button(btns, text="Load...", command=self._onLoad).pack(side="left", padx=2)
 
         self.statusVar = tk.StringVar(
             value="ready" + ("" if _ms is not None else
@@ -221,6 +233,117 @@ class MixtureValidationTab(ttk.Frame):
         self.curves = {}
         self.summary.delete("1.0", "end")
         self._replot()
+
+    # ------------------------------------------------------------------
+    #Save / load.
+    #
+    #This tab does not use PolydisperseTabControls -- it has no run list and
+    #its own plotting -- so it carries its own pair rather than inheriting
+    #one. The file records the INPUT SETTINGS and the computed CURVES, which
+    #together are the whole state: everything else is derived.
+    #
+    #The extension is .oz3, matching this tab's SESSION_TAB_INDEX, and the
+    #tab NAME is written into the file and checked on load. The extension is
+    #a convenience; the name is the guard. Loading another tab's file would
+    #otherwise set whichever entries happened to share a name and silently
+    #ignore the rest -- a state half one model and half another, reported as
+    #a successful load.
+    _SESSION_VARS = ("meanRadiusVar", "srelVar", "nbinsVar", "phiVar",
+                     "zVar", "lbVar", "sigma1Var", "closureVar", "ppsVar",
+                     "QminVar", "QmaxVar", "nQVar")
+
+    def _onSave(self):
+        from tkinter import filedialog
+        path = filedialog.asksaveasfilename(
+            defaultextension=".oz3",
+            filetypes=[("Mixture validation session", "*.oz3"),
+                       ("Ornstein-Zernike GUI data", "*.oz*"),
+                       ("All files", "*.*")],
+            title="Save mixture validation session")
+        if not path:
+            return
+        payload = {"format": "sasfit_mixture_validation_save_v1",
+                   "tab": self.SESSION_TAB_NAME,
+                   "tabIndex": self.SESSION_TAB_INDEX,
+                   "entries": {}, "curves": {}}
+        for name in self._SESSION_VARS:
+            var = getattr(self, name, None)
+            if var is not None:
+                try:
+                    payload["entries"][name] = var.get()
+                except Exception:
+                    pass
+        for key, val in (getattr(self, "curves", None) or {}).items():
+            if isinstance(val, np.ndarray):
+                payload["curves"][key] = {"__ndarray__": val.tolist()}
+            elif isinstance(val, (int, float, str, bool, type(None), list)):
+                payload["curves"][key] = val
+            elif isinstance(val, dict):
+                payload["curves"][key] = {
+                    k: ({"__ndarray__": v.tolist()}
+                        if isinstance(v, np.ndarray) else v)
+                    for k, v in val.items()}
+        try:
+            #allow_nan is relied on, as elsewhere in this package: some
+            #curves legitimately contain NaN inside a hard core.
+            with open(path, "w") as fh:
+                json.dump(payload, fh)
+            self.statusVar.set(f"saved to {path}")
+        except OSError as exc:
+            messagebox.showerror("save failed", str(exc))
+
+    def _onLoad(self):
+        from tkinter import filedialog
+        path = filedialog.askopenfilename(
+            filetypes=[("Mixture validation session", "*.oz3"),
+                       ("Ornstein-Zernike GUI data", "*.oz*"),
+                       ("All files", "*.*")],
+            title="Load mixture validation session")
+        if not path:
+            return
+        try:
+            with open(path) as fh:
+                payload = json.load(fh)
+        except (OSError, json.JSONDecodeError) as exc:
+            messagebox.showerror("load failed", str(exc))
+            return
+        if payload.get("format") != "sasfit_mixture_validation_save_v1":
+            messagebox.showerror("load failed", "unrecognised file format")
+            return
+        saved = payload.get("tab")
+        if saved is not None and saved != self.SESSION_TAB_NAME:
+            messagebox.showerror(
+                "wrong tab",
+                f"This file was saved from '{saved}' but this is "
+                f"'{self.SESSION_TAB_NAME}'. Open it in the tab it came "
+                f"from.")
+            return
+
+        def decode(v):
+            if isinstance(v, dict) and "__ndarray__" in v:
+                return np.asarray(v["__ndarray__"], float)
+            if isinstance(v, dict):
+                return {k: decode(x) for k, x in v.items()}
+            return v
+
+        for name, value in (payload.get("entries") or {}).items():
+            var = getattr(self, name, None)
+            if var is not None:
+                try:
+                    var.set(value)
+                except Exception:
+                    pass
+        self.curves = {k: decode(v)
+                       for k, v in (payload.get("curves") or {}).items()}
+        #Redraw separately: a plotting failure must not be reported as a
+        #failed load, since the settings and curves are already in place.
+        try:
+            self._replot()
+            self.statusVar.set(f"loaded {path}")
+        except Exception as exc:
+            self.statusVar.set(
+                f"loaded {path}; replot failed "
+                f"({type(exc).__name__}: {exc})")
 
     def _onCompare(self):
         if self.worker is not None and self.worker.is_alive():

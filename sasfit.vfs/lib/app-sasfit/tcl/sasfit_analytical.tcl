@@ -844,7 +844,7 @@ switch $actualPar(FF,typestr) {
                         }
 "confinement with Gaussian potential" \
                         { set actualPar(FF,l1,label) "amplitude ="
-                          set actualPar(FF,l2,label) {Q \[Ångstrøm\] =}
+                          set actualPar(FF,l2,label) {Q \[ ngstr m\] =}
                           set actualPar(FF,l3,label) "Emean ="
                           set actualPar(FF,l4,label) {D \[m^2/s\] =}
                           set actualPar(FF,l5,label) {<u^2> \[m^2\] =}
@@ -1618,7 +1618,7 @@ switch $actualPar(SQ,typestr) {
                           set actualPar(SQ,s9,label) ""
                           set actualPar(SQ,s10,label) ""
                         }
-  "Macro Ion (HP)"      { set actualPar(SQ,s1,label) {T \[°C\] =}
+  "Macro Ion (HP)"      { set actualPar(SQ,s1,label) {T \[ C\] =}
                           set actualPar(SQ,s2,label) "Z_eff ="
                           set actualPar(SQ,s3,label) "RHS ="
                           set actualPar(SQ,s4,label) "ION ="
@@ -2459,7 +2459,7 @@ proc set_actualAP_labels {type AactualAnalytPar
 				}
 	"confinement with Gaussian potential" \
 				{ set actualAnalytPar(FF,l1,label) "amplitude ="
-				  set actualAnalytPar(FF,l2,label) {Q \[Ångstrøm\] =}
+				  set actualAnalytPar(FF,l2,label) {Q \[ ngstr m\] =}
 				  set actualAnalytPar(FF,l3,label) "Emean ="
 				  set actualAnalytPar(FF,l4,label) {D \[m^2/s\] =}
 				  set actualAnalytPar(FF,l5,label) {<u^2> \[m^2\] =}
@@ -3111,7 +3111,7 @@ proc set_actualAP_labels {type AactualAnalytPar
 				  set actualAnalytPar(SQ,s9,label) ""
 				  set actualAnalytPar(SQ,s10,label) ""
 				}
-	  "Macro Ion (HP)"      { set actualAnalytPar(SQ,s1,label) {T \[°C\] =}
+	  "Macro Ion (HP)"      { set actualAnalytPar(SQ,s1,label) {T \[ C\] =}
 				  set actualAnalytPar(SQ,s2,label) "Z_eff ="
 				  set actualAnalytPar(SQ,s3,label) "RHS ="
 				  set actualAnalytPar(SQ,s4,label) "ION ="
@@ -3863,7 +3863,7 @@ switch -exact $type {
            }
            "SuperparamagneticFFCrossTerm" {
                switch $num {
-                 0 {return "Cross term I(p)-I(-p) for psi=90° of scattering intensiy of a superparamagnetic ferrofluid\nonly core is magnetic but particle has a nuclear shell structure"}
+                 0 {return "Cross term I(p)-I(-p) for psi=90  of scattering intensiy of a superparamagnetic ferrofluid\nonly core is magnetic but particle has a nuclear shell structure"}
                  1 {return "R: inner radius\n"}
                  2 {return "dR: shell thickness\n"}
                  3 {return "nuc_c: nuclear scattering length density of core\n"}
@@ -7081,6 +7081,13 @@ proc setIQorGz2int {} {
 		    $::FitPrecision(MSASw).lambdaval \
 		    $::FitPrecision(MSASw).lambdatxt \
 		    -padx 1m -pady 1m -side right}
+		"MSASROUND" {set ::FitPrecision(IQorGz_int) 4
+			pack $::FitPrecision(MSASw).thicknessval \
+		    $::FitPrecision(MSASw).thicknesstxt \
+		    $::FitPrecision(MSASw).lambdaval \
+		    $::FitPrecision(MSASw).lambdatxt \
+		    -padx 1m -pady 1m -side right}
+
 		default {set ::FitPrecision(IQorGz_int) 0
 			pack forget $::FitPrecision(MSASw).lambdaval
 			pack forget $::FitPrecision(MSASw).lambdatxt
@@ -7179,7 +7186,7 @@ proc analytical_widgets_bottom { w simulate isGlobal
         ProgressBar $w.progress.value \
 	    		-maximum 100\
 				-type normal -variable ::SASfitprogressbar 
-		ComboBox $w.progress.iq_gz -values {"1" "Exp(H{...}/2pi)" "H{...}/2pi" "MSAS"} \
+		ComboBox $w.progress.iq_gz -values {"1" "Exp(H{...}/2pi)" "H{...}/2pi" "MSAS" "MSASROUND"} \
 				-width 12 \
 				-textvariable ::FitPrecision(IQorGz) \
 				-label "transform:" \

@@ -65,9 +65,13 @@
 #include <vector>
 #include <complex>
 #include <limits>
+#include <new>
+#include <algorithm>
+#include <cstring>
 #include <gsl/gsl_sf_gamma.h>
 #include <gsl/gsl_spline.h>
 #include <fftw3.h>
+#include "sasfit_lru_cache.h"
 extern "C"
 {
     #include "sasfit_constants.h"
@@ -166,7 +170,350 @@ FFTLogResult fftlog_transform(const std::vector<double>& r, const std::vector<do
     return res;
 }
 
+// ============================================================
+// Self-reciprocal FFTLog grid: forward -> correct -> backward
+// ============================================================
+//
+// fftlog_transform() above recomputes its whole setup (kr, the u[]
+// kernel factors, the FFTW plans) from scratch on every call, which is
+// exactly right for sasfit_fftlog()'s own access pattern (one build,
+// many spline lookups) but wasteful for a round trip that needs the
+// SAME setup applied twice in a row (once Q->r, once r->Q, as
+// Gztransform()/integral_IQ_incl_Gztransform() already do via two
+// independent sasfit_hankel() calls today). FFTLogPlanImpl factors the
+// setup out so it is built once and the FFT itself -- the only part
+// that actually differs between the two calls -- is repeated cheaply.
+//
+// Unlike QDHT's kernel matrix, there is no separate "forward" vs
+// "inverse" entry point here: applying the SAME operation twice IS the
+// round trip. This is a direct consequence of FFTLog's log-spaced
+// reciprocal-grid construction -- the output grid has (very nearly)
+// the same total log-span as the input grid, by construction of
+// good_kr()'s low-ringing condition, so feeding the output back in as
+// a new input lands on (very nearly) the original grid again. "Very
+// nearly", not exactly to machine precision like QDHT's orthogonal
+// kernel (T*T=I there is exact) -- FFTLog's self-reciprocity is only
+// as good as the underlying FFT's implicit periodicity assumption
+// holds for the padded domain, which is precisely why x_min/x_max
+// padding matters so much more here than for QDHT (see the padding
+// comment in sasfit_fftlog() below, and the header declaration).
+//
+// The FFTW plans are tied to this struct's OWN fixed scratch buffers
+// (in_buf/out_buf/c_buf/cu_buf), not to the caller's arrays -- this is
+// what makes the plans safely reusable across calls: FFTW's contract
+// guarantees fftw_execute() re-reads/re-writes whatever is currently
+// in the SAME buffers given at plan-creation time, so
+// fftlog_apply_impl() just copies the caller's data in beforehand and
+// copies the result out afterward, rather than re-planning every call.
+
+struct FFTLogPlanImpl {
+    int n = 0;
+    double mu = 0.0;
+    double x_min = 0.0, x_max = 0.0, L = 0.0;
+    double kr = 0.0, k0r0 = 0.0, y0 = 0.0;
+    std::vector<double> x_nodes, y_nodes;
+    std::vector<std::complex<double>> u;
+    std::vector<double> in_buf, out_buf;
+    std::vector<std::complex<double>> c_buf, cu_buf;
+    fftw_plan plan_fwd = nullptr;
+    fftw_plan plan_inv = nullptr;
+
+    FFTLogPlanImpl() = default;
+    ~FFTLogPlanImpl() {
+        if (plan_fwd) fftw_destroy_plan(plan_fwd);
+        if (plan_inv) fftw_destroy_plan(plan_inv);
+    }
+    FFTLogPlanImpl(FFTLogPlanImpl&& o) noexcept { *this = std::move(o); }
+    FFTLogPlanImpl& operator=(FFTLogPlanImpl&& o) noexcept {
+        if (this != &o) {
+            if (plan_fwd) fftw_destroy_plan(plan_fwd);
+            if (plan_inv) fftw_destroy_plan(plan_inv);
+            n = o.n; mu = o.mu; x_min = o.x_min; x_max = o.x_max; L = o.L;
+            kr = o.kr; k0r0 = o.k0r0; y0 = o.y0;
+            x_nodes = std::move(o.x_nodes);
+            y_nodes = std::move(o.y_nodes);
+            u = std::move(o.u);
+            in_buf = std::move(o.in_buf);
+            out_buf = std::move(o.out_buf);
+            c_buf = std::move(o.c_buf);
+            cu_buf = std::move(o.cu_buf);
+            plan_fwd = o.plan_fwd;
+            plan_inv = o.plan_inv;
+            o.plan_fwd = nullptr;
+            o.plan_inv = nullptr;
+        }
+        return *this;
+    }
+    FFTLogPlanImpl(const FFTLogPlanImpl&) = delete;
+    FFTLogPlanImpl& operator=(const FFTLogPlanImpl&) = delete;
+};
+
+FFTLogPlanImpl fftlog_build_plan_impl(int n, double mu, double x_min, double x_max) {
+    FFTLogPlanImpl plan;
+    plan.n = n;
+    plan.mu = mu;
+    plan.x_min = x_min;
+    plan.x_max = x_max;
+    plan.L = std::log(x_max / x_min) * n / (n - 1.0);
+    plan.kr = good_kr(n, mu, plan.L, 1.0);
+
+    const double y = M_PI / plan.L;
+    plan.k0r0 = plan.kr * std::exp(-plan.L);
+    const double t = -2.0 * y * std::log(plan.k0r0 / 2.0);
+    plan.y0 = plan.k0r0 / x_min;
+
+    const int nc = n / 2 + 1;
+    plan.u.resize(nc);
+    const double xg = (mu + 1.0) / 2.0;
+    for (int m = 0; m < nc; ++m) {
+        double lnr_, phi;
+        lngamma_complex(xg, m * y, &lnr_, &phi);
+        plan.u[m] = std::polar(1.0, m * t + 2.0 * phi);
+    }
+
+    plan.x_nodes.resize(n);
+    plan.y_nodes.resize(n);
+    for (int j = 0; j < n; ++j) {
+        plan.x_nodes[j] = x_min * std::exp(j * plan.L / n);
+        plan.y_nodes[j] = plan.y0 * std::exp(j * plan.L / n);
+    }
+
+    plan.in_buf.assign(n, 0.0);
+    plan.out_buf.assign(n, 0.0);
+    plan.c_buf.assign(nc, std::complex<double>(0.0, 0.0));
+    plan.cu_buf.assign(nc, std::complex<double>(0.0, 0.0));
+
+    plan.plan_fwd = fftw_plan_dft_r2c_1d(
+        n, plan.in_buf.data(), reinterpret_cast<fftw_complex*>(plan.c_buf.data()), FFTW_ESTIMATE);
+    plan.plan_inv = fftw_plan_dft_c2r_1d(
+        n, reinterpret_cast<fftw_complex*>(plan.cu_buf.data()), plan.out_buf.data(), FFTW_ESTIMATE);
+
+    return plan;
+}
+
+// Applies the SAME self-reciprocal FFTLog operation in either
+// direction: f_x (values at plan.x_nodes) -> F_y (values at
+// plan.y_nodes), using the SAME circular-index mapping validated in
+// fftlog_transform() above. Calling this twice in a row -- x->y, then
+// feeding the y-side result back in as a new x-side input -- is the
+// round trip; see the struct comment above for why no separate
+// "inverse" entry point is needed.
+std::vector<double> fftlog_apply_impl(FFTLogPlanImpl& plan, const std::vector<double>& f_x) {
+    const int n = plan.n;
+    for (int j = 0; j < n; ++j) {
+        plan.in_buf[j] = plan.x_nodes[j] * f_x[j];
+    }
+    fftw_execute(plan.plan_fwd);
+    const int nc = n / 2 + 1;
+    for (int m = 0; m < nc; ++m) {
+        plan.cu_buf[m] = plan.c_buf[m] * plan.u[m] / static_cast<double>(n);
+    }
+    fftw_execute(plan.plan_inv);
+    std::vector<double> F_y(n);
+    for (int j = 0; j < n; ++j) {
+        const double Ak = plan.out_buf[((n - j) % n + n) % n];
+        F_y[j] = Ak / plan.y_nodes[j];
+    }
+    return F_y;
+}
+
+// Multi-slot LRU cache payload (see sasfit_lru_cache.h): owns the
+// whole computed curve (spline + backing vectors) via RAII, plus the
+// anchor-ratio validation state used to decide whether a cache hit is
+// still trustworthy for the CURRENT parameter values (a Key match only
+// means "this slot was built for the same (f, fparams, nu)", not
+// "still valid" -- fparams is typically a long-lived struct mutated in
+// place across fit iterations).
+struct FftlogCacheEntry {
+    gsl_spline* spline = nullptr;
+    gsl_interp_accel* acc = nullptr;
+    std::vector<double> k, val;
+    double anchor_lo = 0.0, anchor_hi = 0.0, ratio = 0.0;
+
+    FftlogCacheEntry() = default;
+    ~FftlogCacheEntry() { reset(); }
+    FftlogCacheEntry(FftlogCacheEntry&& o) noexcept { *this = std::move(o); }
+    FftlogCacheEntry& operator=(FftlogCacheEntry&& o) noexcept {
+        if (this != &o) {
+            reset();
+            spline = o.spline;
+            acc = o.acc;
+            k = std::move(o.k);
+            val = std::move(o.val);
+            anchor_lo = o.anchor_lo;
+            anchor_hi = o.anchor_hi;
+            ratio = o.ratio;
+            o.spline = nullptr;
+            o.acc = nullptr;
+        }
+        return *this;
+    }
+    FftlogCacheEntry(const FftlogCacheEntry&) = delete;
+    FftlogCacheEntry& operator=(const FftlogCacheEntry&) = delete;
+
+    void reset() {
+        if (spline) { gsl_spline_free(spline); spline = nullptr; }
+        if (acc)    { gsl_interp_accel_free(acc); acc = nullptr; }
+    }
+};
+
+struct FftlogCacheKey {
+    double (*f)(double, void*) = nullptr;
+    void* fparams = nullptr;
+    double nu = 0.0;
+};
+
 } // namespace
+
+// ============================================================
+// Public C ABI (opaque handle + raw arrays), declared in
+// sasfit_hankel.h for use from sasfit.c and elsewhere.
+// ============================================================
+
+struct sasfit_fftlog_plan {
+    FFTLogPlanImpl impl;
+};
+
+extern "C" {
+
+sasfit_fftlog_plan* sasfit_fftlog_build_plan(int N, double nu, double x_min, double x_max) {
+    if (N <= 0 || !(x_min > 0.0) || !(x_max > x_min) || (nu != 0.0 && nu != 1.0)) {
+        return NULL;
+    }
+    sasfit_fftlog_plan* plan = new (std::nothrow) sasfit_fftlog_plan();
+    if (!plan) return NULL;
+    plan->impl = fftlog_build_plan_impl(N, nu, x_min, x_max);
+    return plan;
+}
+
+void sasfit_fftlog_free_plan(sasfit_fftlog_plan* plan) {
+    delete plan;
+}
+
+int sasfit_fftlog_plan_size(const sasfit_fftlog_plan* plan) {
+    return plan ? plan->impl.n : 0;
+}
+
+double sasfit_fftlog_plan_x_node(const sasfit_fftlog_plan* plan, int n) {
+    if (!plan || n < 0 || n >= plan->impl.n) return 0.0;
+    return plan->impl.x_nodes[n];
+}
+
+double sasfit_fftlog_plan_y_node(const sasfit_fftlog_plan* plan, int n) {
+    if (!plan || n < 0 || n >= plan->impl.n) return 0.0;
+    return plan->impl.y_nodes[n];
+}
+
+void sasfit_fftlog_transform_grid(sasfit_fftlog_plan* plan, const double* f_x, double* F_y) {
+    if (!plan || !f_x || !F_y) return;
+    std::vector<double> f(f_x, f_x + plan->impl.n);
+    std::vector<double> F = fftlog_apply_impl(plan->impl, f);
+    std::copy(F.begin(), F.end(), F_y);
+}
+
+} // extern "C"
+
+// ============================================================
+// Keyed LRU cache of (plan, spline) results -- same shape as
+// sasfit_qdht_cache in sasfit_qdht.cpp; see that file's comment for
+// the fingerprint/eviction rationale, which applies unchanged here.
+// Kept as a separate hand-rolled type rather than sharing code with
+// sasfit_qdht_cache, since C has no templates and the two wrap
+// different opaque plan types across the same C ABI boundary.
+// ============================================================
+
+namespace {
+
+struct sasfit_fftlog_cache_slot {
+    bool valid = false;
+    std::vector<unsigned char> key;
+    unsigned long last_used = 0;
+    sasfit_fftlog_plan* plan = nullptr;
+    gsl_spline* spline = nullptr;
+    gsl_interp_accel* accel = nullptr;
+};
+
+void sasfit_fftlog_cache_slot_release(sasfit_fftlog_cache_slot& slot) {
+    if (slot.spline) { gsl_spline_free(slot.spline); slot.spline = nullptr; }
+    if (slot.accel)  { gsl_interp_accel_free(slot.accel); slot.accel = nullptr; }
+    if (slot.plan)   { sasfit_fftlog_free_plan(slot.plan); slot.plan = nullptr; }
+    slot.valid = false;
+}
+
+} // namespace
+
+struct sasfit_fftlog_cache {
+    size_t key_size = 0;
+    unsigned long clock = 0;
+    std::vector<sasfit_fftlog_cache_slot> slots;
+};
+
+extern "C" {
+
+sasfit_fftlog_cache* sasfit_fftlog_cache_create(int capacity, size_t key_size) {
+    if (capacity <= 0 || key_size == 0) return NULL;
+    sasfit_fftlog_cache* cache = new (std::nothrow) sasfit_fftlog_cache();
+    if (!cache) return NULL;
+    cache->key_size = key_size;
+    cache->slots.resize(static_cast<size_t>(capacity));
+    return cache;
+}
+
+void sasfit_fftlog_cache_free(sasfit_fftlog_cache* cache) {
+    if (!cache) return;
+    for (auto& slot : cache->slots) {
+        sasfit_fftlog_cache_slot_release(slot);
+    }
+    delete cache;
+}
+
+int sasfit_fftlog_cache_lookup(sasfit_fftlog_cache* cache, const void* key,
+                                sasfit_fftlog_plan** plan_out,
+                                gsl_spline** spline_out,
+                                gsl_interp_accel** accel_out) {
+    if (!cache || !key) return 0;
+    for (auto& slot : cache->slots) {
+        if (slot.valid && slot.key.size() == cache->key_size
+            && std::memcmp(slot.key.data(), key, cache->key_size) == 0) {
+            slot.last_used = ++cache->clock;
+            if (plan_out)   *plan_out = slot.plan;
+            if (spline_out) *spline_out = slot.spline;
+            if (accel_out)  *accel_out = slot.accel;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void sasfit_fftlog_cache_insert(sasfit_fftlog_cache* cache, const void* key,
+                                 sasfit_fftlog_plan* plan,
+                                 gsl_spline* spline,
+                                 gsl_interp_accel* accel) {
+    if (!cache || !key) return;
+
+    sasfit_fftlog_cache_slot* target = NULL;
+    for (auto& slot : cache->slots) {
+        if (!slot.valid) { target = &slot; break; }
+    }
+    if (!target) {
+        sasfit_fftlog_cache_slot* oldest = &cache->slots[0];
+        for (auto& slot : cache->slots) {
+            if (slot.last_used < oldest->last_used) oldest = &slot;
+        }
+        target = oldest;
+    }
+
+    sasfit_fftlog_cache_slot_release(*target);
+    target->key.assign(static_cast<const unsigned char*>(key),
+                        static_cast<const unsigned char*>(key) + cache->key_size);
+    target->plan = plan;
+    target->spline = spline;
+    target->accel = accel;
+    target->last_used = ++cache->clock;
+    target->valid = true;
+}
+
+} // extern "C"
 
 struct sasfit_fftlog_params {
     double (*function)(double, void *);
@@ -192,26 +539,34 @@ scalar sasfit_fftlog(double nu, double (*f)(double, void *), double x, void *fpa
         // outside the previously-computed k-range, since the required
         // padding depends on x as well as on f's own shape (see below).
         //
+        // Multi-slot LRU cache (see sasfit_lru_cache.h), not a single
+        // static slot: calls that ALTERNATE between more than one
+        // distinct (f, fparams, nu) -- e.g. two coexisting populations
+        // in one fit, evaluated interleaved -- would otherwise thrash,
+        // rebuilding on every switch even though the other entry is
+        // still valid and wanted again next call. Capacity chosen
+        // generously relative to typical model complexity; tune if a
+        // fit routinely alternates more models than this at once.
+        //
         // NOT thread-safe (function-local static state) -- fine only if
         // this function is not called concurrently from multiple threads
         // for different (f, fparams) at the same time.
-        static double (*cached_f)(double, void *) = nullptr;
-        static void *cached_fparams = nullptr;
-        static double cached_nu = -1.0;
-        static double cached_anchor_lo = 0.0, cached_anchor_hi = 0.0;
-        static double cached_ratio = 0.0;
-        static gsl_spline* cached_spline = nullptr;
-        static gsl_interp_accel* cached_acc = nullptr;
-        static std::vector<double> cached_k, cached_val;
+        static SasfitLruCache<FftlogCacheKey, FftlogCacheEntry> cache(8);
 
+        FftlogCacheKey key{};
+        key.f = f;
+        key.fparams = fparams;
+        key.nu = nu;
+
+        FftlogCacheEntry* entry = cache.lookup(key);
         bool cache_hit = false;
-        if (cached_f == f && cached_fparams == fparams && cached_nu == nu && cached_spline
-            && !cached_k.empty() && x >= cached_k.front() && x <= cached_k.back()) {
-            const double val_lo = f(cached_anchor_lo, fparams);
-            const double val_hi = f(cached_anchor_hi, fparams);
+        if (entry && entry->spline && !entry->k.empty()
+            && x >= entry->k.front() && x <= entry->k.back()) {
+            const double val_lo = f(entry->anchor_lo, fparams);
+            const double val_hi = f(entry->anchor_hi, fparams);
             const double ratio = val_hi / (val_lo + 1e-300);
             constexpr double tol = 1e-3;
-            if (std::fabs(ratio - cached_ratio) <= tol * (std::fabs(ratio) + std::fabs(cached_ratio) + 1e-300)) {
+            if (std::fabs(ratio - entry->ratio) <= tol * (std::fabs(ratio) + std::fabs(entry->ratio) + 1e-300)) {
                 cache_hit = true;
             }
         }
@@ -309,56 +664,48 @@ scalar sasfit_fftlog(double nu, double (*f)(double, void *), double x, void *fpa
             }
             const FFTLogResult res = fftlog_transform(r, a_of_r, nu);
 
-            cached_k.assign(res.k.begin(), res.k.end());
-            cached_val.resize(n);
+            FftlogCacheEntry& new_entry = cache.insert(key);
+            new_entry.k.assign(res.k.begin(), res.k.end());
+            new_entry.val.resize(n);
             std::vector<double> logk(n), logv(n);
             for (int j = 0; j < n; ++j) {
                 const double Ik = res.Ak[j] / res.k[j];
-                cached_val[j] = Ik;
+                new_entry.val[j] = Ik;
                 logk[j] = std::log(res.k[j]);
                 logv[j] = std::log(std::fabs(Ik) + 1e-300);
             }
 
-            if (cached_spline) {
-                gsl_spline_free(cached_spline);
-                cached_spline = nullptr;
-            }
-            if (cached_acc) {
-                gsl_interp_accel_free(cached_acc);
-                cached_acc = nullptr;
-            }
-            cached_acc = gsl_interp_accel_alloc();
-            cached_spline = gsl_spline_alloc(gsl_interp_cspline, n);
-            gsl_spline_init(cached_spline, logk.data(), logv.data(), n);
+            new_entry.acc = gsl_interp_accel_alloc();
+            new_entry.spline = gsl_spline_alloc(gsl_interp_cspline, n);
+            gsl_spline_init(new_entry.spline, logk.data(), logv.data(), n);
 
-            cached_f = f;
-            cached_fparams = fparams;
-            cached_nu = nu;
-            cached_anchor_lo = 0.5 * peak_r;
-            cached_anchor_hi = peak_r;
-            const double v_lo = f(cached_anchor_lo, fparams);
-            const double v_hi = f(cached_anchor_hi, fparams);
-            cached_ratio = v_hi / (v_lo + 1e-300);
+            new_entry.anchor_lo = 0.5 * peak_r;
+            new_entry.anchor_hi = peak_r;
+            const double v_lo = f(new_entry.anchor_lo, fparams);
+            const double v_hi = f(new_entry.anchor_hi, fparams);
+            new_entry.ratio = v_hi / (v_lo + 1e-300);
+
+            entry = &new_entry;
         }
 
-        if (x < cached_k.front() || x > cached_k.back()) {
+        if (x < entry->k.front() || x > entry->k.back()) {
             return 0.0;
         }
-        const double logv = gsl_spline_eval(cached_spline, std::log(x), cached_acc);
+        const double logv = gsl_spline_eval(entry->spline, std::log(x), entry->acc);
         // Sign is tracked separately from the log-log spline magnitude
         // (needed for oscillatory transforms, e.g. a sphere's or
         // cylinder's form factor, which cross zero) via a binary search
         // on the small pre-computed sample array.
-        size_t lo = 0, hi = cached_k.size() - 1;
+        size_t lo = 0, hi = entry->k.size() - 1;
         while (hi - lo > 1) {
             const size_t mid = (lo + hi) / 2;
-            if (cached_k[mid] < x) {
+            if (entry->k[mid] < x) {
                 lo = mid;
             } else {
                 hi = mid;
             }
         }
-        const double sign = (cached_val[lo] < 0.0) ? -1.0 : 1.0;
+        const double sign = (entry->val[lo] < 0.0) ? -1.0 : 1.0;
         return sign * std::exp(logv);
     } catch (const std::exception& error) {
         sasfit_err("sasfit_fftlog: %s\n", error.what());

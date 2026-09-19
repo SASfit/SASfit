@@ -456,6 +456,66 @@ class CoreShell:
         return np.asarray(R, float)
 
 
+class CoreShellFixedShell:
+    """Core-shell sphere, polydisperse in the CORE radius, constant shell.
+
+    The size distribution is applied to the CORE radius R_c; every particle
+    carries the same shell thickness dR, so
+
+        R_outer = R_c + dR
+
+    and the interaction diameter is sigma = 2(R_c + dR).
+
+        F(Q) = (rho_c - rho_s) V_c 3j1(Q R_c)/(Q R_c)
+               + (rho_s - rho_solv) V_o 3j1(Q R_o)/(Q R_o)
+
+    WHY THIS EXISTS ALONGSIDE `CoreShell`. That class is polydisperse in the
+    OUTER radius, with R_c = R - t; this one is polydisperse in the CORE.
+    The distinction is physical, not bookkeeping. With a constant shell on a
+    polydisperse core the OUTER radius distribution is the core distribution
+    SHIFTED rather than scaled, so its relative width is smaller than the
+    core's -- by a factor R_c/(R_c + dR). Fitting one when the sample is the
+    other biases the recovered polydispersity and, through
+    sigma = 2(R_c + dR), the effective volume fraction as well.
+
+    Use this when the shell is a coating of fixed thickness (a surfactant or
+    polymer layer, an oxide); use `CoreShell` with `ratio` when the shell
+    scales with particle size.
+
+    Parametrised by dR rather than by a core/outer ratio deliberately: dR is
+    unambiguous and directly comparable with an independently known layer
+    thickness, whereas a ratio silently couples the shell to the size.
+    """
+
+    def __init__(self, rho_core=2.0, rho_shell=1.0, rho_solvent=0.0,
+                 thickness=0.0):
+        self.dc = float(rho_core) - float(rho_shell)
+        self.ds = float(rho_shell) - float(rho_solvent)
+        self.dR = float(thickness)
+        if self.dR < 0.0:
+            raise ValueError(f"shell thickness must be >= 0, got {self.dR}")
+
+    def F(self, Q, R):
+        """R is the CORE radius here, not the outer one."""
+        Q = np.atleast_1d(np.asarray(Q, float))
+        Rc = np.atleast_1d(np.asarray(R, float))
+        Ro = Rc + self.dR
+        Vc, Vo = 4*np.pi*Rc**3/3, 4*np.pi*Ro**3/3
+        return (self.dc*Vc[None, :]*_j1x3(Q[:, None]*Rc[None, :])
+                + self.ds*Vo[None, :]*_j1x3(Q[:, None]*Ro[None, :]))
+
+    def outer_radius(self, R):
+        """The interaction radius: core plus shell.
+
+        This is what makes the structure factor see the right hard core. The
+        outer-radius variant returns R unchanged; returning R here instead of
+        R + dR would put every particle's excluded volume short by the shell
+        thickness, which at dR/R ~ 7 % is a 20 % error in the effective
+        volume fraction.
+        """
+        return np.asarray(R, float) + self.dR
+
+
 # --------------------------------------------------------------------------
 # the model
 # --------------------------------------------------------------------------

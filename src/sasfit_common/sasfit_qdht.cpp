@@ -96,7 +96,11 @@
 #include <vector>
 #include <utility>
 #include <limits>
+#include <new>
+#include <algorithm>
+#include <cstring>
 #include <gsl/gsl_sf_bessel.h>
+#include <gsl/gsl_spline.h>
 extern "C"
 {
     #include "sasfit_constants.h"
@@ -242,7 +246,346 @@ double qdht_tail_correction(double R, double fR, double r_prev, double f_prev, d
     return std::isfinite(corr) ? corr : 0.0;
 }
 
+// ============================================================
+// Self-reciprocal QDHT grid: forward -> correct -> backward
+// ============================================================
+//
+// QDHTPlan/qdht_eval above answer "give me the transform at one
+// arbitrary continuous frequency", which is the right shape for
+// sasfit_qdht() as a sasfit_hankel() strategy callback, but the wrong
+// shape for a forward -> apply-a-correction -> inverse round trip:
+// there is no inverse there at all, and evaluating a whole corrected
+// function point-by-point via qdht_eval costs O(N) per point with no
+// exact-round-trip guarantee.
+//
+// QDHTReciprocalPlanImpl is the alternative shape for that job. Its
+// kernel matrix
+//
+//   T[m,n] = (2/S) J_p(alpha_m alpha_n/S) / (J_{p+1}(alpha_m) J_{p+1}(alpha_n))
+//
+// is symmetric AND self-reciprocal (T*T = I to machine precision) once
+// the samples either side of it are rescaled by JR = J_{p+1}/R going
+// in and JV = J_{p+1}/k_max coming out (or the same pair the other way
+// round for the inverse) -- so the SAME kernel matrix serves as both
+// forward and inverse. No matrix inversion is ever needed. Verified
+// independently (Python/NumPy prototype) against the exact Gaussian
+// Hankel pair (1.7e-16 relative error) and against an analytic
+// forward->correct->backward case -- multiplying by exp(-(k sigma)^2)
+// in k-space and inverting reproduces the known closed-form Gaussian-
+// convolution result to 3e-16.
+//
+// Forward and inverse MUST share the same (R, N, p) for the identity
+// T*T=I to hold exactly -- there is no freedom to pick a different
+// truncation radius for the outgoing and returning leg of a round
+// trip and still get an exact identity back.
+//
+// Kept as an implementation detail (anonymous namespace, std::vector-
+// based): sasfit_hankel.h is pulled into plain C translation units
+// (sasfit.c is .c, not .cpp) via the extern "C" block above, so
+// nothing using std::vector or a C++ struct can appear in that header.
+// The public surface is the opaque-handle, raw-array C ABI below
+// (sasfit_qdht_plan / sasfit_qdht_build_plan / ...), which wraps this.
+
+struct QDHTReciprocalPlanImpl {
+    int N = 0;
+    double p = 0.0, R = 0.0, S = 0.0, k_max = 0.0;
+    std::vector<double> alpha;    // N zeros of J_p
+    std::vector<double> Jp1;      // |J_{p+1}(alpha_n)|
+    std::vector<double> r_nodes;  // r_n = R alpha_n / S
+    std::vector<double> k_nodes;  // k_n = alpha_n / R
+    std::vector<double> JR, JV;   // diagonal rescalings either side of kernel
+    std::vector<double> kernel;   // N*N, row-major, symmetric
+};
+
+QDHTReciprocalPlanImpl qdht_build_reciprocal_plan_impl(int N, double p, double R) {
+    QDHTReciprocalPlanImpl plan;
+    plan.N = N;
+    plan.p = p;
+    plan.R = R;
+
+    plan.alpha.resize(N);
+    for (int i = 0; i < N; ++i) {
+        plan.alpha[i] = gsl_sf_bessel_zero_Jnu(p, i + 1);
+    }
+    // S is the (N+1)-th zero -- one beyond the grid, exactly as in
+    // QDHTPlan above -- fixing both the grid spacing and the
+    // reachable k_max = S/R.
+    plan.S = gsl_sf_bessel_zero_Jnu(p, N + 1);
+    plan.k_max = plan.S / R;
+
+    plan.Jp1.resize(N);
+    plan.r_nodes.resize(N);
+    plan.k_nodes.resize(N);
+    plan.JR.resize(N);
+    plan.JV.resize(N);
+    for (int n = 0; n < N; ++n) {
+        plan.Jp1[n] = std::fabs(gsl_sf_bessel_Jnu(p + 1.0, plan.alpha[n]));
+        plan.r_nodes[n] = plan.alpha[n] * R / plan.S;
+        plan.k_nodes[n] = plan.alpha[n] / R;
+        plan.JR[n] = plan.Jp1[n] / R;
+        plan.JV[n] = plan.Jp1[n] / plan.k_max;
+    }
+
+    plan.kernel.assign(static_cast<size_t>(N) * N, 0.0);
+    for (int m = 0; m < N; ++m) {
+        for (int n = 0; n < N; ++n) {
+            plan.kernel[static_cast<size_t>(m) * N + n] =
+                2.0 * gsl_sf_bessel_Jnu(p, plan.alpha[m] * plan.alpha[n] / plan.S)
+                / (plan.S * plan.Jp1[m] * plan.Jp1[n]);
+        }
+    }
+    return plan;
+}
+
+// Shared O(N^2) matvec used by both forward and inverse below.
+// Replace with cblas_dgemv here if N ever gets large enough that the
+// hand-rolled loop shows up in a profile -- the kernel is a plain
+// dense matrix, so BLAS should give a solid constant-factor win with
+// no change to the math on either side of this call.
+std::vector<double> qdht_matvec_impl(const QDHTReciprocalPlanImpl& plan,
+                                      const std::vector<double>& x) {
+    const int N = plan.N;
+    std::vector<double> y(N, 0.0);
+    for (int m = 0; m < N; ++m) {
+        double s = 0.0;
+        const double* row = &plan.kernel[static_cast<size_t>(m) * N];
+        for (int n = 0; n < N; ++n) {
+            s += row[n] * x[n];
+        }
+        y[m] = s;
+    }
+    return y;
+}
+
+std::vector<double> qdht_forward_impl(const QDHTReciprocalPlanImpl& plan,
+                                       const std::vector<double>& f_r) {
+    std::vector<double> scaled(plan.N);
+    for (int n = 0; n < plan.N; ++n) {
+        scaled[n] = f_r[n] / plan.JR[n];
+    }
+    std::vector<double> F = qdht_matvec_impl(plan, scaled);
+    for (int m = 0; m < plan.N; ++m) {
+        F[m] *= plan.JV[m];
+    }
+    return F;
+}
+
+std::vector<double> qdht_inverse_impl(const QDHTReciprocalPlanImpl& plan,
+                                       const std::vector<double>& F_k) {
+    std::vector<double> scaled(plan.N);
+    for (int n = 0; n < plan.N; ++n) {
+        scaled[n] = F_k[n] / plan.JV[n];
+    }
+    std::vector<double> f = qdht_matvec_impl(plan, scaled);
+    for (int m = 0; m < plan.N; ++m) {
+        f[m] *= plan.JR[m];
+    }
+    return f;
+}
+
 } // namespace
+
+// ============================================================
+// Public C ABI (opaque handle + raw arrays), declared in
+// sasfit_hankel.h for use from sasfit.c and elsewhere.
+// ============================================================
+
+struct sasfit_qdht_plan {
+    QDHTReciprocalPlanImpl impl;
+};
+
+extern "C" {
+
+sasfit_qdht_plan* sasfit_qdht_build_plan(int N, double nu, double R) {
+    if (N <= 0 || !(R > 0.0) || (nu != 0.0 && nu != 1.0)) {
+        return NULL;
+    }
+    sasfit_qdht_plan* plan = new (std::nothrow) sasfit_qdht_plan();
+    if (!plan) return NULL;
+    plan->impl = qdht_build_reciprocal_plan_impl(N, nu, R);
+    return plan;
+}
+
+void sasfit_qdht_free_plan(sasfit_qdht_plan* plan) {
+    delete plan;
+}
+
+int sasfit_qdht_plan_size(const sasfit_qdht_plan* plan) {
+    return plan ? plan->impl.N : 0;
+}
+
+double sasfit_qdht_plan_r_node(const sasfit_qdht_plan* plan, int n) {
+    if (!plan || n < 0 || n >= plan->impl.N) return 0.0;
+    return plan->impl.r_nodes[n];
+}
+
+double sasfit_qdht_plan_k_node(const sasfit_qdht_plan* plan, int n) {
+    if (!plan || n < 0 || n >= plan->impl.N) return 0.0;
+    return plan->impl.k_nodes[n];
+}
+
+// f_r/F_k: caller-owned arrays of length sasfit_qdht_plan_size(plan).
+void sasfit_qdht_forward_grid(const sasfit_qdht_plan* plan, const double* f_r, double* F_k) {
+    if (!plan || !f_r || !F_k) return;
+    std::vector<double> f(f_r, f_r + plan->impl.N);
+    std::vector<double> F = qdht_forward_impl(plan->impl, f);
+    std::copy(F.begin(), F.end(), F_k);
+}
+
+void sasfit_qdht_inverse_grid(const sasfit_qdht_plan* plan, const double* F_k, double* f_r) {
+    if (!plan || !F_k || !f_r) return;
+    std::vector<double> F(F_k, F_k + plan->impl.N);
+    std::vector<double> f = qdht_inverse_impl(plan->impl, F);
+    std::copy(f.begin(), f.end(), f_r);
+}
+
+// Convenience composition: forward -> correction(k) -> backward.
+// correction is called with SASfit's usual (double, void*) convention,
+// once per k_node.
+//
+// DESIGN NOTE: kept as a thin wrapper around
+// sasfit_qdht_forward_grid/sasfit_qdht_inverse_grid, not a separate
+// implementation. Callers that want F(k) on its own, or that want to
+// try several corrections against one forward pass, should call
+// sasfit_qdht_forward_grid/sasfit_qdht_inverse_grid directly instead,
+// so the O(N^2) forward pass is only ever paid once per distinct f.
+//
+// f_corrected_out must have length sasfit_qdht_plan_size(plan); the
+// matching r for f_corrected_out[n] is sasfit_qdht_plan_r_node(plan, n).
+void sasfit_qdht_round_trip(const sasfit_qdht_plan* plan,
+                             double (*f)(double, void*), void* fparams,
+                             double (*correction)(double, void*), void* cparams,
+                             double* f_corrected_out) {
+    if (!plan || !f || !correction || !f_corrected_out) return;
+    const int N = plan->impl.N;
+    std::vector<double> f_vals(N);
+    for (int n = 0; n < N; ++n) {
+        f_vals[n] = f(plan->impl.r_nodes[n], fparams);
+    }
+    std::vector<double> F_vals = qdht_forward_impl(plan->impl, f_vals);
+    for (int m = 0; m < N; ++m) {
+        F_vals[m] *= correction(plan->impl.k_nodes[m], cparams);
+    }
+    std::vector<double> f_corr = qdht_inverse_impl(plan->impl, F_vals);
+    std::copy(f_corr.begin(), f_corr.end(), f_corrected_out);
+}
+
+} // extern "C"
+
+// ============================================================
+// Keyed LRU cache of (plan, spline) results
+// ============================================================
+//
+// The grid-based transform above only gives values at the plan's own
+// r_nodes/k_nodes, not at whatever Q a fit actually asks for -- some
+// interpolation is needed regardless, so a spline is not just a speed
+// optimization, it is the natural way to answer an arbitrary-Q query
+// at all. Caching the (plan, spline) pair keyed on a caller-supplied
+// fingerprint avoids repeating the O(N^2) transform(s) when nothing
+// that affects the underlying function actually changed between
+// calls.
+//
+// The fingerprint is an opaque, caller-defined, fixed-size byte blob
+// compared byte-for-byte (memcmp), deliberately exact rather than a
+// tolerance/ratio check: if the caller's fingerprint struct is zero-
+// initialized and filled consistently, an unchanged fingerprint really
+// does mean an unchanged function, with no risk of a near-miss false
+// hit. Eviction is least-recently-used, tracked with a monotonically
+// increasing logical clock (not wall-clock time) -- the slot with the
+// smallest last-used value is evicted first when the cache is full.
+
+namespace {
+
+struct sasfit_qdht_cache_slot {
+    bool valid = false;
+    std::vector<unsigned char> key;
+    unsigned long last_used = 0;
+    sasfit_qdht_plan* plan = nullptr;
+    gsl_spline* spline = nullptr;
+    gsl_interp_accel* accel = nullptr;
+};
+
+void sasfit_qdht_cache_slot_release(sasfit_qdht_cache_slot& slot) {
+    if (slot.spline) { gsl_spline_free(slot.spline); slot.spline = nullptr; }
+    if (slot.accel)  { gsl_interp_accel_free(slot.accel); slot.accel = nullptr; }
+    if (slot.plan)   { sasfit_qdht_free_plan(slot.plan); slot.plan = nullptr; }
+    slot.valid = false;
+}
+
+} // namespace
+
+struct sasfit_qdht_cache {
+    size_t key_size = 0;
+    unsigned long clock = 0;
+    std::vector<sasfit_qdht_cache_slot> slots;
+};
+
+extern "C" {
+
+sasfit_qdht_cache* sasfit_qdht_cache_create(int capacity, size_t key_size) {
+    if (capacity <= 0 || key_size == 0) return NULL;
+    sasfit_qdht_cache* cache = new (std::nothrow) sasfit_qdht_cache();
+    if (!cache) return NULL;
+    cache->key_size = key_size;
+    cache->slots.resize(static_cast<size_t>(capacity));
+    return cache;
+}
+
+void sasfit_qdht_cache_free(sasfit_qdht_cache* cache) {
+    if (!cache) return;
+    for (auto& slot : cache->slots) {
+        sasfit_qdht_cache_slot_release(slot);
+    }
+    delete cache;
+}
+
+int sasfit_qdht_cache_lookup(sasfit_qdht_cache* cache, const void* key,
+                              sasfit_qdht_plan** plan_out,
+                              gsl_spline** spline_out,
+                              gsl_interp_accel** accel_out) {
+    if (!cache || !key) return 0;
+    for (auto& slot : cache->slots) {
+        if (slot.valid && slot.key.size() == cache->key_size
+            && std::memcmp(slot.key.data(), key, cache->key_size) == 0) {
+            slot.last_used = ++cache->clock;
+            if (plan_out)   *plan_out = slot.plan;
+            if (spline_out) *spline_out = slot.spline;
+            if (accel_out)  *accel_out = slot.accel;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void sasfit_qdht_cache_insert(sasfit_qdht_cache* cache, const void* key,
+                               sasfit_qdht_plan* plan,
+                               gsl_spline* spline,
+                               gsl_interp_accel* accel) {
+    if (!cache || !key) return;
+
+    sasfit_qdht_cache_slot* target = NULL;
+    for (auto& slot : cache->slots) {
+        if (!slot.valid) { target = &slot; break; }
+    }
+    if (!target) {
+        sasfit_qdht_cache_slot* oldest = &cache->slots[0];
+        for (auto& slot : cache->slots) {
+            if (slot.last_used < oldest->last_used) oldest = &slot;
+        }
+        target = oldest;
+    }
+
+    sasfit_qdht_cache_slot_release(*target);
+    target->key.assign(static_cast<const unsigned char*>(key),
+                        static_cast<const unsigned char*>(key) + cache->key_size);
+    target->plan = plan;
+    target->spline = spline;
+    target->accel = accel;
+    target->last_used = ++cache->clock;
+    target->valid = true;
+}
+
+} // extern "C"
 
 scalar sasfit_qdht(double nu, double (*f)(double, void *), double x, void *fparams) {
     if (f == NULL || !(x > 0.0) || (nu != 0.0 && nu != 1.0)) {
