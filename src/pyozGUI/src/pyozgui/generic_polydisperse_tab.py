@@ -349,6 +349,91 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #the entry -- the same meaning as for every other parameter.
         self.scaleVar = entry("scale:", "1.0")
         self.backgroundVar = entry("background:", "0.0")
+        #A sloping background: I_bg = background + A * Q^(-4+d).
+        #
+        #A flat constant describes only incoherent scattering. Real curves
+        #frequently carry a power-law tail as well -- Porod's Q^-4 for a
+        #smooth sharp interface, shallower for a rough or fractal one -- and
+        #with only a constant available the fit absorbs that slope into the
+        #shape parameters, where it does real damage.
+        #
+        #The AMPLITUDE is linear and solved exactly with the scale and the
+        #constant; only the exponent is fitted. So this costs one extra
+        #parameter, not two.
+        self.porodVar = tk.BooleanVar(value=False)
+        ttk.Checkbutton(left, text="background + A x Q^(-4+d)",
+                        variable=self.porodVar,
+                        command=self._syncPorod).grid(
+            row=r, column=0, columnspan=2, sticky="w")
+        r += 1
+        self.porodAVar = entry("   A:", "0.0")
+        self.porodDVar = entry("   d:", "0.0")
+        #Below this Q the power law is held constant rather than
+        #extrapolated. Q^(-4+d) diverges at the origin and the smearing
+        #kernel reaches below the data, so something must bound it.
+        #
+        #The default 1e-6 is effectively NO clamp for a typical data set:
+        #with Q_min ~ 0.02 1/nm, Q^-2.5 at 1e-6 is ~1e15, and the smeared
+        #value at the first measured point is then dominated by a region
+        #with no measurements in it. Set it to the lowest measured Q to
+        #suppress that entirely; values in between trade the two off. It is
+        #exposed because the right choice depends on whether the power law
+        #is believed to continue below the measured range.
+        self.porodQminVar = entry("   Q clamp:", "1e-6")
+        #Which optimiser runs when Fit is pressed.
+        #
+        #"scipy least_squares" is the default and right for routine work: a
+        #trust-region Levenberg-Marquardt converges in ~30 model evaluations.
+        #The bumps methods evaluate the model FAR more often, and each
+        #evaluation here is a full OZ solve -- 0.05 s for one component but
+        #2.5 s at seven size classes. Measured on a small test problem,
+        #amoeba took 79 s where least_squares took about one second.
+        #
+        #Rough guide at 2.5 s per evaluation:
+        #    least_squares  ~30 evaluations   ~1 minute
+        #    amoeba         ~200              ~8 minutes
+        #    de             ~2000             ~1.5 hours
+        #    dream          ~10000+           ~7 hours
+        #
+        #So these are not alternatives for everyday fitting. What they ARE
+        #for: `dream` samples a posterior and returns a correlation matrix,
+        #the only honest way to see whether eleven free parameters are really
+        #eleven -- shell against linkC, phi against radius, A against
+        #background all trade. And a population method can cross between
+        #minima that a local one cannot, which matters when a branch or a
+        #sign is in question. Run those once on a converged fit rather than
+        #while exploring, and reduce the size classes first.
+        ttk.Label(left, text="Fitter:").grid(row=r, column=0, sticky="e")
+        self.fitterVar = tk.StringVar(value="scipy least_squares")
+        ttk.Combobox(left, textvariable=self.fitterVar, width=18,
+                     state="readonly",
+                     values=["scipy least_squares",
+                             "scipy least_squares (10 starts)",
+                             "nlopt LN_COBYLA (constrained)",
+                             "nlopt LN_BOBYQA (constrained)",
+                             "bumps amoeba",
+                             "bumps de", "bumps dream", "bumps newton",
+                             "bumps lm", "bumps pt"]).grid(
+            row=r, column=1, sticky="w")
+        r += 1
+        #Warm start: seed each OZ solve with the previous converged gamma
+        #instead of starting from zero.
+        #
+        #Faster -- measured 1.29x on one component, and more at seven size
+        #classes where a single solve costs 2.5 s rather than 0.015 s. It
+        #also keeps the fit on ONE branch of the closure equations, which
+        #makes the residual smooth in the parameters; a cold start can land
+        #on a different branch between adjacent iterations.
+        #
+        #Off by default, because it can also carry a fit onto a wrong branch
+        #and hold it there. The residual check and the min S(Q) >= 0 screen
+        #run on every solve and bound that risk, but the default should not
+        #change behaviour silently.
+        self.warmStartVar = tk.BooleanVar(value=False)
+        ttk.Checkbutton(left, text="warm start OZ solver",
+                        variable=self.warmStartVar).grid(
+            row=r, column=0, columnspan=2, sticky="w")
+        r += 1
         ttk.Separator(left, orient="horizontal").grid(
             row=r, column=0, columnspan=2, sticky="ew", pady=6); r += 1
         self.QminVar = entry("Q min:", "1e-4")
@@ -504,6 +589,16 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             self._alphaEntry.configure(
                 state="disabled" if self.findAlphaVar.get() else "normal")
 
+    def _syncPorod(self):
+        """Refresh the fit flags when the power-law term is toggled.
+
+        `porodD` is offered only while the term is active: fitting an
+        exponent that multiplies nothing would be a parameter with no effect
+        on the model.
+        """
+        if hasattr(self, "fitVarFrame"):
+            self._rebuildFitFlags()
+
     def _syncLinkDelta(self):
         """Grey out the linked potential argument and refresh the fit flags.
 
@@ -579,6 +674,33 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                   #combined coatings, which the linked parametrisation is not
                   #meant to describe.
                   "linkC": (0.0, 2.0),
+                  #rhoRatio = rhoShell/rhoCore. Fit THIS rather than the
+                  #shell SLD itself.
+                  #
+                  #The absolute scattering length densities are perfectly
+                  #correlated with the scale -- I depends on scale times the
+                  #squared contrast -- so their magnitude carries no
+                  #information and need not be fitted at all. What the data
+                  #DO determine is the ratio of the two contrasts, and above
+                  #all its SIGN.
+                  #
+                  #Fitting the ratio also makes the parameter refine. In
+                  #1/cm^2 an SLD is ~1e10, and least_squares terminates on
+                  #its gradient test after a single evaluation at that
+                  #magnitude: the parameter never moves, and the fit returns
+                  #the starting value with a meaningless uncertainty. A ratio
+                  #of order one has no such problem.
+                  #
+                  #Bounds span both signs and are wide: a negative ratio
+                  #means the contrasts oppose, and that must be an OUTCOME of
+                  #the fit, not an imposition.
+                  "rhoRatio": (-1e3, 1e3),
+                  #d in the exponent -4+d. Bounded 0 to 3: d = 0 is Porod's
+                  #law, and d < 3 keeps the tail steeper than Q^-1 as
+                  #Joachim specified. Outside that range the term stops
+                  #describing a background and starts competing with the
+                  #form factor.
+                  "porodD": (0.0, 3.0),
                   #SLDs ARE UNBOUNDED, deliberately, on both counts.
                   #
                   #Sign: the opposite sign of the shell contrast must be an
@@ -621,7 +743,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #what the interface actually offers, so a parameter missing here can
         #never be selected however the rest of the machinery is wired.
         if self.ffVar.get() == "Core-shell":
-            names += ["shell", "rhoCore", "rhoShell"]
+            names += ["shell", "rhoRatio"]
         #c is fittable only when the link is active -- otherwise it does
         #nothing, and offering it would invite fitting a parameter with no
         #effect on the model.
@@ -629,6 +751,13 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 and self.linkDeltaVar.get()
                 and self._deltaParamIndex() is not None):
             names.append("linkC")
+        if getattr(self, "porodVar", None) is not None and self.porodVar.get():
+            #A behaves like scale and background: ticked means SOLVED
+            #exactly by the linear least squares, unticked means held at the
+            #entry value. It is listed here so that choice is visible in the
+            #same place as every other one, even though it never reaches the
+            #nonlinear optimiser.
+            names += ["porodA", "porodD"]
         if self.closureParamVar is not None:
             names.append("closureParam")
         for i in range(len(self.potParamVars)):
@@ -639,8 +768,14 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 continue
             names.append("pot%d" % i)
         for i, n in enumerate(names):
+            #Default-ticked: the shape parameters one normally fits, plus
+            #the LINEAR terms, which are solved exactly at no cost. porodA
+            #belongs with scale and background here -- leaving it out made it
+            #default to HELD at the entry value, so switching the power law
+            #on contributed a term fixed at zero and did nothing at all.
             v = tk.BooleanVar(value=(n in ("meanRadius", "srel", "phi",
-                                           "scale", "background")))
+                                           "scale", "background",
+                                           "porodA")))
             ttk.Checkbutton(self.fitVarFrame, text=n, variable=v).grid(
                 row=i//2, column=i % 2, sticky="w")
             self.fitFlags[n] = v
@@ -680,7 +815,8 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         "shellVar", "rhoCoreVar", "rhoShellVar", "scaleVar", "backgroundVar",
         "QminVar", "QmaxVar", "nQVar", "ffVar", "potentialVar",
         "closureVar", "closureParamVar", "closureParam2Var", "distVar",
-        "linkDeltaVar", "linkCVar",
+        "linkDeltaVar", "linkCVar", "porodVar", "porodDVar", "porodAVar",
+        "porodQminVar", "fitterVar", "warmStartVar",
         #smearVar decides whether the dQ column is USED. Omitting it would
         #restore the data and the resolution array but silently lose the
         #choice to apply them -- and an unsmeared fit biases the
@@ -902,8 +1038,18 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             return float(self.rhoCoreVar.get())
         if name == "rhoShell":
             return float(self.rhoShellVar.get())
+        if name == "rhoRatio":
+            #Starting value from the two entries, so the interface stays in
+            #the units the user thinks in while the FIT works in a ratio.
+            core = float(self.rhoCoreVar.get())
+            shell = float(self.rhoShellVar.get())
+            return shell/core if core != 0.0 else 0.0
         if name == "linkC":
             return float(self.linkCVar.get())
+        if name == "porodD":
+            return float(self.porodDVar.get())
+        if name == "porodA":
+            return float(self.porodAVar.get())
         if name == "scale":
             return float(self.scaleVar.get())
         if name == "background":
@@ -925,34 +1071,40 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         if not free:
             messagebox.showinfo("nothing to fit", "tick at least one parameter")
             return
+        #Warn before a fit that would hold a linear term at exactly zero.
+        #Both the background and the power-law amplitude default to 0 in
+        #their entries, so an unticked box pins them at nothing -- the fit
+        #then reports a converged result that a manual value beats easily,
+        #which looks like a broken solver and is not.
+        try:
+            pre = self._readInputs()
+        except Exception:
+            pre = None
+        if pre and pre.get("heldAtZero"):
+            names = ", ".join(pre["heldAtZero"])
+            if not messagebox.askokcancel(
+                    "parameter held at zero",
+                    f"These are unticked under 'Fit to measured data' and "
+                    f"their entries are 0, so the fit will hold them at "
+                    f"zero:\n\n    {names}\n\n"
+                    f"They enter the model linearly and are solved EXACTLY "
+                    f"at no cost when ticked. Leaving them at zero is "
+                    f"usually unintended.\n\nFit anyway?"):
+                return
         #scale and background are ticked like the rest, but they must NOT go
         #to the nonlinear optimiser: they enter the model linearly and are
         #solved exactly by weighted least squares inside the fitter. Their
         #flags are read separately in _readInputs and passed as fixedScale /
         #fixedBackground. Leaving them in `params` would hand the optimiser
         #the two most strongly correlated parameters for nothing.
-        LINEAR = ("scale", "background")
+        LINEAR = ("scale", "background", "porodA")
         nonlinearFree = [n for n in free if n not in LINEAR]
-        #The amplitude is degenerate. I(Q) carries an overall factor of
-        #scale times the squared contrast, so scale, rhoCore and rhoShell
-        #cannot all three be determined at once: any change in the contrasts
-        #can be undone by the scale. What breaks the degeneracy is the SHAPE
-        #-- above all where the sign change puts the form-factor minimum --
-        #and that constrains the RATIO of the two SLDs, not their absolute
-        #size.
-        #
-        #Refuse it rather than let the optimiser wander along a flat valley
-        #and report a converged fit whose parameters are meaningless.
-        if "scale" in free and "rhoCore" in free and "rhoShell" in free:
-            messagebox.showerror(
-                "degenerate parameter set",
-                "scale, SLD core and SLD shell cannot all be fitted "
-                "together: the intensity depends on scale times the squared "
-                "contrast, so a change in the contrasts is exactly "
-                "compensated by the scale.\n\n"
-                "Fix one of them -- normally the core SLD, which is usually "
-                "known -- and fit the other two.")
-            return
+        #The amplitude degeneracy is now structural rather than something to
+        #be refused: the fitted contrast parameter is the RATIO
+        #rhoShell/rhoCore, and the overall magnitude lives entirely in the
+        #scale. So scale and rhoRatio are independent and may be fitted
+        #together. The earlier guard against fitting scale with BOTH SLDs is
+        #no longer reachable, because neither absolute SLD is offered.
         if not nonlinearFree:
             messagebox.showinfo(
                 "nothing to fit",
@@ -1000,9 +1152,17 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             #and give different polydispersity and effective volume fraction.
             if p["ff"] == "Core-shell":
                 def makeFF(shell=p["shell"], rhoCore=p["rhoCore"],
-                           rhoShell=p["rhoShell"], **_ignored):
+                           rhoShell=p["rhoShell"], rhoRatio=None,
+                           **_ignored):
+                    #The SHELL SLD comes from the fitted RATIO when one is
+                    #supplied. Only the ratio is determined by the data --
+                    #the overall magnitude is perfectly correlated with the
+                    #scale -- so the fit varies rhoRatio and the core SLD
+                    #stays at its entered value, setting the units.
+                    rs = (rhoShell if rhoRatio is None
+                          else float(rhoRatio)*float(rhoCore))
                     return CoreShellFixedShell(rho_core=rhoCore,
-                                               rho_shell=rhoShell,
+                                               rho_shell=rs,
                                                thickness=shell)
             else:
                 makeFF = None
@@ -1011,7 +1171,9 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                      "shell": p["shell"],
                      "rhoCore": p["rhoCore"],
                      "rhoShell": p["rhoShell"],
+                     "rhoRatio": p["rhoRatio"],
                      "linkC": p["linkC"],
+                     "porodD": p["porodD"],
                      "closureParam": p["closureParam"],
                      "closureParam2": p["closureParam2"]}
             fitter = PolydisperseFit(
@@ -1023,15 +1185,65 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 resolution=p["resolution"],
                 formfactorFactory=makeFF,
                 solverClass=p["solverClass"],
+                warmStart=p["warmStart"],
+                usePorod=p["usePorod"],
+                porodQmin=p["porodQmin"],
+                fixedPorodAmplitude=(p["porodA"] if p["fixPorodA"] else None),
                 linkedArg=((p["deltaIndex"], p["linkC"], "shell")
                            if p["linkDelta"] and p["deltaIndex"] is not None
                            else None),
                 fixedScale=(p["scale"] if p["fixScale"] else None),
                 fixedBackground=(p["background"] if p["fixBackground"]
                                  else None),
+                #Live updates. The worker must NOT touch Tk, so it only puts
+                #the payload on the queue; _poll draws it on the main thread.
+                #Throttled to one per second inside the fitter.
+                onProgress=lambda d: self.resultQueue.put(("fitProgress", d)),
+                progressInterval=1.0,
                 shouldStop=lambda: getattr(self, "_abortFit", False))
             self.resultQueue.put(("status", f"fitting {len(params)} parameters..."))
-            out = fitter.run(maxNfev=200)
+            #Dispatch to the chosen optimiser. Both return the same result
+            #dict, so everything downstream -- the plot, the write-back, the
+            #session -- is unaffected by the choice.
+            #
+            #The bumps methods do NOT receive maxNfev: they carry their own
+            #stopping rules, and a population method capped at 200
+            #evaluations would stop long before its population had converged,
+            #giving a worse answer than least_squares for far more time.
+            name = p.get("fitter", "scipy least_squares")
+            if name.startswith("nlopt "):
+                #Constrained fit. NLopt is here ONLY for constraints that
+                #relate several parameters -- above all that the shell must
+                #fit inside the smallest core class, dR < R(1-n*srel), which
+                #no box bound can express. An unconstrained fit on synthetic
+                #data drove the shell to 0.84 against a limit of 0.63, i.e.
+                #thicker than the core it sits on, and the constrained fit
+                #found the right answer with a LOWER chi-squared.
+                from polydisperse_fit import fitWithNLopt
+                out = fitWithNLopt(
+                    fitter, method=name.split()[1],
+                    constraints=("shellInsideSmallestCore",)
+                    if p["ff"] == "Core-shell" else ())
+            elif name.startswith("bumps "):
+                from polydisperse_fit import fitWithBumps
+                out = fitWithBumps(fitter, method=name.split(None, 1)[1])
+            elif "starts" in name:
+                #Multi-start: the cheap way to ask whether the minimum is
+                #unique. Ten local fits cost ~300 evaluations against the
+                #thousands a population method needs, and they answer the
+                #question that matters here -- a local optimiser cannot
+                #cross from a repulsive square well (epsilon > 0) to an
+                #attractive one, nor between contrast signs, so it reports
+                #whichever branch it started on.
+                out = fitter.runMultiStart(
+                    nStarts=10, maxNfev=200,
+                    onProgress=lambda d: self.resultQueue.put((
+                        "status",
+                        f"start {d['start']}/{d['of']}: "
+                        f"chi2 = {d['chi2_reduced']:.5g}, "
+                        f"best {d['best']:.5g}")))
+            else:
+                out = fitter.run(maxNfev=200)
             self.resultQueue.put(("fit", out))
         except Exception as e:
             self.resultQueue.put(("error", (e, traceback.format_exc())))
@@ -1097,6 +1309,17 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #with the fit. The fitter recomputes it per iteration from the
         #current dR; this sets it for a single evaluation.
         p["linkDelta"] = bool(self.linkDeltaVar.get())
+        p["usePorod"] = bool(self.porodVar.get())
+        p["porodD"] = f(self.porodDVar, "d", lo=0.0)
+        p["porodA"] = f(self.porodAVar, "A")
+        p["porodQmin"] = f(self.porodQminVar, "Q clamp", lo=0.0)
+        p["fitter"] = self.fitterVar.get()
+        p["warmStart"] = bool(self.warmStartVar.get())
+        #Ticked means FREE (solved exactly), so "fixed" is the negation --
+        #the same convention as scale and background.
+        p["fixPorodA"] = not bool(
+            self.fitFlags["porodA"].get() if "porodA" in self.fitFlags
+            else True)
         p["linkC"] = f(self.linkCVar, "c", lo=0.0)
         p["deltaIndex"] = self._deltaParamIndex()
         if p["linkDelta"] and p["deltaIndex"] is not None:
@@ -1125,6 +1348,11 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         p["shell"] = f(self.shellVar, "Shell dR", lo=0.0)
         p["rhoCore"] = f(self.rhoCoreVar, "SLD core")
         p["rhoShell"] = f(self.rhoShellVar, "SLD shell")
+        #The fitted quantity is the RATIO; the entries stay in the user's
+        #own units and set both the starting point and the scale of the
+        #problem.
+        p["rhoRatio"] = (p["rhoShell"]/p["rhoCore"]
+                         if p["rhoCore"] != 0.0 else 0.0)
         #Scale and background: the VALUE is used only when the matching box
         #is ticked, otherwise it is solved exactly and the entry just
         #displays the last solved value.
@@ -1138,6 +1366,22 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         p["fixBackground"] = not bool(
             self.fitFlags["background"].get()
             if "background" in self.fitFlags else True)
+        #HELD AT ZERO is almost always a mistake, and must be computed HERE,
+        #after all three fix flags exist. The entries default to 0, so
+        #unticking one of these silently pins a linear term at nothing -- and
+        #because the solve is exact for whatever remains free, the fit
+        #converges happily and reports a chi-squared that cannot be improved
+        #BY THE OPTIMISER, while a better value is obvious by hand.
+        #
+        #The linear solve itself is optimal: a brute-force grid over
+        #(background, A) cannot beat it. So a background that comes back as
+        #exactly 0 means it was never solved for.
+        p["heldAtZero"] = [
+            n for n, fixed, val in
+            (("scale", p["fixScale"], p["scale"]),
+             ("background", p["fixBackground"], p["background"]),
+             ("A", p["fixPorodA"] and p["usePorod"], p["porodA"]))
+            if fixed and val == 0.0]
         p["Qmin"] = f(self.QminVar, "Q min", lo=1e-12)
         p["Qmax"] = f(self.QmaxVar, "Q max", lo=1e-12)
         p["nQ"] = int(f(self.nQVar, "Points", lo=2, hi=5000))
@@ -1150,6 +1394,13 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #Built on the MAIN thread: it only touches numpy, but the Tk variable
         #that decides whether to use it may not be read from the worker.
         p["resolution"] = None
+        #The measured data travel with the parameter set so the worker can
+        #score the computed curve against them.
+        p["fitData"] = getattr(self, "data", None)
+        #How many parameters the FIT would treat as free, so the computed
+        #chi^2 uses the same degrees of freedom and the two are comparable.
+        p["nFreeParameters"] = sum(
+            1 for v in getattr(self, "fitFlags", {}).values() if v.get())
         if self.smearVar.get() and getattr(self, "dQ", None) is not None:
             Q = self.data[0]
             p["resolution"] = Resolution(Q, self.dQ)
@@ -1275,10 +1526,43 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             scale = float(p.get("scale", 1.0))
             background = float(p.get("background", 0.0))
             res.scale, res.background = scale, background
+            #The power-law background, on the same footing as the constant:
+            #I_bg = background + A * Q^(-4+d). Built on the MODEL grid and
+            #smeared with everything else, since it is part of the
+            #observable rather than a correction applied afterwards.
+            #
+            #This was missing here while the fitter applied it, so Compute
+            #and Fit disagreed by exactly this term -- a fitted curve would
+            #not have reproduced on recalculation.
+            porod = None
+            if p.get("usePorod"):
+                d = float(p.get("porodD", 0.0))
+                A = float(p.get("porodA", 0.0))
+                #CLAMPED below the lowest OUTPUT Q, exactly as the fitter
+                #does (PolydisperseFit._porodColumn). Q^(-4+d) diverges at
+                #the origin and the smearing grid reaches far below the data
+                #-- unclamped, the smeared power law came out 6.6e5 times
+                #the unsmeared value at the lowest measured point, and the
+                #answer depended on an arbitrary guard rather than on the
+                #physics. The power law describes the measured range; it says
+                #nothing about Q -> 0, where any real curve turns over.
+                qFloor = max(float(p.get("porodQmin") or np.min(Qout)), 1e-30)
+                with np.errstate(divide="ignore", invalid="ignore"):
+                    col = np.power(np.maximum(np.asarray(Qmodel, float),
+                                              qFloor), -4.0 + d)
+                col = np.where(np.isfinite(col), col, 0.0)
+                porod = A*col
+            res.porodA = (float(p.get("porodA", 0.0))
+                          if p.get("usePorod") else None)
+            res.porodD = (float(p.get("porodD", 0.0))
+                          if p.get("usePorod") else None)
 
             def observable(curve):
                 """model -> what a measurement would see, smeared if active."""
-                return scale*(smear(curve) if smear is not None else curve) \
+                total = scale*curve
+                if porod is not None:
+                    total = total + porod
+                return (smear(total) if smear is not None else total) \
                     + background
 
             res.I_exact = observable(sas.I_exact(Qmodel))
@@ -1287,6 +1571,61 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             #would misrepresent the structure factor itself.
             res.S = sas.S_partials(Qout)
             res.S_number = sas.S_number(Qout)
+            #chi^2 of the COMPUTED curve against the loaded data, so the
+            #quality of a hand-set parameter set is visible WITHOUT running a
+            #fit. That makes Compute usable for exploring -- change a
+            #parameter, see whether chi^2 improves -- which is how one finds
+            #a starting point good enough for the optimiser to work from.
+            #
+            #Must come after res.I_exact exists; it is computed here rather
+            #than in the plotting code because this is where the data, the
+            #model and the resolution are all in scope.
+            res.chi2 = None
+            data = p.get("fitData")
+            if data is not None:
+                Qd, Id, dId = (np.asarray(a, float) if a is not None else None
+                               for a in data)
+                Ie = np.asarray(res.I_exact, float)
+                #With a resolution active the model already lands on the data
+                #grid; without one it is on the logarithmic display grid, so
+                #interpolate in log-log, where a scattering curve is smooth.
+                if smear is not None and Ie.size == Qd.size:
+                    model = Ie
+                else:
+                    good = (np.asarray(Qout) > 0) & np.isfinite(Ie) & (Ie > 0)
+                    model = (np.exp(np.interp(
+                        np.log(Qd), np.log(np.asarray(Qout)[good]),
+                        np.log(Ie[good]))) if good.sum() > 2 else None)
+                if model is not None:
+                    #SAME degrees of freedom as the fitter, which divides by
+                    #N - nFree - 2. Using N - 2 here made the computed chi^2
+                    #systematically smaller than the fit's for identical
+                    #parameters, so the two could not be compared -- and an
+                    #apparent improvement from changing A or the background
+                    #by hand was partly this offset rather than a better fit.
+                    nFree = int(p.get("nFreeParameters", 0))
+                    n = max(Qd.size - nFree - 2, 1)
+                    if dId is not None and np.all(dId > 0):
+                        res.chi2 = float(np.sum(((model - Id)/dId)**2)/n)
+                    else:
+                        #No uncertainties: the same log-residual measure the
+                        #fitter falls back on, so the two agree.
+                        ok = (model > 0) & (Id > 0)
+                        res.chi2 = float(np.sum(
+                            (np.log(model[ok]) - np.log(Id[ok]))**2)/n)
+                    #The model grid comes from the Q min / Q max entries, NOT
+                    #from the data. If it does not span the data the
+                    #interpolation above EXTRAPOLATES, and the chi^2 is
+                    #meaningless where it does. Say so rather than report a
+                    #number that cannot be compared with anything.
+                    if smear is None and (Qd.min() < np.min(Qout)*(1 - 1e-9)
+                                          or Qd.max() > np.max(Qout)*(1 + 1e-9)):
+                        res.chi2Note = (
+                            f"model grid {np.min(Qout):.4g}..{np.max(Qout):.4g} "
+                            f"does not span the data "
+                            f"{Qd.min():.4g}..{Qd.max():.4g}; chi^2 relies on "
+                            f"extrapolation and is NOT comparable with the "
+                            f"fit's")
             res.sigma = sas.sigma.copy()
             res.w = sas.w.copy()
             res.label = (f"{p['potential']}, {p['closure']}, "
@@ -1341,8 +1680,26 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                               + f"chi2_red = {payload['chi2_reduced']:.4f}   "
                               + f"{payload['nEvaluations']} evaluations "
                               + f"({payload['failedEvaluations']} failed)"),
+                             #Multi-start and constrained runs each report
+                             #something the others cannot, and both answer a
+                             #question a chi-squared alone does not: whether
+                             #the minimum is unique, and whether the physical
+                             #constraints were actually met.
+                             *([f"{payload['nStarts']} starts, "
+                                f"{payload['distinctMinima']} distinct "
+                                f"minimum/minima"]
+                               if payload.get("nStarts") else []),
+                             *([("constraints: " + ", ".join(
+                                 f"{k} = {v:+.4g}"
+                                 + (" MET" if v <= 1e-8 else " VIOLATED")
+                                 for k, v in
+                                 payload["constraintValues"].items()))]
+                               if payload.get("constraintValues") else []),
                              f"scale = {payload['scale']:.6g}   "
-                             f"background = {payload['background']:.6g}", ""]
+                             f"background = {payload['background']:.6g}"
+                             + ("" if payload.get("porodAmplitude") is None
+                                else f"   A = {payload['porodAmplitude']:.6g}"),
+                             ""]
                     for k, v in payload["parameters"].items():
                         lines.append(f"   {k:14s} {v:.6g}")
                         #Write the fitted value back into the field it came
@@ -1362,8 +1719,15 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                                 self.rhoCoreVar.set(f"{v:.6g}")
                             elif k == "rhoShell":
                                 self.rhoShellVar.set(f"{v:.6g}")
+                            elif k == "rhoRatio":
+                                #Write back as an SLD, which is what the
+                                #entry shows and what the user reasons about.
+                                core = float(self.rhoCoreVar.get())
+                                self.rhoShellVar.set(f"{v*core:.6g}")
                             elif k == "linkC":
                                 self.linkCVar.set(f"{v:.6g}")
+                            elif k == "porodD":
+                                self.porodDVar.set(f"{v:.6g}")
                             elif k.startswith("pot"):
                                 self.potParamVars[int(k[3:])].set(f"{v:.6g}")
                         except Exception:
@@ -1383,6 +1747,11 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                                 self.fitFlags["background"].get():
                             self.backgroundVar.set(
                                 f"{payload['background']:.6g}")
+                        if (payload.get("porodAmplitude") is not None
+                                and ("porodA" not in self.fitFlags
+                                     or self.fitFlags["porodA"].get())):
+                            self.porodAVar.set(
+                                f"{payload['porodAmplitude']:.6g}")
                     except Exception:
                         pass
                     lines.append("")
@@ -1397,6 +1766,20 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                     self.computeBtn.configure(state="normal")
                     self.fitBtn.configure(state="normal")
                     self.interruptBtn.configure(state="disabled")
+                    continue
+                if kind == "fitProgress":
+                    #Best point so far, at most once a second. Draw it as a
+                    #provisional fit so the convergence is visible, and mark
+                    #the legend so it cannot be mistaken for the final
+                    #result. Deliberately does NOT write back into the
+                    #parameter entries: those should change once, when the
+                    #fit finishes, not flicker while it runs.
+                    self.fitResult = {**payload, "provisional": True,
+                                      "chi2_reduced": payload.get("cost")}
+                    self._replot()
+                    self.statusVar.set(
+                        f"fitting... {payload.get('nEvaluations', '?')} "
+                        f"evaluations, cost {payload.get('cost', float('nan')):.5g}")
                     continue
                 if kind == "status":
                     self.statusVar.set(payload)
@@ -1446,12 +1829,46 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 axd.plot(Qd, Id, "o", ms=2.5, color="0.35", label="data", zorder=1)
             fr = getattr(self, "fitResult", None)
             if fr is not None:
+                #chi^2 and the LINEAR terms go in the legend. A fit is judged
+                #by its chi-squared, and putting it where the curve is saves
+                #reading it off the Summary tab -- but the background matters
+                #just as much and is easy to miss: it is the only term that
+                #can move the curve vertically, so it absorbs whatever the
+                #SHAPE cannot match. A NEGATIVE background is therefore a
+                #diagnostic, not a rounding artefact: it means the model
+                #overshoots and the fit is buying agreement by subtracting a
+                #constant that cannot physically be negative. It is shown
+                #rather than clamped, because clamping would hide exactly the
+                #signal worth seeing.
+                bits = [("fitting: cost = " if fr.get("provisional") else
+                         "fit: $\\chi^2_{red}$ = ")
+                        + f"{fr.get('chi2_reduced', float('nan')):.4g}"]
+                bg = fr.get("background")
+                if bg is not None:
+                    bits.append(f"bg = {bg:.4g}" + (" (NEGATIVE)" if bg < 0
+                                                    else ""))
+                sc = fr.get("scale")
+                if sc is not None:
+                    bits.append(f"scale = {sc:.4g}")
+                A = fr.get("porodAmplitude")
+                if A is not None:
+                    bits.append(f"A = {A:.4g}")
                 axd.plot(fr["Q"], fr["fit"], "-", color="C3", lw=1.6,
-                         label="fit", zorder=3)
+                         label="\n".join(bits), zorder=3)
+            axd.legend(fontsize=7)
         r = self.result
         if r is not None:
             ax = self.axes["iq"]
-            ax.plot(r.Q, r.I_exact, "k-", lw=2, label="exact")
+            lab = "exact"
+            c2 = getattr(r, "chi2", None)
+            if c2 is not None:
+                lab = f"exact ($\\chi^2_{{red}}$ = {c2:.4g})"
+                if getattr(r, "chi2Note", None):
+                    #The chi^2 is not comparable with the fit's. Say so on
+                    #the plot: a number that looks like a chi-squared and is
+                    #not one invites exactly the wrong conclusion.
+                    lab += "\n(EXTRAPOLATED - not comparable)"
+            ax.plot(r.Q, r.I_exact, "k-", lw=2, label=lab)
             for label, _ in APPROX_SCHEMES:
                 Ia = r.approx.get(label)
                 if Ia is not None:

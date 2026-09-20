@@ -670,6 +670,39 @@ real FFT, which is why $N_r+1$ must be a power of two; $N_r=2^{12}-1$ at 100
 points per $\sigma$ matches the Python grid exactly. The DST-I agrees with
 \code{scipy.fft.dst(type=1)} exactly.
 
+The grid size is not neutral between the two transforms, and this caught us
+out. A DST-I of length $N$ goes through an FFT of length $2(N+1)$, so
+$N = 2^{k}-1$ makes that a power of two; a DST-IV is a length-$N$ transform
+and wants $N = 2^{k}$ instead. Measured with \code{scipy.fft.dst} near
+$2^{14}$:
+
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+$N$ & DST-I & DST-IV\\
+\midrule
+$16383 = 2^{14}-1$ & \textbf{0.263}\,ms & 0.308\,ms\\
+$16384 = 2^{14}$   & 0.599\,ms & \textbf{0.099}\,ms\\
+$16385$            & 2.497\,ms & 0.303\,ms\\
+$16000$            & 2.433\,ms & 0.105\,ms\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+So $2^{k}-1$ is $9.5\times$ faster than an awkward length for the DST-I, while
+$16383 = 3\times43\times127$ is itself an awkward length for the DST-IV and
+costs it a factor of $3.1$. Every grid in this package was sized $2^{k}-1$ for
+the DST-I and then inherited by the type-4 path, so every type-4 \emph{timing}
+was taken on a grid that penalises it threefold. That explains a result
+recorded earlier as inexplicable --- the second-order transform benchmarking
+slower than the first-order one at fine grids, which was attributed at the
+time to the FFT backend. It was the grid.
+
+Accuracy is unaffected: both lengths are valid transforms, and the error
+comparison between them stands as measured. \code{bestGridSize(n, type)}
+returns the appropriate length, and \code{checkTransformAlignment()} now says
+so when a type-4 solve is run on a type-1 grid.
+
 \paragraph{Caching.} A solve costs a few tenths of a second, so re-solving per
 $q$-point would make any scan or fit unusable. The solved system is cached on
 the full parameter set and successive solves warm-start from the previous
@@ -1543,6 +1576,94 @@ exist and the solver converges, but does not certify that none remain --- and
 the authors note it is sensitive to $\alpha$, with no a priori guidance.
 Applied to the BPGG state above, deflating the single root yields nothing
 further, consistent with there being only one.
+
+\section{Fitting measured data}
+
+What is fitted is
+\begin{equation}
+  I(Q) \;=\; \mathcal{R}\!\left[\,\mathrm{scale}\times I_{\mathrm{model}}(Q)
+  \;+\; A\,Q^{-4+d}\,\right] \;+\; \mathrm{background},
+  \label{eq:fitmodel}
+\end{equation}
+where $\mathcal{R}$ is the resolution smearing. The power-law term describes
+the sloping background that real curves frequently carry --- Porod's $Q^{-4}$
+for a smooth sharp interface, shallower for a rough or fractal one. With only
+a flat constant available the fit absorbs that slope into the shape
+parameters, where it does real damage.
+
+Note which terms are inside $\mathcal{R}$. The power law is scattering and is
+smeared; the incoherent background is flat and unaffected by smearing, so it
+is added afterwards.
+
+\paragraph{Linear terms are solved, not searched.} The scale, the constant
+and the power-law amplitude all enter \eqref{eq:fitmodel} linearly, so at
+every iteration they are obtained exactly by weighted linear least squares
+over whichever of them are free, while the nonlinear optimiser sees only the
+shape parameters and the exponent $d$. Giving them to the optimiser instead
+would add the three most strongly correlated quantities in the problem ---
+scale against volume fraction, background against everything at high $Q$, the
+power law against both --- to a search that gains nothing by including them.
+Enabling the power law therefore costs ONE extra fitted parameter, not two.
+Any of the three may also be held fixed, in which case the remainder are
+still solved exactly; a held term simply moves to the right-hand side.
+
+\paragraph{The resolution kernel is Rician, not Gaussian.} A small-angle
+instrument broadens $\mathbf{Q}$ in the detector plane, in two dimensions, and
+the data are then radially averaged. For isotropic Gaussian broadening of
+width $\sigma$ the distribution of the \emph{magnitude} about a true $Q_0$ is
+\begin{equation}
+  P(Q\,|\,Q_0) \;=\; \frac{Q}{\sigma^{2}}
+  \exp\!\left(-\frac{Q^{2}+Q_0^{2}}{2\sigma^{2}}\right)
+  I_0\!\left(\frac{QQ_0}{\sigma^{2}}\right),
+  \label{eq:rician}
+\end{equation}
+with $I_0$ the modified Bessel function of the first kind. A Gaussian in $Q$
+is the $Q_0/\sigma \gg 1$ limit of this and is adequate wherever
+$\mathrm{d}Q/Q$ is small. It is not always small: for the spherical-shell data
+used to develop this, $\mathrm{d}Q/Q$ reaches $0.55$ at the lowest measured
+point, where a Gaussian places $44\,\%$ of that point's kernel weight below
+$Q_{\min}$ and some of it at \emph{negative} $Q$. The leading factor of $Q$ in
+\eqref{eq:rician} suppresses the origin, reducing that to $34\,\%$ and
+excluding negative $Q$ by construction. Both forms reproduce the unsmeared
+curve to $2\times10^{-16}$ as $\mathrm{d}Q\to0$, which is the test that
+catches a mis-normalised kernel. \eqref{eq:rician} is evaluated through the
+exponentially scaled $\tilde{I}_0(x) = e^{-|x|}I_0(x)$, since the argument
+reaches several hundred at these widths and $I_0$ overflows a double long
+before the prefactor cancels it.
+
+\paragraph{The power law must not be extrapolated to $Q\to0$.} $Q^{-4+d}$
+diverges at the origin while the smearing kernel reaches below the data, so
+something has to bound it. Left unbounded the result is set by whatever guard
+prevents division by zero rather than by the physics: with a Gaussian kernel
+the smeared power law at the lowest measured point came out $6.6\times10^{5}$
+times the unsmeared value, and moving that guard from $Q_{\min}/1000$ to
+$Q_{\min}/10$ changed the answer by five orders of magnitude. The term is
+therefore held constant below a $Q$ the user sets. Choosing the lowest
+measured $Q$ suppresses the extrapolation entirely; the default is far below
+it, which keeps the power law extending into the unmeasured region. That is a
+physical judgement --- whether the scattering really continues to rise below
+the window --- and is exposed rather than decided in the code. It is worth
+fitting both ways: if $A$ and $d$ are stable the choice does not matter, and
+if they swing then the lowest points are driving the result.
+
+\paragraph{Linking the interaction range to the shell.} For the square-well
+and sticky-sphere potentials the second argument is the well WIDTH as an
+absolute length, directly comparable with a core--shell particle's shell
+thickness. Where the attraction comes from the surface layer the two are the
+same physical quantity, and fitting them independently invites them to trade
+against one another. They can therefore be linked as $\delta = c\,\Delta R$,
+with $\delta$ recomputed from the current $\Delta R$ at every iteration and
+removed from the fitted set. The constant $c$ may itself be fitted, bounded
+between $0$ and $2$: $c=1$ if the range is the layer, $c=2$ if two layers
+overlap when particles touch.
+
+\paragraph{Degeneracies are refused, not fitted.} The intensity depends on
+the scale times the squared contrast, so the scale and both scattering length
+densities cannot be determined together; the interface declines that
+combination rather than letting the optimiser wander along a flat valley and
+report a converged fit whose parameters are meaningless. The scattering
+length densities are unbounded, so that an opposite sign between core and
+shell is an outcome of the fit rather than an imposition.
 
 \section{Known limitations}
 

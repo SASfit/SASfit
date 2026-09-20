@@ -88,6 +88,44 @@ from xmlrpc.server import SimpleXMLRPCServer
 import inspect
 
 
+def bestGridSize(n, transformType=1):
+    """The efficient number of radial points for a given transform type.
+
+    The two transforms are computed through FFTs of DIFFERENT lengths, so
+    the grid size that is fast for one is slow for the other:
+
+      DST-I  (type 1) uses an FFT of length 2(N+1), so N = 2^k - 1 makes
+                      that a power of two.
+      DST-IV (type 4) uses length N itself, so it wants N = 2^k.
+
+    Measured with scipy.fft.dst at N near 2^14:
+
+        N          type 1     type 4
+        16383      0.263 ms   0.308 ms
+        16384      0.599 ms   0.099 ms
+        16385      2.497 ms   0.303 ms
+
+    So N = 2^k - 1 is 9.5x faster than a bad size for type 1, and N = 2^k is
+    3.1x faster than 2^k - 1 for type 4. 16383 = 3 x 43 x 127 is simply a
+    bad length for a length-N transform.
+
+    This matters because every grid in this package was sized 2^k - 1 for
+    type 1 and then inherited by type 4, which made every type-4 TIMING about
+    three times worse than it need be -- and produced the otherwise
+    inexplicable result that the second-order transform benchmarked slower
+    than the first-order one at fine grids. It was the grid, not the
+    transform.
+
+    Accuracy is unaffected: both sizes are valid, and the error comparison
+    between the transforms stands as measured.
+
+    `n` is rounded to the nearest suitable size at or above it.
+    """
+    n = max(int(n), 3)
+    k = max(int(np.ceil(np.log2(n + 1))), 2)
+    return (1 << k) if int(transformType) == 4 else (1 << k) - 1
+
+
 class OZfixpointOperator:
     #Init needs to be given by constructor, all other members can be set via RPC later
     #but port needs to be known in advance by the client. (Will be defined by the client)
@@ -776,6 +814,19 @@ class OZfixpointOperator:
       """
       if getattr(self, 'transformType', 1) != 4:
           return 0.5, None
+      #GRID SIZE. Type 4 is a length-N transform, so it wants N = 2^k;
+      #type 1 goes through an FFT of length 2(N+1) and wants N = 2^k - 1.
+      #Every grid in this package was sized for type 1 and inherited by
+      #type 4, which costs about a factor of three in transform time and is
+      #why type 4 once benchmarked SLOWER than type 1 at fine grids despite
+      #being the better transform. Accuracy is unaffected; only speed.
+      N = int(self.numberOfRadialSamplingPoints)
+      if N & (N - 1):                      # not a power of two
+          best = bestGridSize(N, 4)
+          print(f"[oZfixpointOperator] note: transformType 4 with "
+                f"numberOfRadialSamplingPoints = {N}, which is not a power "
+                f"of two. DST-IV is a length-N transform, so {best} would "
+                f"be roughly 3x faster. Accuracy is unaffected.")
       sig = getattr(self, 'componentDiameters', None)
       if sig is None:
           sig = np.atleast_1d(self.hardSphereDiameter)

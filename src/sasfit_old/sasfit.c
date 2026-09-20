@@ -1916,8 +1916,8 @@ scalar imMSASround_transform(scalar Q, sasfit_param *param) {
  * being routed through the grid.
  */
 
-#define SASFIT_FFTLOGROUND_N 2048
-#define SASFIT_FFTLOGROUND_CACHE_SIZE 8
+#define SASFIT_FFTLOGROUND_N 2048-1
+#define SASFIT_FFTLOGROUND_CACHE_SIZE 32
 
 typedef struct {
     scalar a[MAXPAR];
@@ -2177,7 +2177,7 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
             param.moreparam=&param4int;
             return sasfit_hankel(0,&imMSAStransform,Q,&param)/(2*M_PI*sasfit_get_MSASthickness());
             break;}
-        case 4: { /* MSASROUND: same physics as case 3, computed via the
+        case 4: { /* MSAS_QHT: same physics as case 3, computed via the
                    * self-reciprocal QDHT grid (imMSASround_transform)
                    * instead of two independent sasfit_hankel() calls.
                    * For side-by-side testing against case 3 -- not the
@@ -2199,12 +2199,12 @@ scalar integral_IQ_incl_Gztransform( Tcl_Interp *interp,
             param.moreparam=&param4int;
             return imMSASround_transform(Q,&param);
             break;}
-        case 5: { /* FFTLOGROUND: same physics as case 3, computed via
+        case 5: { /* MSAS_FFTLOG: same physics as case 3, computed via
                    * the self-reciprocal FFTLog grid
                    * (imFFTLOGround_transform) instead of two
                    * independent sasfit_hankel() calls. For
                    * side-by-side testing against case 3 (MSAS) and
-                   * case 4 (MSASROUND) -- not the default. */
+                   * case 4 (MSAS_QDHT) -- not the default. */
             param4int.interp=interp;
             param4int.dF_dpar=dF_dpar;
             param4int.l=l;

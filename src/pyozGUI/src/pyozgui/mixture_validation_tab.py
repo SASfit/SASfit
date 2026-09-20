@@ -287,7 +287,11 @@ class MixtureValidationTab(ttk.Frame):
             #allow_nan is relied on, as elsewhere in this package: some
             #curves legitimately contain NaN inside a hard core.
             with open(path, "w") as fh:
-                json.dump(payload, fh)
+                #indent=2 and sorted keys: the settings are what anyone wants
+                #to read or hand-edit, and unindented JSON puts them all on
+                #one line. Sorting also makes two saves diff cleanly.
+                json.dump(payload, fh, indent=2, sort_keys=True)
+                fh.write("\n")
             self.statusVar.set(f"saved to {path}")
         except OSError as exc:
             messagebox.showerror("save failed", str(exc))

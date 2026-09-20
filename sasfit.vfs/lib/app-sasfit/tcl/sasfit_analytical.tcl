@@ -7081,13 +7081,18 @@ proc setIQorGz2int {} {
 		    $::FitPrecision(MSASw).lambdaval \
 		    $::FitPrecision(MSASw).lambdatxt \
 		    -padx 1m -pady 1m -side right}
-		"MSASROUND" {set ::FitPrecision(IQorGz_int) 4
+		"MSAS_QDHT" {set ::FitPrecision(IQorGz_int) 4
 			pack $::FitPrecision(MSASw).thicknessval \
 		    $::FitPrecision(MSASw).thicknesstxt \
 		    $::FitPrecision(MSASw).lambdaval \
 		    $::FitPrecision(MSASw).lambdatxt \
 		    -padx 1m -pady 1m -side right}
-
+		"MSAS_FFTLOG" {set ::FitPrecision(IQorGz_int) 5
+			pack $::FitPrecision(MSASw).thicknessval \
+		    $::FitPrecision(MSASw).thicknesstxt \
+		    $::FitPrecision(MSASw).lambdaval \
+		    $::FitPrecision(MSASw).lambdatxt \
+		    -padx 1m -pady 1m -side right}
 		default {set ::FitPrecision(IQorGz_int) 0
 			pack forget $::FitPrecision(MSASw).lambdaval
 			pack forget $::FitPrecision(MSASw).lambdatxt
@@ -7186,7 +7191,7 @@ proc analytical_widgets_bottom { w simulate isGlobal
         ProgressBar $w.progress.value \
 	    		-maximum 100\
 				-type normal -variable ::SASfitprogressbar 
-		ComboBox $w.progress.iq_gz -values {"1" "Exp(H{...}/2pi)" "H{...}/2pi" "MSAS" "MSASROUND"} \
+		ComboBox $w.progress.iq_gz -values {"1" "Exp(H{...}/2pi)" "H{...}/2pi" "MSAS" "MSAS_QDHT" "MSAS_FFTLOG"} \
 				-width 12 \
 				-textvariable ::FitPrecision(IQorGz) \
 				-label "transform:" \

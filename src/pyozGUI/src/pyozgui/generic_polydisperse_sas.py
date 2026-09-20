@@ -56,6 +56,7 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
                  closure="Percus-Yevick", closureParam=None, closureParam2=None,
                  formfactor=None, meanDiameter=1.0,
                  solverClass=None, gridN=4095, pointsPerSigma=100,
+                 onSolverCreated=None,
                  maxIterations=6000, converged_tol=1e-6,
                  nFF=None, distribution="Schulz", meanRadius=None,
                  transformType=1):
@@ -130,6 +131,9 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         #convention of the polydisperse Yukawa tab.
         self.meanRadius = None if meanRadius is None else float(meanRadius)
         self._L = 1.0 if self.meanRadius is None else 2.0*self.meanRadius
+        #Set BEFORE _solve, since that is where the hook fires.
+        if onSolverCreated is not None:
+            self.onSolverCreated = onSolverCreated
         sol = self._solve(srel, nbins, self.phi)
         self.solver = sol
         #Coarse classes: what the OZ equations were actually solved on.
@@ -201,6 +205,16 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         else:
             getattr(sol, setterName)()
 
+    #Optional callable invoked with the freshly built solver, BEFORE it is
+    #configured and solved. Set it on the instance-to-be via the class or a
+    #subclass; PolydisperseFit uses it to seed a warm start.
+    #
+    #It has to be a hook here rather than something the caller does after
+    #construction, because __init__ SOLVES: by the time the constructor
+    #returns, sas.solver has already run and seeding it is too late. That
+    #cost a round of debugging when the warm start silently did nothing.
+    onSolverCreated = None
+
     def _solve(self, srel, nbins, phi):
         kw = self._solverKw
         sol = self._makeSolver(kw["gridN"], kw["pointsPerSigma"],
@@ -251,6 +265,13 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         if self._transformType == 4:
             sol.checkTransformAlignment()
         self._applyClosure(sol)
+        #The hook fires HERE, immediately before the solve, not when the
+        #solver was created. Setting the density, the potential and the
+        #closure all reset the solver's starting vector, so a seed applied
+        #at creation time is accepted and then silently overwritten -- the
+        #iteration counts gave it away, unchanged at 166 either way.
+        if callable(self.onSolverCreated):
+            self.onSolverCreated(sol)
         sol.solve()
         # Never trust the driver: picardIteration() prints a warning on
         # failure but returns results anyway, with no flag for callers. Check
