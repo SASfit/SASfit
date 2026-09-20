@@ -1895,12 +1895,13 @@ scalar imMSASround_transform(scalar Q, sasfit_param *param) {
  * side-by-side testing against case 3 (MSAS) and case 4 (MSASROUND);
  * not the default.
  *
- * The key structural difference from MSASROUND: FFTLog has no separate
- * forward/inverse entry point -- sasfit_fftlog_transform_grid() is
- * called TWICE on the SAME plan (once Q->r, once r->Q), which is what
- * "self-reciprocal" means for FFTLog (see sasfit_fftlog.cpp's comment
- * on FFTLogPlanImpl for why this works and where it's only
- * approximate, not exact to machine precision like QDHT's kernel).
+ * The key structural difference from MSASROUND: FFTLog's forward and
+ * inverse legs are genuinely different operations (see
+ * sasfit_fftlog_forward_grid/sasfit_fftlog_inverse_grid in
+ * sasfit_fftlog.cpp for why, and for a confirmed numerical
+ * consequence of getting this wrong) -- leg 1 (Q->r) uses
+ * sasfit_fftlog_forward_grid, leg 2 (r->Q) uses
+ * sasfit_fftlog_inverse_grid, NOT a second forward_grid call.
  *
  * The x_min/x_max (here: Qmin/Qmax) domain-sizing heuristic is ALSO
  * different from MSASROUND's, deliberately: QDHT's R-margin heuristic
@@ -1974,7 +1975,7 @@ scalar imFFTLOGround_transform(scalar Q, sasfit_param *param) {
     cache = sasfit_fftloground_cache_instance();
 
     if (!sasfit_fftlog_cache_lookup(cache, &key, &plan, &spline, &accel)) {
-        double *x_nodes, *IQ_vals, *H_r, *im_r, *IMSAS_y, *y_nodes;
+        double *x_nodes, *IQ_vals, *H_r, *im_r, *IMSAS_x;
         double peak_Q = 1.0, best_val = -1.0, Qmin, Qmax;
         double samples_Q[121], samples_val[121];
         int nsamp = 0, j;
@@ -2042,16 +2043,15 @@ scalar imFFTLOGround_transform(scalar Q, sasfit_param *param) {
         IQ_vals = (double *) malloc(sizeof(double) * N);
         H_r     = (double *) malloc(sizeof(double) * N);
         im_r    = (double *) malloc(sizeof(double) * N);
-        IMSAS_y = (double *) malloc(sizeof(double) * N);
+        IMSAS_x = (double *) malloc(sizeof(double) * N);
 
         for (i = 0; i < N; i++) {
             x_nodes[i] = sasfit_fftlog_plan_x_node(plan, i);
             IQ_vals[i] = IQ4HTvoid(x_nodes[i], (void *) param);
         }
-        /* Q -> r: first application of the self-reciprocal transform,
-         * matching Gztransform()'s sasfit_hankel(0,&IQ4HTvoid,r,param)
-         * call. */
-        sasfit_fftlog_transform_grid(plan, IQ_vals, H_r);
+        /* Q -> r: forward leg, matching Gztransform()'s
+         * sasfit_hankel(0,&IQ4HTvoid,r,param) call. */
+        sasfit_fftlog_forward_grid(plan, IQ_vals, H_r);
 
         /* H(0): unchanged from Gztransform()/MSASROUND. */
         param4int->z = 0;
@@ -2069,36 +2069,29 @@ scalar imFFTLOGround_transform(scalar Q, sasfit_param *param) {
             }
         }
 
-        /* r -> Q: SECOND application of the SAME transform (not a
-         * separate inverse call -- see the function comment above),
-         * matching integral_IQ_incl_Gztransform()'s
-         * sasfit_hankel(0,&imMSAStransform,Q,&param) call. */
-        sasfit_fftlog_transform_grid(plan, im_r, IMSAS_y);
+        /* r -> Q: INVERSE leg (not a second forward_grid call -- see
+         * the function comment above and sasfit_fftlog.cpp), matching
+         * integral_IQ_incl_Gztransform()'s
+         * sasfit_hankel(0,&imMSAStransform,Q,&param) call. Output
+         * lands on the plan's x_nodes (the Q-domain), NOT y_nodes. */
+        sasfit_fftlog_inverse_grid(plan, im_r, IMSAS_x);
         for (i = 0; i < N; i++) {
-            IMSAS_y[i] /= (2*M_PI*t);
+            IMSAS_x[i] /= (2*M_PI*t);
         }
-
-        /* The second call's output lands on the plan's y_nodes (the
-         * reciprocal grid), NOT back on x_nodes exactly -- use the
-         * plan's own y_node() accessor for the spline's independent
-         * variable, per FFTLog's approximate (not exact) self-
-         * reciprocity (see sasfit_fftlog.cpp). */
-        y_nodes = (double *) malloc(sizeof(double) * N);
-        for (i = 0; i < N; i++) y_nodes[i] = sasfit_fftlog_plan_y_node(plan, i);
 
         accel = gsl_interp_accel_alloc();
         spline = gsl_spline_alloc(gsl_interp_linear, N);
-        gsl_spline_init(spline, y_nodes, IMSAS_y, N);
+        gsl_spline_init(spline, x_nodes, IMSAS_x, N);
 
         sasfit_fftlog_cache_insert(cache, &key, plan, spline, accel);
 
         free(x_nodes); free(IQ_vals); free(H_r); free(im_r);
-        free(IMSAS_y); free(y_nodes);
+        free(IMSAS_x);
     }
 
     N = sasfit_fftlog_plan_size(plan);
-    ymin = sasfit_fftlog_plan_y_node(plan, 0);
-    ymax = sasfit_fftlog_plan_y_node(plan, N - 1);
+    ymin = sasfit_fftlog_plan_x_node(plan, 0);
+    ymax = sasfit_fftlog_plan_x_node(plan, N - 1);
     if (Q < fmin(ymin, ymax) || Q > fmax(ymin, ymax)) {
         param4int->error = TRUE;
         sasfit_err("FFTLOGROUND: Q=%lg outside computed range [%lg,%lg]\n", Q, ymin, ymax);

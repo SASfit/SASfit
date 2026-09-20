@@ -184,27 +184,21 @@ FFTLogResult fftlog_transform(const std::vector<double>& r, const std::vector<do
 // setup out so it is built once and the FFT itself -- the only part
 // that actually differs between the two calls -- is repeated cheaply.
 //
-// Unlike QDHT's kernel matrix, there is no separate "forward" vs
-// "inverse" entry point here: applying the SAME operation twice IS the
-// round trip. This is a direct consequence of FFTLog's log-spaced
-// reciprocal-grid construction -- the output grid has (very nearly)
-// the same total log-span as the input grid, by construction of
-// good_kr()'s low-ringing condition, so feeding the output back in as
-// a new input lands on (very nearly) the original grid again. "Very
-// nearly", not exactly to machine precision like QDHT's orthogonal
-// kernel (T*T=I there is exact) -- FFTLog's self-reciprocity is only
-// as good as the underlying FFT's implicit periodicity assumption
-// holds for the padded domain, which is precisely why x_min/x_max
-// padding matters so much more here than for QDHT (see the padding
-// comment in sasfit_fftlog() below, and the header declaration).
+// IMPORTANT, corrected from an earlier version of this file: forward
+// and inverse are NOT the same operation called twice, despite
+// FFTLog's reciprocal-grid construction giving the two grids the same
+// total log-span. See fftlog_apply_inverse_impl's comment below for
+// why, and for the confirmed numerical consequence of getting this
+// wrong.
 //
 // The FFTW plans are tied to this struct's OWN fixed scratch buffers
 // (in_buf/out_buf/c_buf/cu_buf), not to the caller's arrays -- this is
 // what makes the plans safely reusable across calls: FFTW's contract
 // guarantees fftw_execute() re-reads/re-writes whatever is currently
 // in the SAME buffers given at plan-creation time, so
-// fftlog_apply_impl() just copies the caller's data in beforehand and
-// copies the result out afterward, rather than re-planning every call.
+// fftlog_apply_forward_impl()/fftlog_apply_inverse_impl() just copy
+// the caller's data in beforehand and copy the result out afterward,
+// rather than re-planning every call.
 
 struct FFTLogPlanImpl {
     int n = 0;
@@ -291,14 +285,10 @@ FFTLogPlanImpl fftlog_build_plan_impl(int n, double mu, double x_min, double x_m
     return plan;
 }
 
-// Applies the SAME self-reciprocal FFTLog operation in either
-// direction: f_x (values at plan.x_nodes) -> F_y (values at
-// plan.y_nodes), using the SAME circular-index mapping validated in
-// fftlog_transform() above. Calling this twice in a row -- x->y, then
-// feeding the y-side result back in as a new x-side input -- is the
-// round trip; see the struct comment above for why no separate
-// "inverse" entry point is needed.
-std::vector<double> fftlog_apply_impl(FFTLogPlanImpl& plan, const std::vector<double>& f_x) {
+// Applies FFTLog's forward operation: f_x (values at plan.x_nodes) ->
+// F_y (values at plan.y_nodes). Uses the SAME circular-index mapping
+// validated in fftlog_transform() above.
+std::vector<double> fftlog_apply_forward_impl(FFTLogPlanImpl& plan, const std::vector<double>& f_x) {
     const int n = plan.n;
     for (int j = 0; j < n; ++j) {
         plan.in_buf[j] = plan.x_nodes[j] * f_x[j];
@@ -315,6 +305,48 @@ std::vector<double> fftlog_apply_impl(FFTLogPlanImpl& plan, const std::vector<do
         F_y[j] = Ak / plan.y_nodes[j];
     }
     return F_y;
+}
+
+// Applies FFTLog's INVERSE operation: F_y (values at plan.y_nodes) ->
+// f_x (values at plan.x_nodes). This is NOT the same as calling
+// fftlog_apply_forward_impl a second time -- it uses the SAME kernel
+// (u[], kr, L: the underlying continuous Hankel-transform kernel is
+// identical for both directions, exactly as for QDHT) but weights its
+// input by y_nodes and divides its output by x_nodes, i.e. the two
+// node arrays' roles are swapped relative to the forward direction.
+//
+// This distinction matters in practice, not just in principle: an
+// earlier version of this file called the forward operation twice for
+// a round trip, on the theory that FFTLog's log-spaced reciprocal grid
+// makes it "self-reciprocal" the way QDHT's orthogonal kernel is. That
+// reasoning was wrong. It happened to look almost right on a
+// symmetric self-transforming test function (a Gaussian, transformed
+// on a domain where x_nodes and y_nodes stay numerically close), which
+// is why the bug wasn't caught by that test -- but for a real Q<->r
+// round trip, where the two domains sit on very different physical
+// scales, calling the forward operation twice weights every sample by
+// the wrong node array and returns a result wrong by many orders of
+// magnitude (confirmed: a Python port of this exact algorithm,
+// checked against an independent reference, reproduced the true
+// function to 4+ significant figures using inverse_grid for the
+// return leg, and was off by ~1e-6x using a second forward_grid call).
+std::vector<double> fftlog_apply_inverse_impl(FFTLogPlanImpl& plan, const std::vector<double>& F_y) {
+    const int n = plan.n;
+    for (int j = 0; j < n; ++j) {
+        plan.in_buf[j] = plan.y_nodes[j] * F_y[j];
+    }
+    fftw_execute(plan.plan_fwd);
+    const int nc = n / 2 + 1;
+    for (int m = 0; m < nc; ++m) {
+        plan.cu_buf[m] = plan.c_buf[m] * plan.u[m] / static_cast<double>(n);
+    }
+    fftw_execute(plan.plan_inv);
+    std::vector<double> f_x(n);
+    for (int j = 0; j < n; ++j) {
+        const double Ak = plan.out_buf[((n - j) % n + n) % n];
+        f_x[j] = Ak / plan.x_nodes[j];
+    }
+    return f_x;
 }
 
 // Multi-slot LRU cache payload (see sasfit_lru_cache.h): owns the
@@ -404,11 +436,18 @@ double sasfit_fftlog_plan_y_node(const sasfit_fftlog_plan* plan, int n) {
     return plan->impl.y_nodes[n];
 }
 
-void sasfit_fftlog_transform_grid(sasfit_fftlog_plan* plan, const double* f_x, double* F_y) {
+void sasfit_fftlog_forward_grid(sasfit_fftlog_plan* plan, const double* f_x, double* F_y) {
     if (!plan || !f_x || !F_y) return;
     std::vector<double> f(f_x, f_x + plan->impl.n);
-    std::vector<double> F = fftlog_apply_impl(plan->impl, f);
+    std::vector<double> F = fftlog_apply_forward_impl(plan->impl, f);
     std::copy(F.begin(), F.end(), F_y);
+}
+
+void sasfit_fftlog_inverse_grid(sasfit_fftlog_plan* plan, const double* F_y, double* f_x) {
+    if (!plan || !F_y || !f_x) return;
+    std::vector<double> F(F_y, F_y + plan->impl.n);
+    std::vector<double> f = fftlog_apply_inverse_impl(plan->impl, F);
+    std::copy(f.begin(), f.end(), f_x);
 }
 
 } // extern "C"

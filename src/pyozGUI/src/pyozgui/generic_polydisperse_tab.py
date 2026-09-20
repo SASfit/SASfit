@@ -127,7 +127,23 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         self._polling = False
         self._probe = PicardOZsolver(port=0)
 
-        self.columnconfigure(1, weight=1)
+        #A DRAGGABLE DIVIDER between the parameters and the plots.
+        #
+        #The control panel was a fixed 300 px, which stopped fitting once
+        #each parameter row grew to four columns -- label, entry, "vary"
+        #box, bounds -- and the bounds were clipped. A fixed width can only
+        #ever be wrong for somebody: the widest row depends on the potential,
+        #the closure and the font.
+        #
+        #ttk.PanedWindow lets the user decide, and remembers nothing, which
+        #is the right default: the sash position is a matter of the moment
+        #rather than of the model. `weight` favours the plots when the window
+        #is resized, so widening the window enlarges the figure rather than
+        #the entry fields.
+        self.paned = ttk.PanedWindow(self, orient="horizontal")
+        self.paned.grid(row=0, column=0, columnspan=2, sticky="nsew")
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=0)
         self.rowconfigure(0, weight=1)
         self._buildControls()
         self._buildPlots()
@@ -153,8 +169,10 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         return sorted(out)
 
     def _buildControls(self):
-        outer = ttk.Frame(self, padding=6)
-        outer.grid(row=0, column=0, sticky="nsew")
+        outer = ttk.Frame(self.paned, padding=6)
+        #Added to the paned window rather than gridded on the tab, so the
+        #divider can move it. weight=0: extra width goes to the plots.
+        self.paned.add(outer, weight=0)
         #The action buttons and status line go in a footer packed to the
         #BOTTOM first, so they always stay visible and are never scrolled off.
         footer = ttk.Frame(outer)
@@ -164,9 +182,29 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #chosen potential -- the charged Yukawa adds three fields, Extended
         #Rogers-Young a fourth -- and on a laptop screen that overflowed the
         #window with no way to reach the lower entries.
-        canvas = tk.Canvas(outer, borderwidth=0, highlightthickness=0, width=300)
-        vbar = ttk.Scrollbar(outer, orient="vertical", command=canvas.yview)
+        #
+        #A SUNKEN FRAME around the scrolling area, so its extent is visible:
+        #without a border the parameters appear to run into the plot panel
+        #and there is no clue that more lies below. The border is drawn on a
+        #container rather than on the canvas so that the scrollbar sits
+        #INSIDE it and reads as part of the same region.
+        scrollBox = ttk.Frame(outer, relief="sunken", borderwidth=1)
+        scrollBox.pack(side="left", fill="both", expand=True)
+        canvas = tk.Canvas(scrollBox, borderwidth=0, highlightthickness=0,
+                           #Wide enough for a full parameter row -- label,
+                           #entry, "vary", and the two bound fields -- since
+                           #this requested width sets the INITIAL sash
+                           #position. Only a starting point now that the
+                           #divider is draggable.
+                           width=470)
+        vbar = ttk.Scrollbar(scrollBox, orient="vertical",
+                             command=canvas.yview)
         canvas.configure(yscrollcommand=vbar.set)
+        #PERMANENT scrollbar: packed unconditionally and never hidden, so the
+        #control panel does not change width when the parameter list grows or
+        #shrinks. A scrollbar that appears and disappears shifts every field
+        #sideways as the potential is changed, which is worse than one that
+        #is sometimes idle.
         vbar.pack(side="right", fill="y")
         canvas.pack(side="left", fill="both", expand=True)
         left = ttk.Frame(canvas)
@@ -192,7 +230,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 delta = -1 if event.delta > 0 else 1
             canvas.yview_scroll(delta, "units")
 
-        for widget in (canvas, left):
+        for widget in (canvas, left, scrollBox):
             widget.bind("<MouseWheel>", _wheel)
             widget.bind("<Button-4>", _wheel)
             widget.bind("<Button-5>", _wheel)
@@ -241,11 +279,76 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         ttk.Separator(left, orient="horizontal").grid(
             row=r, column=0, columnspan=2, sticky="ew", pady=6); r += 1
 
-        def entry(label, default, width=10):
+        #Inline fit checkboxes. `fit=<name>` puts the "vary" box in column 2,
+        #beside the value it governs, instead of in a separate panel where
+        #the user has to match parameter names across two lists.
+        #
+        #Created ONCE and then greyed when not applicable, never destroyed.
+        #That is what makes this safe: a rebuild that recreates checkboxes
+        #can leave a stale one behind, and a surviving checkbox would fit a
+        #parameter the model is not using. Disabling changes appearance and
+        #nothing else.
+        self.fitFlags = {}
+        self._fitChecks = {}
+        #The ENTRY that goes with each checkbox, greyed together with it: a
+        #field that accepts a number the model then ignores is worse than no
+        #field at all.
+        self._fitEntries = {}
+        #The bound entries, and their Tk variables. FIT_BOUNDS is only the
+        #default; what the fit uses is whatever is in these.
+        self._fitBoundVars = {}
+        self._fitBoundEntries = {}
+
+        def entry(label, default, width=14, fit=None):
             nonlocal r
             ttk.Label(left, text=label).grid(row=r, column=0, sticky="e")
             v = tk.StringVar(value=default)
-            ttk.Entry(left, textvariable=v, width=width).grid(row=r, column=1, sticky="w")
+            e = ttk.Entry(left, textvariable=v, width=width)
+            e.grid(row=r, column=1, sticky="w")
+            if fit is not None:
+                #Default-ticked: the shape parameters normally fitted, plus
+                #the LINEAR terms, which are solved exactly at no cost.
+                on = fit in ("meanRadius", "srel", "phi", "scale",
+                             "background", "porodA")
+                bv = tk.BooleanVar(value=on)
+                cb = ttk.Checkbutton(left, text="vary", variable=bv)
+                cb.grid(row=r, column=2, sticky="w", padx=(4, 0))
+                self.fitFlags[fit] = bv
+                self._fitChecks[fit] = cb
+                self._fitEntries[fit] = e
+                #EDITABLE BOUNDS, shown beside the box that enables the fit.
+                #
+                #FIT_BOUNDS supplies the DEFAULT; these entries hold the
+                #working values and are what the fit actually uses. The
+                #defaults are deliberately loose -- they exist to keep the
+                #optimiser out of nonsense, not to express knowledge -- and a
+                #user who has measured a radius by TEM or a volume fraction
+                #by weighing knows far more than a generic range does.
+                #Narrowing them is the cheapest way to stop a fit wandering
+                #into a region already excluded by other evidence.
+                #
+                #Showing them matters even unedited: a parameter pinned at a
+                #limit is a RESULT -- the data want to go where the model
+                #forbids -- and that is invisible if the limit is.
+                lo, hi = self.FIT_BOUNDS.get(fit, (None, None))
+                if lo is not None:
+                    def _fmt(x):
+                        if not np.isfinite(x):
+                            return "inf" if x > 0 else "-inf"
+                        return f"{x:g}"
+                    loV = tk.StringVar(value=_fmt(lo))
+                    hiV = tk.StringVar(value=_fmt(hi))
+                    bf = ttk.Frame(left)
+                    bf.grid(row=r, column=3, sticky="w", padx=(4, 0))
+                    ttk.Label(bf, text="[").pack(side="left")
+                    loE = ttk.Entry(bf, textvariable=loV, width=7)
+                    loE.pack(side="left")
+                    ttk.Label(bf, text=",").pack(side="left")
+                    hiE = ttk.Entry(bf, textvariable=hiV, width=7)
+                    hiE.pack(side="left")
+                    ttk.Label(bf, text="]").pack(side="left")
+                    self._fitBoundVars[fit] = (loV, hiV)
+                    self._fitBoundEntries[fit] = (loE, hiE)
             r += 1
             return v
 
@@ -269,13 +372,13 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                      values=["Schulz", "Gaussian", "LogNormal", "Weibull"]
                      ).grid(row=r, column=1, sticky="w")
         r += 1
-        self.meanRadiusVar = entry("Mean radius:", "50.0")
+        self.meanRadiusVar = entry("Mean radius:", "50.0", fit="meanRadius")
         ttk.Label(left, text="sets the length scale; Q is then a genuine inverse "
                              "length. The scattering radius equals the HARD-CORE "
                              "radius, R = sigma/2.",
                   foreground="grey", wraplength=230, justify="left").grid(
             row=r, column=0, columnspan=2, sticky="w"); r += 1
-        self.srelVar = entry("Rel. s.d.:", "0.20")
+        self.srelVar = entry("Rel. s.d.:", "0.20", fit="srel")
         self.nbinsVar = entry("Classes (S):", "3")
         self.nFFVar = entry("Classes (form f.):", "40")
         ttk.Label(left, text="S(Q) needs few classes (moment-matched); the form "
@@ -283,7 +386,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                              "classes(form f.) >~ Qmax*sigma*s",
                   foreground="grey", wraplength=230, justify="left").grid(
             row=r, column=0, columnspan=2, sticky="w"); r += 1
-        self.phiVar = entry("Volume fraction:", "0.20")
+        self.phiVar = entry("Volume fraction:", "0.20", fit="phi")
 
         ttk.Separator(left, orient="horizontal").grid(
             row=r, column=0, columnspan=2, sticky="ew", pady=6); r += 1
@@ -301,7 +404,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #the CORE radius, every particle carries the same shell, and the
         #interaction diameter is 2(R_core + dR). Units are whatever the
         #radius uses, i.e. the reciprocal of Q's.
-        self.shellVar = entry("Shell dR:", "2.7")
+        self.shellVar = entry("Shell dR:", "2.7", fit="shell")
         #LINK the potential's range parameter to the shell thickness.
         #
         #For SquareWell and StickyHardSphere the second argument `delta` is
@@ -327,9 +430,63 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                         command=self._syncLinkDelta).grid(
             row=r, column=0, columnspan=2, sticky="w")
         r += 1
-        self.linkCVar = entry("   c:", "2.0")
+        self.linkCVar = entry("   c:", "2.0", fit="linkC")
         self.rhoCoreVar = entry("SLD core:", "2.0")
         self.rhoShellVar = entry("SLD shell:", "1.0")
+        #THE FITTED CONTRAST PARAMETER IS THE RATIO, so it gets its own field
+        #rather than a checkbox attached to the shell SLD.
+        #
+        #The absolute scattering length densities are perfectly correlated
+        #with the scale -- the intensity goes as scale times contrast squared
+        #-- so their magnitude carries no information. What the data do
+        #determine is rhoShell/rhoCore, and above all its SIGN. Hanging the
+        #"vary" box off the SLD shell row said "vary the shell SLD" while the
+        #fit actually varied something else, which is the kind of mismatch
+        #that makes a result hard to interpret.
+        #
+        #The three fields are kept in step: editing either SLD updates the
+        #ratio, and the ratio is what the fit reports back.
+        self.rhoRatioVar = entry("SLD shell/core:", "0.5", fit="rhoRatio")
+
+        #GUARD AGAINST MUTUAL RECURSION. Each setter below triggers the
+        #other's trace: shell -> ratio -> shell -> ... without this flag the
+        #first keystroke recurses until Tk gives up. Written out rather than
+        #relying on the values settling, because they do not: formatting to
+        #6 significant figures means a round trip rarely reproduces the exact
+        #string it started from.
+        self._syncingSLD = False
+
+        def _syncRatioFromSLDs(*_):
+            if self._syncingSLD:
+                return
+            self._syncingSLD = True
+            try:
+                core = float(self.rhoCoreVar.get())
+                shell = float(self.rhoShellVar.get())
+                if core != 0.0:
+                    self.rhoRatioVar.set(f"{shell/core:.6g}")
+            except Exception:
+                pass                      # mid-edit text; leave it alone
+            finally:
+                self._syncingSLD = False
+
+        def _syncShellFromRatio(*_):
+            if self._syncingSLD:
+                return
+            self._syncingSLD = True
+            try:
+                core = float(self.rhoCoreVar.get())
+                self.rhoShellVar.set(
+                    f"{float(self.rhoRatioVar.get())*core:.6g}")
+            except Exception:
+                pass
+            finally:
+                self._syncingSLD = False
+
+        self.rhoCoreVar.trace_add("write", _syncRatioFromSLDs)
+        self.rhoShellVar.trace_add("write", _syncRatioFromSLDs)
+        self.rhoRatioVar.trace_add("write", _syncShellFromRatio)
+        _syncRatioFromSLDs()
         #Capture the core-shell entries HERE, before any further entries are
         #added. This used to read `self._ffEntries[-3:]` after the fact,
         #which silently grabbed whichever three entries happened to be last
@@ -347,8 +504,8 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #data" with the other parameters, so that one list shows everything
         #that is free. Ticked means free, unticked means held at the value in
         #the entry -- the same meaning as for every other parameter.
-        self.scaleVar = entry("scale:", "1.0")
-        self.backgroundVar = entry("background:", "0.0")
+        self.scaleVar = entry("scale:", "1.0", fit="scale")
+        self.backgroundVar = entry("background:", "0.0", fit="background")
         #A sloping background: I_bg = background + A * Q^(-4+d).
         #
         #A flat constant describes only incoherent scattering. Real curves
@@ -366,8 +523,8 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                         command=self._syncPorod).grid(
             row=r, column=0, columnspan=2, sticky="w")
         r += 1
-        self.porodAVar = entry("   A:", "0.0")
-        self.porodDVar = entry("   d:", "0.0")
+        self.porodAVar = entry("   A:", "0.0", fit="porodA")
+        self.porodDVar = entry("   d:", "0.0", fit="porodD")
         #Below this Q the power law is held constant rather than
         #extrapolated. Q^(-4+d) diverges at the origin and the smearing
         #kernel reaches below the data, so something must bound it.
@@ -727,37 +884,61 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                   "rhoShell": (-np.inf, np.inf)}
 
     def _rebuildFitFlags(self):
+        """Enable or disable the inline 'vary' boxes; rebuild only pot0..N.
+
+        The checkboxes for the fixed set of parameters are created ONCE,
+        beside their own entries (see the `entry` helper), and this method
+        only changes their state. Nothing is destroyed, so the layout never
+        reflows and a checkbox cannot survive a rebuild it should not have --
+        which would silently fit a parameter the model is not using.
+
+        The potential's own arguments are the exception: their NUMBER changes
+        with the potential, so they are still created and destroyed in
+        `fitVarFrame`.
+        """
+        #Which of the fixed set currently applies.
+        coreShell = self.ffVar.get() == "Core-shell"
+        linked = (getattr(self, "linkDeltaVar", None) is not None
+                  and self.linkDeltaVar.get()
+                  and self._deltaParamIndex() is not None)
+        porod = getattr(self, "porodVar", None) is not None \
+            and self.porodVar.get()
+        applicable = {
+            "meanRadius": True, "srel": True, "phi": True,
+            "scale": True, "background": True,
+            "shell": coreShell, "rhoRatio": coreShell,
+            "linkC": linked,
+            "porodA": porod, "porodD": porod,
+        }
+        for name, cb in getattr(self, "_fitChecks", {}).items():
+            state = "normal" if applicable.get(name, True) else "disabled"
+            try:
+                cb.configure(state=state)
+            except Exception:
+                pass
+            e = getattr(self, "_fitEntries", {}).get(name)
+            if e is not None:
+                try:
+                    e.configure(state=state)
+                except Exception:
+                    pass
+            #The bound entries grey with their parameter too: editing limits
+            #for something the model is not using is as misleading as
+            #editing its value.
+            for be in getattr(self, "_fitBoundEntries", {}).get(name, ()):
+                try:
+                    be.configure(state=state)
+                except Exception:
+                    pass
+
+        #Potential arguments and the closure parameter: variable in number,
+        #so still built into their own frame.
         for w in self.fitVarFrame.winfo_children():
             w.destroy()
-        self.fitFlags = {}
-        names = ["meanRadius", "srel", "phi"]
-        #Scale and background belong in this list for every form factor.
-        #They are not handed to the nonlinear optimiser -- they enter the
-        #model linearly and are solved EXACTLY by weighted least squares at
-        #each iteration, which is both free and better conditioned. Ticking
-        #them means "solve them"; unticking means "hold at the entry value".
-        #Both default to ticked, which reproduces the previous behaviour.
-        names += ["scale", "background"]
-        #The shell thickness is fittable ONLY for a core-shell form factor,
-        #and adding it to FIT_BOUNDS is not enough on its own: this list is
-        #what the interface actually offers, so a parameter missing here can
-        #never be selected however the rest of the machinery is wired.
-        if self.ffVar.get() == "Core-shell":
-            names += ["shell", "rhoRatio"]
-        #c is fittable only when the link is active -- otherwise it does
-        #nothing, and offering it would invite fitting a parameter with no
-        #effect on the model.
-        if (getattr(self, "linkDeltaVar", None) is not None
-                and self.linkDeltaVar.get()
-                and self._deltaParamIndex() is not None):
-            names.append("linkC")
-        if getattr(self, "porodVar", None) is not None and self.porodVar.get():
-            #A behaves like scale and background: ticked means SOLVED
-            #exactly by the linear least squares, unticked means held at the
-            #entry value. It is listed here so that choice is visible in the
-            #same place as every other one, even though it never reaches the
-            #nonlinear optimiser.
-            names += ["porodA", "porodD"]
+        for n in list(self.fitFlags):
+            if n.startswith("pot") or n == "closureParam":
+                self.fitFlags.pop(n, None)
+        names = []
         if self.closureParamVar is not None:
             names.append("closureParam")
         for i in range(len(self.potParamVars)):
@@ -768,14 +949,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 continue
             names.append("pot%d" % i)
         for i, n in enumerate(names):
-            #Default-ticked: the shape parameters one normally fits, plus
-            #the LINEAR terms, which are solved exactly at no cost. porodA
-            #belongs with scale and background here -- leaving it out made it
-            #default to HELD at the entry value, so switching the power law
-            #on contributed a term fixed at zero and did nothing at all.
-            v = tk.BooleanVar(value=(n in ("meanRadius", "srel", "phi",
-                                           "scale", "background",
-                                           "porodA")))
+            v = tk.BooleanVar(value=False)
             ttk.Checkbutton(self.fitVarFrame, text=n, variable=v).grid(
                 row=i//2, column=i % 2, sticky="w")
             self.fitFlags[n] = v
@@ -812,7 +986,8 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
     #dropping out of the save.
     _SESSION_VARS = (
         "meanRadiusVar", "srelVar", "phiVar", "nbinsVar", "nFFVar",
-        "shellVar", "rhoCoreVar", "rhoShellVar", "scaleVar", "backgroundVar",
+        "shellVar", "rhoCoreVar", "rhoShellVar", "rhoRatioVar",
+        "scaleVar", "backgroundVar",
         "QminVar", "QmaxVar", "nQVar", "ffVar", "potentialVar",
         "closureVar", "closureParamVar", "closureParam2Var", "distVar",
         "linkDeltaVar", "linkCVar", "porodVar", "porodDVar", "porodAVar",
@@ -836,6 +1011,16 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         for name, var in getattr(self, "fitFlags", {}).items():
             try:
                 state["fitFlags"][name] = bool(var.get())
+            except Exception:
+                pass
+        #EDITED BOUNDS travel with the session. A limit narrowed from an
+        #independent measurement is knowledge about the sample, not a
+        #preference -- losing it on reload would quietly return the fit to
+        #the generic defaults.
+        state["fitBounds"] = {}
+        for name, (loV, hiV) in getattr(self, "_fitBoundVars", {}).items():
+            try:
+                state["fitBounds"][name] = [loV.get(), hiV.get()]
             except Exception:
                 pass
         for name in ("potParamVars",):
@@ -924,6 +1109,14 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             if var is not None:
                 try:
                     var.set(bool(value))
+                except Exception:
+                    pass
+        for name, pair in (state.get("fitBounds") or {}).items():
+            bv = getattr(self, "_fitBoundVars", {}).get(name)
+            if bv is not None and len(pair) == 2:
+                try:
+                    bv[0].set(pair[0])
+                    bv[1].set(pair[1])
                 except Exception:
                     pass
         d = state.get("data")
@@ -1039,11 +1232,10 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         if name == "rhoShell":
             return float(self.rhoShellVar.get())
         if name == "rhoRatio":
-            #Starting value from the two entries, so the interface stays in
-            #the units the user thinks in while the FIT works in a ratio.
-            core = float(self.rhoCoreVar.get())
-            shell = float(self.rhoShellVar.get())
-            return shell/core if core != 0.0 else 0.0
+            #Read the ratio's OWN entry now that it has one. Deriving it from
+            #the two SLDs would disagree with what the user sees the moment
+            #rounding differs.
+            return float(self.rhoRatioVar.get())
         if name == "linkC":
             return float(self.linkCVar.get())
         if name == "porodD":
@@ -1067,7 +1259,19 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         except ValueError as e:
             messagebox.showerror("input error", str(e))
             return
-        free = [n for n, v in self.fitFlags.items() if v.get()]
+        #A DISABLED checkbox keeps its variable's value, so a box ticked
+        #while core-shell was selected stays ticked after switching to a
+        #sphere -- greyed, but still reading True. Filter on the widget's
+        #state, or the fit would vary a parameter the model no longer has.
+        def _enabled(n):
+            cb = getattr(self, "_fitChecks", {}).get(n)
+            if cb is None:
+                return True            # potential args: created only when valid
+            try:
+                return "disabled" not in cb.state()
+            except Exception:
+                return True
+        free = [n for n, v in self.fitFlags.items() if v.get() and _enabled(n)]
         if not free:
             messagebox.showinfo("nothing to fit", "tick at least one parameter")
             return
@@ -1114,9 +1318,65 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         params = {}
         for n in nonlinearFree:
             x = self._currentValue(n)
-            lo, hi = self.FIT_BOUNDS.get(n, (x/50.0 if x > 0 else -abs(x)*50,
-                                             abs(x)*50 + 1.0))
-            params[n] = (x, min(lo, x*0.999), max(hi, x*1.001))
+            #BOUNDS FROM THE ENTRIES, not from FIT_BOUNDS. Those are only
+            #the defaults the entries were seeded with; the user may have
+            #narrowed them from an independent measurement, and ignoring
+            #that would silently discard better information than the fit has.
+            #Falls back to the table, and then to a heuristic, for anything
+            #without a bounds widget.
+            bv = getattr(self, "_fitBoundVars", {}).get(n)
+            lo = hi = None
+            if bv is not None:
+                def _num(text, default):
+                    t = str(text).strip().lower()
+                    if t in ("inf", "+inf"):
+                        return np.inf
+                    if t == "-inf":
+                        return -np.inf
+                    try:
+                        return float(t)
+                    except ValueError:
+                        messagebox.showerror(
+                            "bad bound",
+                            f"bound '{text}' for '{n}' is not a number")
+                        return None
+                d = self.FIT_BOUNDS.get(n, (-np.inf, np.inf))
+                lo = _num(bv[0].get(), d[0])
+                hi = _num(bv[1].get(), d[1])
+                if not (lo < hi):
+                    raise ValueError(
+                        f"bounds for '{n}' are not increasing: "
+                        f"[{lo:g}, {hi:g}]")
+                #FIT_BOUNDS IS THE MAXIMUM DOMAIN, not a default to be
+                #overridden. Its limits are physical -- a volume fraction
+                #cannot exceed 1, a shell thickness cannot be negative, a
+                #Porod exponent outside [0, 3] stops describing a background
+                #-- so an edited bound may NARROW the range and must not
+                #widen it. Refusing is better than clipping: a limit the user
+                #typed and the program quietly ignored is worse than no
+                #limit, because it looks respected.
+                if lo < d[0] or hi > d[1]:
+                    raise ValueError(
+                        f"bounds for '{n}' lie outside the physical domain "
+                        f"[{d[0]:g}, {d[1]:g}].\n\n"
+                        f"You asked for [{lo:g}, {hi:g}]. Bounds may be "
+                        f"narrowed from independent knowledge, but not "
+                        f"widened past what the model admits.")
+            if lo is None:
+                lo, hi = self.FIT_BOUNDS.get(
+                    n, (x/50.0 if x > 0 else -abs(x)*50, abs(x)*50 + 1.0))
+                #No explicit bounds for this one, so the starting value wins
+                #and the range is widened to admit it.
+                lo, hi = min(lo, x*0.999), max(hi, x*1.001)
+            elif not (lo <= x <= hi):
+                #Refuse rather than clip. The value in the entry is what the
+                #user believes the parameter to be; moving it silently to a
+                #boundary would start the fit somewhere they did not choose
+                #and did not see.
+                raise ValueError(
+                    f"'{n}' is {x:g}, outside its bounds [{lo:g}, {hi:g}]."
+                    f"\n\nEither change the value or widen the bounds.")
+            params[n] = (x, lo, hi)
         self.computeBtn.configure(state="disabled")
         self.fitBtn.configure(state="disabled")
         self.interruptBtn.configure(state="normal")
@@ -1250,8 +1510,9 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
 
     # ------------------------------------------------------------------
     def _buildPlots(self):
-        right = ttk.Frame(self)
-        right.grid(row=0, column=1, sticky="nsew")
+        right = ttk.Frame(self.paned)
+        #weight=1: the plots take the extra space when the window grows.
+        self.paned.add(right, weight=1)
         self.notebook = ttk.Notebook(right)
         self.notebook.pack(fill="both", expand=True)
         self.axes = {}
@@ -1348,11 +1609,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         p["shell"] = f(self.shellVar, "Shell dR", lo=0.0)
         p["rhoCore"] = f(self.rhoCoreVar, "SLD core")
         p["rhoShell"] = f(self.rhoShellVar, "SLD shell")
-        #The fitted quantity is the RATIO; the entries stay in the user's
-        #own units and set both the starting point and the scale of the
-        #problem.
-        p["rhoRatio"] = (p["rhoShell"]/p["rhoCore"]
-                         if p["rhoCore"] != 0.0 else 0.0)
+        p["rhoRatio"] = f(self.rhoRatioVar, "SLD shell/core")
         #Scale and background: the VALUE is used only when the matching box
         #is ticked, otherwise it is solved exactly and the entry just
         #displays the last solved value.
@@ -1583,19 +1840,35 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             res.chi2 = None
             data = p.get("fitData")
             if data is not None:
-                Qd, Id, dId = (np.asarray(a, float) if a is not None else None
-                               for a in data)
+                Qd, Id, dId = [np.asarray(a, float) if a is not None else None
+                               for a in data]
                 Ie = np.asarray(res.I_exact, float)
-                #With a resolution active the model already lands on the data
-                #grid; without one it is on the logarithmic display grid, so
-                #interpolate in log-log, where a scattering curve is smooth.
-                if smear is not None and Ie.size == Qd.size:
-                    model = Ie
-                else:
-                    good = (np.asarray(Qout) > 0) & np.isfinite(Ie) & (Ie > 0)
-                    model = (np.exp(np.interp(
-                        np.log(Qd), np.log(np.asarray(Qout)[good]),
-                        np.log(Ie[good]))) if good.sum() > 2 else None)
+                model = None
+                #THE GRID `Ie` LIVES ON.
+                #
+                #res.I_exact is built from Qmodel and then, when smearing is
+                #active, mapped back onto Qout by the kernel -- so its length
+                #is Qout's if smeared and Qmodel's if not. An earlier version
+                #masked it with `Qout` unconditionally, which is a DIFFERENT
+                #LENGTH in the unsmeared case (the display grid against the
+                #kernel grid); the boolean `&` then raised on every Compute.
+                #That exception escaped the worker and produced an endless
+                #run of solves with no convergence warning.
+                Qsrc = np.asarray(Qout if smear is not None else Qmodel,
+                                  float)
+                if Ie.size != Qsrc.size:
+                    #Belt and braces: if the two ever disagree again, skip
+                    #the chi-squared rather than raise. It is a convenience,
+                    #not a result, and must never be able to break Compute.
+                    Qsrc = None
+                if Qsrc is not None:
+                    if smear is not None and Ie.size == Qd.size:
+                        model = Ie
+                    else:
+                        good = (Qsrc > 0) & np.isfinite(Ie) & (Ie > 0)
+                        model = (np.exp(np.interp(
+                            np.log(Qd), np.log(Qsrc[good]),
+                            np.log(Ie[good]))) if good.sum() > 2 else None)
                 if model is not None:
                     #SAME degrees of freedom as the fitter, which divides by
                     #N - nFree - 2. Using N - 2 here made the computed chi^2
@@ -1720,10 +1993,8 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                             elif k == "rhoShell":
                                 self.rhoShellVar.set(f"{v:.6g}")
                             elif k == "rhoRatio":
-                                #Write back as an SLD, which is what the
-                                #entry shows and what the user reasons about.
-                                core = float(self.rhoCoreVar.get())
-                                self.rhoShellVar.set(f"{v*core:.6g}")
+                                #Its own field; the trace updates SLD shell.
+                                self.rhoRatioVar.set(f"{v:.6g}")
                             elif k == "linkC":
                                 self.linkCVar.set(f"{v:.6g}")
                             elif k == "porodD":
@@ -1855,7 +2126,13 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                     bits.append(f"A = {A:.4g}")
                 axd.plot(fr["Q"], fr["fit"], "-", color="C3", lw=1.6,
                          label="\n".join(bits), zorder=3)
-            axd.legend(fontsize=7)
+            #Only draw a legend if something is labelled. Calling it on an
+            #empty axis emits "No artists with labels found to put in
+            #legend" on every replot -- harmless, but it trains the eye to
+            #ignore warnings, which is exactly the habit that lets a real
+            #one pass unnoticed.
+            if axd.get_legend_handles_labels()[0]:
+                axd.legend(fontsize=7)
         r = self.result
         if r is not None:
             ax = self.axes["iq"]

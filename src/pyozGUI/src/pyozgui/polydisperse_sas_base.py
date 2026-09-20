@@ -59,7 +59,25 @@ class PolydisperseSASBase:
         """Monodisperse S(Q) at diameter sigma_eff, same thermodynamic state.
         MODEL-SPECIFIC: must be provided by the concrete subclass, and must
         raise RuntimeError where that fictitious monodisperse system has no
-        physical solution."""
+        physical solution.
+
+        NOT CACHED HERE, deliberately. A memo was added at this level during
+        session 5 on the assumption that schemes 3, 4 and 5 each re-solved
+        the p(p+1)/2 pair diameters. They do not:
+        GenericPolydisperseSAS._mono_S already caches on
+        (potential, args, closure, closureParam, phi) and NOT on sigma,
+        because for a potential whose parameters are in units of sigma the
+        reduced one-component solution depends only on phi --
+        S(Q; sigma_i) = S_reduced(Q sigma_i) exactly, so sigma enters as a
+        q-rescaling rather than a new solve. All the pair diameters collapse
+        to ONE solve, and that was verified bit-identical across three
+        potentials and all six schemes.
+
+        A second cache over that one bought nothing and introduced a real
+        hazard: two caches with different keys can disagree when one is
+        invalidated and the other is not. Cache in the subclass, where the
+        key can reflect what the solve actually depends on.
+        """
         raise NotImplementedError
 
     def I_dilute(self, Q):

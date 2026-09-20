@@ -127,6 +127,12 @@ void sasfit_qdht_cache_insert(sasfit_qdht_cache* cache, const void* key,
  * implicit periodicity causes real ringing on under-padded domains,
  * not just wasted resolution) -- do not reuse a QDHT-style margin
  * heuristic here without re-deriving it for this domain.
+ *
+ * NOTE ALSO: unlike QDHT's self-reciprocal kernel, FFTLog's forward
+ * and inverse are genuinely different operations (see
+ * sasfit_fftlog_forward_grid/sasfit_fftlog_inverse_grid below) --
+ * x_nodes/y_nodes name the plan's two grids, not "whichever side you
+ * call first".
  */
 typedef struct sasfit_fftlog_plan sasfit_fftlog_plan;
 
@@ -137,11 +143,25 @@ double sasfit_fftlog_plan_x_node(const sasfit_fftlog_plan* plan, int n);
 double sasfit_fftlog_plan_y_node(const sasfit_fftlog_plan* plan, int n);
 
 /* f_x/F_y: caller-owned arrays of length sasfit_fftlog_plan_size(plan).
- * NOT const plan -- unlike QDHT's forward/inverse, this mutates the
- * plan's internal FFTW scratch buffers on every call (that reuse is
- * exactly what makes repeated calls cheap: the FFTW plans themselves,
- * and the u[] kernel factors, are built once and reused as-is). */
-void sasfit_fftlog_transform_grid(sasfit_fftlog_plan* plan, const double* f_x, double* F_y);
+ * NOT const plan -- mutates the plan's internal FFTW scratch buffers
+ * on every call (that reuse is exactly what makes repeated calls
+ * cheap: the FFTW plans themselves, and the u[] kernel factors, are
+ * built once and reused as-is).
+ *
+ * Unlike QDHT, FFTLog's forward and inverse legs are NOT the same
+ * operation called twice: sasfit_fftlog_forward_grid weights its
+ * input by x_nodes and produces output at y_nodes;
+ * sasfit_fftlog_inverse_grid weights its input by y_nodes and
+ * produces output at x_nodes. Both use the SAME kernel (u[], kr, L --
+ * the same continuous Hankel-transform kernel for both directions,
+ * exactly as for QDHT), only the node-array roles swap. Calling
+ * forward_grid twice in a row (an earlier version of this API did
+ * exactly that) silently produces a badly wrong answer whenever the
+ * x-domain and y-domain sit on different physical scales -- which for
+ * a real Q<->r round trip they always do -- so use inverse_grid, not
+ * a second forward_grid call, for the return leg. */
+void sasfit_fftlog_forward_grid(sasfit_fftlog_plan* plan, const double* f_x, double* F_y);
+void sasfit_fftlog_inverse_grid(sasfit_fftlog_plan* plan, const double* F_y, double* f_x);
 
 /*
  * Keyed LRU cache of (plan, spline) results -- same shape and
