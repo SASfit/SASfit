@@ -1344,9 +1344,11 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 lo = _num(bv[0].get(), d[0])
                 hi = _num(bv[1].get(), d[1])
                 if not (lo < hi):
-                    raise ValueError(
+                    messagebox.showerror(
+                        "bad bounds",
                         f"bounds for '{n}' are not increasing: "
                         f"[{lo:g}, {hi:g}]")
+                    return
                 #FIT_BOUNDS IS THE MAXIMUM DOMAIN, not a default to be
                 #overridden. Its limits are physical -- a volume fraction
                 #cannot exceed 1, a shell thickness cannot be negative, a
@@ -1356,12 +1358,14 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 #typed and the program quietly ignored is worse than no
                 #limit, because it looks respected.
                 if lo < d[0] or hi > d[1]:
-                    raise ValueError(
+                    messagebox.showerror(
+                        "bounds outside the physical domain",
                         f"bounds for '{n}' lie outside the physical domain "
                         f"[{d[0]:g}, {d[1]:g}].\n\n"
                         f"You asked for [{lo:g}, {hi:g}]. Bounds may be "
                         f"narrowed from independent knowledge, but not "
                         f"widened past what the model admits.")
+                    return
             if lo is None:
                 lo, hi = self.FIT_BOUNDS.get(
                     n, (x/50.0 if x > 0 else -abs(x)*50, abs(x)*50 + 1.0))
@@ -1373,9 +1377,11 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 #user believes the parameter to be; moving it silently to a
                 #boundary would start the fit somewhere they did not choose
                 #and did not see.
-                raise ValueError(
+                messagebox.showerror(
+                    "value outside its bounds",
                     f"'{n}' is {x:g}, outside its bounds [{lo:g}, {hi:g}]."
                     f"\n\nEither change the value or widen the bounds.")
+                return
             params[n] = (x, lo, hi)
         self.computeBtn.configure(state="disabled")
         self.fitBtn.configure(state="disabled")
