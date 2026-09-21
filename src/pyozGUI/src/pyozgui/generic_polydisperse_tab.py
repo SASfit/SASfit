@@ -192,11 +192,13 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         scrollBox.pack(side="left", fill="both", expand=True)
         canvas = tk.Canvas(scrollBox, borderwidth=0, highlightthickness=0,
                            #Wide enough for a full parameter row -- label,
-                           #entry, "vary", and the two bound fields -- since
-                           #this requested width sets the INITIAL sash
-                           #position. Only a starting point now that the
-                           #divider is draggable.
-                           width=470)
+                           #entry, "vary", and BOTH bound fields. Verified
+                           #against a screenshot rather than estimated: at
+                           #470 the upper bound was still cut off at the
+                           #panel edge, which is the clipping this was meant
+                           #to fix. The divider is draggable, so this only
+                           #has to be right on opening.
+                           width=580)
         vbar = ttk.Scrollbar(scrollBox, orient="vertical",
                              command=canvas.yview)
         canvas.configure(yscrollcommand=vbar.set)
@@ -269,12 +271,11 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #ticked, so the two cannot silently disagree.
         self.findAlphaVar = tk.BooleanVar(value=False)
         self.findAlphaCheck = ttk.Checkbutton(
-            left, text="solve \u03b1 by thermodynamic consistency",
+            left, text="solve \u03b1",
             variable=self.findAlphaVar, command=self._syncAlphaEntry)
-        self.findAlphaCheck.grid(row=r, column=0, columnspan=2, sticky="w"); r += 1
-        ttk.Label(left, text="costs 3 OZ solves per trial value",
-                  foreground="grey", wraplength=230, justify="left").grid(
-            row=r, column=0, columnspan=2, sticky="w"); r += 1
+        self.findAlphaCheck.grid(row=r, column=0, columnspan=2, sticky="w")
+        self._bindHelp(self.findAlphaCheck, "findAlpha")
+        r += 1
 
         ttk.Separator(left, orient="horizontal").grid(
             row=r, column=0, columnspan=2, sticky="ew", pady=6); r += 1
@@ -299,19 +300,36 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         self._fitBoundVars = {}
         self._fitBoundEntries = {}
 
-        def entry(label, default, width=14, fit=None):
+        def entry(label, default, width=14, fit=None, help=None):
             nonlocal r
-            ttk.Label(left, text=label).grid(row=r, column=0, sticky="e")
+            lab = ttk.Label(left, text=label)
+            lab.grid(row=r, column=0, sticky="e")
             v = tk.StringVar(value=default)
             e = ttk.Entry(left, textvariable=v, width=width)
             e.grid(row=r, column=1, sticky="w")
+            #Hover help on BOTH the label and the field, since the cursor is
+            #as likely to be over one as the other.
+            key = help or fit
+            if key:
+                self._bindHelp(lab, key)
+                self._bindHelp(e, key)
             if fit is not None:
                 #Default-ticked: the shape parameters normally fitted, plus
                 #the LINEAR terms, which are solved exactly at no cost.
                 on = fit in ("meanRadius", "srel", "phi", "scale",
                              "background", "porodA")
                 bv = tk.BooleanVar(value=on)
-                cb = ttk.Checkbutton(left, text="vary", variable=bv)
+                #onvalue/offvalue given EXPLICITLY. Without them a
+                #ttk.Checkbutton falls into its "alternate" state -- drawn as
+                #a dash rather than a tick or an empty box -- whenever its
+                #variable holds anything it cannot match against the values
+                #it expects. Restoring a session did exactly that, and the
+                #consequence was worse than cosmetic: v.get() then did not
+                #return True, so _onFit filtered the parameter out and the
+                #fit varied one parameter while the panel appeared to offer
+                #ten.
+                cb = ttk.Checkbutton(left, text="vary", variable=bv,
+                                     onvalue=True, offvalue=False)
                 cb.grid(row=r, column=2, sticky="w", padx=(4, 0))
                 self.fitFlags[fit] = bv
                 self._fitChecks[fit] = cb
@@ -352,6 +370,15 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             r += 1
             return v
 
+        #THE TOP-RIGHT SPACE. Everything above here -- Potential, its
+        #arguments, Closure, solve alpha -- occupies only columns 0 and 1,
+        #so columns 2 and 3 are empty beside it. Lower down those columns
+        #carry the "vary" box and the bounds, so the free area is a block at
+        #the TOP RIGHT rather than a full-height column. `_topRows` records
+        #how tall it is; the fit panel is placed there further below, once
+        #the widgets it contains have been created.
+        _topRows = r
+
         ttk.Label(left, text="Size distribution",
                   font=("TkDefaultFont", 9, "bold")).grid(
             row=r, column=0, columnspan=2, sticky="w"); r += 1
@@ -373,19 +400,9 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                      ).grid(row=r, column=1, sticky="w")
         r += 1
         self.meanRadiusVar = entry("Mean radius:", "50.0", fit="meanRadius")
-        ttk.Label(left, text="sets the length scale; Q is then a genuine inverse "
-                             "length. The scattering radius equals the HARD-CORE "
-                             "radius, R = sigma/2.",
-                  foreground="grey", wraplength=230, justify="left").grid(
-            row=r, column=0, columnspan=2, sticky="w"); r += 1
         self.srelVar = entry("Rel. s.d.:", "0.20", fit="srel")
-        self.nbinsVar = entry("Classes (S):", "3")
-        self.nFFVar = entry("Classes (form f.):", "40")
-        ttk.Label(left, text="S(Q) needs few classes (moment-matched); the form "
-                             "factor oscillates and needs many. Rule of thumb: "
-                             "classes(form f.) >~ Qmax*sigma*s",
-                  foreground="grey", wraplength=230, justify="left").grid(
-            row=r, column=0, columnspan=2, sticky="w"); r += 1
+        self.nbinsVar = entry("Classes (S):", "3", help="nbins")
+        self.nFFVar = entry("Classes (form f.):", "40", help="nFF")
         self.phiVar = entry("Volume fraction:", "0.20", fit="phi")
 
         ttk.Separator(left, orient="horizontal").grid(
@@ -425,14 +442,15 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #if two layers overlap when particles touch (the usual brush or
         #depletion geometry).
         self.linkDeltaVar = tk.BooleanVar(value=False)
-        ttk.Checkbutton(left, text="link delta = c x dR",
-                        variable=self.linkDeltaVar,
-                        command=self._syncLinkDelta).grid(
-            row=r, column=0, columnspan=2, sticky="w")
+        _linkCb = ttk.Checkbutton(left, text="link delta = c x dR",
+                                  variable=self.linkDeltaVar,
+                                  command=self._syncLinkDelta)
+        _linkCb.grid(row=r, column=0, columnspan=2, sticky="w")
+        self._bindHelp(_linkCb, "linkDelta")
         r += 1
         self.linkCVar = entry("   c:", "2.0", fit="linkC")
-        self.rhoCoreVar = entry("SLD core:", "2.0")
-        self.rhoShellVar = entry("SLD shell:", "1.0")
+        self.rhoCoreVar = entry("SLD core:", "2.0", help="rhoCore")
+        self.rhoShellVar = entry("SLD shell:", "1.0", help="rhoShell")
         #THE FITTED CONTRAST PARAMETER IS THE RATIO, so it gets its own field
         #rather than a checkbox attached to the shell SLD.
         #
@@ -518,10 +536,11 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #constant; only the exponent is fitted. So this costs one extra
         #parameter, not two.
         self.porodVar = tk.BooleanVar(value=False)
-        ttk.Checkbutton(left, text="background + A x Q^(-4+d)",
-                        variable=self.porodVar,
-                        command=self._syncPorod).grid(
-            row=r, column=0, columnspan=2, sticky="w")
+        _porodCb = ttk.Checkbutton(left, text="background + A x Q^(-4+d)",
+                                   variable=self.porodVar,
+                                   command=self._syncPorod)
+        _porodCb.grid(row=r, column=0, columnspan=2, sticky="w")
+        self._bindHelp(_porodCb, "usePorod")
         r += 1
         self.porodAVar = entry("   A:", "0.0", fit="porodA")
         self.porodDVar = entry("   d:", "0.0", fit="porodD")
@@ -536,7 +555,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #suppress that entirely; values in between trade the two off. It is
         #exposed because the right choice depends on whether the power law
         #is believed to continue below the measured range.
-        self.porodQminVar = entry("   Q clamp:", "1e-6")
+        self.porodQminVar = entry("   Q clamp:", "1e-6", help="porodQmin")
         #Which optimiser runs when Fit is pressed.
         #
         #"scipy least_squares" is the default and right for routine work: a
@@ -562,7 +581,10 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #while exploring, and reduce the size classes first.
         ttk.Label(left, text="Fitter:").grid(row=r, column=0, sticky="e")
         self.fitterVar = tk.StringVar(value="scipy least_squares")
-        ttk.Combobox(left, textvariable=self.fitterVar, width=18,
+        #Spans the value and "vary" columns: the names are long, nothing else
+        #belongs on this row, and truncating "scipy least_squares (10 starts)"
+        #to fit a value-sized box helps nobody.
+        ttk.Combobox(left, textvariable=self.fitterVar, width=30,
                      state="readonly",
                      values=["scipy least_squares",
                              "scipy least_squares (10 starts)",
@@ -571,7 +593,18 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                              "bumps amoeba",
                              "bumps de", "bumps dream", "bumps newton",
                              "bumps lm", "bumps pt"]).grid(
-            row=r, column=1, sticky="w")
+            #"ew" so it FILLS the two columns it spans. With "w" it merely
+            #sat at its natural width in the first of them, which is why
+            #widening the box alone changed almost nothing.
+            row=r, column=1, columnspan=2, sticky="ew")
+        self.fitterVar.trace_add(
+            "write", lambda *a: self._syncFitterBounds())
+        #The warning sits in the bounds column, which is where the bounds it
+        #refers to are. Empty for every fitter that honours them.
+        self.fitterNoteVar = tk.StringVar(value="")
+        ttk.Label(left, textvariable=self.fitterNoteVar,
+                  foreground="#a00").grid(row=r, column=3,
+                                          sticky="w", padx=(4, 0))
         r += 1
         #Warm start: seed each OZ solve with the previous converged gamma
         #instead of starting from zero.
@@ -587,49 +620,119 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #run on every solve and bound that risk, but the default should not
         #change behaviour silently.
         self.warmStartVar = tk.BooleanVar(value=False)
-        ttk.Checkbutton(left, text="warm start OZ solver",
-                        variable=self.warmStartVar).grid(
-            row=r, column=0, columnspan=2, sticky="w")
+        _warmCb = ttk.Checkbutton(left, text="warm start OZ solver",
+                                  variable=self.warmStartVar)
+        _warmCb.grid(row=r, column=0, columnspan=2, sticky="w")
+        self._bindHelp(_warmCb, "warmStart")
         r += 1
+        #THE SOLVER SELECTOR LIVES HERE, not in the footer.
+        #
+        #It belongs with the other numerical choices -- the fitter above it
+        #and the warm start beside it -- rather than beneath the Save and
+        #Export buttons, which is where the shared footer put it. The mixin
+        #still owns `solverChoices` and `selectedSolverClass()`, so both are
+        #set up here and `buildStandardControls` is then told not to make its
+        #own: two comboboxes bound to the same variable would be a trap.
+        self.solverChoices = self._solverChoices()
+        if self.solverChoices:
+            ttk.Label(left, text="Solver:").grid(row=r, column=0, sticky="e")
+            self.solverVar = tk.StringVar(
+                value=next(iter(self.solverChoices)))
+            _solverBox = ttk.Combobox(
+                left, textvariable=self.solverVar, state="readonly",
+                width=30, values=list(self.solverChoices))
+            _solverBox.grid(row=r, column=1, columnspan=2, sticky="ew")
+            self._bindHelp(_solverBox, "solver")
+            r += 1
         ttk.Separator(left, orient="horizontal").grid(
             row=r, column=0, columnspan=2, sticky="ew", pady=6); r += 1
-        self.QminVar = entry("Q min:", "1e-4")
-        self.QmaxVar = entry("Q max:", "0.3")
-        self.nQVar = entry("Points:", "200")
+        self.QminVar = entry("Q min:", "1e-4", help="Qmin")
+        self.QmaxVar = entry("Q max:", "0.3", help="Qmax")
+        self.nQVar = entry("Points:", "200", help="nQ")
 
-        ttk.Separator(left, orient="horizontal").grid(
-            row=r, column=0, columnspan=2, sticky="ew", pady=6); r += 1
-        ttk.Label(left, text="Fit to measured data",
-                  font=("TkDefaultFont", 9, "bold")).grid(
-            row=r, column=0, columnspan=2, sticky="w"); r += 1
+        #THE FIT BLOCK GOES IN A SECOND COLUMN, beside the model parameters
+        #rather than below them. The parameter rows are four columns wide
+        #(label, value, vary, bounds) and nothing else uses the space to
+        #their right, so the panel was tall and half empty. Putting the fit
+        #controls there shortens the scroll considerably.
+        #
+        #It is a single Frame spanning many rows at column 5, with its own
+        #internal packing, so the two halves cannot disturb each other's
+        #alignment -- a widget gridded directly into column 5 would stretch
+        #whichever parameter row it shared.
+        #Placed in the empty block beside Potential and Closure (see
+        #_topRows above) rather than in a full-height column to the right:
+        #that space is genuinely unused, whereas a fifth column would widen
+        #the whole panel for the sake of one block.
+        fitPanel = ttk.Frame(left, padding=(12, 0, 0, 0))
+        fitPanel.grid(row=0, column=2, columnspan=2, rowspan=max(_topRows, 1),
+                      sticky="nw")
+
+        ttk.Label(fitPanel, text="Fit to measured data",
+                  font=("TkDefaultFont", 9, "bold")).pack(anchor="w")
         self.dataLabelVar = tk.StringVar(value="no data loaded")
-        ttk.Label(left, textvariable=self.dataLabelVar, foreground="grey",
-                  wraplength=230, justify="left").grid(
-            row=r, column=0, columnspan=2, sticky="w"); r += 1
-        dbtn = ttk.Frame(left)
-        dbtn.grid(row=r, column=0, columnspan=2, sticky="w"); r += 1
+        ttk.Label(fitPanel, textvariable=self.dataLabelVar, foreground="grey",
+                  wraplength=260, justify="left").pack(anchor="w")
+        dbtn = ttk.Frame(fitPanel)
+        dbtn.pack(anchor="w", pady=(4, 0))
         ttk.Button(dbtn, text="Load data...", command=self._onLoadData).pack(side="left", padx=2)
         self.fitBtn = ttk.Button(dbtn, text="Fit", command=self._onFit, state="disabled")
         self.fitBtn.pack(side="left", padx=2)
         #Enabled only when the loaded file carries a 4th (dQ) column.
         self.smearVar = tk.BooleanVar(value=False)
         self.smearCheck = ttk.Checkbutton(
-            left, text="apply Q resolution (dQ column)",
+            fitPanel, text="apply Q resolution (dQ column)",
             variable=self.smearVar, state="disabled")
-        self.smearCheck.grid(row=r, column=0, columnspan=2, sticky="w"); r += 1
-        #Which parameters to vary. The current field values are the starting
-        #guess, so the workflow is Compute first to get roughly right by eye,
-        #then tick and Fit -- which matters because every fit evaluation is a
-        #full Ornstein-Zernike solve.
-        ttk.Label(left, text="vary:", foreground="grey").grid(
-            row=r, column=0, sticky="e")
-        self.fitVarFrame = ttk.Frame(left)
-        self.fitVarFrame.grid(row=r, column=1, sticky="w"); r += 1
-        self.fitFlags = {}
+        self.smearCheck.pack(anchor="w", pady=(4, 0))
+        self._bindHelp(self.smearCheck, "smear")
+        #The potential's own arguments: variable in number, so still their
+        #own frame. The fixed parameters have their checkbox beside their
+        #value in the left column.
+        ttk.Label(fitPanel, text="vary:", foreground="grey").pack(
+            anchor="w", pady=(6, 0))
+        self.fitVarFrame = ttk.Frame(fitPanel)
+        self.fitVarFrame.pack(anchor="w")
+        #NO `self.fitFlags = {}` HERE. It used to be, from before the fit
+        #checkboxes moved inline beside their entries -- and it wiped every
+        #one of them, because `entry()` registers them during construction
+        #ABOVE this point. What survived was only what _rebuildFitFlags adds
+        #afterwards: the potential's own arguments.
+        #
+        #The symptom was that ticking any box did nothing. A saved session
+        #showed it plainly: fitFlags held {'pot0': True} while fitBounds held
+        #seven entries, so seven parameters had visible, ticked checkboxes
+        #and none of them reached the fit. An out-of-bounds value was not
+        #even refused, because the validation only runs over parameters that
+        #are being fitted.
         self._rebuildFitFlags()
 
-        self.buildStandardControls(footer, supportsInterrupt=True,
-                                    solverChoices=self._solverChoices())
+        self.helpVar = tk.StringVar(value="")
+        #ONE help box, at the bottom where the eye can rest, showing the line
+        #for whatever the cursor is over. This replaces the grey hints that
+        #used to sit permanently under half the fields: they were read once
+        #and then cost vertical space on every scroll for the rest of the
+        #session.
+        #
+        #FIXED HEIGHT, sized for the LONGEST entry in HELP. A label that
+        #grows and shrinks with its content moves everything below it as the
+        #cursor travels, which is worse than the space it saves -- buttons
+        #shift out from under the pointer. The height is computed here rather
+        #than guessed so that adding a longer help line cannot silently start
+        #truncating: the box simply opens one line taller.
+        #
+        #tk.Label rather than ttk.Label because only the former takes a
+        #`height` in text lines.
+        _wrapPx = 430
+        _charsPerLine = max(int(_wrapPx/6.5), 20)      # ~6.5 px per char
+        _lines = max((len(t) + _charsPerLine - 1)//_charsPerLine
+                     for t in self.HELP.values()) if self.HELP else 2
+        helpBox = ttk.Frame(footer, relief="sunken", borderwidth=1, padding=3)
+        helpBox.pack(fill="x", pady=(4, 2))
+        tk.Label(helpBox, textvariable=self.helpVar, wraplength=_wrapPx,
+                 justify="left", anchor="nw", height=_lines,
+                 fg="#204a87").pack(anchor="w", fill="x")
+
+        self.buildStandardControls(footer, supportsInterrupt=True)
 
     @staticmethod
     def _solverChoices():
@@ -883,6 +986,129 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                   "rhoCore": (-np.inf, np.inf),
                   "rhoShell": (-np.inf, np.inf)}
 
+    #Fitters that do NOT honour box bounds. `lm` is scipy's
+    #Levenberg-Marquardt, which has no bounded variant; bumps passes the
+    #bounds to it and they are ignored. Everything else here is bounded:
+    #least_squares is a bounded trust region, the population methods sample
+    #within the box by construction, and NLopt takes explicit lower and
+    #upper vectors.
+    #
+    #This matters because most parameters here ARE bounded -- phi in (0,1),
+    #dR strictly positive, d in [0,3], c in [0,2] -- so `lm` can wander
+    #somewhere the model does not admit and report a converged fit. Greying
+    #the bound entries says so at the point of use rather than leaving the
+    #user to infer it from a result that will not move.
+    UNBOUNDED_FITTERS = ("bumps lm",)
+
+    def _syncFitterBounds(self):
+        """Grey the bound entries when the chosen fitter ignores them."""
+        ignores = self.fitterVar.get() in self.UNBOUNDED_FITTERS
+        for name, pair in getattr(self, "_fitBoundEntries", {}).items():
+            #Only touch boxes that are otherwise live: a parameter already
+            #disabled because it does not apply to this model must stay
+            #disabled.
+            cb = getattr(self, "_fitChecks", {}).get(name)
+            try:
+                applicable = cb is None or "disabled" not in cb.state()
+            except Exception:
+                applicable = True
+            state = "disabled" if (ignores or not applicable) else "normal"
+            for be in pair:
+                try:
+                    be.configure(state=state)
+                except Exception:
+                    pass
+        if hasattr(self, "fitterNoteVar"):
+            self.fitterNoteVar.set(
+                "this fitter ignores bounds" if ignores else "")
+
+    #Hover help. One line per field, shown in a single box rather than
+    #printed permanently beside every entry: the inline hints were useful
+    #once and then cost vertical space on every scroll thereafter.
+    HELP = {
+        "meanRadius": "Mean radius, in the reciprocal units of Q. Sets the "
+                      "length scale. The scattering radius is the HARD-CORE "
+                      "radius, sigma/2.",
+        "srel": "Relative standard deviation of the size distribution, "
+                "sigma/<sigma>. Not a percentage.",
+        "phi": "Volume fraction. Physically 0 to 1; a fitted value "
+               "approaching any packing limit means the model is wrong.",
+        "nbins": "Size classes for S(Q). Few are needed -- the nodes are "
+                 "moment-matched. Cost of a pair-sum scheme grows as "
+                 "p(p+1)/2.",
+        "nFF": "Size classes for the form factor. It oscillates and needs "
+               "many: a rule of thumb is more than Qmax*sigma*srel.",
+        "shell": "Shell thickness dR. The polydispersity is on the CORE, so "
+                 "R_outer = R_core + dR and the interaction diameter is "
+                 "2(R_core + dR).",
+        "rhoCore": "Core scattering length density, in your own units. Fixed "
+                   "-- it sets the scale of the contrast.",
+        "rhoShell": "Shell scattering length density. Derived from the ratio "
+                    "below; editing either updates the other.",
+        "rhoRatio": "The FITTED contrast parameter, rho_shell/rho_core. Only "
+                    "the ratio is determined by the data -- the magnitude is "
+                    "perfectly correlated with the scale. A negative value "
+                    "means the contrasts oppose.",
+        "scale": "Overall scale. Solved exactly by linear least squares when "
+                 "ticked. Physically the number density times the conversion "
+                 "implied by your units of Q and SLD.",
+        "background": "Flat incoherent background. Solved exactly when "
+                      "ticked. A NEGATIVE value is a diagnostic: the model "
+                      "overshoots and the fit is buying agreement.",
+        "porodA": "Amplitude of the power-law background. Linear in the "
+                  "model, so solved exactly rather than fitted. Constrained "
+                  "to be non-negative.",
+        "porodD": "Exponent offset: the tail is Q^(-4+d). d = 0 is Porod's "
+                  "law for a smooth sharp interface; larger d is shallower.",
+        "porodQmin": "Below this Q the power law is held constant instead of "
+                     "extrapolated. Set it to your lowest measured Q to stop "
+                     "the smearing integral reaching into unmeasured "
+                     "territory.",
+        "linkC": "delta = c x dR. c = 1 if the attraction range IS the "
+                 "layer; c = 2 if two layers overlap when particles touch.",
+        "Qmin": "Lower Q of the CALCULATED curve. Not the data range.",
+        "Qmax": "Upper Q of the calculated curve.",
+        "nQ": "Number of Q points calculated.",
+        "findAlpha": "Solve the closure's mixing parameter alpha by "
+                     "thermodynamic consistency -- requiring the "
+                     "compressibility and virial routes to the pressure to "
+                     "agree -- instead of entering it. Costs three OZ solves "
+                     "per trial value, so a Compute becomes dozens of solves.",
+        "linkDelta": "Tie the potential's range to the shell: delta = c x dR, "
+                     "recomputed every iteration so it follows dR as the fit "
+                     "moves it. Offered only for SquareWell and "
+                     "StickyHardSphere, whose second argument is a width in "
+                     "absolute length.",
+        "usePorod": "Add a sloping background, A x Q^(-4+d), to the flat "
+                    "one. Its amplitude is linear and solved exactly, so "
+                    "this costs one extra fitted parameter, not two.",
+        "warmStart": "Seed each OZ solve with the previous converged gamma "
+                     "instead of starting from zero. Faster, and keeps the "
+                     "fit on one branch -- but can also hold it on a wrong "
+                     "one, which is why it is off by default.",
+        "smear": "Apply the resolution from the data's fourth column. "
+                 "Without it a fitted polydispersity is biased HIGH by "
+                 "around 15 %, and chi-squared gives no sign of it.",
+        "solver": "Which fixed-point solver computes each OZ solution. "
+                  "Prefer a FIXED-POINT method: at a fold the Newton-Krylov "
+                  "family converges to negative-compressibility branches -- "
+                  "genuine roots, but unphysical ones. KINSOL KIN_FP is both "
+                  "fixed-point and the fastest available.",
+        "fitter": "Which optimiser runs on Fit. least_squares is right for "
+                  "routine work; the population methods are hours rather "
+                  "than minutes here, since every evaluation is a full OZ "
+                  "solve.",
+    }
+
+    def _bindHelp(self, widget, key):
+        """Show this field's help line while the cursor is over it."""
+        text = self.HELP.get(key)
+        if not text:
+            return
+        widget.bind("<Enter>", lambda e, t=text: self.helpVar.set(t),
+                    add="+")
+        widget.bind("<Leave>", lambda e: self.helpVar.set(""), add="+")
+
     def _rebuildFitFlags(self):
         """Enable or disable the inline 'vary' boxes; rebuild only pot0..N.
 
@@ -950,9 +1176,68 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             names.append("pot%d" % i)
         for i, n in enumerate(names):
             v = tk.BooleanVar(value=False)
-            ttk.Checkbutton(self.fitVarFrame, text=n, variable=v).grid(
+            #Explicit on/off values, as for the inline boxes above.
+            ttk.Checkbutton(self.fitVarFrame, text=n, variable=v,
+                            onvalue=True, offvalue=False).grid(
                 row=i//2, column=i % 2, sticky="w")
             self.fitFlags[n] = v
+        #Re-apply the fitter's own bound policy: the loop above may have
+        #re-enabled bound entries that the chosen fitter ignores.
+        if hasattr(self, "fitterVar"):
+            self._syncFitterBounds()
+
+    def _writeBackParameters(self, parameters, payload=None):
+        """Put fitted values into the entries they came from.
+
+        Used both when a fit finishes and, throttled, while it runs, so a
+        following Compute reproduces the fit and an interrupted fit leaves
+        the entries holding the best point rather than the starting one.
+
+        Every write is guarded individually: a field that has been destroyed
+        by a form-factor change, or a name with no entry, must not stop the
+        rest from updating.
+        """
+        for k, v in (parameters or {}).items():
+            try:
+                if k == "meanRadius":
+                    self.meanRadiusVar.set(f"{v:.6g}")
+                elif k == "srel":
+                    self.srelVar.set(f"{v:.6g}")
+                elif k == "phi":
+                    self.phiVar.set(f"{v:.6g}")
+                elif k == "shell":
+                    self.shellVar.set(f"{v:.6g}")
+                elif k == "rhoRatio":
+                    #Its own field; the trace updates SLD shell.
+                    self.rhoRatioVar.set(f"{v:.6g}")
+                elif k == "linkC":
+                    self.linkCVar.set(f"{v:.6g}")
+                elif k == "porodD":
+                    self.porodDVar.set(f"{v:.6g}")
+                elif k == "closureParam":
+                    self.closureParamVar.set(f"{v:.6g}")
+                elif k.startswith("pot"):
+                    self.potParamVars[int(k[3:])].set(f"{v:.6g}")
+            except Exception:
+                pass
+        if payload is None:
+            return
+        #The LINEAR terms are solved rather than fitted, so they never appear
+        #in `parameters`. They are written back only where the user left them
+        #free: a ticked box means "solve it and show me", an unticked one
+        #means the value is theirs and must not be overwritten.
+        try:
+            if "scale" not in self.fitFlags or self.fitFlags["scale"].get():
+                self.scaleVar.set(f"{payload['scale']:.6g}")
+            if ("background" not in self.fitFlags
+                    or self.fitFlags["background"].get()):
+                self.backgroundVar.set(f"{payload['background']:.6g}")
+            if (payload.get("porodAmplitude") is not None
+                    and ("porodA" not in self.fitFlags
+                         or self.fitFlags["porodA"].get())):
+                self.porodAVar.set(f"{payload['porodAmplitude']:.6g}")
+        except Exception:
+            pass
 
     def _onInterrupt(self):
         """Stop a running FIT as well as a running single solve.
@@ -1108,7 +1393,13 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             var = getattr(self, "fitFlags", {}).get(name)
             if var is not None:
                 try:
-                    var.set(bool(value))
+                    #True/False literals, not bool(value): JSON can return
+                    #0, 1, "true" or None here, and a BooleanVar holding
+                    #anything the widget does not recognise as its on- or
+                    #off-value leaves the checkbox in the alternate (dashed)
+                    #state -- looking indeterminate and, worse, reading as
+                    #neither ticked nor unticked when the fit asks.
+                    var.set(True if value else False)
                 except Exception:
                     pass
         for name, pair in (state.get("fitBounds") or {}).items():
@@ -2048,11 +2339,25 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                     #Best point so far, at most once a second. Draw it as a
                     #provisional fit so the convergence is visible, and mark
                     #the legend so it cannot be mistaken for the final
-                    #result. Deliberately does NOT write back into the
-                    #parameter entries: those should change once, when the
-                    #fit finishes, not flicker while it runs.
+                    #result.
                     self.fitResult = {**payload, "provisional": True,
                                       "chi2_reduced": payload.get("cost")}
+                    #Write the parameters back too, so the values are watched
+                    #converging rather than only the curve. Throttled to once
+                    #a second by the fitter, which is slow enough to read.
+                    #
+                    #An earlier version deliberately did NOT do this, on the
+                    #grounds that changing fields would flicker. In practice
+                    #the numbers are the informative part: a parameter
+                    #walking steadily to a bound, or refusing to move at all,
+                    #is visible here long before the fit ends.
+                    #
+                    #If the fit is interrupted the entries therefore hold the
+                    #best point so far, which is also what the fitter
+                    #returns -- so the two agree rather than the display
+                    #being left behind.
+                    self._writeBackParameters(payload.get("parameters") or {},
+                                              payload)
                     self._replot()
                     self.statusVar.set(
                         f"fitting... {payload.get('nEvaluations', '?')} "

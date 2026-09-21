@@ -2,6 +2,10 @@
 \usepackage[a4paper,margin=2.5cm]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{graphicx}
+%Figures live in docs/figures/. Both paths listed so this builds standalone
+%as well as inside ozGUI_ozLib_report.tex; the trailing {./} means the move
+%from docs/ into docs/figures/ required no edit to any \includegraphics.
+\graphicspath{{figures/}{./}}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{longtable}
@@ -1657,13 +1661,132 @@ removed from the fitted set. The constant $c$ may itself be fitted, bounded
 between $0$ and $2$: $c=1$ if the range is the layer, $c=2$ if two layers
 overlap when particles touch.
 
-\paragraph{Degeneracies are refused, not fitted.} The intensity depends on
-the scale times the squared contrast, so the scale and both scattering length
-densities cannot be determined together; the interface declines that
-combination rather than letting the optimiser wander along a flat valley and
-report a converged fit whose parameters are meaningless. The scattering
-length densities are unbounded, so that an opposite sign between core and
-shell is an outcome of the fit rather than an imposition.
+\paragraph{The contrast degeneracy is removed, not refused.} The intensity
+depends on
+the scale times the squared contrast, so the absolute scattering length
+densities carry no information the scale does not. The fitted contrast
+parameter is therefore the RATIO $\rho_{\mathrm{shell}}/\rho_{\mathrm{core}}$,
+which the interface exposes as its own field alongside the two densities;
+editing any of the three updates the others. Fitting the ratio also makes
+the parameter refine at all: in $\mathrm{cm}^{-2}$ a scattering length
+density is $\sim10^{10}$, and \code{least\_squares} satisfies its gradient
+test after a single evaluation at that magnitude, returning the starting
+value with a meaningless uncertainty. A ratio of order one has no such
+problem. Its bounds span both signs and are wide, so that an opposite sign
+between core and shell is an outcome of the fit rather than an imposition.
+
+\paragraph{Ill-conditioning in the linear solve.} The three linear
+coefficients are obtained from a weighted least-squares problem whose design
+columns can differ in magnitude by twenty orders: a model built from
+scattering length densities in $\mathrm{cm}^{-2}$ carries contrast squared
+and so has magnitude $\sim10^{20}$, while the constant background column is
+unity. \code{numpy.linalg.lstsq} discards singular values below
+$\max(M,N)\epsilon$, so at a condition number of $10^{20}$ the background and
+power-law coefficients are truncated to EXACTLY zero and the solve reports
+success. The symptom is a fit returning $\mathrm{background} = 0$ and
+$A = 0$ that a hand-chosen background of $0.5$ and amplitude of
+$2\times10^{-3}$ beats by $30\,\%$ in $\chi^2$ --- which looks like a broken
+optimiser and is a discarded singular value. Equilibrating the columns to
+unit norm before the solve and rescaling afterwards restores all three
+coefficients to five figures, and leaves well-conditioned problems
+unchanged.
+
+\paragraph{Bounds are shown, editable, and not silently widened.} Every
+fittable parameter carries its own \emph{vary} checkbox and a pair of bound
+fields beside its value, greyed together when the parameter does not apply
+to the current model. Showing the bounds matters even unedited: a parameter
+pinned at a limit is a result --- the data want to go where the model
+forbids --- and that is invisible if the limit is. Editing them is how
+independent knowledge enters: a radius from electron microscopy or a volume
+fraction from weighing constrains the fit far better than a generic range.
+
+The built-in limits are treated as the maximum DOMAIN rather than as
+defaults to be overridden, so an edited bound may narrow the range and not
+widen it, and a value outside its own bounds is refused rather than clipped.
+Both are reported as errors. Silently moving a starting value to a boundary,
+or honouring a limit the user typed only when it happens to be convenient,
+makes a constraint into a suggestion --- and a limit that looks respected and
+is not is worse than no limit at all.
+
+\paragraph{Optimisers.} The default is \code{scipy.optimize.least\_squares},
+a bounded trust-region method that converges in some thirty model
+evaluations. Since one evaluation is a full Ornstein--Zernike solve ---
+$0.05$\,s for one component, $2.5$\,s at seven size classes --- the
+population methods available through \code{bumps} (differential evolution,
+DREAM) are hours rather than minutes and are not everyday alternatives. They
+earn their place in two situations: DREAM samples a posterior and returns a
+correlation matrix, which is the only honest way to see how many of eleven
+nominally free parameters the data actually determine; and a population
+method can cross between minima that a local one cannot, which matters when
+a sign or a branch is in question. A multi-start option answers the same
+question for about three hundred evaluations rather than several thousand.
+
+\code{NLopt} is offered for one reason only: constraints that RELATE several
+parameters, which no box bound can express. The concrete one here is that
+the shell must fit inside the core --- and not inside the mean core but the
+smallest, since the distribution has width $s$ and the smallest class has
+radius about $R(1-ns)$:
+\begin{equation}
+  \Delta R \;<\; R\,(1 - n\,s).
+\end{equation}
+Without it an unconstrained fit on synthetic data drove the shell to $0.84$
+against a limit of $0.63$ --- thicker than the core it sits on --- while the
+constrained fit found the right answer with a LOWER $\chi^2$. AUGLAG wraps a
+derivative-free inner method, so the constraint costs no extra evaluations
+per step.
+
+\paragraph{Warm starting.} Each solve may be seeded with the previous
+converged $\Gamma$ rather than started from zero. Measured at 1.2 times
+faster with 20\,\% fewer solver iterations and an identical fit result, and
+the gain grows with the cost of a single solve. It also keeps the fit on one
+branch of the closure equations, which makes the residual smooth in the
+parameters where a cold start can land on a different branch between
+adjacent iterations. It is off by default, because it can equally carry a
+fit ONTO a wrong branch and hold it there; the residual check and the
+$\min S(Q) \ge 0$ screen bound that risk but do not remove it.
+
+\paragraph{What a session file holds.} Settings, the measured data
+including its resolution column, which parameters were free, any edited
+bounds, and the last fit result --- everything needed to resume. It does NOT
+hold the computed runs: those are regenerated by pressing Compute, and
+storing them was expensive out of all proportion. One partial structure
+factor is shaped $(n_Q, p, p)$, which at 200 $q$-points and 40 classes is
+320\,000 values per run; thirty runs of that produced a 196\,MB file, large
+enough to fill a disk after a few saves. Written without the runs and
+indented for legibility the same session is 23\,kB.
+
+Edited bounds travel with the file deliberately. A limit narrowed from an
+independent measurement is knowledge about the sample rather than a
+preference, and losing it on reload would quietly return the fit to the
+generic defaults.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{gui_controls.png}
+\caption{The parameter panel. Each fittable quantity carries its value, a
+\emph{vary} checkbox and its own pair of bounds on one row, so nothing has
+to be matched against a separate list. The bounds are editable: the built-in
+limits shown here are the maximum \emph{domain}, which an independent
+measurement may narrow but not widen. Parameters that do not apply to the
+current model are greyed across all four fields --- the interaction-range
+ratio $c$ here, because the $\delta = c\,\Delta R$ link is switched off ---
+rather than hidden, so the layout does not reflow as options are toggled.
+The divider between panel and plots is draggable.}
+\label{fig:guicontrols}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{gui_iq.png}
+\caption{The $I(Q)$ tab after a calculation. The exact multicomponent result
+is drawn with the six approximation schemes on the same axes and, where data
+are loaded, against the measurement --- which is the point of computing them
+together: the error of each scheme is read off the plot at the state point
+being fitted rather than assumed from the literature. The legend carries the
+reduced $\chi^2$ of both the fit and the computed curve, together with the
+solved scale, background and power-law amplitude.}
+\label{fig:guiiq}
+\end{figure}
 
 \section{Known limitations}
 

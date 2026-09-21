@@ -109,10 +109,19 @@ class PolydisperseTabControls:
                          width=width,
                          values=list(self.solverChoices)).pack(side="left", padx=(4, 0))
 
-        ttk.Label(parent, text="Run history:").pack(anchor="w", pady=(6, 0))
+        #RUN HISTORY: kept as a widget, NOT displayed.
+        #
+        #Joachim asked for it gone from every tab: it duplicated what the
+        #plot legend already shows and took a sixth of the control panel,
+        #which the hover-help box now uses to better effect. The Listbox
+        #itself stays because registerRun, "Delete last" and "Clear all" all
+        #index into it -- destroying it would mean rewriting three methods
+        #for a cosmetic change. It is simply never packed, so it holds the
+        #labels invisibly and those methods keep working unaltered.
+        ttk.Label(parent, text="Run history:").pack_forget()
         self.historyList = tk.Listbox(parent, height=6, width=32,
                                       exportselection=False)
-        self.historyList.pack(anchor="w")
+        #deliberately not packed -- see above
 
         self.statusVar = tk.StringVar(value="ready")
         ttk.Label(parent, textvariable=self.statusVar, foreground="blue",

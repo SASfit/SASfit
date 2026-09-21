@@ -1663,12 +1663,118 @@ scalar HTIQ_OOURA(scalar Q, void *param4int) {
         return (Icalc)*Q*bessj0(Q*z)/(2*M_PI);
 }
 
+/*
+ * H0 cache: param4int->H0 = int_0^inf I(Q) Q dQ (the Hankel transform
+ * at r=0, via direct GSL integration -- see the call site in
+ * Gztransform() below) depends ONLY on the fit parameters that shape
+ * I(Q); it does NOT depend on r/z, and does NOT depend on
+ * sasfit_get_iq_or_gz()'s mode (SESANS exp, SESANS plain, or MSAS all
+ * share the same H0 integral). Gztransform() previously recomputed it
+ * via an unconditional infinite-range GSL adaptive quadrature on
+ * EVERY call -- i.e. once per r/z requested in a whole scan, for a
+ * value that is the same every time within one parameter set. This
+ * cache makes that a one-time cost per distinct parameter set, same
+ * LRU idea as sasfit_qdht_cache/sasfit_fftlog_cache but holding a
+ * single double, so a small hand-rolled slot array is simplest here
+ * rather than reusing either of those (plan+spline-shaped) caches.
+ *
+ * Key deliberately omits lambda/thickness (MSAS-specific optical
+ * constants) since H0 doesn't depend on them -- this cache is shared
+ * by SESANS (cases 1/2) and MSAS (case 3), both of which call
+ * Gztransform().
+ */
+
+#define SASFIT_H0_CACHE_SIZE 42
+
+typedef struct {
+    scalar a[MAXPAR];
+    scalar l[MAXPAR];
+    scalar s[MAXPAR];
+    sasfit_function *SD, *FF, *SQ;
+    int distr, SQ_how, nintervals;
+    scalar Rstart, Rend;
+} sasfit_h0_key;
+
+typedef struct {
+    int valid;
+    sasfit_h0_key key;
+    double H0;
+    unsigned long last_used;
+} sasfit_h0_cache_slot;
+
+typedef struct {
+    unsigned long clock;
+    sasfit_h0_cache_slot slots[SASFIT_H0_CACHE_SIZE];
+} sasfit_h0_cache;
+
+static sasfit_h0_cache *sasfit_h0_cache_instance(void) {
+    static sasfit_h0_cache cache; /* zero-initialized: all slots start invalid */
+    return &cache;
+}
+
+static void sasfit_h0_build_key(sasfit_h0_key *key, sasfit_param4int *param4int) {
+    int i;
+    memset(key, 0, sizeof(*key));
+    for (i = 0; i < MAXPAR; i++) {
+        key->a[i] = param4int->a[i];
+        key->l[i] = param4int->l[i];
+        key->s[i] = param4int->s[i];
+    }
+    key->SD = param4int->SD;
+    key->FF = param4int->FF;
+    key->SQ = param4int->SQ;
+    key->distr = param4int->distr;
+    key->SQ_how = param4int->SQ_how;
+    key->nintervals = param4int->nintervals;
+    key->Rstart = param4int->Rstart;
+    key->Rend = param4int->Rend;
+}
+
+static int sasfit_h0_cache_lookup(sasfit_h0_cache *cache, const sasfit_h0_key *key, double *H0_out) {
+    int i;
+    for (i = 0; i < SASFIT_H0_CACHE_SIZE; i++) {
+        if (cache->slots[i].valid && memcmp(&cache->slots[i].key, key, sizeof(*key)) == 0) {
+            cache->slots[i].last_used = ++cache->clock;
+            *H0_out = cache->slots[i].H0;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static void sasfit_h0_cache_insert(sasfit_h0_cache *cache, const sasfit_h0_key *key, double H0) {
+    int i, target;
+    target = -1;
+    for (i = 0; i < SASFIT_H0_CACHE_SIZE; i++) {
+        if (!cache->slots[i].valid) { target = i; break; }
+    }
+    if (target < 0) {
+        target = 0;
+        for (i = 1; i < SASFIT_H0_CACHE_SIZE; i++) {
+            if (cache->slots[i].last_used < cache->slots[target].last_used) target = i;
+        }
+    }
+    cache->slots[target].key = *key;
+    cache->slots[target].H0 = H0;
+    cache->slots[target].last_used = ++cache->clock;
+    cache->slots[target].valid = 1;
+}
+
 scalar Gztransform(scalar r, sasfit_param *param){
     sasfit_param4int *param4int;
     param4int = ( sasfit_param4int *) param->moreparam;
     if (param4int->res<=0 || sasfit_get_iq_or_gz()==3) {
-        param4int->z = 0;
-        param4int->H0 = sasfit_integrate(0,GSL_POSINF,&IQ4HT_Hankel,param);
+        sasfit_h0_key key;
+        double H0;
+        sasfit_h0_cache *cache = sasfit_h0_cache_instance();
+        sasfit_h0_build_key(&key, param4int);
+        if (sasfit_h0_cache_lookup(cache, &key, &H0)) {
+            param4int->H0 = H0;
+        } else {
+            param4int->z = 0;
+            param4int->H0 = sasfit_integrate(0,GSL_POSINF,&IQ4HT_Hankel,param);
+            sasfit_h0_cache_insert(cache, &key, param4int->H0);
+        }
         param4int->z = r;
         param4int->Hz = sasfit_hankel(0,&IQ4HTvoid,r,param);
     } else {

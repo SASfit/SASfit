@@ -2,6 +2,12 @@
 \usepackage[a4paper,margin=2.5cm]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{graphicx}
+%Figures live in docs/figures/. Both paths are listed so this file builds
+%standalone AND as part of ozGUI_ozLib_report.tex, whose working directory
+%is the same but whose graphicspath would otherwise be the only one
+%declared. The trailing {./} keeps any figure still loose in docs/ working,
+%so the move into figures/ needed no edit to a single \includegraphics.
+\graphicspath{{figures/}{./}}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{longtable}
