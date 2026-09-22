@@ -38,6 +38,7 @@ needing a one-component reference solve or a hard-sphere-specific
 construction. Choosing one of those is not a matter of taste but of
 structure, so they are not offered rather than being offered and failing.
 """
+import os
 import queue
 import sys
 import threading
@@ -45,7 +46,7 @@ import traceback
 import inspect
 
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 
 import numpy as np
 from matplotlib.figure import Figure
@@ -299,6 +300,9 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #default; what the fit uses is whatever is in these.
         self._fitBoundVars = {}
         self._fitBoundEntries = {}
+        #Every entry that has a help key, fitted or not, so a control can be
+        #greyed by name.
+        self._keyedEntries = {}
 
         def entry(label, default, width=14, fit=None, help=None):
             nonlocal r
@@ -313,6 +317,10 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             if key:
                 self._bindHelp(lab, key)
                 self._bindHelp(e, key)
+                #Record the widget under its key as well, so anything that
+                #needs to enable or disable a NON-fitted field can find it.
+                #_fitEntries only holds fitted parameters.
+                self._keyedEntries[key] = e
             if fit is not None:
                 #Default-ticked: the shape parameters normally fitted, plus
                 #the LINEAR terms, which are solved exactly at no cost.
@@ -396,7 +404,8 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         self.distVar = tk.StringVar(value="Schulz")
         ttk.Combobox(left, textvariable=self.distVar, width=12,
                      state="readonly",
-                     values=["Schulz", "Gaussian", "LogNormal", "Weibull"]
+                     values=["Schulz", "Gaussian", "LogNormal", "Weibull",
+                             "Gamma"]
                      ).grid(row=r, column=1, sticky="w")
         r += 1
         self.meanRadiusVar = entry("Mean radius:", "50.0", fit="meanRadius")
@@ -644,6 +653,25 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             _solverBox.grid(row=r, column=1, columnspan=2, sticky="ew")
             self._bindHelp(_solverBox, "solver")
             r += 1
+            #MANN DAMPING, exposed.
+            #
+            #The Picard solver has carried a damping term since an earlier
+            #session -- x_{n+1} = (1-a) x_n + a T(x_n) -- but nothing showed
+            #it, so the dropdown said "Picard" whatever a was set to. At
+            #a = 1 that is exactly Picard; below 1 it is Mann's iteration
+            #(Mann 1953) and should be called so. The entry makes the
+            #distinction visible and the value reproducible: a result
+            #obtained at a = 0.5 cannot be repeated without knowing it.
+            self.mannAlphaVar = entry("   damping a:", "1.0",
+                                      help="mannAlpha")
+            #Greyed unless the Picard/Mann solver is chosen: the accelerated
+            #solvers manage their own step and ignore the attribute
+            #entirely, so an editable field there would accept a value with
+            #no effect -- the same trap as every other control that looked
+            #connected and was not.
+            self.solverVar.trace_add(
+                "write", lambda *a: self._syncMannAlpha())
+            self._syncMannAlpha()
         ttk.Separator(left, orient="horizontal").grid(
             row=r, column=0, columnspan=2, sticky="ew", pady=6); r += 1
         self.QminVar = entry("Q min:", "1e-4", help="Qmin")
@@ -678,6 +706,11 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         ttk.Button(dbtn, text="Load data...", command=self._onLoadData).pack(side="left", padx=2)
         self.fitBtn = ttk.Button(dbtn, text="Fit", command=self._onFit, state="disabled")
         self.fitBtn.pack(side="left", padx=2)
+        #Numerical settings in a dialog: grid, resolution, iteration budget
+        #and transform type. Set once for a study, so they do not earn
+        #permanent space beside the model parameters.
+        ttk.Button(fitPanel, text="Settings...",
+                   command=self._onSettings).pack(anchor="w", pady=(6, 0))
         #Enabled only when the loaded file carries a 4th (dQ) column.
         self.smearVar = tk.BooleanVar(value=False)
         self.smearCheck = ttk.Checkbutton(
@@ -741,7 +774,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 ("SUNDIALS KIN_FP", "sundials4pyKinsolFPOZsolver", "Sundials4pyKinsolFPOZsolver"),
                 ("scipy Anderson", "scipyAndersonOZsolver", "ScipyAndersonOZsolver"),
                 ("Anderson", "andersonOZsolver", "AndersonOZsolver"),
-                ("Picard", "picardOZsolver", "PicardOZsolver")):
+                ("Picard / Mann", "picardOZsolver", "PicardOZsolver")):
             try:
                 out[label] = getattr(__import__(mod, fromlist=[cls]), cls)
             except Exception:
@@ -1000,6 +1033,22 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
     #user to infer it from a result that will not move.
     UNBOUNDED_FITTERS = ("bumps lm",)
 
+    #Solvers that honour the Mann damping term. Only the plain fixed-point
+    #iteration does: the others choose their own step length.
+    MANN_SOLVERS = ("Picard / Mann",)
+
+    def _syncMannAlpha(self):
+        """Enable the damping entry only for the Picard/Mann solver."""
+        e = getattr(self, "_keyedEntries", {}).get("mannAlpha")
+        if e is not None:
+            try:
+                e.configure(
+                    state="normal"
+                    if self.solverVar.get() in self.MANN_SOLVERS
+                    else "disabled")
+            except Exception:
+                pass
+
     def _syncFitterBounds(self):
         """Grey the bound entries when the chosen fitter ignores them."""
         ignores = self.fitterVar.get() in self.UNBOUNDED_FITTERS
@@ -1089,6 +1138,12 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         "smear": "Apply the resolution from the data's fourth column. "
                  "Without it a fitted polydispersity is biased HIGH by "
                  "around 15 %, and chi-squared gives no sign of it.",
+        "mannAlpha": "Damping for the Picard/Mann iteration: "
+                     "x_(n+1) = (1-a) x_n + a T(x_n). a = 1 is plain Picard; "
+                     "below 1 it is Mann's iteration, slower but able to "
+                     "converge where undamped Picard diverges -- it rescued "
+                     "a Lennard-Jones case at a = 0.5. Applies only to the "
+                     "Picard/Mann solver.",
         "solver": "Which fixed-point solver computes each OZ solution. "
                   "Prefer a FIXED-POINT method: at a fold the Newton-Krylov "
                   "family converges to negative-compressibility branches -- "
@@ -1239,6 +1294,228 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         except Exception:
             pass
 
+    #NUMERICAL SETTINGS, edited in a dialog rather than on the main panel.
+    #
+    #These govern how each OZ solve is discretised and how hard it tries.
+    #They are set once for a study and then left alone, so putting them
+    #beside the model parameters would cost permanent space for something
+    #touched rarely -- the reason the OZ solver tab's own block is crowded.
+    #
+    #Defaults match what GenericPolydisperseSAS used when the tab passed
+    #nothing: 4095 radial points at 100 per diameter. `transformType` was
+    #not reachable from this tab at all, so type 4 -- second order, and
+    #cheaper on a power-of-two grid -- could not be selected despite being
+    #implemented.
+    SETTINGS_DEFAULTS = {
+        "gridN": 4095,
+        "pointsPerSigma": 100,
+        "maxIterations": 8000,
+        "transformType": 1,
+    }
+
+    def _onSettings(self):
+        """Open the numerical-settings dialog."""
+        cur = dict(self.SETTINGS_DEFAULTS)
+        cur.update(getattr(self, "_settings", {}))
+        dlg = tk.Toplevel(self)
+        dlg.title("Numerical settings")
+        dlg.transient(self.winfo_toplevel())
+        dlg.resizable(False, False)
+        frm = ttk.Frame(dlg, padding=10)
+        frm.pack(fill="both", expand=True)
+
+        rows = (
+            ("pointsPerSigma", "Points per diameter:",
+             "Radial resolution. The grid must resolve the narrowest "
+             "feature of the potential: a square well of width 0.02 sigma "
+             "needs far more than one of width 0.5."),
+            ("maxIterations", "Max solver iterations:",
+             "Given up after this many. A FAILED solve costs the full "
+             "budget, so a large value makes a fit slow exactly where it is "
+             "struggling."),
+            ("transformType", "Transform type (1 or 4):",
+             "Type 1 puts grid points ON the hard core and is first order. "
+             "Type 4 puts them at (n+1/2)dr -- the midpoint rule, second "
+             "order, measured 139x to 1092x more accurate AND faster on a "
+             "power-of-two grid. But it needs every pair core between grid "
+             "points, which cannot be arranged for a mixture, so it is "
+             "correct only for ONE size class."),
+        )
+        vars_ = {}
+        note = tk.StringVar(value="")
+
+        #N IS ENTERED AS THE EXPONENT k, not as N itself.
+        #
+        #The efficient sizes are not arbitrary: a DST-I goes through an FFT
+        #of length 2(N+1) and so wants N = 2^k - 1, while a DST-IV is a
+        #length-N transform and wants N = 2^k. An awkward length costs 9.5x
+        #for type 1, and 16383 = 3x43x127 costs type 4 a factor of three.
+        #Asking for k makes a bad size unreachable rather than merely
+        #discouraged, and the resulting N is shown so nothing is hidden.
+        kRow = 0
+        curK = max(int(round(np.log2(cur["gridN"] + 1))), 4)
+        ttk.Label(frm, text="Grid exponent k:").grid(
+            row=kRow, column=0, sticky="e", pady=2)
+        kVar = tk.StringVar(value=str(curK))
+        kEntry = ttk.Entry(frm, textvariable=kVar, width=12)
+        kEntry.grid(row=kRow, column=1, sticky="w", padx=(6, 0))
+        nLabelVar = tk.StringVar(value="")
+        ttk.Label(frm, textvariable=nLabelVar, foreground="grey").grid(
+            row=kRow, column=2, sticky="w", padx=(6, 0))
+
+        def _showN(*_):
+            try:
+                k = int(float(kVar.get()))
+                t = int(float(vars_["transformType"].get())) \
+                    if "transformType" in vars_ else 1
+            except (ValueError, KeyError):
+                nLabelVar.set("?")
+                return
+            n = (1 << k) if t == 4 else (1 << k) - 1
+            nLabelVar.set(f"N = {n}   (2^{k}{'' if t == 4 else ' - 1'})")
+        kVar.trace_add("write", _showN)
+
+        kHelp = ("The grid is 2^k - 1 points for transform type 1 and 2^k "
+                 "for type 4, because that is what makes the underlying FFT "
+                 "a power of two -- 9.5x faster than an awkward length for "
+                 "type 1, and 3x for type 4. k is entered rather than N so "
+                 "an inefficient size cannot be chosen by accident; the "
+                 "resulting N is shown beside it. k = 12 gives 4095.")
+        for wdg in (kEntry,):
+            wdg.bind("<Enter>", lambda ev, t=kHelp: note.set(t), add="+")
+
+        for i, (key, label, helpText) in enumerate(rows, start=1):
+            lab = ttk.Label(frm, text=label)
+            lab.grid(row=i, column=0, sticky="e", pady=2)
+            v = tk.StringVar(value=str(cur[key]))
+            e = ttk.Entry(frm, textvariable=v, width=12)
+            e.grid(row=i, column=1, sticky="w", padx=(6, 0))
+            vars_[key] = v
+            for wdg in (lab, e):
+                wdg.bind("<Enter>", lambda ev, t=helpText: note.set(t),
+                         add="+")
+                #NO <Leave> binding. The help STAYS on the last thing the
+                #cursor was over, rather than blanking the moment it moves
+                #between widgets: a box that empties as you reach for the
+                #entry you were reading about is worse than useless.
+        if "transformType" in vars_:
+            vars_["transformType"].trace_add("write", _showN)
+        _showN()
+        #FIXED-SIZE, SCROLLABLE help area. A Text rather than a Label so its
+        #height is in lines and does not follow its content -- the dialog
+        #must not resize as the cursor moves -- and so a longer entry than
+        #the box can show is reachable by scrolling rather than simply cut.
+        helpFrame = ttk.Frame(frm)
+        helpFrame.grid(row=len(rows)+1, column=0, columnspan=3,
+                       sticky="ew", pady=(8, 4))
+        helpText_ = tk.Text(helpFrame, height=5, width=54, wrap="word",
+                            relief="sunken", borderwidth=1,
+                            background="#f4f4f4", foreground="#204a87")
+        hsb = ttk.Scrollbar(helpFrame, orient="vertical",
+                            command=helpText_.yview)
+        helpText_.configure(yscrollcommand=hsb.set, state="disabled")
+        hsb.pack(side="right", fill="y")
+        helpText_.pack(side="left", fill="both", expand=True)
+
+        def _setNote(*_):
+            helpText_.configure(state="normal")
+            helpText_.delete("1.0", "end")
+            helpText_.insert("1.0", note.get())
+            helpText_.configure(state="disabled")
+        note.trace_add("write", _setNote)
+        note.set(kHelp)                      # something to read on opening
+
+        def apply():
+            try:
+                new = {}
+                for key, v in vars_.items():
+                    new[key] = int(float(v.get()))
+                if new["transformType"] not in (1, 4):
+                    raise ValueError("transform type must be 1 or 4")
+                #N follows from k and the transform type, so it can only
+                #ever be an efficient size.
+                k = int(float(kVar.get()))
+                if not (4 <= k <= 20):
+                    raise ValueError(
+                        f"grid exponent k = {k} is out of range; "
+                        f"use 4 to 20 (k = 12 gives N = 4095)")
+                new["gridN"] = ((1 << k) if new["transformType"] == 4
+                                else (1 << k) - 1)
+                if new["pointsPerSigma"] < 4:
+                    raise ValueError("grid too coarse to resolve anything")
+            except ValueError as exc:
+                messagebox.showerror("bad setting", str(exc))
+                return
+            self._settings = new
+            dlg.destroy()
+
+        btn = ttk.Frame(frm)
+        btn.grid(row=len(rows)+2, column=0, columnspan=3, sticky="e")
+        ttk.Button(btn, text="Defaults",
+                   command=lambda: ([v.set(str(self.SETTINGS_DEFAULTS[k_]))
+                                     for k_, v in vars_.items()],
+                                    kVar.set("12"))).pack(
+            side="left", padx=2)
+        ttk.Button(btn, text="Cancel", command=dlg.destroy).pack(
+            side="left", padx=2)
+        ttk.Button(btn, text="OK", command=apply).pack(side="left", padx=2)
+        dlg.grab_set()
+
+    def _autosaveDirectory(self):
+        """Where restore.oz1 goes: data file, then session file, then asked.
+
+        WRITABILITY IS TESTED, not assumed. A data file may well sit on a
+        read-only share or a mounted instrument directory -- common enough
+        that a silent failure to autosave would be the likely case rather
+        than the rare one, and the whole point of the autosave is that it is
+        there when something went wrong.
+
+        Returns None when nowhere is available, which is the caller's cue to
+        ask.
+        """
+        for cand in (os.path.dirname(getattr(self, "dataPath", "") or ""),
+                     os.path.dirname(getattr(self, "_sessionPath", "") or ""),
+                     getattr(self, "_autosaveDir", None)):
+            if cand and os.path.isdir(cand) and os.access(cand, os.W_OK):
+                return cand
+        return None
+
+    def _autosaveSession(self, name="restore.oz1"):
+        """Write the session to `name`, beside the loaded data file.
+
+        Called from the fit-progress handler, so it inherits that handler's
+        one-per-second throttle. Failures are swallowed deliberately: a fit
+        must not die because a directory is read-only or a file is locked.
+        """
+        try:
+            import json
+            import os
+            base = self._autosaveDirectory()
+            if not base:
+                #Nowhere writable and nothing chosen. Skip silently: _onFit
+                #asks before starting, so reaching here means the user
+                #declined, and nagging once a second would be worse than no
+                #autosave.
+                return
+            payload = {"format": "sasfit_polydisperse_tab_save_v2",
+                       "tab": self._sessionTabName(),
+                       "tabIndex": self.SESSION_TAB_INDEX,
+                       "runs": [],
+                       "session": self.sessionState()}
+            #Written to a temporary name and moved into place, so an
+            #interrupted write cannot leave a half-file where the good one
+            #was -- the whole point of the autosave is that it is there when
+            #something went wrong.
+            path = os.path.join(base, name)
+            tmp = path + ".tmp"
+            with open(tmp, "w") as fh:
+                json.dump(payload, fh, indent=2, sort_keys=True)
+                fh.write("\n")
+            os.replace(tmp, path)
+            self._autosavePath = path
+        except Exception:
+            pass
+
     def _onInterrupt(self):
         """Stop a running FIT as well as a running single solve.
 
@@ -1276,7 +1553,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         "QminVar", "QmaxVar", "nQVar", "ffVar", "potentialVar",
         "closureVar", "closureParamVar", "closureParam2Var", "distVar",
         "linkDeltaVar", "linkCVar", "porodVar", "porodDVar", "porodAVar",
-        "porodQminVar", "fitterVar", "warmStartVar",
+        "porodQminVar", "fitterVar", "warmStartVar", "mannAlphaVar",
         #smearVar decides whether the dQ column is USED. Omitting it would
         #restore the data and the resolution array but silently lose the
         #choice to apply them -- and an unsmeared fit biases the
@@ -1563,6 +1840,18 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             except Exception:
                 return True
         free = [n for n, v in self.fitFlags.items() if v.get() and _enabled(n)]
+        #WHERE restore.oz1 GOES, settled before the fit rather than during
+        #it. Normally the data file's directory, else the session file's --
+        #both tested for actual writability, since a data file may sit on a
+        #read-only share. Only if neither works is the user asked, which on
+        #an ordinary setup means never.
+        if self._autosaveDirectory() is None:
+            chosen = filedialog.askdirectory(
+                title="Neither the data nor the session directory is "
+                      "writable -- where should restore.oz1 go?")
+            #Declining is a legitimate answer: fit without the autosave
+            #rather than refuse to fit.
+            self._autosaveDir = chosen or ""
         if not free:
             messagebox.showinfo("nothing to fit", "tick at least one parameter")
             return
@@ -1742,6 +2031,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 resolution=p["resolution"],
                 formfactorFactory=makeFF,
                 solverClass=p["solverClass"],
+                mannAlpha=p.get("mannAlpha"),
                 warmStart=p["warmStart"],
                 usePorod=p["usePorod"],
                 porodQmin=p["porodQmin"],
@@ -1953,12 +2243,35 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         p["fitData"] = getattr(self, "data", None)
         #How many parameters the FIT would treat as free, so the computed
         #chi^2 uses the same degrees of freedom and the two are comparable.
+        #
+        #ONLY THE NONLINEAR ONES. The fit divides by N - len(names) - 2
+        #where `names` excludes scale, background and the power-law
+        #amplitude: those enter linearly and are solved exactly rather than
+        #searched, so they never reach the optimiser and are not in its
+        #count. Counting every ticked box here instead made the two
+        #chi-squareds differ by exactly the ratio of the two ndof -- 36/34,
+        #or 5.88 %, on the test case -- which looked like a model mismatch
+        #and was pure bookkeeping.
+        LINEAR = ("scale", "background", "porodA")
         p["nFreeParameters"] = sum(
-            1 for v in getattr(self, "fitFlags", {}).values() if v.get())
+            1 for n, v in getattr(self, "fitFlags", {}).items()
+            if v.get() and n not in LINEAR)
         if self.smearVar.get() and getattr(self, "dQ", None) is not None:
             Q = self.data[0]
             p["resolution"] = Resolution(Q, self.dQ)
         p["solverClass"] = self.selectedSolverClass()
+        #Damping for the Picard/Mann iteration. Read here so it is carried
+        #with the rest of the parameter set and recorded in the session:
+        #a result obtained at a < 1 is not reproducible without it.
+        p["mannAlpha"] = (f(self.mannAlphaVar, "damping a", lo=1e-6, hi=1.0)
+                          if hasattr(self, "mannAlphaVar") else 1.0)
+        #Numerical settings from the dialog, defaults otherwise. These used
+        #to be passed not at all, so the tab silently took 4095 points at
+        #100 per diameter with transform type 1 -- and type 4 was
+        #unreachable from here despite being implemented.
+        s = dict(self.SETTINGS_DEFAULTS)
+        s.update(getattr(self, "_settings", {}))
+        p["settings"] = s
         return p
 
     def _onCompute(self):
@@ -2007,6 +2320,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                                 closureParam2=p["closureParam2"],
                                 meanRadius=p["meanRadius"],
                                 distribution=p["distribution"],
+                                mannAlpha=p.get("mannAlpha"),
                                 formfactor=ff, solverClass=p["solverClass"])
                 alpha, resid, scale = _gsas.solveAlpha(
                     progress=lambda m: self.resultQueue.put(("status", m)),
@@ -2031,7 +2345,12 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 meanRadius=p["meanRadius"],
                 closureParam=p["closureParam"], closureParam2=p["closureParam2"],
                 distribution=p["distribution"],
-                formfactor=ff, solverClass=p["solverClass"])
+                formfactor=ff, solverClass=p["solverClass"],
+                mannAlpha=p.get("mannAlpha"),
+                gridN=p["settings"]["gridN"],
+                pointsPerSigma=p["settings"]["pointsPerSigma"],
+                maxIterations=p["settings"]["maxIterations"],
+                transformType=p["settings"]["transformType"])
             self.solver = sas.solver          # so Interrupt can reach it
             #RESOLUTION SMEARING, applied to EVERY curve or none.
             #
@@ -2358,6 +2677,16 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                     #being left behind.
                     self._writeBackParameters(payload.get("parameters") or {},
                                               payload)
+                    #AUTOSAVE the current state beside the data file. A fit can
+                    #run for many minutes, and losing it to a crash, a wrong
+                    #Interrupt or a closed window is worse than the cost of a
+                    #23 kB write once a second. The file is a normal session,
+                    #so it reloads like any other.
+                    #
+                    #One fixed name, overwritten: a file per step would be
+                    #hundreds of files, and what anyone wants after a mishap is
+                    #the LAST state, not a history.
+                    self._autosaveSession()
                     self._replot()
                     self.statusVar.set(
                         f"fitting... {payload.get('nEvaluations', '?')} "

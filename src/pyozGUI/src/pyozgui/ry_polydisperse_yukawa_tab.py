@@ -63,7 +63,7 @@ def _solverChoices():
         pass
     try:
         from picardOZsolver import PicardOZsolver
-        choices["Picard"] = PicardOZsolver
+        choices["Picard / Mann"] = PicardOZsolver
     except Exception:
         pass
     return choices

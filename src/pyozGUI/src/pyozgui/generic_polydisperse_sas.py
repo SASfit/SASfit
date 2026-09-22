@@ -56,7 +56,7 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
                  closure="Percus-Yevick", closureParam=None, closureParam2=None,
                  formfactor=None, meanDiameter=1.0,
                  solverClass=None, gridN=4095, pointsPerSigma=100,
-                 onSolverCreated=None,
+                 onSolverCreated=None, mannAlpha=None,
                  maxIterations=6000, converged_tol=1e-6,
                  nFF=None, distribution="Schulz", meanRadius=None,
                  transformType=1):
@@ -130,6 +130,9 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         #Giving a mean radius makes Q a genuine inverse length, matching the
         #convention of the polydisperse Yukawa tab.
         self.meanRadius = None if meanRadius is None else float(meanRadius)
+        #Damping for the Picard/Mann iteration; None leaves the solver's own
+        #default (1.0, i.e. undamped Picard).
+        self.mannAlpha = mannAlpha
         self._L = 1.0 if self.meanRadius is None else 2.0*self.meanRadius
         #Set BEFORE _solve, since that is where the hook fires.
         if onSolverCreated is not None:
@@ -178,6 +181,20 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
             solverClass = PicardOZsolver
         sol = solverClass(port=0, numberOfRadialSamplingPoints=gridN,
                           hardSphereDiameterInPoints=pointsPerSigma)
+        #Mann damping, where the solver supports it. x_{n+1} =
+        #(1-a) x_n + a T(x_n): a = 1 is plain Picard, below 1 is Mann's
+        #iteration -- slower, but convergent where undamped Picard diverges.
+        #Set with getattr/hasattr because only the Picard solver has it; the
+        #accelerated solvers manage their own step.
+        a = getattr(self, "mannAlpha", None)
+        if a is not None:
+            #Set UNCONDITIONALLY, not behind hasattr(sol, "mannAlpha").
+            #PicardOZsolver reads it with getattr(self, 'mannAlpha', 1.0),
+            #so the attribute does not exist until something assigns it --
+            #and the hasattr guard therefore never fired, leaving the
+            #damping entry with no effect at all. Solvers that manage their
+            #own step simply ignore the attribute.
+            sol.mannAlpha = float(a)
         #transformType must be set BEFORE the potential, because getrArray()
         #depends on it: type 4 puts the grid at (n+1/2)*Delta_r rather than
         #(n+1)*Delta_r, so a potential built under one and transformed under

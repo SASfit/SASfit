@@ -63,7 +63,23 @@ from scipy.special import roots_genlaguerre, roots_hermitenorm
 from scipy.special import gamma as gammafn
 
 
-DISTRIBUTIONS = ("Schulz", "Gaussian", "LogNormal", "Weibull")
+DISTRIBUTIONS = ("Schulz", "Gaussian", "LogNormal", "Weibull", "Gamma")
+#BETA IS DELIBERATELY ABSENT, though _quantileFunction can produce it.
+#
+#Everything here is parametrised by (mean, srel) alone, which is what makes
+#the six mutually comparable and what the moment-matched quadrature rests
+#on. A Beta has alpha, beta AND a support: pinning it to two parameters
+#forces alpha = beta on (0, 2*mean), which is the SYMMETRIC special case --
+#and the reason to want a bounded distribution is precisely to place the
+#bounds somewhere meaningful, say (0.6R, 1.4R) for a sieved sample. Offering
+#the one Beta that cannot do that would be offering the name without the
+#capability.
+#
+#The RY Polydisperse Yukawa tab has per-distribution parameter fields and
+#can express a general Beta. Generalising THIS route means changing
+#quantileClasses, analyticMoments and the fit's parameter list, since srel
+#stops being an input and becomes a derived quantity -- a real piece of work
+#touching the manuscript's accuracy claims, not a GUI change.
 
 
 def _weibull_shape_from_cv(srel):
@@ -313,6 +329,34 @@ def quantileFunction(distribution, srel, meanSigma=1.0):
         k = _weibull_shape_from_cv(srel)
         lam = meanSigma/gammafn(1.0 + 1.0/k)
         return lambda u: lam*(-np.log1p(-u))**(1.0/k)
+    if distribution == "Gamma":
+        #A two-parameter gamma with mean meanSigma and relative width srel:
+        #shape a = 1/srel^2, scale = meanSigma*srel^2.
+        #
+        #NOT redundant with Schulz, despite Schulz being a gamma. The Schulz
+        #convention here fixes the shape as t+1 = 1/srel^2 and then divides
+        #by t+1, which pins the mean to meanSigma with the SAME parameter
+        #controlling both width and shape. Written directly, a and the scale
+        #are independent, and the tails differ from Schulz once srel is
+        #large -- which matters, since <sigma^6> governs I(Q -> 0).
+        a = 1.0/(srel*srel)
+        scale = meanSigma*srel*srel
+        return lambda u: gammadist.ppf(u, a, scale=scale)
+    if distribution == "Beta":
+        #REACHABLE BUT NOT OFFERED: absent from DISTRIBUTIONS, and see the
+        #note there. Symmetric on (0, 2*meanSigma), so alpha = beta and
+        #    srel = 1/sqrt(2*alpha + 1),
+        #hence alpha = (1/srel^2 - 1)/2. Kept because it is correct as far
+        #as it goes and because a general Beta, when the quadrature can take
+        #per-distribution parameters, will start from here.
+        from scipy.stats import beta as betadist
+        if srel >= 1.0/np.sqrt(3.0):
+            raise ValueError(
+                f"a symmetric Beta distribution on (0, 2*mean) cannot have "
+                f"srel = {srel:g}; the limit is 1/sqrt(3) = 0.5774. Use "
+                f"Schulz, Gamma or LogNormal for wider distributions.")
+        a = 0.5*(1.0/(srel*srel) - 1.0)
+        return lambda u: 2.0*meanSigma*betadist.ppf(u, a, a)
     raise ValueError(f"unknown distribution {distribution!r}")
 
 

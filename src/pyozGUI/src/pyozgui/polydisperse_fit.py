@@ -462,7 +462,10 @@ class PolydisperseFit:
                  fixedScale=None, fixedBackground=None, solverClass=None,
                  linkedArg=None, usePorod=False, fixedPorodAmplitude=None,
                  porodQmin=None, onProgress=None, progressInterval=1.0,
-                 warmStart=False):
+                 warmStart=False, mannAlpha=None):
+        #mannAlpha: damping for the Picard/Mann iteration, passed through to
+        #every solve. None leaves the solver's default (undamped Picard).
+        self.mannAlpha = mannAlpha
         #warmStart: seed each OZ solve with the converged gamma of the
         #previous one instead of starting from zero.
         #
@@ -705,6 +708,7 @@ class PolydisperseFit:
                 meanRadius=kw.get("meanRadius"),
                 formfactor=ff,
                 solverClass=self.solverClass,
+                mannAlpha=self.mannAlpha,
                 onSolverCreated=onSolver if self.warmStart else None,
                 distribution=self.distribution)
             self.nEvaluations += 1

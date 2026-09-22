@@ -100,7 +100,8 @@ class OZLiquidStructure:
                  closure="Percus-Yevick", closureParam=None,
                  closureParam2=None, potential="HardSphere",
                  potentialArgs=(), solverClass=None, gridN=4095,
-                 pointsPerSigma=100, maxIterations=6000, transformType=1):
+                 pointsPerSigma=100, maxIterations=6000, transformType=1,
+                 mannAlpha=None):
         import ozLib
 
         self.wavevector = np.atleast_1d(np.asarray(wavevector, float))
@@ -133,6 +134,14 @@ class OZLiquidStructure:
                 f"transformType must be 1 or 4, got {transformType!r}")
         sol.transformType = int(transformType)
         sol.setNumberOfIterations(maxIterations)
+        #Mann damping, set UNCONDITIONALLY when asked for. PicardOZsolver
+        #reads it with getattr(self, 'mannAlpha', 1.0), so the attribute does
+        #not exist until something assigns it -- a hasattr guard here would
+        #never fire and the setting would be silently ignored, which is
+        #exactly how it failed once already. Solvers that choose their own
+        #step ignore the attribute.
+        if mannAlpha is not None:
+            sol.mannAlpha = float(mannAlpha)
         sol.setVolumeDensity(self.volume_fraction_total)
 
         self._buildPotential(sol, potential, potentialArgs, sigmaReduced, x)
@@ -259,6 +268,13 @@ class OZLiquidStructure:
         if not np.all(np.isfinite(image)):
             raise RuntimeError(f"{self.closure} diverged")
         res = float(np.max(np.abs(image - flat)))
+        #KEEP IT. A validation that compares curves at the 1e-3 to 1e-4
+        #level while the solver only guarantees 1e-3 is measuring its own
+        #stopping tolerance, not grid error -- and a finer grid has more
+        #unknowns to bring below the same threshold, so it can stop FURTHER
+        #from its fixed point than the coarse one and look worse. Exposing
+        #the number lets a caller see that rather than infer it.
+        self.residual = res
         if res > 1e-3:
             raise RuntimeError(f"{self.closure} did not converge "
                                f"(max|G(gamma)-gamma| = {res:.3e})")

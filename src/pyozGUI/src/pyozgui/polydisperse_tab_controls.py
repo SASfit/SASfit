@@ -68,7 +68,13 @@ class PolydisperseTabControls:
         if not hasattr(self, "runs"):
             self.runs = []
         self._supportsInterrupt = supportsInterrupt
-        self.solverChoices = solverChoices or {}
+        #Do NOT clobber a dict the tab has already set. A tab that builds
+        #its own solver dropdown in the parameter panel assigns
+        #self.solverChoices before calling this, and overwriting it with {}
+        #made selectedSolverClass() return None -- so every solve silently
+        #fell back to the default solver whatever the dropdown showed.
+        if solverChoices or not getattr(self, "solverChoices", None):
+            self.solverChoices = solverChoices or {}
 
         row1 = ttk.Frame(parent)
         row1.pack(fill="x")
@@ -77,8 +83,12 @@ class PolydisperseTabControls:
         self.interruptBtn = ttk.Button(row1, text="Interrupt",
                                        command=self._onInterrupt, state="disabled")
         self.interruptBtn.pack(side="left", padx=2)
-        ttk.Button(row1, text="Clear all", command=self._onClearAll).pack(side="left", padx=2)
-        ttk.Button(row1, text="Delete last", command=self._onDeleteLast).pack(side="left", padx=2)
+        #"Clear all" and "Delete last" removed at Joachim's request: with the
+        #run history no longer displayed there was nothing visible to delete
+        #FROM, so the buttons acted on an invisible list. The methods
+        #_onClearAll and _onDeleteLast are kept -- they are small, they are
+        #the only code that knows how to unwind a run consistently, and a
+        #future interface may want them back.
 
         row2 = ttk.Frame(parent)
         row2.pack(fill="x", pady=(4, 0))
@@ -99,7 +109,13 @@ class PolydisperseTabControls:
         ttk.Button(row3, text="Export", command=self._onExportSelected).pack(
             side="left", padx=(4, 0))
 
-        if self.solverChoices:
+        #Build the solver dropdown only if the tab has NOT already made one.
+        #A tab that puts the selector in its parameter panel creates
+        #solverVar there; making a second one here replaces that variable, so
+        #the tab's traces fire on an orphan -- which is why selecting
+        #Picard/Mann left the damping entry disabled -- and the user gets two
+        #dropdowns that disagree with each other.
+        if self.solverChoices and getattr(self, "solverVar", None) is None:
             row4 = ttk.Frame(parent)
             row4.pack(fill="x", pady=(6, 0))
             ttk.Label(row4, text="Solver:").pack(side="left")
@@ -214,6 +230,9 @@ class PolydisperseTabControls:
             title="Save all runs")
         if not path:
             return
+        #Remember where the session came from: second choice of directory for
+        #the fit autosave, after the data file's own.
+        self._sessionPath = path
         payload = {"format": "sasfit_polydisperse_tab_save_v2",
                    "tab": self._sessionTabName(),
                    "tabIndex": self.SESSION_TAB_INDEX,
@@ -286,6 +305,9 @@ class PolydisperseTabControls:
             title="Load runs")
         if not path:
             return
+        #Same on loading: this is the directory the user is working in, and
+        #the second choice for the fit autosave after the data file's own.
+        self._sessionPath = path
         try:
             with open(path) as fh:
                 payload = json.load(fh)

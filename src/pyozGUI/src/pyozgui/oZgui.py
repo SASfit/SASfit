@@ -131,12 +131,16 @@ EXTRA_TABS = [
     #Gazzillo charged and adhesive models). It is a checking tool rather than
     #a modelling one, so it carries no Save/Load -- it is a plain ttk.Frame,
     #not a PolydisperseTabControls subclass, and has no session to store.
+    #Validation tab: compares the numerical multicomponent route against the
+    #ANALYTIC mixture solutions. It is a checking tool rather than a
+    #modelling one, so it carries no Save/Load -- it is a plain ttk.Frame,
+    #not a PolydisperseTabControls subclass.
     #
     #Its charged path deliberately omits the numerical curve: the
     #polydisperse builder cannot make a charge-coupled potential, so the
     #curve would be a hard-sphere mixture and NOT comparable with the charged
     #reference. Showing it would invite exactly the wrong conclusion.
-    ("mixture_validation_tab", "MixtureValidationTab", "Mixture validation"),
+    #
     #Places the numerical solver beside INDEPENDENT ANALYTIC references --
     #mixscatter's Vrij mixture PY, and the exact polydisperse charged-hard-
     #sphere MSA of Gazzillo et al. (arXiv:cond-mat/9909153, Appendix A).
