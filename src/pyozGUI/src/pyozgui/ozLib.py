@@ -3,7 +3,7 @@
 Conventional Python library API for this project's whole OZ solver
 ecosystem -- the same calculation workflow oZgui.py's own "calculate"
 button runs, factored out here so it can be called directly from your
-own scripts, without needing the Tkinter GUI at all:
+own scripts, without needing the Tkinter GUI at all::
 
     from ozLib import solve
     result = solve(potential='HardSphere', phi=0.3,
@@ -326,66 +326,116 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
     SOLVER_CLASSES/CLOSURE_SETTERS in this module for the exact list
     of valid `solver=`/`closure=` names.
 
-    potential: potential name, e.g. 'HardSphere', 'StickyHardSphere',
-        'DLVO' -- see oZfixpointOperator.py's own setXXXPotential()
-        methods, or call getAvailablePotentialNames() on any solver
-        instance, for the full current list.
-    phi: volume fraction.
-    potentialArgs: positional arguments for that potential's own
-        setXXXPotential(), e.g. (tau, delta) for StickyHardSphere.
-    closure: closure name, see CLOSURE_SETTERS above.
-    closureParam: the closure's own alpha/eta value, required for
-        closures where CLOSURE_SETTERS[closure][1] is True (Modified
-        HNC, Rogers-Young, HMSA, BPGG, CJVM, BB) UNLESS
-        findConsistentParameter=True is given instead (see below).
-        Not used for ZSEP (it always self-fits all three of its own
-        parameters; see fitZSEPparameters() on OZsolver directly if
-        you want to fix one of them rather than fit all three).
-    findConsistentParameter: if True, instead of taking closureParam
-        from the caller, automatically searches for the value that
-        makes the compressibility-route and virial-route isothermal
-        compressibility agree (Rogers & Young's own thermodynamic-
-        consistency idea) -- see
-        OZsolver.findThermodynamicallyConsistentParameter() for the
-        physics and its own documented caveats (a located root can
-        occasionally be a numerical artefact rather than a genuine
-        one; that method already screens for this and falls back to
-        a closest-approach value with a printed warning when it
-        cannot find a clean one). Only valid when `closure` is one of
-        CONSISTENT_PARAMETER_CLOSURES (Rogers-Young, HMSA, Modified
-        HNC, BPGG, CJVM, BB); raises ValueError otherwise. When True,
-        closureParam is ignored (the found value is used instead).
-    solver: solver name, see SOLVER_CLASSES above. Defaults to
-        SUNDIALS' Anderson-accelerated fixed-point strategy
-        ("sundials4py: Fixed-Point (Anderson)") when sundials4py is
-        installed, otherwise "scipy Anderson" -- see SOLVER_CLASSES'
-        own comment above for why. Plain (unaccelerated) Picard
-        iteration is still available (solver="Picard iteration"), just
-        no longer the default.
-    maxIterations: upper bound on iterations/function evaluations.
-    numberOfRadialSamplingPoints, hardSphereDiameterInPoints: optional
-        grid overrides (see oZfixpointOperator.py's own __init__) --
-        leave as None for this project's original grid (4096 points,
-        100 points per hard-sphere diameter); increase
-        numberOfRadialSamplingPoints (at fixed hardSphereDiameterInPoints)
-        for a longer real-space range without losing resolution, e.g.
-        for long-range/slowly-decaying potentials.
-    onSolverCreated: optional callback, called with the just-constructed
-        solver instance right after it is set up (potential/closure
-        applied) but BEFORE solve() actually runs -- lets a caller
-        (e.g. oZgui.py's own "interrupt" button) reach the live
-        instance while a long solve is still in progress, since
-        solve() itself only returns once the whole computation is
-        already finished. Not needed for normal scripted use.
+    Parameters
+    ----------
+    potential : str
+        Potential name, e.g. 'HardSphere', 'StickyHardSphere', 'DLVO'.
+        See oZfixpointOperator.py's own setXXXPotential() methods, or call
+        getAvailablePotentialNames() on any solver instance, for the full
+        current list.
+    phi : float
+        Volume fraction.
+    potentialArgs : tuple
+        Positional arguments for that potential's own setXXXPotential(),
+        e.g. ``(tau, delta)`` for StickyHardSphere. There is no keyword
+        form, and the meaning is per-potential.
+    closure : str
+        Closure name, see CLOSURE_SETTERS.
+    closureParam : float, optional
+        The closure's own alpha/eta value, required for closures where
+        ``CLOSURE_SETTERS[closure][1]`` is True (Modified HNC,
+        Rogers-Young, HMSA, BPGG, CJVM, BB) UNLESS findConsistentParameter
+        is given instead. Not used for ZSEP, which always self-fits all
+        three of its own parameters; see fitZSEPparameters() on OZsolver
+        to fix one rather than fit all three.
+    closureParam2 : float, optional
+        Second parameter, used only by Extended Rogers-Young. See
+        SECOND_CLOSURE_PARAM.
+    findConsistentParameter : bool, optional
+        If True, search for the closureParam that makes the
+        compressibility-route and virial-route isothermal compressibility
+        agree, rather than taking one from the caller. See
+        OZsolver.findThermodynamicallyConsistentParameter() for the physics
+        and its caveats: a located root can occasionally be a numerical
+        artefact, and that method screens for it and falls back to a
+        closest-approach value with a printed warning when it cannot find a
+        clean one. Valid only for CONSISTENT_PARAMETER_CLOSURES; raises
+        ValueError otherwise. When True, closureParam is ignored.
+    solver : str, optional
+        Solver name, see SOLVER_CLASSES. Defaults to SUNDIALS'
+        Anderson-accelerated fixed point when sundials4py is installed,
+        otherwise "scipy Anderson". Plain Picard remains available as
+        ``solver="Picard iteration"``, but is no longer the default.
 
-    Raises ValueError for an unrecognised closure/solver name, a
-    closure that needs closureParam when none was given and
-    findConsistentParameter is not requested, ZSEP requested for any
-    potential other than HardSphere (see below), or
-    findConsistentParameter=True for a closure that doesn't support it
-    -- these are checked here (before touching the solver) so a
-    mistake is reported immediately rather than surfacing later as a
-    confusing internal AttributeError.
+        Prefer a FIXED-POINT method. Near a fold the Jacobian is singular
+        and the Newton-Krylov family is drawn onto
+        negative-compressibility branches precisely where the fold lies:
+        measured at one Lennard-Jones state, the fixed-point family found
+        g_max = 2.16 with min S(Q) = +0.21 while Newton-Krylov found 1.13
+        and 1.22 with min S(Q) near -38, all at residuals below 1e-11.
+        Every one is a correct answer; one is physical.
+    maxIterations : int, optional
+        Upper bound on iterations or function evaluations.
+    numberOfRadialSamplingPoints : int, optional
+        Radial grid size. None keeps this project's original 4095 points.
+        Note the real-space range is ``N*sigma/pointsPerSigma``, so raising
+        the resolution at fixed N SHRINKS the box -- scale both together or
+        a convergence test measures nothing. Use
+        oZfixpointOperator.bestGridSize() rather than choosing by hand: a
+        DST-I wants 2^k - 1 and a DST-IV wants 2^k.
+    hardSphereDiameterInPoints : int, optional
+        Radial resolution. None keeps 100 points per hard-sphere diameter.
+    onSolverCreated : callable, optional
+        Called with the just-constructed solver instance after the
+        potential and closure are applied but BEFORE solve() runs. This is
+        how a caller reaches the live instance while a long solve is in
+        progress -- solve() itself returns only once the computation has
+        finished -- and how the GUI's Interrupt button works. It is also
+        where a Mann damping factor is set, ``sol.mannAlpha = 0.5``.
+        Not needed for normal scripted use.
+    verify : bool, optional
+        Re-solve with other solvers and raise if they land on different
+        fixed points. True by default and worth leaving so: the closure
+        equations genuinely admit several solutions, and a solver reporting
+        success is not claiming to have found the physical one.
+    verifyWith : tuple of str, optional
+        Which solvers to verify against.
+    verifyTolerance : float, optional
+        How far the verifying solutions may differ before raising.
+
+    Returns
+    -------
+    OZResult
+        Every derived curve as a plain array: ``Sq`` against ``q``, and
+        ``gr``, ``cr``, ``hr``, ``gamma``, ``Ur``, ``Br``, ``yr``, ``fr``
+        against ``r``. Also carries the inputs and ``solverInstance``.
+
+    Raises
+    ------
+    ValueError
+        For an unrecognised closure or solver name; a closure needing
+        closureParam when none was given and findConsistentParameter was
+        not requested; ZSEP for any potential other than HardSphere; or a
+        verification disagreement.
+
+    Examples
+    --------
+    >>> import ozLib
+    >>> res = ozLib.solve("HardSphere", phi=0.3)
+    >>> q, S = res.q, res.Sq
+
+    A square well -- NOTE the sign. The implementation sets u(r) = eps
+    inside the well and forms exp(-u), so a POSITIVE eps is repulsive, a
+    shoulder rather than a well:
+
+    >>> res = ozLib.solve("SquareWell", phi=0.3, potentialArgs=(-1.0, 0.1),
+    ...                   closure="Hypernetted-Chain")
+
+    Notes
+    -----
+    The ValueErrors above are all checked HERE, before the solver is
+    touched, so a mistake is reported immediately rather than surfacing
+    later as a confusing internal AttributeError.
     '''
     if closure not in CLOSURE_SETTERS:
         raise ValueError(f"unknown closure {closure!r}, must be one of {list(CLOSURE_SETTERS)}")

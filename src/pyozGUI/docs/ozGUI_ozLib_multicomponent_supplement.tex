@@ -1788,6 +1788,155 @@ solved scale, background and power-law amplitude.}
 \label{fig:guiiq}
 \end{figure}
 
+\paragraph{Reproducibility of the external comparisons.} Several rows of the
+validation table were measured against \code{jscatter}, whose dependency
+chain --- MDAnalysis, JupyterLab, nglview, pdb2pqr, netCDF4 --- does not
+build under MinGW. Those comparisons were therefore not repeatable on the
+machine this work is written on, which is an uncomfortable position for a
+validation claim: a reader cannot check it, and neither could we.
+
+The two-Yukawa solver has been extracted into
+\code{tools/two\_yukawa\_reference.py}, needing \code{numpy} alone, with
+\code{tools/two\_yukawa\_test.py} performing the comparison and writing the
+result as JSON. That row is now reproducible locally, and the exercise
+sharpened it: the quoted $0.15$--$0.28\,\%$ became a single $0.21\,\%$ at
+$1600$ points per diameter, with successive convergence ratios of $4.22$ and
+$4.24$ confirming first order twice over. The earlier spread was resolution,
+not uncertainty.
+
+Provenance is recorded in the module header rather than left implicit: the
+derivation is \citet{Liu2005}, the algorithm their own MATLAB by way of C,
+Igor and \code{jscatter}, and the licence descends from the NIST SANS
+reduction package, described there only as freely available and formally
+unclear. The paper asks to be cited by anyone using results from the code,
+and that request is passed on. It follows that this is NOT an independent
+check of the published equations --- only of our discretisation against the
+authors' own implementation, which is a weaker and more honest claim.
+
+The remaining \code{jscatter} rows are in the same position and deserve the
+same treatment before submission.
+
+\paragraph{Regression tests for the silent failures.}
+\code{tools/numerics\_test.py} guards four numerical defects that shared a
+shape: the wrong answer looked plausible, nothing raised, and the only way to
+see it was to compute a number and compare it with what it should have been.
+A test that merely ran the code would have passed in every case, so these
+assert VALUES --- 27 checks, all passing.
+
+The linear solve is checked at a condition number of $1.8\times10^{20}$,
+where it must recover the scale, background and power-law amplitude to five
+figures rather than returning two of the three as exact zeros, and the
+non-negativity constraint must bind at exactly zero rather than nearly. Both
+resolution kernels must reproduce the unsmeared curve as
+$\mathrm{d}Q \to 0$ (measured $2.2\times10^{-16}$) and normalise to unity,
+and the Rician form must place less weight below $Q_{\min}$ than the
+Gaussian --- 0.264 against 0.388, which is the whole reason for preferring it
+and is therefore asserted rather than assumed. All five size distributions
+must reproduce their mean and width to six figures. The power-law clamp must
+leave the smeared value unchanged when the arbitrary low-$Q$ guard is moved
+by two orders of magnitude (0.42\,\% spread, against five orders unclamped)
+and must be invisible away from that edge, since a test of stability alone
+could be satisfied by clamping everything flat.
+
+A fifth block exercises the DREAM posterior, wired for some time and never
+once run to completion. It completes: 3697 evaluations, none failed, the
+uncertainties populated and the correlation matrix of the right shape with
+unit diagonal. The concern was specific --- the state lookup sits inside a
+bare \code{except Exception: pass}, so a wrong attribute path would have
+removed the correlation matrix with no message at all --- and it is
+unfounded. The posterior itself remains unvalidated: the test fits noiseless
+synthetic data, so the returned uncertainties are essentially the prior
+widths and the correlation is near zero where two parameters would be
+expected to couple. That needs one run on measured data.
+
+\subsection{Where the hard core sits on the grid}
+\label{sec:coreongrid}
+
+The most consequential numerical finding of this work is also the least
+visible one, because nothing about it looks wrong: every solve converges, the
+residual reaches $10^{-12}$, and the resulting $S(Q)$ is smooth, positive and
+physically plausible. It is simply the wrong curve by a few per cent at low
+$Q$, and no amount of refining the grid in the usual way removes it.
+
+The diagnostic that exposed it is the one quantity for which an exact answer
+exists: the Percus--Yevick compressibility for monodisperse hard spheres,
+\begin{equation}
+  S(0) = \frac{(1-\varphi)^{4}}{(1+2\varphi)^{2}}.
+  \label{eq:pyS0}
+\end{equation}
+Extrapolating the computed partials to the origin and comparing gives an
+ABSOLUTE accuracy, where every other check in this work is a comparison
+between two approximations.
+
+\begin{table}[htbp]
+\centering
+\caption{Relative error in $S(0)$ against Eq.~\eqref{eq:pyS0}, monodisperse
+hard spheres. \emph{pps} is radial points per diameter; the grid size is
+scaled with it so that the real-space range is unchanged.}
+\begin{tabular}{llcc}
+\toprule
+$\varphi$ & transform & pps~$=100$ & pps~$=400$\\
+\midrule
+$0.30$ & type 1 & $3.67\,\%$ & $0.92\,\%$\\
+$0.30$ & type 4 & $0.015\,\%$ & $0.003\,\%$\\
+$0.40$ & type 1 & $5.27\,\%$ & $1.33\,\%$\\
+$0.40$ & type 4 & $0.036\,\%$ & $0.004\,\%$\\
+\bottomrule
+\end{tabular}
+\label{tab:S0accuracy}
+\end{table}
+
+\paragraph{The cause.} A DST-I places its nodes at $r = (n+1)\Delta r$, so
+the hard core at $r = \sigma$ falls exactly ON a node. The discontinuity is
+then carried by a point that is neither inside nor outside, and the error in
+the excluded volume is first order in $\Delta r$. A DST-IV places them at
+$(n+\tfrac{1}{2})\Delta r$: the core falls BETWEEN points and the step is
+resolved to second order.
+
+Table~\ref{tab:S0accuracy} shows exactly that. Type 1 falls from $5.27$ to
+$1.33\,\%$ for a fourfold refinement, a ratio of $3.96$ --- textbook first
+order. Type 4 starts at $0.036\,\%$ on the COARSE grid, already 150 times
+better than type 1 achieves at four times the cost, and reaches $0.004\,\%$.
+
+\paragraph{Why it took so long to find.} The error is independent of the
+real-space range. Extending $r_{\max}$ from $41\sigma$ to $655\sigma$ --- a
+sixteenfold increase --- changed $S(0)$ in the sixth decimal and the error not
+at all. Refining the resolution at fixed range does reduce it, but only
+fourfold per step, so a convergence study that looks at ratios sees
+respectable first-order behaviour and concludes the method is working. It is:
+just slowly, towards an answer whose leading error is set by where a
+discontinuity happens to land.
+
+It also explains a discrepancy that had stood open. The mixture validation
+tab reports a numerical solve that is a fixed point to $7\times10^{-12}$ ---
+machine precision, so not a solver tolerance --- and yet differs from two
+independent analytic references by about $10^{-3}$, with the difference
+barely shrinking under refinement and growing with $\varphi$. That is this
+same effect measured from the other side, and the two were one problem.
+
+\paragraph{What it means for a fit.} $S(0)$ is the isothermal
+compressibility, so an error there is not a cosmetic one at an unmeasured
+point: it is a systematic bias in the quantity the volume fraction controls.
+A fit will move $\varphi$ to compensate, and the compensation is larger the
+denser the sample --- precisely where an interacting model is being used
+because it matters.
+
+\paragraph{The limitation, which is now much more serious than it looked.}
+Type 4 requires every pair core to fall between grid points. For one size
+class that is arranged by construction. For a MIXTURE it cannot be: the pair
+diameters $\sigma_{ij} = (\sigma_i+\sigma_j)/2$ come from a moment-matched
+quadrature and are mutually incommensurate, so no single grid offset places
+them all between nodes. The polydisperse route is therefore restricted to
+type 1 and carries the first-order error above.
+
+This was previously recorded as a modest inconvenience --- type 4 being
+``more accurate but not available for mixtures''. Table~\ref{tab:S0accuracy}
+reframes it: the difference is not a refinement but the difference between
+$0.03\,\%$ and $5\,\%$ in the compressibility. Until a mixture-capable
+second-order treatment exists, a polydisperse fit at $\varphi \gtrsim 0.3$
+should be run at the finest radial resolution affordable, and its fitted
+volume fraction read with this bias in mind.
+
 \section{Known limitations}
 
 \begin{enumerate}[nosep]

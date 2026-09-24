@@ -465,9 +465,85 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         n = self._S_AL.shape[0]
         out = np.empty((Q.size, n, n))
         eye = np.eye(n)
+        #IS THE LOW-q END EXTRAPOLABLE AT ALL? Decided once, before the loop.
+        #
+        #A liquid's S(q) is analytic at the origin, S(0) = rho k_B T chi_T
+        #finite, so a Taylor form A + B q^2 is the leading behaviour and
+        #extrapolating to it is legitimate. A DIVERGENCE, S ~ c q^-alpha, is a
+        #different physical situation: the compressibility is running away,
+        #the system is at or near a spinodal or critical point, and there is
+        #no S(0) to extrapolate TO. Fitting a parabola through it returns a
+        #finite number that means nothing, and the fit downstream would use
+        #it without complaint.
+        #
+        #The discriminant is the log-log slope of the trace over the lowest
+        #few grid points. Near zero: analytic, extrapolate. Clearly negative:
+        #a power law, and better to refuse than to invent a value.
+        if not hasattr(self, "_lowQslope"):
+            m = min(5, self._q.size)
+            tr = np.trace(self._S_AL[:, :, :m]).astype(float)
+            good = tr > 0
+            if np.count_nonzero(good) >= 3:
+                self._lowQslope = float(np.polyfit(
+                    np.log(self._q[:m][good]), np.log(tr[good]), 1)[0])
+            else:
+                self._lowQslope = 0.0
+        if self._lowQslope < -0.1 and np.any(Q <= self._q[0]):
+            raise RuntimeError(
+                f"S(q) diverges at low q (log-log slope {self._lowQslope:.3f} "
+                f"over the lowest grid points, i.e. S ~ q^{self._lowQslope:.2f}"
+                f"), so there is no finite S(0) to extrapolate to and a "
+                f"Taylor form would invent one. The compressibility is "
+                f"running away: the state point is at or near a spinodal. "
+                f"Move away from it, or extend the q grid below "
+                f"{self._q[0]/self._L:.4g} so that no extrapolation is "
+                f"needed.")
         for k, q in enumerate(Q):
             if q <= self._q[0]:
-                out[k] = self._S_AL[:, :, 0]
+                #GUINIER-LIKE EXTRAPOLATION, not a clamp.
+                #
+                #S(q) for a liquid is an even, analytic function of q at
+                #small q -- the Fourier transform of a short-ranged, radially
+                #symmetric h(r) has no odd term -- so
+                #
+                #    S_ij(q) = A_ij + B_ij q^2 + O(q^4)
+                #
+                #is the leading behaviour rather than a convenient fit.
+                #
+                #A AND B COME FROM A LEAST-SQUARES FIT OVER THE WHOLE
+                #QUADRATIC REGION, not from the two lowest points. The grid is
+                #uniform in q with spacing pi/r_max, so a finer grid puts MORE
+                #points below any given q -- at r_max = 41 sigma the spacing
+                #is about 0.077/sigma and there are a dozen points before
+                #q sigma = 1. Taking only q_0 and q_1 would determine B from
+                #the difference of two nearly equal numbers, and would get
+                #WORSE as the grid is refined, which is precisely backwards.
+                #
+                #The fit window is q sigma <= 1, where the quartic term is
+                #still small, capped so a very fine grid does not spend
+                #thousands of points on it, and floored at two so a coarse
+                #grid still has something to fit.
+                if not hasattr(self, "_lowQfit"):
+                    m = int(np.searchsorted(self._q, 1.0))
+                    m = max(2, min(m, 24, self._q.size))
+                    qf = self._q[:m]
+                    #Columns [1, q^2]: no linear term, by the parity argument
+                    #above. Including one would fit noise and break the
+                    #symmetry S(q) = S(-q) that the transform guarantees.
+                    M = np.stack([np.ones_like(qf), qf*qf], axis=1)
+                    coef, *_ = np.linalg.lstsq(
+                        M, self._S_AL[:, :, :m].reshape(-1, m).T, rcond=None)
+                    self._lowQfit = (coef[0].reshape(n, n),
+                                     coef[1].reshape(n, n), m)
+                A, B, _m = self._lowQfit
+                out[k] = A + B*q*q
+                #A structure factor is a variance and cannot be negative. If
+                #the quadratic undershoots -- possible when the window catches
+                #curvature the q^2 form does not capture -- fall back to the
+                #lowest computed point rather than hand back something
+                #unphysical.
+                if np.any(np.diag(out[k]) < 0.0):
+                    out[k] = self._S_AL[:, :, 0]
             elif q >= self._q[-1]:
                 out[k] = eye          # S -> delta_ij at large q
             else:

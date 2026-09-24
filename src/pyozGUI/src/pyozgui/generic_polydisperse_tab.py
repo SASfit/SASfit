@@ -718,6 +718,18 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             variable=self.smearVar, state="disabled")
         self.smearCheck.pack(anchor="w", pady=(4, 0))
         self._bindHelp(self.smearCheck, "smear")
+        #WHICH KERNEL. Rician is right and is the default; Gaussian is kept
+        #selectable because every earlier result in this project was computed
+        #with it, and a claim that the change matters should be checkable by
+        #switching back rather than taken on trust.
+        _kf = ttk.Frame(fitPanel)
+        _kf.pack(anchor="w")
+        ttk.Label(_kf, text="   kernel:").pack(side="left")
+        self.kernelVar = tk.StringVar(value="rician")
+        _kc = ttk.Combobox(_kf, textvariable=self.kernelVar, width=10,
+                           state="readonly", values=["rician", "gaussian"])
+        _kc.pack(side="left", padx=(4, 0))
+        self._bindHelp(_kc, "kernel")
         #The potential's own arguments: variable in number, so still their
         #own frame. The fixed parameters have their checkbox beside their
         #value in the left column.
@@ -1135,6 +1147,15 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                      "instead of starting from zero. Faster, and keeps the "
                      "fit on one branch -- but can also hold it on a wrong "
                      "one, which is why it is off by default.",
+        "kernel": "Which resolution kernel. RICIAN is correct: the "
+                  "instrument broadens Q in two dimensions and the data are "
+                  "radially averaged, so the distribution of |Q| is Rician. "
+                  "A Gaussian is its large-Q/dQ limit and is fine wherever "
+                  "dQ/Q is small -- at dQ/Q = 0.08 the two agree closely, at "
+                  "0.55 the Gaussian puts 44% of the lowest point's weight "
+                  "below Qmin and some at NEGATIVE Q against 34% for the "
+                  "Rician. Gaussian is kept so an earlier result can be "
+                  "reproduced.",
         "smear": "Apply the resolution from the data's fourth column. "
                  "Without it a fitted polydispersity is biased HIGH by "
                  "around 15 %, and chi-squared gives no sign of it.",
@@ -1554,6 +1575,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         "closureVar", "closureParamVar", "closureParam2Var", "distVar",
         "linkDeltaVar", "linkCVar", "porodVar", "porodDVar", "porodAVar",
         "porodQminVar", "fitterVar", "warmStartVar", "mannAlphaVar",
+        "kernelVar",
         #smearVar decides whether the dQ column is USED. Omitting it would
         #restore the data and the resolution array but silently lose the
         #choice to apply them -- and an unsmeared fit biases the
@@ -2258,7 +2280,8 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
             if v.get() and n not in LINEAR)
         if self.smearVar.get() and getattr(self, "dQ", None) is not None:
             Q = self.data[0]
-            p["resolution"] = Resolution(Q, self.dQ)
+            p["resolution"] = Resolution(Q, self.dQ,
+                                        kernel=self.kernelVar.get())
         p["solverClass"] = self.selectedSolverClass()
         #Damping for the Picard/Mann iteration. Read here so it is carried
         #with the rest of the parameter set and recorded in the session:

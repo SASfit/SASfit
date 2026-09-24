@@ -4,16 +4,25 @@
 factor, with the exact I(Q) shown against all six of SASfit's approximate
 schemes.
 
-The three older polydisperse tabs are special cases of it:
+The tabs it replaced are special cases of it:
 
 | tab | potential | closure |
 |---|---|---|
-| Polydisperse Yukawa | one-Yukawa, analytic | MSA / RMSA only |
-| Robertus SHS | adhesive spheres, analytic | PY only |
+| Polydisperse Yukawa *(retired)* | one-Yukawa, analytic | MSA / RMSA only |
+| Robertus SHS *(retired)* | adhesive spheres, analytic | PY only |
 | RY Polydisperse Yukawa | charge-coupled Yukawa, numerical | RY only |
-| **Polydisperse (any potential)** | **16 potentials** | **19 closures** |
+| **Polydisperse (any potential)** | **21 potentials** | **24 closures** |
 
-They are kept because each is faster or better validated in its own niche.
+The first two are no longer registered in `oZgui.EXTRA_TABS`, though their
+modules remain importable and restoring either is one line. RY Polydisperse
+Yukawa is kept because it takes per-distribution parameters, which this tab
+does not: everything here is pinned to (mean, srel), which is what makes the
+five distributions mutually comparable but rules out an asymmetric Gamma or a
+general Beta.
+
+The counts above come from `ozLib.CLOSURE_SETTERS` and the solver's own
+`setXXXPotential` methods. They are a snapshot: inspect those rather than
+trust this table if it matters.
 
 ## Files
 
@@ -203,16 +212,34 @@ scale is applied *after* the solve, to the diameters, the number densities
 (`n ~ 1/L^3`, which keeps phi invariant) and the q axis (`q_reduced = Q*L`).
 The tail parameters are already reduced, so they are untouched.
 
-**The scattering radius equals the hard-core radius**, `R_i = sigma_i/2`, for
-every class:
+**The scattering radius is the CORE radius**, `R_i = sigma_i/2`, for every
+class, and the interaction radius is whatever that form factor declares:
 
 ```python
-self.R = self.ff.outer_radius(self.sigma / 2.0)     # outer_radius(R) == R
+self.R = self.ff.outer_radius(self.sigma / 2.0)
 ```
 
-For **core-shell** the model is polydisperse in the OUTER radius, with the
-core at `ratio*R`, so the shell's outer surface coincides with the hard-sphere
-contact radius.
+For a plain **Sphere** the two coincide, `outer_radius(R) == R`.
+
+For **core-shell** the tab builds `CoreShellFixedShell`, which puts the
+polydispersity on the CORE and gives every particle the same shell thickness,
+so `outer_radius(R) = R + dR` and the hard core sits at the shell's outer
+surface. That is what makes the `delta = c * dR` link coherent: dR is a real
+thickness, so c = 1 means the attraction range IS the layer and c = 2 means
+two layers overlap at contact.
+
+> An earlier version of this section said the model is polydisperse in the
+> OUTER radius with the core at `ratio*R`. That describes the older
+> `CoreShell` class, which the tab no longer uses. Both classes remain in
+> `polydisperse_yukawa_sas.py`; only `CoreShellFixedShell` is reachable from
+> the interface.
+
+`outer_radius()` is the hook for any other arrangement. A hydrated sphere, a
+polymer corona or a charged particle whose effective hard core exceeds its
+scattering radius is a NEW FORM FACTOR overriding that one method -- not a
+GUI parameter. No interface could expose the radius conventions of every form
+factor without becoming unreadable, and the ones that matter differ in their
+scattering too, so a new class is the honest unit of extension.
 
 Verified at meanRadius = 50 (sigma = 100, R = 50): the S(Q) peak moves to
 Q = 0.06608 while `Q*sigma = 6.608` (hard spheres expect ~2pi = 6.28) and
@@ -517,38 +544,120 @@ plausible-looking fit (chi2_red 95 instead of 0.90) in which two parameters
 held each other's values while the third was correct. Nothing raised; it
 simply looked like a poor optimiser.
 
-## 8. Open items (and one recently closed)
+## 8. Open items
 
-1. **Distribution selector** in the tab — the engine supports Schulz,
-   Gaussian, log-normal and Weibull, but the tab always passes Schulz.
-2. The tab sits alongside the `RY Polydisperse Yukawa` tab rather than
-   subsuming it. Since the charged Yukawa is now reachable here (§2.3), that
-   tab is arguably redundant; removing it is one line in `EXTRA_TABS`.
-3. No decoupling of scattering radius from hard-core radius (see §4).
-4. `Carbajal-Tinoco` is ported and registered, but its fixed-point iteration
-   is validated only for lambda <= 0 (to 2e-13 against the reference). For
-   lambda > 0 the map's slope at strongly negative Gamma is 3 + lambda > 1,
-   so its fixed point is repulsive and no damping converges; it needs a
-   Newton step. Converged solves are unaffected, since they do not reach that
-   region.
-5. Uncertainty estimation is available two ways. The linearised Jacobian
-   covariance is computed on every fit and is reliable for spotting
-   correlation; the posterior route `fitWithBumps(..., method="dream")` is
-   wired but has NOT been run to completion, so its `uncertainty` and
-   `correlation` keys remain untested plumbing.
-6. No global search **from the GUI**. `fitWithBumps(..., method="de")` is
-   available programmatically but is not exposed as a control, so the tab's
-   workflow still depends on getting close by eye first. GOFit (global,
-   least-squares aware, already shipped with Mantid) is a further candidate.
-7. Resolution smearing **is** exposed in the tab: `Load data...` reads an
+1. Radius conventions are per FORM FACTOR, by design, and adding one is the
+   way to get a different one. `sigma/2` is the core radius; the interaction
+   radius is whatever the form factor's `outer_radius()` returns, which is
+   `R` for a sphere and `R + dR` for the core-shell the tab builds (see §4).
+
+   A hydrated sphere, a polymer corona, or a charged particle whose
+   effective hard core exceeds its scattering radius therefore needs a new
+   form factor class overriding that one method -- not a new GUI control. No
+   interface could carry the radius conventions of every form factor without
+   becoming unreadable, and those cases differ in their SCATTERING too, so a
+   class is the honest unit of extension. Recorded here because "decouple
+   the scattering radius from the hard-core radius" stood as an open item
+   for some time and is better read as a description of how extension works.
+2. `Carbajal-Tinoco`: **the bridge equation has no solution for Gamma below
+   about -1**, and that is not a solver problem.
+
+   The closure is implicit, b = T(Gamma + b) with
+   T(w) = e[(2-w)e^w - 2 - w]/(e^w - 1). Scanning b over [-60, 60] at
+   240001 points gives TWO sign changes at Gamma = -0.5 and ZERO at
+   Gamma = -1, -2, -4, -8. There is no root to find, so no iteration can
+   find one: damped Picard, Newton, and Newton with a per-point backtracking
+   line search were each tried and each stalls with a residual tracking
+   |Gamma| (1.49 at -2, 7.49 at -8, 29.5 at -30).
+
+   This supersedes the earlier reading of this item, which was that lambda >
+   0 diverges because the fixed point is repulsive and needs a Newton step.
+   That is true as far as it goes -- the slope tends to e = 3 + lambda, and
+   the damped slope (1-beta) + beta*e is under 1 only if beta*(e-1) < 0,
+   impossible for beta > 0 -- but it is not the reason the solve fails. The
+   equation is unsolvable there for EVERY lambda, including the lambda <= 0
+   that is validated to 2e-13.
+
+   The current code iterates 500 damped passes and returns the last one
+   whether or not it converged, so this has always been happening silently
+   on the way to a solution. Adding a convergence check makes lambda <= 0
+   raise as well, which is why it was reverted: the check is right in
+   principle and the behaviour it exposes needs a decision first.
+
+   WHAT TO DECIDE. Whether converged solutions actually visit Gamma < -1, or
+   only the iteration path does on its way from Gamma = 0. If only the path,
+   a defined fallback in the no-root region -- the reference implementation
+   may have one, which is a question for the paper rather than for the
+   numerics -- would make the closure honest without changing any validated
+   result. If converged solutions do visit it, the closure is unusable there
+   and should say so.
+3. Uncertainty estimation is available two ways, and the plumbing of both is
+   now verified. The linearised Jacobian covariance is computed on every fit
+   and reported with the correlation matrix; it is reliable for spotting
+   correlation. The posterior route `fitWithBumps(..., method="dream")` has
+   now been run to completion for the first time -- `tools/numerics_test.py`,
+   `testDreamPlumbing` -- and all of it resolves: 3697 evaluations, none
+   failed, `uncertainty` populated from `result.dx`, and `correlation` a
+   (2, 2) matrix with unit diagonal and a symmetric off-diagonal. The bare
+   `except Exception: pass` around the state lookup was NOT hiding a broken
+   attribute path, which was the live worry.
+
+   WHAT REMAINS. The test fits noiseless synthetic data, so the likelihood is
+   nearly flat: chi2 comes out at 4e-7, the returned uncertainties are
+   essentially the prior widths (0.097 on a phi bounded [0.10, 0.40]) and the
+   correlation is 0.06 where phi and srel would be expected to correlate
+   strongly. Those are the right outputs for a zero-noise fit and say nothing
+   about whether the posterior is MEANINGFUL. One run on real data with real
+   error bars is still owed -- at 2.5 s per evaluation and some ten thousand
+   evaluations that is an overnight job, so reduce the size classes to 3.
+4. Resolution smearing **is** exposed in the tab: `Load data...` reads an
    optional 4th dQ column and enables an "apply Q resolution (dQ column)"
    checkbox, ticked by default when the column is present. Verified live:
    loading a 4-column file gave dQ/Q 0.080..0.080, built a 320-point extended
    grid, and fitted R, srel and phi to 0.1 %, 0.2 % and 0.7 % with
-   chi2_red = 0.750. dQ is read as the Gaussian SIGMA; use
+   chi2_red = 0.750. dQ is read as the kernel's SIGMA; use
    `Resolution(Q, dQ, fwhm=True)` if the reduction writes FWHM.
-8. `S_partials` clamps below the solver's own q grid rather than
-   extrapolating. Smearing the lowest measured points pulls in model values
-   from there, so a structure factor with a strong low-Q upturn could be
-   biased. Worth checking against the analytic S(0) with real data -- this is
-   the main open question for fitting measured curves.
+
+   The kernel is now RICIAN rather than Gaussian. A small-angle instrument
+   broadens Q in two dimensions in the detector plane and the data are
+   radially averaged, so the distribution of the MAGNITUDE about a true Q0 is
+   Rician; a Gaussian in Q is its large-Q0/sigma limit. At the dQ/Q = 0.08 of
+   the verification above the two agree closely and those figures stand. At
+   dQ/Q = 0.55, which real spherical-shell data reach at their lowest point,
+   they do not: a Gaussian places 44 % of that point's weight below Q_min and
+   some of it at NEGATIVE Q, against 34 % for the Rician form, whose leading
+   factor of Q excludes the origin by construction. Both reproduce the
+   unsmeared curve to 2e-16 as dQ -> 0, which is the check that catches a
+   mis-normalised kernel. Pass `kernel="gaussian"` to compare.
+5. `S_partials` below the solver's own q grid: the clamp is GONE, replaced
+   by a Taylor extrapolation with a divergence guard. One check remains.
+
+   S(q) for a liquid is even and analytic at the origin, so A + B q^2 is the
+   leading behaviour rather than a convenient fit; A and B come from the
+   solver's own two lowest grid points, so it bridges only the gap between
+   q_0 and zero. Verified continuous across the edge (3.7e-7), exact at q_0,
+   and varying below it where the clamp held flat.
+
+   A divergence is REFUSED rather than extrapolated. S ~ c q^-alpha means the
+   compressibility is running away, at or near a spinodal, and there is no
+   finite S(0) to extrapolate TO -- a parabola through it returns a number
+   that means nothing and the fit would use it without complaint. The
+   discriminant is the log-log slope of the trace over the lowest few grid
+   points: hard spheres at phi = 0.10, 0.30 and 0.45 give +0.0009, -0.0000
+   and -0.0008; a synthetic S proportional to 1/q gives -1.000 exactly; the
+   threshold is -0.1, three orders of headroom. The message says what to do,
+   including that extending the q grid removes the need to extrapolate.
+
+   STILL OWED: comparison against the ANALYTIC S(0). Percus-Yevick hard
+   spheres have a closed form for the compressibility route, so extrapolating
+   to q = 0 and comparing would show the q^2 form is RIGHT rather than merely
+   continuous -- which is all the above establishes. A case in
+   `tools/numerics_test.py` at two or three volume fractions closes it.
+
+   Separately: the mixture validation tab at phi = 0.4 shows a solve that is
+   a fixed point to 7e-12, machine precision, yet differs from the analytic
+   references by about 1e-3 and barely shrinks under fourfold refinement with
+   the real-space range held constant. That was suspected to be this same
+   question seen from the other side. With the extrapolation now in place,
+   RE-RUNNING THAT COMPARISON is five minutes and the highest-value check
+   available.
