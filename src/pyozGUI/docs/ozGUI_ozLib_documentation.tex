@@ -1018,13 +1018,45 @@ where one is available.
     docstring, which contradicts Table I of its own accompanying paper, and
     was inherited along with the implementation.}
   \item \textbf{For polydisperse systems}, the choice narrows on structural
-    grounds rather than accuracy: 20 of the 24 closures work multicomponent
+    grounds rather than accuracy: 19 of the 24 closures work multicomponent
     unchanged, because their bridge functions are elementwise in $\Gamma$.
-    The four that do not --- \textbf{Reference HNC} and \textbf{Modified HNC}
+    The five that do not --- \textbf{Reference HNC} and \textbf{Modified HNC}
     (both need a one-component reference solve), \textbf{Rescaled MSA} (a
-    one-component rescaling procedure) and \textbf{EuRah} --- are not offered
+    one-component rescaling procedure), \textbf{EuRah}, and \textbf{ZSEP}
+    --- are not offered
     at all once a polydisperse potential is selected, rather than being
-    offered and failing. Note in particular that RMSA's usual role as the fix
+    offered and failing.
+
+    \textbf{ZSEP's exclusion is technical rather than one of principle}, and
+    is worth stating because the closure does exist for mixtures:
+    \citet{leemalijevsky2001} formulate exactly that. The obstacle is the
+    parameter count. The one-component form carries three parameters
+    ($\alpha$, $\phi$, $\zeta$); a mixture carries $\alpha_{ij}$,
+    $\phi_{ij}$, $\psi_{ij}$ per pair, so nine for a binary system against
+    nine consistency conditions --- formally determined, but the authors note
+    that ``the search in high-dimensional parameter space will be extremely
+    difficult and time consuming'' and reduce it by \emph{setting}
+    $\alpha_{SB} = \alpha_{SS} = 1$. For $p$ size classes the count is
+    $3p(p+1)/2$: 18 at three classes, 45 at five, 84 at seven. The
+    three-parameter search already lands on a different solution than the
+    author's own tabulated one at low density unless $\alpha$ is pinned
+    (Section~\ref{sec:zsep}), so a 45-dimensional version is not a
+    reasonable proposition.
+
+    There is a second obstacle beyond dimensionality, though a smaller one
+    than it first appears: the zero-separation theorems for a mixture
+    involve \emph{dimer} chemical potentials, not only monomer ones, and
+    this solver computes neither. They are not, however, an integration
+    problem --- \citet{wilsonlee2005} evaluate them from the direct
+    chemical-potential formula of \citet{lee1992}, which requires neither
+    temperature nor density integration, and note that the dimer--dimer pair
+    correlations are not needed for the thermodynamics and can simply be
+    omitted. So implementing ZSEP for a size distribution means adding a
+    closed-form chemical-potential evaluation and a constrained search with
+    most $\alpha_{ij}$ fixed: substantial, but a port with a published
+    recipe rather than open research.
+
+    Note in particular that RMSA's usual role as the fix
     for MSA's negative contact value is therefore \emph{not} available on the
     numerical polydisperse route; the analytic \code{polydisperse\_rmsa}
     module remains the way to get it. \textbf{MS}, \textbf{VM} and
@@ -1871,6 +1903,59 @@ B.~C.~Eu and K.~Rah,
 \emph{A closure for the Ornstein--Zernike relation that gives rise to the
 thermodynamic consistency},
 J.\ Chem.\ Phys.\ \textbf{111}, 3327 (1999).
+
+\bibitem{lee1992}
+L.~L.~Lee,
+\emph{Chemical potentials based on the molecular distribution functions.
+An exact diagrammatical representation and the star function},
+J.\ Chem.\ Phys.\ \textbf{97}, 8606 (1992).
+% The direct chemical-potential formula, which needs NEITHER temperature NOR
+% density integration. This is what makes the mixture zero-separation
+% theorems tractable: the dimer chemical potentials they contain are
+% evaluated from it in closed form.
+
+\bibitem{wilsonlee2005}
+D.~S.~Wilson and L.~L.~Lee,
+\emph{Chemical potentials and phase equilibria of Lennard-Jones mixtures:
+A self-consistent integral equation approach},
+J.\ Chem.\ Phys.\ \textbf{123}, 044512 (2005).
+% Applies ZSEP to LJ MIXTURES. Two points matter for any attempt to extend
+% ZSEP to a size distribution here: the dimer chemical potentials in the
+% zero-separation theorems come from lee1992 without integration, and the
+% dimer-dimer pair correlations are NOT needed for the thermodynamics and
+% are simply omitted -- for a binary system that drops 6 of the 15 pair
+% equations. The burden is therefore smaller than the pair count suggests.
+
+\bibitem{hlushakkalyuzhnyi2008}
+S.~P.~Hlushak and Yu.~V.~Kalyuzhnyi,
+\emph{Thermodynamics of the multi-component dimerizing hard-sphere Yukawa
+mixture in the associative mean spherical approximation},
+arXiv:0805.0688 (2008).
+% NOT about ZSEP, but a lead worth keeping: explicit analytic expressions
+% for the free energy, chemical potential, entropy and pressure of a
+% multi-component hard-sphere Yukawa fluid, written in terms of Blum's
+% scaling parameter Gamma, where the AMSA reduces to a SINGLE nonlinear
+% equation for Gamma. The authors state this lets the theory describe an
+% arbitrary number of components "including the limiting case of
+% polydisperse fluids".
+%
+% Relevant because polydisperse_yukawa_msa.py is still marked DRAFT and
+% this package has no validated analytic reference for the polydisperse
+% Yukawa case. Worth reading before extending that module.
+
+\bibitem{leemalijevsky2001}
+L.~L.~Lee and A.~Malijevsk\'y,
+\emph{Structures and properties of hard sphere mixtures based on a
+self-consistent integral equation},
+J.\ Chem.\ Phys.\ \textbf{114}, 7109--7117 (2001);
+\url{https://doi.org/10.1063/1.1359182}.
+% The mixture form of ZSEP, and the reason this package does not offer it
+% for a size distribution. Nine parameters (alpha_ij, phi_ij, psi_ij) against
+% nine consistency conditions for a BINARY mixture -- formally determined,
+% but the authors reduce the search by setting alpha_SB = alpha_SS = 1,
+% noting the high-dimensional search is "extremely difficult and time
+% consuming". For p size classes the count is 3p(p+1)/2. Also the source of
+% the useful check that psi=0, phi=1, alpha=0.8 recovers the Verlet closure.
 
 \bibitem{carbajaltinoco2022}
 M.~D.~Carbajal-Tinoco,

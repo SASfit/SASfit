@@ -251,6 +251,34 @@ smaller $Q$ ($5.841\to5.030$ in units of $Q\langle\sigma\rangle$) and
 $S(0)$ increased ($0.0187\to0.0484$), reproducing their component counts (79,
 112, 149) exactly.
 
+One limitation of that route is worth stating, because it is a modelling
+assumption rather than an approximation that improves with effort. The
+corresponding-states construction takes the valence to be PROPORTIONAL TO
+SURFACE AREA, so charge polydispersity is fully correlated with size
+polydispersity: one distribution governs both. A sample whose surface
+chemistry does not scale with area --- differing grafting densities across a
+size fraction, say --- cannot be represented.
+
+\citet{GinozaYasutomi1998} treat size and interaction polydispersity as
+\emph{independent}, on the same factorisable-coefficient mean-spherical
+solution, and would be the route to take if that case ever arose. Both
+descend from \citet{Ginoza1986}, who showed that factorisable coefficients
+$K_{ij} = K d_i d_j$ collapse the multicomponent Blum--H\o ye equations to
+rational functions of a single scalar $\Gamma$ --- which is what makes any of
+this affordable for a size distribution, since each component then enters
+only through $(\sigma_i, \rho_i, d_i)$ and the cost per evaluation is linear
+in the number of classes rather than quadratic.
+
+A partial implementation of the Ginoza route exists in
+\code{ginoza\_yukawa\_msa.py} and is deliberately shelved: it solves for
+$\Gamma$ and stops short of $S(q)$. Finishing it would reproduce, from
+equations transcribed out of a scanned 1986 paper, a structure factor the
+Gazzillo route already computes and which is validated above at machine
+precision. The two closing conditions Ginoza gives, his Eqs.~(38a) and
+(38b), are both implemented there and agree to $10^{-12}$, so the
+transcription is at least self-consistent; that is recorded in case the
+decoupled-charge case ever makes the module worth completing.
+
 \paragraph{Polydisperse sticky hard spheres.}
 \citet{GazzilloGiacometti2000}, a mean-spherical solution in the Baxter sticky
 limit with factorisable coupling parameters $K_{ij}=Y_iY_j$, which renders

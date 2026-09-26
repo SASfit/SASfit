@@ -238,6 +238,55 @@
   publisher = {American Physical Society (APS)},
 }
 
+@Article{Ginoza1986,
+  author  = {Ginoza, Mitsuaki},
+  title   = {Solution of {O}rnstein--{Z}ernike Equation for a Mixture of Hard
+             Spheres with {Y}ukawa Closure: the Case of Factorizable
+             Coefficients},
+  journal = {J. Phys. Soc. Jpn.},
+  year    = {1986},
+  volume  = {55},
+  number  = {1},
+  pages   = {95--101},
+  doi     = {10.1143/JPSJ.55.95},
+  note    = {The result that makes the multicomponent Yukawa MSA affordable
+             for a size distribution: with factorizable coefficients
+             K_ij = K d_i d_j and a single Yukawa term, the coupled
+             nonlinear system collapses to rational functions of ONE scalar
+             Gamma, fixed by one algebraic equation (his Eqs. 38a and 38b,
+             two forms of the same condition). Each component then enters
+             only through (sigma_i, rho_i, d_i), so the cost is linear in
+             the number of classes.
+             Generalises Blum's primitive-electrolyte solution, recovering
+             it as a limiting case. NOTE the source is a scanned PDF: the
+             equations cannot be extracted mechanically and must be read by
+             eye, which is why the partial implementation in
+             ginoza_yukawa_msa.py implements BOTH closing conditions as a
+             check on the transcription},
+}
+
+@Article{GinozaYasutomi1998,
+  author  = {Ginoza, Mitsuaki and Yasutomi, Makoto},
+  title   = {Analytical Structure Factors for Colloidal Fluids with Size and
+             Interaction Polydispersities},
+  journal = {Phys. Rev. E},
+  year    = {1998},
+  volume  = {58},
+  number  = {3},
+  pages   = {3329--3333},
+  doi     = {10.1103/PhysRevE.58.3329},
+  note    = {Gives the static structure factors directly, from Eq. (3.4)
+             onward, for the hard-sphere M-Yukawa fluid with factorizable
+             coefficients -- and, unlike the corresponding-states route of
+             Gazzillo et al. implemented in gazzillo_msa.py, treats size and
+             interaction polydispersity as INDEPENDENT rather than taking
+             the valence proportional to surface area.
+             That is the one capability gazzillo_msa.py lacks, and this is
+             the paper to use if a decoupled-charge system ever needs
+             modelling. Prefer it to Ginoza (1986) for that work: it goes
+             further and, unlike the 1986 paper, is machine-readable},
+}
+
 @Article{GazzilloGiacometti2000,
   author    = {Gazzillo, D. and Giacometti, A.},
   journal   = {arXiv},

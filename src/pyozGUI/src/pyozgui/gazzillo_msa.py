@@ -18,6 +18,27 @@ pi omitted from P_z, and an error in the determinant. THIS MODULE FOLLOWS THE
 1999 FORM. If you compare against the 1997 paper directly, expect it to
 disagree.
 
+THE ONE THING THIS CANNOT DO
+----------------------------
+The corresponding-states approach assumes the valence is PROPORTIONAL TO
+SURFACE AREA, so charge polydispersity is fully correlated with size
+polydispersity: one distribution governs both, and a system whose surface
+chemistry does not scale with area cannot be expressed here.
+
+Ginoza and Yasutomi, Phys. Rev. E 58, 3329 (1998), "Analytical structure
+factors for colloidal fluids with size and interaction polydispersities",
+treat the two as INDEPENDENT, on the same factorizable-coefficient MSA
+solution. That is the route to take if decoupled charge polydispersity is
+ever needed; the paper gives the structure factors directly from Eq. (3.4)
+onward and is machine-readable.
+
+`ginoza_yukawa_msa.py` is a SHELVED partial implementation of that lineage
+-- it solves for the scaling parameter Gamma and stops short of S(q). It was
+left unfinished deliberately: reaching the same S(q) this module already
+computes, by transcribing equations out of a scanned 1986 paper, would be a
+second implementation of something already validated at machine precision.
+See its own header before reviving it.
+
 VALIDATED
 ---------
 Neutral limits, where exact answers are independently available:

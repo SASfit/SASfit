@@ -155,7 +155,7 @@ The changes to \code{oZfixpointOperator.py} and \code{oZsolver.py} are:
 Because every closure in \code{update\_c} is elementwise \code{numpy}, PY,
 HNC, RY, HMSA, Verlet, BPGG and the rest all become multicomponent as soon as
 the potential arrays carry pair indices. Closures requiring an auxiliary
-reference solve (RHNC, MHNC, RMSA, EuRah) remain one-component, as do those
+reference solve (RHNC, MHNC, RMSA, ZSEP, EuRah) remain one-component, as do those
 reading \code{repulsivePartOfP2Ppotential} (HMSA, VM, CJVM, BB, DH, CG,
 SMSA), whose split arrays are still 1-D.
 \end{remark}
@@ -1950,7 +1950,15 @@ volume fraction read with this bias in mind.
 
 \begin{enumerate}[nosep]
 \item Closures requiring an auxiliary reference solve (RHNC, MHNC, RMSA,
-      EuRah) remain one-component.
+      EuRah) remain one-component. ZSEP is excluded too, but for a different
+      reason: its exclusion is the PARAMETER COUNT, not a reference solve.
+      The one-component form carries three parameters; a mixture carries
+      $\alpha_{ij}, \phi_{ij}, \psi_{ij}$ per pair, so $3p(p+1)/2$ --- 45 at
+      five size classes, where the three-parameter search already misbehaves
+      at low density unless $\alpha$ is pinned. The mixture form exists
+      \cite{leemalijevsky2001} and the dimer chemical potentials it needs
+      are closed-form \cite{lee1992,wilsonlee2005}, so this is a port rather
+      than research --- just not a small one.
 \item Closures reading the repulsive/attractive potential split (HMSA, VM,
       CJVM, BB, DH, CG, SMSA) are not yet wired for the multicomponent
       potential; those arrays remain 1-D. PY, HNC, RY, Verlet and BPGG work.
