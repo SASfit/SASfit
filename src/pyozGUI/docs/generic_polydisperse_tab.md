@@ -120,7 +120,7 @@ converges, the state may genuinely be near the spinodal.
 
 ## 2. Size classes: the rule depends on the distribution
 
-All four distributions have **analytic moments** — that is never the problem.
+All five distributions have **analytic moments** — that is never the problem.
 The problem is the map from moments to nodes (Golub-Welsch), which is
 classically ill-conditioned even with exact input. Measured condition numbers
 of the log-normal Hankel matrix:
@@ -546,6 +546,36 @@ simply looked like a poor optimiser.
 
 ## 8. Open items
 
+0. **The three documents are not yet consistent with each other.** A check
+   across them found tonight's findings landing unevenly:
+
+   | finding | manuscript | supplement | report | Sphinx |
+   |---|---|---|---|---|
+   | S(0): type 1 low by 5.27 % at phi=0.4, type 4 by 0.036 % | yes | yes | no | manual only |
+   | Rician vs Gaussian, 44 % against 34 % below Qmin | yes | yes | no | no |
+   | lstsq conditioning at 1e20 | yes | yes | no | no |
+   | Carbajal-Tinoco is the 2022 paper, not 2008 | yes | no | yes | no |
+   | Carbajal-Tinoco domain, Gamma_min = -0.509 | yes | no | yes | this file |
+   | RMSA exact only where rescaling does not engage | yes | no | no | no |
+   | two-Yukawa 0.21 %, locally reproducible | yes | yes | no | manual |
+
+   The transform finding is the one that matters most and is the one most
+   unevenly spread: it is a systematic bias in the compressibility, so a fit
+   absorbs it by moving phi, and a reader of the report alone would not know.
+
+   THE UNDERLYING CAUSE is that the report and the manuscript maintain
+   SEPARATE BIBLIOGRAPHIES for the same papers -- `daguanno1991` against
+   `DAguannoKlein1991`, and so on for 36 entries. A correction to one does
+   not reach the other, which is exactly how the Carbajal-Tinoco
+   misattribution survived in two places at once. All 36 have counterparts
+   in `ozgui.bib` already, so nothing needs writing; it is a rename plus a
+   switch from `thebibliography` to `\bibliography{ozgui}`.
+
+   Do it in ONE pass, matching on TITLES rather than author surnames -- a
+   surname match maps two papers by the same author to the same key, which
+   is the error being repaired. Success criterion: zero undefined citations
+   from `build_report.sh`.
+
 1. Radius conventions are per FORM FACTOR, by design, and adding one is the
    way to get a different one. `sigma/2` is the core radius; the interaction
    radius is whatever the form factor's `outer_radius()` returns, which is
@@ -559,38 +589,87 @@ simply looked like a poor optimiser.
    class is the honest unit of extension. Recorded here because "decouple
    the scattering radius from the hard-core radius" stood as an open item
    for some time and is better read as a description of how extension works.
-2. `Carbajal-Tinoco`: **the bridge equation has no solution for Gamma below
-   about -1**, and that is not a solver problem.
+2. `Carbajal-Tinoco`: **the bridge equation has a bounded domain**, and
+   outside it there is no solution to find. This is a property of the
+   closure, not a defect in the solver.
 
-   The closure is implicit, b = T(Gamma + b) with
-   T(w) = e[(2-w)e^w - 2 - w]/(e^w - 1). Scanning b over [-60, 60] at
-   240001 points gives TWO sign changes at Gamma = -0.5 and ZERO at
-   Gamma = -1, -2, -4, -8. There is no root to find, so no iteration can
-   find one: damped Picard, Newton, and Newton with a per-point backtracking
-   line search were each tried and each stalls with a residual tracking
-   |Gamma| (1.49 at -2, 7.49 at -8, 29.5 at -30).
+   THE STRUCTURE. The closure is implicit, b = T(Gamma + b) with
+   T(w) = e[(2-w)e^w - 2 - w]/(e^w - 1). Substituting w = Gamma + b turns it
+   into an explicit map
 
-   This supersedes the earlier reading of this item, which was that lambda >
-   0 diverges because the fixed point is repulsive and needs a Newton step.
-   That is true as far as it goes -- the slope tends to e = 3 + lambda, and
-   the damped slope (1-beta) + beta*e is under 1 only if beta*(e-1) < 0,
-   impossible for beta > 0 -- but it is not the reason the solve fails. The
-   equation is unsolvable there for EVERY lambda, including the lambda <= 0
-   that is validated to 2e-13.
+       Gamma(w) = w - T(w)
 
-   The current code iterates 500 damped passes and returns the last one
-   whether or not it converged, so this has always been happening silently
-   on the way to a solution. Adding a convergence check makes lambda <= 0
-   raise as well, which is why it was reverted: the check is right in
-   principle and the behaviour it exposes needs a decision first.
+   whose RANGE is the set of Gamma for which a solution exists. That range
+   is bounded below: Gamma(w) has a single minimum, and below it the
+   equation has no root, above it exactly two.
 
-   WHAT TO DECIDE. Whether converged solutions actually visit Gamma < -1, or
-   only the iteration path does on its way from Gamma = 0. If only the path,
-   a defined fallback in the no-root region -- the reference implementation
-   may have one, which is a question for the paper rather than for the
-   numerics -- would make the closure honest without changing any validated
-   result. If converged solutions do visit it, the closure is unusable there
-   and should say so.
+   | e | Gamma_min | at w |
+   |---|---|---|
+   | 1.0 | -2.000 | -- |
+   | 2.0 | -0.781 | -1.63 |
+   | 3.0 (lambda = 0) | **-0.509** | -1.04 |
+   | 3.4 (lambda = +0.4) | **-0.447** | -0.91 |
+
+   Three things follow. Gamma_min RISES towards zero as e grows, so lambda >
+   0 shrinks the admissible region -- which is the real reason that case
+   fails, not the repulsive fixed point diagnosed earlier. The two roots
+   above the fold are the usual physical/unphysical pair, and nothing in the
+   code chooses between them. And Gamma ~ -0.5 is not an exotic value: at
+   contact it is routinely of that order at moderate density, so this is
+   reachable in ordinary use rather than in a corner.
+
+   Gamma_min is computable rather than scanned: it is where dGamma/dw = 0,
+   i.e. T'(w) = 1, a scalar root-find per e. The code could then say "this
+   state point is outside the closure's domain" precisely, instead of
+   iterating 500 times and returning the last iterate whether or not it
+   converged -- which is what it does now, silently, including for the
+   lambda <= 0 that is validated to 2e-13.
+
+   THE LITERATURE SAYS THIS IS NORMAL. A closure having a no-solution domain
+   is a known and accepted phenomenon: Amokrane, Ayadim & Malherbe
+   (J. Chem. Phys. 123, 174508, 2005) describe "the major limitation of the
+   RHNC closure in the case of highly asymmetric mixtures -- the wide domain
+   of packing fractions in which it has no solution", and propose a modified
+   closure specifically to shrink that domain. So the finding is not that
+   something is broken but that this closure's domain has never been mapped
+   here, and the code does not report when it leaves it.
+
+   ALSO: THE CITATION WAS WRONG, and is now fixed. The closure is
+   Carbajal-Tinoco, J. Chem. Phys. 157, 204502 (2022), Eqs. 15-16 -- the
+   "local approximation" bridge function B_LA(r). The code cited the same
+   author's 2008 paper, JCP 128, 184507, which is a DIFFERENT closure:
+   Extended Rogers-Young, implemented separately here. The error came from
+   OrnsteinZernike.jl's source docstring, which contradicts Table I of the
+   paper accompanying that package -- and this implementation inherited it
+   along with the code, down to the `Tinoko` spelling. Reading the 2008
+   paper while looking for this formula finds Eq. 13 and no trace of it,
+   which is how it surfaced. Both papers are now in `ozgui.bib`, and the
+   upstream package's docstring is worth a bug report.
+
+   USEFUL DETAIL FROM THE SOURCE: lambda interpolates between known
+   closures. lambda = 0 recovers Martynov-Sarkisov, lambda -> infinity
+   recovers HNC. So the shrinking domain as lambda grows is the domain
+   shrinking as the closure moves from MS towards HNC.
+
+   NEITHER PAPER MENTIONS THE DOMAIN. The 2022 source notes only that
+   Eq. 15 is "a transcendental equation for B(r) as a function of gamma"
+   and says nothing about when it has no root. Pihlajamaa & Janssen
+   (Phys. Rev. E 110, 044608, 2024) repeatedly exclude closures from their
+   figures "due to convergence issues at this state point" and because
+   they "converged to nonphysical results", without diagnosing which
+   closures fail where or why. So the phenomenon is known and accepted --
+   as Amokrane et al. also show for RHNC -- but the location of the
+   boundary for THIS closure appears not to be published.
+
+   WHAT THE REFERENCE IMPLEMENTATION DOES: `find_zero(f, gamma)` from
+   Roots.jl, with no domain check, so outside the domain it raises. That is
+   the better behaviour and the one to match: returning the 500th iterate,
+   as this code does, is not a milder failure but an undetected one. The
+   obstacle is that a check on every closure evaluation fires during the
+   iteration path from Gamma = 0 even when the converged solution is
+   perfectly good -- tried, and it broke lambda <= 0 as well. A check
+   applied to the CONVERGED solution rather than to each evaluation would
+   give the reference's semantics without the false alarms.
 3. Uncertainty estimation is available two ways, and the plumbing of both is
    now verified. The linearised Jacobian covariance is computed on every fit
    and reported with the correlation matrix; it is reliable for spotting

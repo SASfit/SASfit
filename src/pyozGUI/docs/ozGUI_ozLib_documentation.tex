@@ -221,12 +221,16 @@ support the repulsive/attractive potential split needed by
 switching-function closures (Rogers--Young, HMSA, and the Gstar-based bridge
 closures of Section~\ref{sec:closures}) additionally populate the arrays
 \code{repulsivePartOfP2Ppotential} and \code{attractivePartOfP2Ppotential}.
-All 18
+All 19
 potentials below are available via \code{setPotentialByName(name, *args)} or
-directly as \code{set<Name>Potential(...)} -- in 17 subsections, not 18,
+directly as \code{set<Name>Potential(...)} -- in 18 subsections, not 19,
 since Section~\ref{sec:starpolymer} covers both of the star polymer
 potential's two distinct setters (\code{setStarPolymerHighFPotential()},
 \code{setStarPolymerLowFPotential()}) together, one formula each.
+Two further setters, \code{setPolydispersePotential()} and
+\code{setPolydisperseHardCoreYukawaPotential()}, are wrappers that build a
+MULTICOMPONENT system from one of the below and are described with the
+polydisperse machinery rather than here, bringing the solver's total to 21.
 
 \emph{Note on counting, and on a genuine fix this made:} the GUI's own
 potential dropdown (Table~\ref{tab:potential-naming},
@@ -468,10 +472,10 @@ re-derived from a textbook), using that file's own notation:
 $\mathrm{EN}(r)=\exp[-U(r)/k_BT]$, $G(r)=\Gamma(r)$. Where a closure needs an
 extra scalar parameter (shared storage slot \code{self.alpha}, matching the
 C code's own \code{sBPGG}/\code{aCJVM}/\code{fBB} \code{\#define}s onto the
-same underlying variable), this is noted explicitly. \textbf{20 closures are
-offered} -- 19 general-purpose ones plus ZSEP (Section~\ref{sec:zsep}, hard
+same underlying variable), this is noted explicitly. \textbf{24 closures are
+offered} -- 23 general-purpose ones plus ZSEP (Section~\ref{sec:zsep}, hard
 spheres only, self-fitting its own three free parameters rather than taking
-any of them from the caller); a 21st (Euler--Rahman) exists in the source
+any of them from the caller); a 25th (Euler--Rahman) exists in the source
 but is deliberately excluded from both the GUI and \code{ozLib.solve()}'s
 validated closure list -- see Section~\ref{sec:eurah} for why.
 
@@ -888,6 +892,34 @@ where one is available.
     itself one of the corrections used in that literature) is a reasonable
     substitute for plain HNC at strong coupling if MSA/RMSA is not
     applicable.
+  \item \textbf{When nothing is known about the system}: \textbf{Verlet}.
+    This is the headline recommendation of \cite{pihlajamaa2024}, whose
+    comparison across hard-sphere, inverse-power-law, Gaussian-core and
+    Lennard-Jones systems in both two and three dimensions found Verlet
+    ``robustly performed well for all our benchmark systems, indicating that
+    it could suitably serve as a first guess for use in unfamiliar
+    systems''. It has no free parameter, so it costs no consistency search.
+    Their central negative finding is worth stating alongside it: no closure
+    performed best across all systems, so the entries in this list are
+    starting points and not a ranking.
+  \item \textbf{Among the consistency-parameter closures, split by potential
+    softness}: the same study found \textbf{Modified Verlet} and
+    \textbf{CJVM} (Charpentier--Jakse) both excellent in most cases, with MV
+    more accurate for \emph{steeply repulsive} potentials and CJ superior
+    for \emph{softer, longer-ranged} ones. Both are offered here
+    (Sections~\ref{sec:closures}) and both take the consistency search. This
+    is the most directly actionable recommendation in that work for anyone
+    fitting colloidal data, and neither closure is otherwise singled out in
+    this section.
+
+    A caveat that matters for this software specifically: their comparison
+    covers single-component, uncharged, spherically symmetric systems. The
+    potentials most used here --- short-range attractive with long-range
+    repulsion, square wells, charged colloids --- are exactly the ones they
+    exclude, as ``such systems often depend on a multitude of parameters
+    that must be carefully chosen''. So the split above is a starting point
+    for those cases rather than a conclusion, which is an argument for
+    running the approximation-error panel on the system at hand.
   \item \textbf{When thermodynamic consistency matters most} (equation-of-state
     or virial-route quantities, not just $g(r)$/$S(Q)$ shape): \textbf{Rogers--Young}
     (or \textbf{HMSA} for potentials with a genuine attractive tail) with
@@ -950,22 +982,43 @@ where one is available.
     (Section~\ref{sec:alpha}) -- the extra parameter gives the search
     somewhere else to go. Use it as the first fallback when Rogers--Young
     cannot be made consistent for a given system.
-  \item \textbf{Carbajal--Tinoco}: published as a thermodynamically
-    consistent integral equation for \emph{soft repulsive spheres}, which is
-    the regime to try it in; the amplitude is $r$-dependent for
-    $\lambda\le0$. Two practical cautions, both established here rather than
-    taken from the source. It is the only \emph{implicit} closure in the
-    library --- its bridge function has to be solved for at every grid point,
-    which is done by a vectorised fixed-point iteration rather than a scalar
-    root find per point. And that iteration is reliable only for
-    $\lambda\le0$: for $\lambda>0$ the map's slope at strongly negative
-    $\Gamma$ is $3+\lambda>1$, so its fixed point is repulsive and no amount
-    of damping converges. Converged solves are unaffected, since they do not
-    reach that region, but the closure should be treated as validated for
-    $\lambda\le0$ only (where it reproduces the reference implementation to
-    $2\times10^{-13}$) until a Newton step is added.
+  \item \textbf{Carbajal--Tinoco} \cite{carbajaltinoco2022}: the bridge
+    function of the 2022 paper on local thermodynamic consistency, in which
+    $\lambda$ interpolates between known closures --- $\lambda=0$ recovers
+    Martynov--Sarkisov and $\lambda\to\infty$ recovers HNC. The amplitude is
+    $r$-dependent for $\lambda\le0$ and constant above.
+
+    It is the only \emph{implicit} closure in the library: its bridge
+    function must be solved for at every grid point, which is done by a
+    vectorised fixed-point iteration rather than a scalar root find per
+    point.
+
+    \textbf{It has a bounded domain, and outside it there is no solution to
+    find.} Substituting $w=\Gamma+b$ turns the implicit relation
+    $b=T(\Gamma+b)$ into the explicit map $\Gamma(w)=w-T(w)$, whose range is
+    bounded below: $\Gamma_{\min}=-0.509$ at $\lambda=0$, rising towards
+    zero as $\lambda$ grows, with two solutions above it and none below.
+    That, and not a repulsive fixed point, is why $\lambda>0$ fails --- it
+    shrinks the admissible region. No iteration can find a root that does not
+    exist, and damped Picard, Newton, and Newton with a backtracking line
+    search were each tried. Neither the source paper nor the comparison of
+    \cite{pihlajamaa2024} locates that boundary; the latter simply excludes
+    closures from its figures for convergence issues.
+
+    The current code iterates 500 damped passes and returns the last one
+    whether or not it converged, so a solve whose path crosses the boundary
+    does so silently. The reference implementation raises instead, which is
+    the better behaviour. Within the domain it reproduces that reference to
+    $2\times10^{-13}$.
+
+    \emph{An earlier version of this section attributed the closure to
+    Carbajal--Tinoco's 2008 paper on soft repulsive spheres. That paper is
+    the source of \textbf{Extended Rogers--Young}, implemented separately
+    here; the misattribution came from \code{OrnsteinZernike.jl}'s source
+    docstring, which contradicts Table I of its own accompanying paper, and
+    was inherited along with the implementation.}
   \item \textbf{For polydisperse systems}, the choice narrows on structural
-    grounds rather than accuracy: 19 of the 23 closures work multicomponent
+    grounds rather than accuracy: 20 of the 24 closures work multicomponent
     unchanged, because their bridge functions are elementwise in $\Gamma$.
     The four that do not --- \textbf{Reference HNC} and \textbf{Modified HNC}
     (both need a one-component reference solve), \textbf{Rescaled MSA} (a
@@ -1818,6 +1871,30 @@ B.~C.~Eu and K.~Rah,
 \emph{A closure for the Ornstein--Zernike relation that gives rise to the
 thermodynamic consistency},
 J.\ Chem.\ Phys.\ \textbf{111}, 3327 (1999).
+
+\bibitem{carbajaltinoco2022}
+M.~D.~Carbajal-Tinoco,
+\emph{Local thermodynamic consistency for integral equations describing
+single-component fluids},
+J.\ Chem.\ Phys.\ \textbf{157}, 204502 (2022).
+% Source of the Carbajal-Tinoco bridge function implemented here, Eqs. 15-16.
+% NOT the same author's 2008 paper (JCP 128, 184507), which is the source of
+% Extended Rogers-Young -- see carbajaltinoco2008 below. The two were
+% conflated until this was checked against the formula: reading the 2008
+% paper while looking for this bridge function finds Eq. 13 and no trace of
+% it. The misattribution came from OrnsteinZernike.jl's source docstring,
+% which contradicts Table I of the paper accompanying that package.
+
+\bibitem{carbajaltinoco2008}
+M.~D.~Carbajal-Tinoco,
+\emph{Thermodynamically consistent integral equation for soft repulsive
+spheres},
+J.\ Chem.\ Phys.\ \textbf{128}, 184507 (2008).
+% Source of EXTENDED ROGERS-YOUNG, Eq. 13:
+%   b = ln(1 + phi + a phi^2) - gamma,  phi = [exp(f gamma) - 1]/f,
+%   f = 1 - exp(-alpha r)
+% with alpha and a fixed by the compressibility and energy-pressure
+% relations together.
 
 \bibitem{pihlajamaa2024}
 I.~Pihlajamaa and L.~M.~C.~Janssen,

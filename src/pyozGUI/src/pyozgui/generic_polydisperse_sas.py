@@ -43,13 +43,17 @@ import ozLib
 class GenericPolydisperseSAS(PolydisperseSASBase):
     """Exact I(Q) for a polydisperse potential solved numerically.
 
-    potential      : any name from solver.getAvailablePotentialNames() that is
-                     not charge-coupled, e.g. "HardSphere", "SquareWell",
-                     "StickyHardSphere", "LennardJones", "SoftSphere", ...
-    potentialArgs  : that setter's own arguments, in reduced units
-    closure        : any ozLib.CLOSURE_SETTERS label that works multicomponent
-    closureParam   : the closure's alpha/eta, when it needs one
-    closureParam2  : second closure scalar where declared (Extended RY's a)
+    ::
+
+        potential      : any name from solver.getAvailablePotentialNames()
+                         that is not charge-coupled, e.g. "HardSphere",
+                         "SquareWell", "StickyHardSphere", "LennardJones",
+                         "SoftSphere", ...
+        potentialArgs  : that setter's own arguments, in reduced units
+        closure        : any ozLib.CLOSURE_SETTERS label that works
+                         multicomponent
+        closureParam   : the closure's alpha/eta, when it needs one
+        closureParam2  : second closure scalar where declared (Extended RY's a)
     """
 
     def __init__(self, potential, potentialArgs, phi, srel, nbins=3,
@@ -63,7 +67,7 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         """nFF: number of size classes used for the FORM-FACTOR average.
 
         The structure factor and the form-factor average need very different
-        resolutions in sigma, because they behave differently there:
+        resolutions in sigma, because they behave differently there::
 
           S_ij(Q)   varies SMOOTHLY with size, so 3-5 moment-matched classes
                     already reproduce it -- and the OZ solve costs O(p^2)
@@ -82,6 +86,34 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         classes for the intensity sum. Interpolating S is safe precisely
         because it varies slowly in sigma. Rule of thumb for choosing nFF:
         nFF >~ Q_max*<sigma>*s.
+
+        SOLVER AND GRID. `solverClass` selects the fixed-point solver and
+        `mannAlpha` sets the damping of the Picard/Mann iteration,
+        x <- (1-a) x + a T(x). At a = 1 that is plain Picard, which diverges
+        above about phi = 0.45; below 1 it is Mann's iteration, slower but
+        convergent where Picard is not -- it rescued a Lennard-Jones case at
+        a = 0.5. Solvers that choose their own step ignore it.
+
+        `gridN` and `pointsPerSigma` must be SCALED TOGETHER when refining.
+        The real-space range is r_max = N*sigma/pointsPerSigma, so raising
+        the resolution at fixed N shrinks the box: the result improves near
+        contact and degrades at low Q, and a convergence test done that way
+        measures the trade rather than the discretisation.
+
+        `transformType` is 1 (DST-I) or 4 (DST-IV), and the choice matters
+        more than it looks. Type 1 places grid points ON the hard core, so
+        the discontinuity is carried by a node that is neither inside nor
+        outside and the excluded volume is wrong at FIRST order; type 4
+        places them at (n+1/2)dr, the core falls between points, and the
+        step is resolved to second order. Measured against the exact
+        Percus-Yevick compressibility at phi = 0.40 and 100 points per
+        diameter: type 1 gives S(0) low by 5.27 per cent, type 4 by 0.036 --
+        a factor of 148 on the same grid, and the error is independent of
+        r_max. Type 4 is correct only for ONE size class, however, since it
+        needs every pair core between grid points and the sigma_ij of a
+        mixture are mutually incommensurate. Use
+        `oZfixpointOperator.bestGridSize(n, transformType)` rather than
+        choosing N by hand: type 1 wants 2^k - 1 and type 4 wants 2^k.
         """
         self.potential = potential
         self.potentialArgs = tuple(potentialArgs)
@@ -458,7 +490,39 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
                 + C*Scoarse[i0, j1] + D*Scoarse[i1, j1])
 
     def S_partials(self, Q):
-        """(nQ, N, N) Ashcroft-Langreth partials, interpolated onto Q."""
+        """(nQ, N, N) Ashcroft-Langreth partials, interpolated onto Q.
+
+        BELOW the solver's own q grid the partials are EXTRAPOLATED, not
+        clamped. S(q) for a liquid is even and analytic at the origin --
+        the transform of a short-ranged radially symmetric h(r) has no odd
+        term -- so S_ij(q) = A + B q^2 is the leading behaviour rather than
+        a convenient fit. A and B come from a least-squares fit over the
+        whole quadratic region (q*sigma <= 1), not from the two lowest
+        points: the grid is uniform in q with spacing pi/r_max, so a finer
+        grid puts MORE points below any given q, and a two-point estimate
+        would determine B from the difference of two nearly equal numbers
+        and get worse as the grid is refined.
+
+        Clamping instead, which this did before, holds the partials FLAT
+        below the grid. Smearing the lowest measured points pulls values in
+        from there, so a structure factor with a strong low-q upturn was
+        biased towards its value at q_0, and the bias grew with dQ.
+
+        A DIVERGENCE IS REFUSED rather than extrapolated. S ~ c q^-alpha
+        means the compressibility is running away -- at or near a spinodal
+        -- and there is no finite S(0) to extrapolate TO, so a parabola
+        through it returns a number that means nothing and the fit
+        downstream would use it without complaint. The discriminant is the
+        log-log slope of the trace over the lowest few grid points, with a
+        threshold of -0.1: hard spheres at phi = 0.10, 0.30 and 0.45 give
+        +0.0009, -0.0000 and -0.0008, while a synthetic S proportional to
+        1/q gives -1.000 exactly, so there are three orders of headroom.
+        Extending the q grid removes the need to extrapolate at all and the
+        error message says so.
+
+        ABOVE the grid the partials go to delta_ij, since S -> 1 when the
+        wavelength is short against any correlation.
+        """
         #Incoming Q is in the caller's units; the stored grid is reduced, so
         #convert with q_reduced = Q * (mean physical diameter).
         Q = np.atleast_1d(np.asarray(Q, float))*self._L

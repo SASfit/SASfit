@@ -776,6 +776,28 @@ own \code{SESSION\_TAB\_INDEX} rather than from its position in the registry.
 The two can disagree: if a tab fails to import, the remainder shift up, and
 the label must continue to match what the tab's own \emph{files} claim.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{gui_mixture_validation.png}
+\caption{The mixture validation tab. The numerical solver is drawn against
+analytic references on the upper axes and their relative difference below,
+with the summary reporting the COARSE/FINE RATIO rather than only the size of
+the disagreement. That ratio is the diagnostic: ordinary grid error falls
+roughly fourfold for a fourfold refinement, so an error that does \emph{not}
+shrink is a defect and not a resolution problem --- a fault that gave every
+pair in a mixture the same hard core survived every internal consistency
+check in this package and was found exactly this way, as a $5.2\,\%$
+discrepancy that stayed put under refinement.
+The closure is fixed at Percus--Yevick and the charge fields are disabled,
+both deliberately: the two analytic references ARE Percus--Yevick, so any
+other closure would differ for physical rather than numerical reasons, and
+the polydisperse builder cannot construct a charge-coupled potential, so
+there would be no numerical curve to compare against --- a comparison of one
+curve is not a validation.
+Regenerate with \code{tools/gui\_screenshots.py}.}
+\label{fig:mixturetab}
+\end{figure}
+
 \paragraph{Sessions are saved per tab, not globally.} Each tab writes its own
 file with the extension carrying its index (\code{.oz1}, \code{.oz2},
 \code{.oz3}), holding the computed runs, every input field, which parameters
@@ -1773,19 +1795,6 @@ ratio $c$ here, because the $\delta = c\,\Delta R$ link is switched off ---
 rather than hidden, so the layout does not reflow as options are toggled.
 The divider between panel and plots is draggable.}
 \label{fig:guicontrols}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{gui_iq.png}
-\caption{The $I(Q)$ tab after a calculation. The exact multicomponent result
-is drawn with the six approximation schemes on the same axes and, where data
-are loaded, against the measurement --- which is the point of computing them
-together: the error of each scheme is read off the plot at the state point
-being fitted rather than assumed from the literature. The legend carries the
-reduced $\chi^2$ of both the fit and the computed curve, together with the
-solved scale, background and power-law amplitude.}
-\label{fig:guiiq}
 \end{figure}
 
 \paragraph{Reproducibility of the external comparisons.} Several rows of the

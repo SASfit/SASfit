@@ -138,7 +138,39 @@ def loadCurve(path, qmin=None, qmax=None, withResolution=False):
 
 # ----------------------------------------------------------------------
 class Resolution:
-    """Gaussian Q-resolution smearing as a fixed linear operator.
+    """Q-resolution smearing as a fixed linear operator.
+
+    TWO KERNELS: ``kernel="rician"`` (the default) or ``"gaussian"``.
+
+    Rician is the correct one. A small-angle instrument broadens Q in TWO
+    dimensions in the detector plane and the data are then radially
+    averaged, so the distribution of the magnitude about a true Q0 is
+    Rician,
+
+        P(Q|Q0) = (Q/s^2) exp(-(Q^2 + Q0^2)/2s^2) I0(Q Q0/s^2),
+
+    not Gaussian. A Gaussian in Q is its Q0/s >> 1 limit and is entirely
+    adequate wherever dQ/Q is small -- at dQ/Q = 0.08 the two agree closely.
+    At dQ/Q = 0.55, which real spherical-shell data reach at their lowest
+    measured point, they do not: a Gaussian places 44 per cent of that
+    point's weight below Q_min and some of it at NEGATIVE Q, against 34 per
+    cent for the Rician form, whose leading factor of Q excludes the origin
+    by construction. Gaussian is kept selectable so that an earlier result
+    can be reproduced rather than taken on trust.
+
+    Evaluated through the exponentially scaled I0 (``scipy.special.i0e``):
+    the Bessel argument reaches several hundred at these widths, where I0
+    itself overflows a double long before the prefactor cancels it.
+
+    dQ is read as the kernel's SIGMA; pass ``fwhm=True`` if the reduction
+    writes a full width at half maximum instead.
+
+    Both kernels reproduce the unsmeared curve to 2e-16 as dQ -> 0 and have
+    rows summing to one. ``tools/numerics_test.py`` asserts both, because a
+    mis-normalised kernel is otherwise invisible: the curve still looks like
+    a scattering curve and every fit absorbs the difference into the scale.
+
+    Mechanically::
 
         I_smeared(Q_i) = sum_j W_ij I_model(Qext_j)
 
@@ -302,6 +334,22 @@ def _linearScaleAndBackground(model, obs, weight, fixedScale=None,
         I(Q) = a*model(Q) + b + sum_k c_k * column_k(Q)
 
     Returns (a, b, c) with c a list, one entry per extra column.
+
+    THE COLUMNS ARE EQUILIBRATED BEFORE THE SOLVE, and that is not a
+    refinement. They need not be comparable in magnitude: a model built from
+    scattering length densities in 1/cm^2 carries the contrast SQUARED and
+    so has magnitude ~1e20, while the constant background column is unity.
+    ``numpy.linalg.lstsq``, like any rank-revealing solver, discards
+    singular values below max(M,N)*eps, so at a condition number of 1e20 the
+    background and power-law coefficients come back as EXACTLY zero and the
+    solve reports success.
+
+    The symptom is a fit that a hand-chosen background beats by 30 per cent
+    in chi-squared -- indistinguishable from a broken optimiser, and it took
+    most of a session to find. Normalising each column to unit norm before
+    the solve and unscaling afterwards recovers all three coefficients to
+    five figures and leaves well-conditioned problems unchanged;
+    ``tools/numerics_test.py`` asserts both.
 
     Minimises sum w^2 (fit - obs)^2 over whichever coefficients are free.
     Any of them may be held at a given value; the rest are still solved
@@ -846,13 +894,13 @@ class PolydisperseFit:
                       verbose=False, onProgress=None):
         """Run the local fit from several scattered starting points.
 
-        Returns the best result, with three extra keys:
+        Returns the best result, with three extra keys::
 
-            nStarts       how many were attempted
-            startResults  [{start, chi2_reduced, parameters, success}, ...]
-                          in the order tried, best first after sorting
+            nStarts         how many were attempted
+            startResults    [{start, chi2_reduced, parameters, success}, ...]
+                            in the order tried, best first after sorting
             distinctMinima  how many distinct chi-squared values were found,
-                          within a relative tolerance of 1e-3
+                            within a relative tolerance of 1e-3
 
         WHY THIS RATHER THAN A GLOBAL OPTIMISER. A genetic algorithm or
         differential evolution needs thousands of evaluations, and here one

@@ -1337,9 +1337,24 @@ def plt_colors():
 def main():
     root = tk.Tk()
     app = OZgui(root)
-    # 26 px taller than before, to give the tab strip its own room rather
-    # than taking it out of the OZ solver panel's usable height.
+    #MAXIMISED ON START. The parameter panels have grown past what the old
+    #1200x776 could hold -- the polydisperse tab alone now carries the fit
+    #block, per-parameter bounds columns and a help box -- so a fixed
+    #geometry cut the lower controls off and left a new user unaware that
+    #the solver dropdown and the Q range were there at all.
+    #
+    #The geometry is still set first, as the size the window returns to when
+    #un-maximised, and it stays the fallback where zooming is unavailable.
+    #`zoomed` is the Windows and X11 spelling; macOS wants the attribute
+    #instead and raises TclError on the former.
     root.geometry("1200x776")
+    try:
+        root.state("zoomed")
+    except tk.TclError:
+        try:
+            root.attributes("-zoomed", True)
+        except Exception:
+            pass                      # keep the geometry above
     root.mainloop()
 
 

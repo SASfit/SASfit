@@ -14,7 +14,7 @@ Every distribution here has ANALYTIC moments, so computing <sigma^n> is never
 the problem. The problem is the map from moments to quadrature nodes: solving
 the Hankel eigenproblem (Golub-Welsch) is classically ill-conditioned even
 with exact input. Measured condition numbers for the log-normal Hankel matrix,
-built from exact moments:
+built from exact moments::
 
         s = 0.3      s = 0.4      s = 0.5
   N=6   1.6e7        1.7e7        1.2e8
@@ -186,6 +186,25 @@ def sizeClasses(distribution, srel, p, meanSigma=1.0, allowTruncated=True):
 
     Returns diameters and normalised number fractions. Raises ValueError if a
     physically valid set cannot be produced.
+
+    THE MOMENT MATCHING IS THE POINT, and it is what lets three classes do
+    the work of dozens: a p-point rule reproduces the first 2p-1 moments of
+    the distribution exactly. Verified at p = 3 and p = 5 for a Schulz
+    distribution of width 0.25, where it returns <sigma> = 1.0000000000 and
+    <sigma^2> = 1.0625000000, exactly 1 + s^2.
+
+    NOT THE SAME AS ``quantileClasses``, which is quantile-based and
+    reproduces the moments only approximately (0.9794 and 0.9596 for the
+    same case). Both are legitimate discretisations and the solver uses the
+    quantile route, but anything claiming exact moments -- Fig. 1 of the
+    manuscript, for instance -- must come from here. Drawing that figure
+    from the wrong one put a caption beside it asserting something the
+    figure did not show.
+
+    Available distributions are in ``DISTRIBUTIONS``: Schulz, Gaussian,
+    LogNormal, Weibull and Gamma. Beta is implemented in
+    ``_quantileFunction`` but deliberately not offered -- see the note
+    there.
     """
     p = int(p)
     srel = float(srel)
@@ -363,6 +382,32 @@ def quantileFunction(distribution, srel, meanSigma=1.0):
 def quantileClasses(distribution, srel, p, meanSigma=1.0, level=6):
     """(sigma, x) from the quantile transform with a tanh-sinh rule.
 
+    Five distributions, listed in ``DISTRIBUTIONS``: Schulz, Gaussian,
+    LogNormal, Weibull and Gamma. All are parametrised by (mean, srel)
+    ALONE, which is what makes them mutually comparable -- at the same mean
+    and relative width they differ by up to 78 per cent in I(Q), because the
+    quadrature matches the moments of each but the TAILS differ and
+    <sigma^6> governs I(Q -> 0). The distribution is therefore a real
+    fitting choice rather than a convention.
+
+    Gamma is not redundant with Schulz despite Schulz being a gamma: the
+    Schulz convention ties shape and width to one parameter, whereas here
+    the shape and scale are independent, and the tails part company once
+    srel is large.
+
+    Beta is implemented in ``_quantileFunction`` but deliberately absent
+    from ``DISTRIBUTIONS``. Pinned to (mean, srel) it can only be the
+    symmetric case on a fixed support (0, 2*mean), and the reason to want a
+    bounded distribution is precisely to place the bounds somewhere
+    meaningful -- (0.6R, 1.4R) for a sieved sample, say. Offering the one
+    Beta that cannot do that would be offering the name without the
+    capability. See ``sizeClasses`` for the moment-matched alternative.
+
+    Gaussian is the least trustworthy at large srel and is tested at a
+    looser tolerance for a stated reason: at 30 per cent width it puts real
+    weight below zero, and truncating shifts both moments. That is a
+    property of the distribution rather than a defect.
+
     tanh-sinh (double exponential) rather than Gauss-Legendre, because the
     transform moves the difficulty rather than removing it: Q(u)^k diverges
     as u -> 1 for a heavy tail, so the integrand has an ENDPOINT SINGULARITY
@@ -417,7 +462,8 @@ def crossCheckMoments(distribution, srel, p, meanSigma=1.0, nQuantile=64):
     nodes from moments via a Hankel eigenproblem, the other evaluates a
     quantile function on a tanh-sinh grid -- so agreement is meaningful.
 
-    Returns, for <sigma^3> and <sigma^6> (the moments governing I(Q -> 0)):
+    Returns, for <sigma^3> and <sigma^6> (the moments governing I(Q -> 0))::
+
         analytic            sizeClasses vs the closed-form moments
         quantile            sizeClasses vs the quantile rule
         quantileVsAnalytic  the quantile rule vs the closed form, i.e. how

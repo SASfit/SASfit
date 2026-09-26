@@ -25,10 +25,12 @@ retrieve the result using the (public)
 getter methods. (These are the only ones
 exposed, i.e. mapped to RP calls).
 
---------------------------------------------------------------------------
+PORTING AND EXTENSIONS
+
 Ported from Python 2 to Python 3 (2026), and extended with the potentials
 below to match the ones available in the SASfit C code
-(src/sasfit_oz/sasfit_oz_potential_*.c):
+(src/sasfit_oz/sasfit_oz_potential_*.c)::
+
   - setDepletionPotential            (sasfit_oz_potential_depletion.c,
                                        simplified 2-sphere U_Depletion form)
   - setDLVOPotential                 (sasfit_oz_potential_dlvo.c)
@@ -45,11 +47,13 @@ below to match the ones available in the SASfit C code
   - setStickyHardSpherePotential     (sasfit_oz_potential_sticky_hard_sphere.c,
                                        Baxter tau convention -- same convention
                                        used by the robertus_shs plugin)
+
 Already-ported potentials (unchanged): HardSphere, LennardJones, Yukawa.
 Star polymer potential (Likos & Harreis 2002) split into its two genuinely
 different regimes, matching sasfit_oz_potential_star_Likos.c's own
 U_Star1/U_Star2 exactly (an earlier version of this port only had U_Star1,
-silently applied regardless of functionality f):
+silently applied regardless of functionality f)::
+
   - setStarPolymerHighFPotential     (f>=10, exponential decay)
   - setStarPolymerLowFPotential      (f<=10, Gaussian decay, own tau(f))
 
@@ -62,7 +66,6 @@ Python-2-isms fixed throughout: xmlrpclib -> xmlrpc.client, http.server-
 based SimpleXMLRPCServer import path, `print x` -> `print(x)`,
 `x.shape[0]/2` -> `x.shape[0]//2` (integer division; Python 3's `/` is
 always float division), `basestring` -> `str`.
---------------------------------------------------------------------------
 '''
 
 #calculations
@@ -92,13 +95,13 @@ def bestGridSize(n, transformType=1):
     """The efficient number of radial points for a given transform type.
 
     The two transforms are computed through FFTs of DIFFERENT lengths, so
-    the grid size that is fast for one is slow for the other:
+    the grid size that is fast for one is slow for the other::
 
       DST-I  (type 1) uses an FFT of length 2(N+1), so N = 2^k - 1 makes
                       that a power of two.
       DST-IV (type 4) uses length N itself, so it wants N = 2^k.
 
-    Measured with scipy.fft.dst at N near 2^14:
+    Measured with scipy.fft.dst at N near 2^14::
 
         N          type 1     type 4
         16383      0.263 ms   0.308 ms
@@ -343,7 +346,54 @@ class OZfixpointOperator:
           return self.safeExp(-self.repulsivePartOfP2Ppotential)*(1.0 + (self.safeExp(f*Gstar) - 1.0)/f) - G - 1.0
 
       elif ct == 'CarbajalTinoko':
-          #Carbajal-Tinoco, J. Chem. Phys. 128, 184507 (2008).
+          #Carbajal-Tinoco, J. Chem. Phys. 157, 204502 (2022), Eqs. 15-16 --
+          #the "local approximation" bridge function B_LA(r). The author's
+          #own 2008 paper, JCP 128, 184507, is a DIFFERENT closure (Extended
+          #Rogers-Young, implemented separately here), and citing it for this
+          #one is an error inherited from OrnsteinZernike.jl's source
+          #docstring -- which contradicts Table I of the paper accompanying
+          #that package. Reading the 2008 paper while looking for this
+          #formula finds Eq. 13 and no trace of it, which is how the mistake
+          #surfaced.
+          #
+          #lambda interpolates between known closures: lambda = 0 recovers
+          #Martynov-Sarkisov, lambda -> infinity recovers HNC.
+          #
+          #THE EQUATION HAS A BOUNDED DOMAIN. Substituting w = Gamma + b
+          #turns the implicit b = T(Gamma + b) into an explicit map
+          #
+          #    Gamma(w) = w - T(w),
+          #
+          #whose RANGE is the set of Gamma for which a solution exists. That
+          #range is bounded below: Gamma(w) has a single minimum, and below
+          #it there is no root at all, above it exactly two. Measured:
+          #
+          #    e = 1.0            Gamma_min = -2.000
+          #    e = 2.0            Gamma_min = -0.781   at w = -1.63
+          #    e = 3.0 (lam = 0)  Gamma_min = -0.509   at w = -1.04
+          #    e = 3.4 (lam= 0.4) Gamma_min = -0.447   at w = -0.91
+          #
+          #So Gamma_min RISES towards zero as e grows, and lambda > 0 shrinks
+          #the admissible region -- that, not a repulsive fixed point, is why
+          #lambda > 0 fails. Gamma_min is where dGamma/dw = 0, i.e. where
+          #T'(w) = 1, computable rather than scanned.
+          #
+          #NEITHER SOURCE PAPER MENTIONS THIS. The 2022 paper notes only
+          #that Eq. 15 is "a transcendental equation" and says nothing about
+          #when it has no root. Pihlajamaa & Janssen (Phys. Rev. E 110,
+          #044608) repeatedly exclude closures from their figures "due to
+          #convergence issues at this state point" without diagnosing them,
+          #so the behaviour is known and accepted; where the boundary lies
+          #for THIS closure appears not to be.
+          #
+          #The reference implementation uses Roots.jl's find_zero with no
+          #domain check, so outside the domain it raises. Returning the last
+          #iterate instead, as the loop below does, is the weaker behaviour:
+          #a non-converged bridge function is not a usable answer, only an
+          #undetected one. Changing it needs care -- a check on every closure
+          #evaluation fires during the iteration path from Gamma = 0 even
+          #when the converged solution is fine -- so it is left as is and
+          #recorded in docs/generic_polydisperse_tab.md.
           #
           #The only IMPLICIT closure here: the bridge function is defined by
           #     b = e(r) * [(2-w)e^w - 2 - w]/(e^w - 1),   w = Gamma + b
@@ -1630,11 +1680,13 @@ class OZfixpointOperator:
     def setHardSphereDoubleYukawaPotential(self, K1, z1, K2, z2):
       """Hard core plus two Yukawa tails, parameterised by SCREENING z.
 
+      ::
+
           beta u(r) = -[ K1 exp(-z1 (r/sigma - 1))
                        + K2 exp(-z2 (r/sigma - 1)) ] / (r/sigma)   r > sigma
                     = infinity                                     r <= sigma
 
-      SIGN CONVENTION, the same as setHS3YukawaPotential:
+      SIGN CONVENTION, the same as setHS3YukawaPotential::
 
           K_i > 0  ->  ATTRACTIVE tail  (beta u < 0)
           K_i < 0  ->  REPULSIVE tail   (beta u > 0)

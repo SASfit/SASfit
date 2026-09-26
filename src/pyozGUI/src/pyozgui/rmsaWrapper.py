@@ -20,7 +20,20 @@ first from the sources in ./rmsa_c_source/ next to this file:
   - Linux/WSL:
         cd rmsa_c_source
         gcc -shared -fPIC -O2 -o ../librmsa.so rmsa.c polyroots.c rmsa_physical.c \
-            -I. -lgsl -lgslcblas -lm -lpthread
+            -lgsl -lgslcblas -lm
+
+    The GSL flags are NOT optional and were missing from this line until
+    someone tried it: polyroots.c calls gsl_poly_complex_solve and
+    gsl_set_error_handler_off, so the link fails with four undefined
+    references without -lgsl. -lgslcblas is needed as well because GSL
+    requires a CBLAS at link time even where none of it is used. On MSYS2,
+    `pacman -S mingw-w64-x86_64-gsl` provides both.
+
+    The library must be named librmsa.dll/.so/.dylib and sit NEXT TO THIS
+    FILE, not in the plugin's own lib/ directory. libsasfit_RMSA.dll from
+    there will not do: it is the SASfit plugin, exporting sasfit_sq_RMSA
+    and linked against SASfit's runtime, so ctypes loads it and then fails
+    to find the symbols this wrapper wants.
 
 The .c/.h files themselves are a simplified copy of SASfit's own RMSA
 plugin sources: the warm-start/caching optimization in
