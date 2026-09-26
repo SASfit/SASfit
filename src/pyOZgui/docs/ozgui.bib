@@ -240,51 +240,26 @@
 
 @Article{Ginoza1986,
   author  = {Ginoza, Mitsuaki},
-  title   = {Solution of {O}rnstein--{Z}ernike Equation for a Mixture of Hard
-             Spheres with {Y}ukawa Closure: the Case of Factorizable
-             Coefficients},
   journal = {J. Phys. Soc. Jpn.},
+  title   = {Solution of {O}rnstein--{Z}ernike Equation for a Mixture of Hard Spheres with {Y}ukawa Closure: the Case of Factorizable Coefficients},
   year    = {1986},
-  volume  = {55},
+  note    = {The result that makes the multicomponent Yukawa MSA affordable for a size distribution: with factorizable coefficients $K_ij = K d_i d_j$ and a single Yukawa term, the coupled nonlinear system collapses to rational functions of ONE scalar Gamma, fixed by one algebraic equation (his Eqs. 38a and 38b, two forms of the same condition). Each component then enters only through ($\sigma_i,\rho_i, d_i)$, so the cost is linear in the number of classes. Generalises Blum's primitive-electrolyte solution, recovering it as a limiting case. NOTE the source is a scanned PDF: the equations cannot be extracted mechanically and must be read by eye, which is why the partial implementation in ginoza\_yukawa\_msa.py implements BOTH closing conditions as a check on the transcription},
   number  = {1},
   pages   = {95--101},
+  volume  = {55},
   doi     = {10.1143/JPSJ.55.95},
-  note    = {The result that makes the multicomponent Yukawa MSA affordable
-             for a size distribution: with factorizable coefficients
-             K_ij = K d_i d_j and a single Yukawa term, the coupled
-             nonlinear system collapses to rational functions of ONE scalar
-             Gamma, fixed by one algebraic equation (his Eqs. 38a and 38b,
-             two forms of the same condition). Each component then enters
-             only through (sigma_i, rho_i, d_i), so the cost is linear in
-             the number of classes.
-             Generalises Blum's primitive-electrolyte solution, recovering
-             it as a limiting case. NOTE the source is a scanned PDF: the
-             equations cannot be extracted mechanically and must be read by
-             eye, which is why the partial implementation in
-             ginoza_yukawa_msa.py implements BOTH closing conditions as a
-             check on the transcription},
 }
 
 @Article{GinozaYasutomi1998,
   author  = {Ginoza, Mitsuaki and Yasutomi, Makoto},
-  title   = {Analytical Structure Factors for Colloidal Fluids with Size and
-             Interaction Polydispersities},
   journal = {Phys. Rev. E},
+  title   = {Analytical Structure Factors for Colloidal Fluids with Size and Interaction Polydispersities},
   year    = {1998},
-  volume  = {58},
+  note    = {Gives the static structure factors directly, from Eq. (3.4) onward, for the hard-sphere M-Yukawa fluid with factorizable coefficients -- and, unlike the corresponding-states route of Gazzillo et al. implemented in gazzillo\_msa.py, treats size and interaction polydispersity as INDEPENDENT rather than taking the valence proportional to surface area. That is the one capability gazzillo\_msa.py lacks, and this is the paper to use if a decoupled-charge system ever needs modelling. Prefer it to Ginoza (1986) for that work: it goes further and, unlike the 1986 paper, is machine-readable},
   number  = {3},
   pages   = {3329--3333},
+  volume  = {58},
   doi     = {10.1103/PhysRevE.58.3329},
-  note    = {Gives the static structure factors directly, from Eq. (3.4)
-             onward, for the hard-sphere M-Yukawa fluid with factorizable
-             coefficients -- and, unlike the corresponding-states route of
-             Gazzillo et al. implemented in gazzillo_msa.py, treats size and
-             interaction polydispersity as INDEPENDENT rather than taking
-             the valence proportional to surface area.
-             That is the one capability gazzillo_msa.py lacks, and this is
-             the paper to use if a decoupled-charge system ever needs
-             modelling. Prefer it to Ginoza (1986) for that work: it goes
-             further and, unlike the 1986 paper, is machine-readable},
 }
 
 @Article{GazzilloGiacometti2000,
@@ -602,48 +577,26 @@
 
 @Article{CarbajalTinoco2022,
   author  = {Carbajal-Tinoco, Mauricio D.},
-  title   = {Local Thermodynamic Consistency for Integral Equations
-             Describing Single-Component Fluids},
   journal = {J. Chem. Phys.},
+  title   = {Local Thermodynamic Consistency for Integral Equations Describing Single-Component Fluids},
   year    = {2022},
-  volume  = {157},
+  note    = {THE source of the closure this package calls Carbajal-Tinoco, $b = e(r;\alpha)[(2 - ln y)y - 2 - ln y]/(y - 1)$ with $e(r;\alpha) = 3\exp(\alpha r)$ for $\alpha < 0$ and $3 + \alpha$ otherwise. Established from Table I, row 15, of Pihlajamaa \& Janssen (arXiv:2407.18680), whose reference 73 this is. NOTE THE TRAP. OrnsteinZernike.jl's own source docstring for CarbajalTinoko cites the 2008 paper instead, contradicting the Table I of the paper that accompanies it -- and this project's implementation, which came from that package down to the Tinoko spelling, inherited the wrong attribution. The 2008 paper is the source of EXTENDED ROGERS-YOUNG, a different closure also implemented here; reading it while looking for this formula finds Eq. 13 and no trace of the bridge function above, which is how the error was caught},
   number  = {20},
   pages   = {204502},
+  volume  = {157},
   doi     = {10.1063/5.0119657},
-  note    = {THE source of the closure this package calls Carbajal-Tinoco,
-             b = e(r;alpha)[(2 - ln y)y - 2 - ln y]/(y - 1) with
-             e(r;alpha) = 3exp(alpha r) for alpha < 0 and 3 + alpha
-             otherwise. Established from Table I, row 15, of Pihlajamaa \&
-             Janssen (arXiv:2407.18680), whose reference 73 this is.
-
-             NOTE THE TRAP. OrnsteinZernike.jl's own source docstring for
-             CarbajalTinoko cites the 2008 paper instead, contradicting the
-             Table I of the paper that accompanies it -- and this project's
-             implementation, which came from that package down to the
-             Tinoko spelling, inherited the wrong attribution. The 2008
-             paper is the source of EXTENDED ROGERS-YOUNG, a different
-             closure also implemented here; reading it while looking for
-             this formula finds Eq. 13 and no trace of the bridge function
-             above, which is how the error was caught},
 }
 
 @Article{CarbajalTinoco2008,
   author  = {Carbajal-Tinoco, Mauricio D.},
-  title   = {Thermodynamically Consistent Integral Equation for Soft
-             Repulsive Spheres},
   journal = {J. Chem. Phys.},
+  title   = {Thermodynamically Consistent Integral Equation for Soft Repulsive Spheres},
   year    = {2008},
-  volume  = {128},
+  note    = {Source of the EXTENDED ROGERS-YOUNG closure, $b = \ln(1 + \phi + a \phi^2) - \gamma$ with $\phi = [\exp(f \gamma) - 1]/f$ and $f = 1 - \exp(-\alpha r)$, Eq. 13 -- NOT of the Carbajal-Tinoco bridge function, which is the 2022 paper. Two free parameters, $\alpha$ and a, fixed by the compressibility relation together with the energy-pressure one},
   number  = {18},
   pages   = {184507},
+  volume  = {128},
   doi     = {10.1063/1.2918495},
-  note    = {Source of the EXTENDED ROGERS-YOUNG closure,
-             b = ln(1 + phi + a phi^2) - gamma with
-             phi = [exp(f gamma) - 1]/f and f = 1 - exp(-alpha r), Eq. 13 --
-             NOT of the Carbajal-Tinoco bridge function, which is the 2022
-             paper. Two free parameters, alpha and a, fixed by the
-             compressibility relation together with the energy-pressure
-             one},
 }
 
 @Article{GonzalezMozuelosCarbajalTinoco1998,
@@ -956,29 +909,10 @@ deleted so the pair can be re-checked.}
   author    = {Lee, Lloyd L.},
   journal   = {J. Chem. Phys},
   title     = {Hard sphere properties obtained from a consistent closure},
-  note      = {A NOTE, not an erratum -- the JCP Letters section has three
-               categories (Notes, Comments, Errata) and this is under Notes.
-               It supersedes nothing in Lee (1995), stating only that it
-               furnishes "further data on the degree of consistency achieved
-               with this closure"; cite either alone as appropriate.
-               ITS TABLE I IS A READY-MADE VALIDATION REFERENCE FOR ZSEP,
-               which is why this entry is worth more than its length
-               suggests. It tabulates the three self-fitted closure
-               parameters alpha, f and zeta against density from
-               rho*sigma^3 = 0.1 to 0.9, together with B(0), ln y(0),
-               gamma(0), g(sigma+), beta*mu', the compressibility and the
-               two zero-separation derivatives -- each against
-               Carnahan-Starling, Groot or Monte-Carlo values. This package
-               self-fits those same three parameters, so the table is a
-               direct check on that search at five state points, and no such
-               check currently exists. See docs/generic_polydisperse_tab.md.
-               Note also the fixed pseudotemperature kT/eps = 9 used to
-               soften the Mayer factor in the renormalisation; it is a
-               fourth constant, not fitted, and is easy to overlook when
-               reproducing the table},
   year      = {1999},
   issn      = {1089-7690},
   month     = Apr,
+  note      = {A NOTE, not an erratum -- the JCP Letters section has three categories (Notes, Comments, Errata) and this is under Notes. It supersedes nothing in Lee (1995), stating only that it furnishes "further data on the degree of consistency achieved with this closure"; cite either alone as appropriate. ITS TABLE I IS A READY-MADE VALIDATION REFERENCE FOR ZSEP, which is why this entry is worth more than its length suggests. It tabulates the three self-fitted closure parameters $\alpha$, $f$ and $\zeta$ against density from $\rho\sigma^3 = 0.1$ to $0.9$, together with $B(0)$, $\ln y(0)$, $\gamma(0)$, $g(\sigma+)$, $\beta\mu'$, the compressibility and the two zero-separation derivatives -- each against Carnahan-Starling, Groot or Monte-Carlo values. This package self-fits those same three parameters, so the table is a direct check on that search at five state points, and no such check currently exists. See docs/generic\_polydisperse\_tab.md. Note also the fixed pseudotemperature $kT/eps = 9$ used to soften the Mayer factor in the renormalisation; it is a fourth constant, not fitted, and is easy to overlook when reproducing the table},
   number    = {15},
   pages     = {7589},
   volume    = {110},
