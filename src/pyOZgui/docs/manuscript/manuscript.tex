@@ -1,0 +1,897 @@
+% =====================================================================
+% Draft manuscript for Journal of Applied Crystallography
+% (Computer Programs section)
+%
+% STRUCTURE: the Validation section and section 5.3 live in their own
+% files and are pulled in with \input. Those fragments are the MASTER
+% copies -- edit them, not a merged version of this file. They carry no
+% preamble and are not standalone.
+%
+% NOTE: IUCr supplies its own document class (iucr.cls). This draft uses
+% plain article so that it compiles anywhere; transfer to the IUCr class
+% before submission. Section structure follows JAC's Computer Programs
+% format.
+%
+% Build:  sh build.sh          (pdflatex twice, for cross-references)
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+%Look in figures/ as well as here. Without this the document only builds
+%through build.sh, which copies figures/*.pdf into the working directory
+%first -- compiling manuscript.tex directly from an editor then fails with
+%"File `fig1_discretisation.pdf' not found". With it, both routes work and
+%the copy in build.sh becomes belt-and-braces rather than a requirement.
+%The trailing {} keeps the current directory in the search path, so a
+%submission package with everything flattened into one folder also builds.
+\graphicspath{{figures/}{./}}
+\usepackage{booktabs}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+%expansion=false: font expansion needs scalable fonts, and a minimal TeX
+%installation fails outright without this, producing no PDF at all.
+\usepackage[expansion=false]{microtype}
+%natbib in NUMBERED mode. sort&compress turns \cite{a,b,c} into [1-3]
+%rather than [1,2,3].
+%
+%The in-text commands still work and read naturally: \citet{Pedersen1994}
+%gives "Pedersen [7]". NOTE \citeyearpar prints the YEAR in brackets, which
+%in numbered mode reads as a citation number and is not one -- it was
+%replaced by \citep throughout when this document switched from author-year.
+%Do not reintroduce it while numbers are in use.
+%
+%To go back to author-year, this becomes
+%    \usepackage[authoryear,round]{natbib}
+%with \bibliographystyle{plainnat} at the end of the document. Note IUCr
+%journals normally use author-year, so check the target journal's style
+%before submission -- this choice is presentation only and costs one line.
+\usepackage[numbers,sort&compress]{natbib}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Q}{Q}
+
+\title{\bfseries Polydisperse structure factors for small-angle scattering:
+numerical Ornstein--Zernike solutions with arbitrary closures, and an
+assessment of the common decoupling approximations}
+
+\author{J. Kohlbrecher\\[2pt]
+\small Laboratory for Neutron Scattering and Imaging,\\
+\small Paul Scherrer Institut, 5232 Villigen PSI, Switzerland}
+
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+% ---------------------------------------------------------------------
+\begin{abstract}
+\noindent
+Small-angle scattering from concentrated dispersions requires a structure
+factor, and real dispersions are polydisperse. Because the exact treatment ---
+solving the coupled multicomponent Ornstein--Zernike (OZ) equations for all
+$p(p+1)/2$ partial structure factors --- has been considered expensive, most
+analysis packages instead use one of several decoupling approximations whose
+error is rarely quantified for the system at hand. We describe an
+implementation in which the exact solution is cheap enough to be the default:
+size polydispersity is discretised by moment-matched quadrature, so that three
+to five classes reproduce a continuous distribution, and the resulting matrix
+OZ problem is solved with the same accelerated fixed-point machinery used for
+the one-component case. Arbitrary pair potentials are made polydisperse
+without re-deriving them, by evaluating any one-component potential at the
+reduced separation $r/\sigma_{ij}$. We show that the structure factor and the
+form-factor average require different discretisations --- a point that, if
+overlooked, produces spurious form-factor oscillations easily mistaken for
+physical structure --- and that six commonly used approximation schemes can be
+compared directly against the exact result within a single interface. The
+implementation is validated against published Monte Carlo comparisons, against
+analytic Percus--Yevick hard spheres, and against an independent
+integral-equation library, and is distributed both as a Python package with a
+graphical interface and as a C plugin for SASfit.
+\end{abstract}
+
+\noindent\textbf{Keywords:} small-angle scattering; structure factor;
+polydispersity; Ornstein--Zernike; integral equation theory; closure relations
+
+\bigskip
+\noindent\textbf{Synopsis:} A general solver for the multicomponent
+Ornstein--Zernike equations is described, giving exact partial structure
+factors for polydisperse interacting particles under any of twenty-four
+closure
+relations and any of nineteen pair potentials, together with a quantitative
+assessment of the approximations normally used to combine a structure factor
+with a size distribution.
+
+% ---------------------------------------------------------------------
+\section{Introduction}
+
+The measured intensity of a concentrated dispersion of interacting particles
+does not factorise into a form factor and a structure factor unless the
+particles are identical. For a polydisperse system the exact expression
+involves the partial structure factors $S_{ij}(\Q)$ of every pair of size
+classes,
+\begin{equation}
+I(\Q) = \sum_{ij} \sqrt{\rho_i\rho_j}\, F_i(\Q) F_j(\Q) S_{ij}(\Q),
+\label{eq:iexact}
+\end{equation}
+and obtaining those requires solving the multicomponent OZ equations. In
+practice this is usually avoided in favour of one of several approximations
+--- the monodisperse approximation, the decoupling approximation of Kotlarchyk
+\& Chen \citep{KotlarchykChen1983}, the local monodisperse approximation of \citet{Pedersen1994}, a
+partial-structure-factor scheme, a scaling approximation, or a van der Waals
+one-fluid treatment. Each is well founded in some regime, but a user fitting
+data has no easy way to know which regime they are in.
+
+Two developments make the exact route practical. First, the reduction of a
+continuous size distribution to a small number of discrete classes by
+\emph{moment matching} rather than histogramming:
+\citet{DAguannoKlein1991,DAguannoKlein1992} showed that three classes chosen
+as the nodes of a Gaussian quadrature
+reproduce results indistinguishable from five up to 30\,\% polydispersity,
+because the thermodynamics depends only on the low-order moments of the
+distribution. Second, the availability of robust accelerated fixed-point
+solvers, which make each OZ solve a fraction of a second even for the
+$p(p+1)/2$ coupled pair functions.
+
+We describe an implementation that takes the exact solution as the default and
+exposes the approximations for comparison rather than as substitutes. The
+software extends the OZ solver toolkit distributed with SASfit
+\citep{Bressler2015,KohlbrecherBressler2022}.
+
+It is worth being precise about what is and is not new here, since the
+separate ingredients are all established. Analytic multicomponent structure
+factors have been available for decades --- Vrij's hard-sphere mixture
+solution \citep{Vrij1979}, Blum and H{\o}ye's multi-Yukawa mixture
+\citep{BlumHoye1978}, and the polydisperse charged and adhesive models of
+Gazzillo and co-workers \citep{Gazzillo1997,GazzilloGiacometti2000} --- and
+are implemented in several packages, notably \code{mixscatter} for the Vrij
+solution. General-purpose integral-equation solvers likewise exist, of which
+\code{OrnsteinZernike.jl} \citep{PihlajamaaJanssen2024} is the most complete
+recent example, covering a wide range of closures for one-component systems.
+Small-angle scattering packages, for their part, supply the approximations:
+\code{SasView} and \code{jscatter} both implement decoupling and local
+monodisperse schemes alongside analytic structure factors.
+
+What has been missing is the combination. The analytic solutions are exact but
+confined to particular potentials; the general solvers handle arbitrary
+closures but are not built around polydispersity or around scattering
+observables; and the scattering packages offer the approximations without a
+way to check them. A user fitting a concentrated polydisperse dispersion
+therefore chooses an approximation on the basis of custom rather than
+evidence. The contribution here is to make the exact multicomponent
+calculation the default for an arbitrary potential and closure, to compute the
+approximations alongside it so that the error of each is visible at the state
+point actually being fitted, and to validate the result against every analytic
+solution available rather than against itself.
+
+\begin{quote}\small\itshape
+Draft note: the paragraphs above place this work against the packages
+actually used during its development and validation, which is not the same as
+a systematic survey of the field. Before submission, check in particular
+whether any package now combines exact multicomponent solution with arbitrary
+closures, and expand the discussion of prior polydisperse OZ work beyond
+D'Aguanno \& Klein. The natural starting reference remains
+\citet{KohlbrecherBressler2022}, which surveys the analytic-solution
+landscape.
+\end{quote}
+
+% ---------------------------------------------------------------------
+\section{Theory}
+
+\subsection{Multicomponent Ornstein--Zernike equations}
+
+For $p$ species with number densities $\rho_i$ the OZ relation
+\citep{OrnsteinZernike1914} couples all
+pair functions. In Fourier space, with $\mathbf{C}(\Q)$ the matrix of
+$\hat c_{ij}$ and $\boldsymbol{\rho} = \mathrm{diag}(\rho_i)$,
+\begin{equation}
+\mathbf{H}(\Q) = \left[\mathbf{I} - \mathbf{C}(\Q)\boldsymbol{\rho}\right]^{-1}
+\mathbf{C}(\Q), \qquad
+\boldsymbol{\Gamma} = \mathbf{H} - \mathbf{C}.
+\label{eq:ozmatrix}
+\end{equation}
+The single scalar division of the one-component problem is replaced by a small
+dense linear solve at each of the $N$ radial grid points. Every closure
+relation that is an elementwise function of $\Gamma$ --- Percus--Yevick
+\citep{PercusYevick1958},
+hypernetted chain, Rogers--Young \citep{RogersYoung1984}, Verlet and the
+empirical bridge-function
+family --- then applies unchanged to the matrix-valued $\Gamma_{ij}(r)$.
+Standard accounts of the closures and of integral-equation theory generally
+are given by \citet{HansenMcDonald2013}.
+
+Three structure-factor conventions occur in this field and must be
+distinguished: the number-fraction form
+$S_{ij} = x_i\delta_{ij} + n x_i x_j \hat h_{ij}$ used by \citet{DAguannoKlein1991},
+the Ashcroft--Langreth form
+$S_{ij} = \delta_{ij} + \sqrt{\rho_i\rho_j}\,\hat h_{ij}$ required by
+equation~(\ref{eq:iexact}), and the measured single curve $S^{M}(\Q)$. The
+conversion between the first two is a factor $\sqrt{x_i x_j}$; confusing them
+produces an error in $I(\Q)$ proportional to the number of size classes, which
+is easily mistaken for a physical effect (\S\ref{sec:oscillation}).
+
+\subsection{Discretising the size distribution}
+\label{sec:nodes}
+
+A $p$-point Gaussian rule is exact for the first $2p-1$ moments of the weight
+function. Since $I(\Q\to0)$ is governed by $\langle R^3\rangle^2$ and
+$\langle R^6\rangle$, exactness in the low-order moments is precisely what is
+required, and this is why three classes suffice where an equally spaced
+histogram needs seven to nine (Figure~\ref{fig:discretisation}).
+
+All five distributions implemented (Schulz, Gaussian, log-normal, Weibull,
+gamma)
+have analytic moments, but the map from moments to quadrature nodes --- the
+Golub--Welsch Hankel eigenproblem --- is classically ill-conditioned.
+Table~\ref{tab:cond} gives measured condition numbers for the log-normal case
+built from \emph{exact} moments; they exceed double precision by $N\approx10$
+for a broad distribution, and, importantly, the Cholesky factorisation does
+not fail there but returns meaningless nodes. We therefore use a closed-form
+classical rule wherever one exists --- generalised Gauss--Laguerre for the
+Schulz/gamma weight and Gauss--Hermite for the Gaussian, both stable in double
+precision --- and reserve high-precision Golub--Welsch for the log-normal and
+Weibull cases, which have no classical rule. All four are moment-exact to
+$\sim10^{-16}$.
+
+\begin{table}[htbp]
+\centering
+\caption{Condition number of the log-normal Hankel matrix built from exact
+moments. Double precision carries about $10^{16}$; past that the Cholesky
+factorisation does not fail, it silently returns nonsense.}
+\label{tab:cond}
+\begin{tabular}{lccc}
+\toprule
+ & $s=0.3$ & $s=0.4$ & $s=0.5$\\
+\midrule
+$N=6$  & $1.6\times10^{7}$  & $1.7\times10^{7}$  & $1.2\times10^{8}$\\
+$N=8$  & $2.1\times10^{10}$ & $1.9\times10^{11}$ & $4.7\times10^{13}$\\
+$N=10$ & $7.0\times10^{13}$ & $1.7\times10^{16}$ & $5.4\times10^{19}$\\
+$N=12$ & $6.4\times10^{17}$ & $1.2\times10^{21}$ & $2.3\times10^{27}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Gaussian rule requires a physical safeguard. Gauss--Hermite places its
+outermost node at $u\approx\pm2.86$, so $\sigma$ reaches zero near
+$s\approx0.35$. For a form-factor average a vanishing bin is harmless; for a
+structure factor it is not, because a hard core must be placed at every
+$\sigma_{ij}$. Nodes below $10^{-3}\langle\sigma\rangle$ are therefore
+discarded and the weights renormalised, sacrificing moment-exactness rather
+than physicality. A test on $\sigma>0$ alone is insufficient: at $s=0.35$ the
+offending node lies at $10^{-4}$.
+
+\subsection{Making an arbitrary potential polydisperse}
+
+Rather than re-deriving each pair potential for a mixture, we adopt
+\begin{equation}
+\sigma_{ij} = \tfrac12(\sigma_i+\sigma_j), \qquad
+u_{ij}(r) = u\!\left(r/\sigma_{ij}\right),
+\label{eq:reducedtail}
+\end{equation}
+so that every pair experiences the same interaction \emph{shape} measured in
+units of its own contact distance. This is the assumption Robertus \emph{et
+al.} \citep{Robertus1989} make for size-independent stickiness, and it makes the
+construction potential-agnostic: well depths, widths and exponents retain their
+reduced-unit meaning for every pair. Implementationally, each existing
+one-component potential routine is evaluated on a rescaled radial grid, so no
+potential is re-implemented. With one size class the construction reproduces
+the original one-component code \emph{bit-identically}.
+
+A caution that cost us dearly, and which we report because the failure mode is
+general: a potential routine that positions its hard core by \emph{array
+index} rather than against the radial grid never sees the rescaling, and then
+every pair receives its core at the same radius --- the mixture is silently
+solved as though all particles were identical. See \S\ref{sec:validation}.
+
+Equation~(\ref{eq:reducedtail}) is a modelling choice, not a derivation, and it
+is not universally appropriate. For Lennard-Jones the conventional alternative
+is Lorentz--Berthelot mixing with per-species $\varepsilon$. More importantly
+it fails for \emph{charge-coupled} potentials, where the amplitude scales with
+particle size ($Z_i \propto \sigma_i^n$) and the screening length is a global
+property of the whole distribution through the counterion density,
+\begin{equation}
+\kappa^2 = 4\pi L_B \sum_i n_i Z_i .
+\label{eq:kappa}
+\end{equation}
+Note the first power of $Z$: screening is by the small ions. Charged systems
+are therefore handled by a dedicated construction following
+\citet{DAguannoKlein1992},
+with the size dependence of the valence exposed as a user choice, since it is
+genuinely unsettled --- constant surface charge density gives $Z\propto\sigma^2$,
+whereas charge-renormalisation saturation and electrophoresis on highly charged
+low-salt spheres both indicate $Z\propto\sigma$. The choice matters: it changes
+$g(r)$ by an amount comparable to the effect of polydispersity itself.
+
+\subsection{Structure factor and form factor need different discretisations}
+\label{sec:nff}
+
+$S_{ij}(\Q)$ varies smoothly with particle size, so a few moment-matched
+classes suffice, and since the OZ solve costs $O(p^2)$ transforms it is
+desirable to keep $p$ small. The form-factor average $\langle|F|^2\rangle$
+behaves quite differently: at high $\Q$ the phase $\Q R$ spans approximately
+$\Q\langle\sigma\rangle s$ radians across the distribution, so a handful of
+classes superposes a handful of ringing form factors instead of smearing them.
+No amount of moment-exactness repairs this, because the integrand is not
+polynomial in $R$.
+
+We therefore decouple the two, solving the OZ equations on $p_S$ classes and
+evaluating the intensity sum on a denser grid $p_F$, with the rule of thumb
+$p_F \gtrsim \Q_{\max}\langle\sigma\rangle s$. Only the smooth part of the
+structure factor may be interpolated onto the denser grid: writing
+$S^{\mathrm{AL}} = \delta_{ij} + \sqrt{\rho_i\rho_j}\hat h_{ij}$, interpolating
+the whole matrix smears the Kronecker delta into a band and converts the
+incoherent sum $\sum_i|F_i|^2$ into the coherent $|\sum_i F_i|^2$ --- which is
+precisely what oscillates.
+
+A separate and equally silent requirement is that the radial grid must resolve
+the \emph{narrowest feature of the potential}, not the particle: for a well of
+width $\delta$ one needs of order $30\,\sigma/\delta$ points per diameter
+(\S\ref{sec:welltrap}).
+
+\subsection{Instrumental resolution}
+\label{sec:resolution}
+
+Small-angle neutron scattering resolution $\Delta \Q/\Q$ is of order 10\,\% and
+smears form-factor oscillations in exactly the way polydispersity does. Fitting
+without it lets the model absorb the instrument into the fitted width. On
+smeared synthetic data with a true relative width of 0.15, a fit that ignores
+resolution returns $0.1726$ --- 15\,\% too large --- with
+$\chi^2_{\mathrm{red}} = 1.07$; including it returns $0.1497$, within 0.2\,\%.
+The point that matters is that the unsmeared fit does not \emph{look} bad: this
+is bias, not imprecision, and more data does not remove it.
+
+Smearing is applied as a fixed linear operator built once from
+$(\Q,\Delta \Q)$. For radially averaged data the correct kernel is the
+azimuthally integrated one of \citet{Pedersen1990}, which is
+\emph{not} Gaussian; their Gaussian expression is its large-argument limit. The
+difference is confined to the lowest few points of a run, where collimation
+dominates and $\sigma/\Q\to1$: there the centre of mass of the true kernel sits
+59\,\% above $\langle \Q\rangle$ against 15\,\% for the Gaussian. It costs
+nothing to use the correct form, since completing the square turns the product
+of a vanishing exponential and a diverging Bessel function into a numerically
+benign expression.
+
+Smearing is inexpensive here for a structural reason: the extended, denser grid
+it requires would normally multiply the model cost several-fold, but the
+expensive part --- the OZ solve --- does not depend on the $\Q$ grid at all. It
+also leaves the analytic elimination of scale and background intact, since
+smearing is linear and the flat instrumental background is not smeared.
+
+% ---------------------------------------------------------------------
+\section{Implementation}
+
+The package is written in Python (NumPy/SciPy) with a Tk interface, and is also
+available as a C plugin for SASfit. Nineteen closure relations are available
+for polydisperse systems; four (reference HNC, modified HNC, rescaled MSA and
+the Euler--Rahman closure) require a one-component reference solve or a
+hard-sphere-specific construction and are excluded rather than offered and
+allowed to fail.
+
+Fixed-point acceleration follows the same strategy in both implementations:
+Anderson acceleration \citep{Anderson1965} (SUNDIALS KINSOL
+\code{KIN\_FP}) is tried first, with
+Newton--Krylov (GMRES with line search) and Picard iteration as successive
+fallbacks. Anderson converges from a cold start ($\Gamma = 0$) at every state
+point we have tested, including hard spheres at $s = \varphi = 0.40$, and is
+three to six times faster than Picard, the gain growing with the difficulty of
+the point.
+
+The Picard fallback is implemented in the averaged (Mann, or
+Krasnoselskii--Mann) form \citep{Mann1953}
+\begin{equation}
+\Gamma_{n+1} = (1-\alpha)\,\Gamma_n + \alpha\,T(\Gamma_n),
+\label{eq:mann}
+\end{equation}
+with $\alpha = 1$ --- undamped Picard --- as the default. The averaging is not
+cosmetic: for a nonexpansive map the Krasnoselskii--Mann theorem gives
+convergence where $\alpha = 1$ need not converge at all, and we find state
+points where the distinction is decisive. A Lennard-Jones fluid at
+$\varepsilon = 0.8\,k_BT$, $\varphi = 0.30$ under HNC diverges at $\alpha = 1$
+and converges cleanly at $\alpha = 0.5$ on one discretisation, while on
+another the two exchange roles. The fixed point there is simply near the edge
+of stability, and no single choice of $\alpha$ is right everywhere.
+
+\subsection{Verification by independent solvers}
+\label{sec:verification}
+
+All available solvers reach the \emph{same} fixed point on well-behaved
+states, agreeing in $I(Q)$ to $10^{-11}$ or better, so the choice is normally
+one of cost rather than of answer. That is not something to be assumed,
+however, and the reason is structural rather than a matter of implementation
+quality.
+
+The Ornstein--Zernike equation with a given closure is a nonlinear integral
+equation whose \emph{number} of solutions changes with density and
+temperature. \citet{Beardmore2007} analysed its bifurcation
+structure for the Lennard-Jones potential under HNC and showed that a
+subcritical isotherm carries at least one \emph{fold bifurcation} in density,
+and that pairs of solution branches collide at what they term pseudospinodals
+--- one branch having positive compressibility and the other negative, the
+latter being physically meaningless. They note explicitly that this explains
+``previous inconclusive attempts to compute solutions using Newton--Picard
+methods that are popular in the physical chemistry literature''.
+\citet{Peplow2006} show further that solutions exist inside the
+so-called no-solution region which direct Newton or Picard iteration cannot
+reach at all, and recover them by pseudo-arclength continuation.
+
+We observe precisely this. At a Lennard-Jones state well inside that region
+($k_BT/\varepsilon = 1.25$, $\rho\sigma^3 = 0.57$), nine available solvers
+divide cleanly into two groups according to their \emph{algorithm family}.
+Five fixed-point methods --- SUNDIALS KINSOL's fixed-point iteration, damped
+Picard, two Anderson implementations and a Biggs--Andrews scheme --- all
+return $g_{\max} = 2.1636$ with $\min S(Q) = +0.21$. Four Newton--Krylov
+methods, three of them SUNDIALS variants differing only in the linear solver,
+instead return $g_{\max} = 1.13$ and $1.22$, every one with $\min S(Q)$ near
+$-38$. All nine have residuals below $10^{-11}$, so these are not failed
+calculations: they are converged solutions on the negative-compressibility
+branches the bifurcation analysis identifies.
+
+That the split follows the algorithm family rather than the implementation is
+what one would expect from the analysis. At a fold the Jacobian is singular,
+so a Newton-based method is drawn away from the physical branch precisely
+where the fold lies, while a fixed-point iteration is not. The distinction is
+not as sharp as it looks --- \citet{WalkerNi2011} show that Anderson
+acceleration applied to a stationary iteration is essentially GMRES on the
+equivalent left-preconditioned system, so an accelerated fixed-point method
+is closer to a Krylov method than its name suggests --- but the empirical
+separation here is complete. A solver reporting
+success is therefore not necessarily wrong about having found \emph{a} root;
+it may simply have found a different one, and which one depends on how it
+looks.
+
+Nor are these the only solutions. Applying the deflation technique of
+\citet{FarrellBirkissonFunke2015} --- which eliminates a known root from the
+residual so that a solver started from the same point must converge elsewhere
+--- yields a further solution at $g_{\max} = 1.476$, again with
+$\min S(Q) < 0$ and a residual of $4\times10^{-10}$. At least four distinct
+fixed points therefore exist at this state, of which one is physical. We make
+no claim to have enumerated them: deflation finds distinct solutions where a
+solver converges, and does not certify that none remain.
+
+Two consequences follow for software intended to be used unattended. First,
+the physicality test is not a diagnostic nicety but the discriminator between
+branches: since a structure factor is a variance it cannot be negative, and
+the condition $\min S(Q) \ge 0$ --- the same criterion used to reject branches
+in the bifurcation studies --- removes every one of the unphysical solutions
+above. We therefore apply it unconditionally rather than as a warning.
+Second, since a small residual is necessary but not sufficient, the library
+verifies by default: every solve is repeated with an independent solver from
+a \emph{cold start} and the result returned only if the two agree.
+
+The choice of verifier deserves more care than it first appears to. The
+obvious instinct is to pick a solver from a different algorithm family, on
+the grounds that it cannot share a failure mode. The measurements above say
+otherwise: a Newton--Krylov verifier would report disagreement at every state
+near a fold, but because the \emph{verifier} had left the physical branch
+rather than the solver under test. We therefore verify with a second
+fixed-point method --- a different implementation rather than a different
+algorithm class --- and recommend the same to anyone building a similar
+check.
+
+The cold start is essential and cannot be optimised away. Warm-starting the
+verifier from the first solver's answer is roughly three times faster and
+destroys the check: a wrong root is still a root, so a solver placed on it
+sees a vanishing residual and stays there. Started from one of the erroneous
+roots above, a solver that finds the physical branch unaided stays on the
+erroneous one instead, the two ``agree'', and the wrong answer is certified.
+What the check must ask is whether independent searches from different
+starting points reach the same basin, and that requires the starting points
+to be independent.
+
+We emphasise that none of this makes the solvers defective. The branches are
+real, their existence is established, and no fixed-point or Newton method can
+be expected to choose between them unaided. Where a branch must be followed
+through a fold --- rather than merely detected --- pseudo-arclength
+continuation is the appropriate tool, and we do not currently implement it.
+That is a limitation of this software, not of the analysis.
+
+A further caution applies to the solvers' own reporting, and it cuts both
+ways. KINSOL was observed to return success after diverging, because the
+exponent clipping in the closure pins values at $\sim10^{217}$ and defeats
+its internal stopping test; and a damped Picard iteration whose convergence
+test compared successive norms of $\Gamma$, rather than the change in
+$\Gamma$, reported a converged solution at a point whose residual was
+$\|T(\Gamma)-\Gamma\| = 19.4$. Every solve therefore recomputes the residual
+before accepting the result, and we would urge the same of any comparable
+code: a convergence flag is a claim, whereas the residual is evidence.
+
+That distinction is what separates the two situations we have described. For
+the Lennard-Jones state above, every one of the nine solvers returns a point
+whose residual is below $10^{-11}$: the five fixed-point methods converge to
+the physical branch and the four Newton--Krylov methods converge, equally
+legitimately, to branches with $\min S(Q)$ near $-38$. Those are genuinely
+distinct solutions. By contrast, at a strongly coupled state of the
+Ballone--Pastore--Galli--Gazzillo closure, eight of nine solvers agree to
+$10^{-12}$ on a single root and the ninth --- the undamped Picard iteration
+with the defective stopping test --- returns a different value that is not a
+solution at all. Without the residual the two cases are indistinguishable,
+and we would have reported a bifurcation where there was only an
+unconverged iteration.
+
+Finally, a solver's cost can be dominated by a single unset option, which is
+another reason to re-measure rather than assume: \code{scipy}'s Anderson
+implementation was by a wide margin the slowest available --- 30\,s where the
+others took 0.5\,s --- purely because the initial inverse-Jacobian scale was
+left at its default. Correcting it makes that solver competitive, a factor of
+15 to 66 depending on the state point, with the fixed point unchanged to
+$10^{-9}$. A timing and agreement comparison across solvers is worth
+repeating whenever a new potential or closure is added, and the software
+provides one.
+
+The multiple-fixed-point problem is not confined to the Lennard-Jones
+example: at one strongly coupled state two different accelerated solvers
+converged to residuals of $\sim10^{-12}$ and returned $S(\Q) = 17.0$ and
+$9.7$ respectively, both with $\min S(\Q) < 0$.
+
+\subsection{Cost}
+\label{sec:timing}
+
+The claim that the exact treatment is cheap enough to be the default should be
+supported by numbers rather than asserted. Those below were measured on an
+Intel Core i7 (Tiger Lake) under Windows~11 with Python 3.14 and NumPy 2.5,
+using the benchmark script distributed with the package. Each figure is the
+best of several repeats.
+
+\begin{table}[htbp]
+\centering
+\caption{Time per Ornstein--Zernike solve, hard spheres at $\varphi = 0.3$.
+The exact multicomponent calculation on five size classes costs a few
+seconds; a solver that is merely available rather than chosen can cost an
+order of magnitude more.}
+\label{tab:timing}
+\small
+\begin{tabular}{lr@{\qquad}lr}
+\toprule
+Size classes $p$ & time (s) & Solver & time (s)\\
+\midrule
+1  & 0.06  & SUNDIALS KINSOL, fixed point & 0.0049\\
+3  & 1.53  & \code{scipy} Anderson         & 0.0084\\
+5  & 3.04  & Anderson acceleration         & 0.0100\\
+7  & 5.77  & SUNDIALS KINSOL, GMRES        & 0.0107\\
+10 & 10.84 & \code{scipy} Newton--Krylov   & 0.0224\\
+   &       & Biggs--Andrews                & 0.0405\\
+   &       & Picard iteration              & 0.0542\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three points are worth drawing out, two of which qualify claims made earlier
+in this paper.
+
+\paragraph{The approximation schemes are not uniformly free.}
+Once $\Gamma$ has converged, the monodisperse, decoupling and local
+monodisperse approximations cost 0.0013--0.0026\,s against 0.022\,s for the
+exact intensity --- around a tenth, so computing them alongside it is
+genuinely negligible. The partial-structure-factor, scaling and van der Waals
+schemes cost 0.078--0.088\,s, three to four times the exact calculation,
+because each is a double sum over the $p_F$ form-factor classes rather than a
+single pass. The argument for computing every scheme beside the exact result
+holds for half of them.
+
+\paragraph{The scaling with the number of classes is milder than $p^2$.}
+The matrix problem involves $p(p+1)/2$ pair functions, which suggests
+quadratic growth, but from $p = 3$ to $p = 10$ the measured time rises by a
+factor of 7.1 for a threefold increase in $p$, an exponent near 1.6. The
+discontinuity between $p = 1$ and $p = 3$ --- a factor of twenty-five --- is
+larger still, and reflects the one-component path avoiding the matrix solve
+altogether.
+
+\paragraph{Verification is the dominant cost, by construction.}
+A verified solve takes 0.044\,s against 0.0048\,s unverified, a factor of
+nine. That ratio is unflattering precisely because the primary solver is
+fast: the verifier is deliberately an independent fixed-point method rather
+than the quickest available one (\S\ref{sec:verification}). We regard this as
+the right trade for software used unattended, but it is a real cost, and
+verification can be disabled where a state point is known to be well behaved.
+
+For the quantity a user actually waits on, a three-parameter fit to eighty
+data points --- radius, polydispersity and volume fraction, roughly thirty
+solves --- completes in 19\,s to $\chi^2_{\mathrm{red}} = 0.75$. Grid
+resolution enters mildly over the usual range, 0.0026\,s at fifty points per
+diameter rising to 0.047\,s at eight hundred, so the narrow-well systems of
+\S\ref{sec:welltrap} remain affordable despite needing an order of magnitude
+more points than a hard sphere.
+
+\subsection{Programmatic and graphical interfaces}
+
+A complete calculation is a single call:
+\begin{quote}\small\ttfamily
+result = ozLib.solve("HardSphere", phi=0.3,\\
+\hspace*{2em}closure="Rogers-Young", findConsistentParameter=True,\\
+\hspace*{2em}solver="SUNDIALS KIN\_FP")
+\end{quote}
+Closures and solvers are data, not code paths: both are dictionaries mapping a
+label to a setter, so adding a closure requires a bridge-function expression, a
+setter and one dictionary entry, after which the graphical interface, the
+consistency search and the polydisperse machinery all pick it up without
+modification. Potential and closure parameter fields in the interface are
+generated by introspection of the corresponding setter
+(Figure~\ref{fig:controls}), so a new potential appears with correctly named
+and correctly defaulted fields without any interface code being written.
+
+Setting \code{findConsistentParameter} determines the free parameter of
+Rogers--Young, HMSA \citep{ZerahHansen1986}, BPGG and the other one-parameter closures by requiring the
+compressibility and virial routes to the pressure to agree, rather than
+requiring a value from the user. For a mixture this is a single scalar
+condition,
+\begin{equation}
+\chi^{-1} = 1 - n\sum_{ij} x_i x_j \hat c_{ij}(0)
+= \frac{\partial(\beta P)}{\partial n},
+\label{eq:consistency}
+\end{equation}
+which avoids the full compressibility-matrix problem. The virial pressure
+retains the hard-core contact term; \citet{DAguannoKlein1992} omit it legitimately,
+their macroions being too strongly charged to reach contact, but it is first
+order in the pressure for a general potential with a reachable core. A
+consistent parameter does not always exist --- the residual is frequently
+monotone in the mixing parameter and already non-zero in the Percus--Yevick
+limit --- and this is reported rather than concealed behind a nearest-endpoint
+fallback presented as a fit.
+
+% ---------------------------------------------------------------------
+\input{validation_section}
+
+% ---------------------------------------------------------------------
+\section{Results}
+
+\subsection{How many size classes are needed}
+
+For a charged polydisperse Yukawa system at $s=0.2$, going from one class to
+three changes $S^{M}$ by 0.54, while three to five changes it by 0.0015 ---
+reproducing D'Aguanno \& Klein's claim \citep{DAguannoKlein1992} independently and confirming that
+polydispersity is a large effect which three moment-matched classes already
+capture (Figure~\ref{fig:discretisation}).
+
+\input{section_5_3_schemes}
+
+\subsection{Spurious oscillations from an inadequate form-factor grid}
+\label{sec:oscillation}
+
+For a Schulz distribution with $s=0.3$, brute-force integration of
+$\langle|F|^2\rangle$ gives a residual high-$\Q$ ripple of 0.038, i.e.
+essentially smooth. Computing the same quantity on five moment-matched classes
+gives 1.91 --- visible oscillations that a user could easily interpret as
+physical structure. Using a dense grid for the form-factor average, while
+keeping five classes for the structure factor, restores 0.041
+(Figure~\ref{fig:oscillation}).
+
+The failure is not merely one of resolution: interpolating the full
+$S^{\mathrm{AL}}$ matrix onto the denser grid, rather than its smooth part
+alone, reproduces the oscillations at any grid density --- a ripple of 2.79
+even at $\varphi = 10^{-6}$, where $S$ must be the identity.
+
+% ---------------------------------------------------------------------
+\section{Practical recommendations}
+
+\begin{itemize}\itemsep2pt
+\item Three moment-matched size classes suffice for the structure factor, but
+the form-factor average needs of order forty; use
+$p_F \gtrsim \Q_{\max}\langle\sigma\rangle s$.
+\item Resolve the narrowest feature of the potential, not the particle. For a
+well of width $\delta$, use $\gtrsim 30\,\sigma/\delta$ points per diameter;
+the default of 100 makes a $\delta = 0.02\sigma$ well two grid points wide and
+$S(\Q)$ ninety per cent wrong, without warning.
+\item A small residual does not mean a correct solve. The closure equations
+admit multiple fixed points; screen for $\min S(\Q) \ge 0$.
+\item Solver convergence flags cannot be trusted; recompute the residual.
+\item Include instrumental resolution when fitting measured data. Omitting it
+biases the fitted polydispersity upward while leaving $\chi^2$ acceptable.
+\item Report the parameter correlation matrix, not only error bars. In a
+representative hard-sphere fit the radius and volume fraction correlate at
+$0.75$, so quoting them as independent overstates what the data determines.
+\item Near the critical point no closure of this family converges. The
+self-consistent Ornstein--Zernike approximation (H\o ye \& Stell) is the
+appropriate theory there, at the cost of solving a partial differential
+equation over the whole density--temperature plane.
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\section{Conclusions}
+
+The exact treatment of polydispersity in structure-factor modelling is no
+longer expensive enough to justify approximating it by default. Combining
+moment-matched discretisation with accelerated multicomponent OZ solvers gives
+exact partial structure factors in a fraction of a second, for arbitrary pair
+potentials and twenty-four closure relations, and allows the commonly used
+decoupling approximations to be assessed against the exact result for the
+specific system under study rather than assumed to hold.
+
+% ---------------------------------------------------------------------
+\section*{Open items before submission}
+\begin{enumerate}\itemsep1pt
+\item \S\ref{sec:schemes}: the systematic survey is DONE --- 120 converged
+state points across four systems, replacing the four- and nine-point trials
+whose conclusions it overturned. Note that section has been rewritten five
+times, on 4, 9, 60, 98 and 120 points, and each version supported a different
+conclusion; do not tighten its language without adding state points first.
+The adhesive row is complete and a second Yukawa parameter set has been
+added, so the regime picture no longer rests on a single slice.
+\item A fit to a real measured dataset is required; all results here use
+synthetic data generated from the model being fitted. This became more
+urgent rather than less: several defects found since --- the rank-revealing
+linear solve returning zeros at a condition number of $10^{20}$, a fit-flag
+reset that silently left only one parameter free, and a Gaussian resolution
+kernel used where $\mathrm{d}Q/Q$ reached $0.55$ --- each affected every fit
+made before they were corrected. Any measured-data result must be obtained
+after them, not before.
+
+\item \textbf{The transform type needs a decision, not just a
+description.} Measured against the exact Percus--Yevick compressibility, the
+first-order DST-I gives $S(0)$ low by $5.27\,\%$ at $\varphi = 0.40$ against
+$0.036\,\%$ for the second-order DST-IV on the same grid --- a factor of 148,
+because the hard core falls ON a type-1 node and BETWEEN type-4 nodes. Since
+$S(0)$ is the compressibility, this is a systematic bias in exactly the
+quantity $\varphi$ controls, and a fit absorbs it by moving $\varphi$.
+
+Type 4 is nonetheless NOT the default, and cannot be for the polydisperse
+route at all: it requires every pair core between grid points and the
+$\sigma_{ij}$ of a moment-matched quadrature are mutually incommensurate.
+Decide whether to default the one-component path to type 4, and state the
+polydisperse limitation where a reader will meet it rather than only in the
+validation section.
+
+\item \textbf{The RMSA row is now qualified and the claim should be read
+again.} ``Exact (9/9)'' held at nine state points where the Hayter--Penfold
+rescaling never engaged. Where it does, the rescaled volume fraction still
+agrees with the reference to four decimals but the curves agree only to
+between $10^{-14}$ and $3\times10^{-5}$, degrading with coupling strength,
+and one of nine fails to converge outright. Decide how much of that belongs
+in the table and how much in the text.
+
+\item \textbf{The report and this manuscript keep separate bibliographies
+for the same papers} --- \code{daguanno1991} against
+\code{DAguannoKlein1991}, 36 entries in all. A correction to one does not
+reach the other, which is how the Carbajal--Tinoco closure carried a wrong
+attribution in two documents at once. All 36 already have counterparts in
+\code{ozgui.bib}; unifying them is a rename plus a switch from
+\code{thebibliography}, to be done in one pass and matched on TITLES rather
+than author surnames, since a surname match is what conflated two papers by
+the same author in the first place.
+\item The introduction's literature framing: PARTLY DONE. It now places the
+work against the analytic solutions, the general-purpose solvers and the
+scattering packages, and states the gap the software fills. That framing
+rests on the packages actually used during development and validation, which
+is not a systematic survey; check in particular whether any package now
+combines exact multicomponent solution with arbitrary closures, and expand
+the prior polydisperse OZ work beyond \citet{DAguannoKlein1991}.
+\item Timings: DONE. Measured with \code{tools/benchmark.py} on a stated
+machine and tabulated in \S\ref{sec:timing}. Re-run that script if the
+hardware or the solver set changes; it writes JSON incrementally, so a
+failure in one block does not discard the others.
+\item Author list, acknowledgements, funding, data availability.
+\item AI-assistance disclosure: a statement has been DRAFTED (see \S``Use of
+AI assistance'' at the end of this document). It still needs checking against
+IUCr's own policy, which may prescribe wording or placement, and the author
+should confirm that the description of the division of labour matches their
+own view of it.
+included.
+\item Transfer to the IUCr document class.
+\end{enumerate}
+
+% ---------------------------------------------------------------------
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig1_discretisation.pdf}
+\caption{Moment-matched discretisation of a Schulz distribution of relative
+width $s=0.25$ (solid line) into three (left) and five (right) size classes,
+shown as the nodes and weights of the generalised Gauss--Laguerre rule. A
+$p$-point rule reproduces the first $2p-1$ moments exactly.}
+\label{fig:discretisation}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig_survey.pdf}
+\caption{Maximum relative error of each approximation scheme against the exact
+multicomponent result, over the $(s,\varphi)$ plane, for hard spheres (top)
+and a square-well fluid (bottom). Sixty state points, all converged. The
+colour scale is common to all panels and logarithmic, so the panels are
+directly comparable. The decoupling and partial-structure-factor schemes
+(second and fourth columns) fail together and most severely at high
+polydispersity and high volume fraction, reaching a factor of 286 for hard
+spheres at $s = \varphi = 0.40$; the local monodisperse and van der Waals
+one-fluid schemes remain usable across most of the plane. Generated by
+\code{tools/section53\_survey.py}.}
+\label{fig:survey}
+\end{figure}
+
+%REMOVED: fig2_scheme_error.pdf.
+%
+%It showed the relative error of the six approximation schemes for four
+%representative systems, and it predated the corrections of
+%\S\ref{sec:validation} -- it was computed before the identical-cores defect
+%was found and before the narrow-well resolution trap, so at least two of its
+%four systems were wrong. Its own caption said so, which is not a state a
+%figure should stay in.
+%
+%fig_survey.pdf supersedes it completely: same comparison, 120 converged
+%state points instead of four, on corrected code, with a common logarithmic
+%colour scale so the panels are directly comparable. Keeping both would mean
+%printing a known-wrong figure next to the one that replaced it.
+%
+%The file is still in figures/ if the old version is ever wanted for
+%comparison. To bring a corrected version back, regenerate from the survey:
+%    python tools/section53_survey.py --plot survey.jsonl
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{fig3_oscillation.pdf}
+\caption{Spurious form-factor oscillations from an inadequate discretisation of
+the form-factor average, for a Schulz distribution of width $s=0.3$ in the
+dilute limit. Direct integration with 4000 points (black) is essentially
+smooth; evaluating on the same five classes used for the structure factor (red)
+superposes five ringing form factors. Sixty classes for the form-factor average
+alone (blue, dashed) restores the correct envelope.}
+\label{fig:oscillation}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{gui_controls.png}
+\caption{The polydisperse interface. Potential and closure parameter fields are
+generated by introspection of the corresponding setter; the size-distribution
+block carries separate class counts for the structure factor and the
+form-factor average (\S\ref{sec:nff}).}
+\label{fig:controls}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{gui_error.png}
+\caption{The approximation-error panel, showing the relative error of all six
+schemes against the exact result for the system currently under study. This is
+the comparison the software is intended to make routine.}
+\label{fig:guierror}
+\end{figure}
+
+% ---------------------------------------------------------------------
+\section*{Software availability}
+
+The software is distributed with SASfit. [COMPLETE BEFORE SUBMISSION:
+repository URL, version tag or DOI, licence.]
+
+\section*{Use of AI assistance}
+
+Parts of the implementation, its test suite and this manuscript were
+developed with the assistance of a large language model, used
+interactively as a programming and drafting aid throughout. Its
+contribution was concentrated in writing and refactoring code, constructing
+validation scripts against external reference implementations, and drafting
+and revising text. All physical content, the choice of models and closures,
+the design of the validation strategy, and every numerical result reported
+here were checked by the author; several of the errors described in
+\S\ref{sec:validation} were found precisely because results produced with
+such assistance were not taken on trust.
+
+We note this not only because disclosure is expected but because it is
+methodologically relevant. Software written this way accumulates plausible
+but unverified assertions particularly easily --- a convergence flag read as
+evidence of a solution, an approximation assumed cheap because it looked
+cheap, an identical-cores defect that produced entirely reasonable-looking
+structure factors. The emphasis throughout this paper on validating against
+independent implementations, and on checking residuals rather than trusting
+solver reports, is a direct response to that.
+
+% ---------------------------------------------------------------------
+%The bibliography is ../ozgui.bib, shared with the report. Do not add
+%entries here -- add them there. build.sh runs bibtex between the pdflatex
+%passes; without that pass every citation renders as (?).
+%
+%\nocite{*} WAS here, to stop the reference list silently shrinking to the
+%handful of entries cited when the hand-written list was replaced. It has
+%been REMOVED, because ozgui.bib is now shared with the report and holds 67
+%entries: \nocite{*} would print all of them, including thirty-five closure
+%papers this manuscript never cites. Only cited entries now appear, which is
+%the correct behaviour.
+%
+%Consequence to watch: the printed list is now exactly what the text cites,
+%currently about thirteen entries. If a reference that ought to be there has
+%vanished, the fix is to CITE it in the text, not to restore \nocite{*}.
+%unsrtnat numbers entries in order of first citation, which is the usual
+%convention for a numbered list. Use plainnat instead for alphabetical order
+%with numbers; both are natbib-compatible.
+\bibliographystyle{unsrtnat}
+\bibliography{../ozgui}
+
+\end{document}

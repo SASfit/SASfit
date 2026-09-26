@@ -1,0 +1,117 @@
+{
+  "note": "correct g_max for the LJ case is 2.163595; scipy Anderson returns 1.431 with min S(Q) = -46.5, a converged solution on the negative-compressibility branch",
+  "candidates": {
+    "sundials4py: Fixed-Point (Anderson)": {
+      "easy_HS_PY": {
+        "gmax": 2.356118,
+        "minS": 0.0904,
+        "seconds": 0.0065
+      },
+      "hard_LJ_HNC": {
+        "gmax": 2.163595,
+        "minS": 0.2102,
+        "seconds": 0.0065
+      },
+      "finds_correct_root": true,
+      "catches_wrong_root": "NO -- accepted the wrong answer"
+    },
+    "Picard iteration": {
+      "easy_HS_PY": {
+        "gmax": 2.356118,
+        "minS": 0.0904,
+        "seconds": 0.0508
+      },
+      "hard_LJ_HNC": {
+        "gmax": 2.163595,
+        "minS": 0.2102,
+        "seconds": 0.0314
+      },
+      "finds_correct_root": true,
+      "catches_wrong_root": "NO -- accepted the wrong answer"
+    },
+    "Anderson acceleration": {
+      "easy_HS_PY": {
+        "gmax": 2.356118,
+        "minS": 0.0904,
+        "seconds": 0.0155
+      },
+      "hard_LJ_HNC": {
+        "gmax": 2.163595,
+        "minS": 0.2102,
+        "seconds": 0.0121
+      },
+      "finds_correct_root": true,
+      "catches_wrong_root": "NO -- accepted the wrong answer"
+    },
+    "scipy Newton-Krylov": {
+      "easy_HS_PY": {
+        "gmax": 2.356118,
+        "minS": 0.0904,
+        "seconds": 0.0246
+      },
+      "hard_LJ_HNC": {
+        "gmax": 1.131453,
+        "minS": -36.4671,
+        "seconds": 0.2031
+      },
+      "finds_correct_root": false,
+      "catches_wrong_root": "YES -- disagreement"
+    },
+    "Biggs-Andrews": {
+      "easy_HS_PY": {
+        "gmax": 2.356118,
+        "minS": 0.0904,
+        "seconds": 0.0448
+      },
+      "hard_LJ_HNC": {
+        "gmax": 2.163595,
+        "minS": 0.2102,
+        "seconds": 0.023
+      },
+      "finds_correct_root": true,
+      "catches_wrong_root": "NO -- accepted the wrong answer"
+    },
+    "sundials4py: Newton-Krylov (GMRES)": {
+      "easy_HS_PY": {
+        "gmax": 2.356118,
+        "minS": 0.0904,
+        "seconds": 0.0138
+      },
+      "hard_LJ_HNC": {
+        "gmax": 1.221387,
+        "minS": -38.9647,
+        "seconds": 0.0147
+      },
+      "finds_correct_root": false,
+      "catches_wrong_root": "YES -- disagreement"
+    },
+    "sundials4py: Newton-Krylov (FGMRES)": {
+      "easy_HS_PY": {
+        "gmax": 2.356118,
+        "minS": 0.0904,
+        "seconds": 0.0123
+      },
+      "hard_LJ_HNC": {
+        "gmax": 1.221387,
+        "minS": -38.9647,
+        "seconds": 0.0124
+      },
+      "finds_correct_root": false,
+      "catches_wrong_root": "YES -- disagreement"
+    },
+    "sundials4py: Newton-Krylov (TFQMR)": {
+      "easy_HS_PY": {
+        "gmax": 2.356118,
+        "minS": 0.0904,
+        "seconds": 0.0209
+      },
+      "hard_LJ_HNC": {
+        "gmax": 1.267593,
+        "minS": -41.4739,
+        "seconds": 0.0261
+      },
+      "finds_correct_root": false,
+      "catches_wrong_root": "YES -- disagreement"
+    }
+  }
+}

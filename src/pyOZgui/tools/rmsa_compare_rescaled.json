@@ -1,0 +1,164 @@
+{
+  "matchesPublishedClaim": false,
+  "points": {
+    "phi=0.01,gamma=100.0,scl=5.0": {
+      "jscatterRescaledEta": 0.2185016292336956,
+      "maxAbsDiff": 1.4904788514513712e-10,
+      "maxRelDiff": 1.0116264508350215e-10,
+      "ourRange": [
+        0.0018335840107720428,
+        1.4733490312385447
+      ],
+      "ourRescaledEta": 0.21850162921568494,
+      "refRange": [
+        0.001833584010029916,
+        1.4733490313752602
+      ],
+      "rescaleIterations": 11,
+      "status": 11,
+      "verdict": "close"
+    },
+    "phi=0.01,gamma=50.0,scl=2.0": {
+      "jscatterRescaledEta": 0.15056110927931796,
+      "maxAbsDiff": 3.0551949858903527e-14,
+      "maxRelDiff": 2.5017858703097656e-14,
+      "ourRange": [
+        0.024647577393219388,
+        1.2212056284065924
+      ],
+      "ourRescaledEta": 0.1505611092793161,
+      "refRange": [
+        0.02464757739324994,
+        1.221205628406585
+      ],
+      "rescaleIterations": 10,
+      "status": 10,
+      "verdict": "exact"
+    },
+    "phi=0.01,gamma=500.0,scl=10.0": {
+      "jscatterRescaledEta": 0.3426234824993705,
+      "maxAbsDiff": 2.2740213508232188e-05,
+      "maxRelDiff": 8.904251701093544e-06,
+      "ourRange": [
+        0.00010544120390537701,
+        2.553837401165854
+      ],
+      "ourRescaledEta": 0.34262406511950505,
+      "refRange": [
+        0.00010544120344217804,
+        2.5538601413793622
+      ],
+      "rescaleIterations": 13,
+      "status": 13,
+      "verdict": "close"
+    },
+    "phi=0.05,gamma=200.0,scl=5.0": {
+      "jscatterRescaledEta": 0.31372008378106464,
+      "maxAbsDiff": 7.312131389269894e-08,
+      "maxRelDiff": 3.327787795162392e-08,
+      "ourRange": [
+        0.00017954209942321454,
+        2.1972948986012057
+      ],
+      "ourRescaledEta": 0.31372006912945866,
+      "refRange": [
+        0.00017954210008054315,
+        2.1972949717225196
+      ],
+      "rescaleIterations": 10,
+      "status": 10,
+      "verdict": "close"
+    },
+    "phi=0.05,gamma=50.0,scl=2.0": {
+      "jscatterRescaledEta": 0.20273869212247364,
+      "maxAbsDiff": 6.432293239710951e-11,
+      "maxRelDiff": 4.593967897612358e-11,
+      "ourRange": [
+        0.00450249757643728,
+        1.4001606852805402
+      ],
+      "ourRescaledEta": 0.20273869212389645,
+      "refRange": [
+        0.004502497512114348,
+        1.4001606852877735
+      ],
+      "rescaleIterations": 8,
+      "status": 8,
+      "verdict": "exact"
+    },
+    "phi=0.05,gamma=500.0,scl=2.0": {
+      "jscatterRescaledEta": 0.375773071864494,
+      "maxAbsDiff": 2.6921362916709768e-09,
+      "maxRelDiff": 8.430484623721135e-10,
+      "ourRange": [
+        0.0004582521712481027,
+        3.193335151607325
+      ],
+      "ourRescaledEta": 0.37577307190281173,
+      "refRange": [
+        0.00045825217121941633,
+        3.1933351542994615
+      ],
+      "rescaleIterations": 11,
+      "status": 11,
+      "verdict": "close"
+    },
+    "phi=0.1,gamma=200.0,scl=5.0": {
+      "jscatterRescaledEta": 0.3315946505960049,
+      "maxAbsDiff": 1.2152427707690094e-05,
+      "maxRelDiff": 4.987180787839127e-06,
+      "ourRange": [
+        8.93270126510579e-05,
+        2.4367450932753494
+      ],
+      "ourRescaledEta": 0.3315944450473911,
+      "refRange": [
+        8.932701267667813e-05,
+        2.4367329408476417
+      ],
+      "rescaleIterations": 9,
+      "status": 9,
+      "verdict": "close"
+    },
+    "phi=0.1,gamma=50.0,scl=10.0": {
+      "jscatterRescaledEta": 0.2276046618037938,
+      "maxAbsDiff": 2.5547673398739614,
+      "maxRelDiff": 1.682197099809258,
+      "ourRange": [
+        0.00045825217121941633,
+        3.1933351542994615
+      ],
+      "ourRescaledEta": 0.1,
+      "refRange": [
+        0.00010440260857983801,
+        1.5187086817374986
+      ],
+      "rescaleIterations": -1,
+      "status": -1,
+      "verdict": "DIFFERS"
+    },
+    "phi=0.1,gamma=500.0,scl=5.0": {
+      "jscatterRescaledEta": 0.3993556778655061,
+      "maxAbsDiff": 0.00011896491909135776,
+      "maxRelDiff": 3.076876244816889e-05,
+      "ourRange": [
+        3.574487949906166e-05,
+        3.8665376839611234
+      ],
+      "ourRescaledEta": 0.3993543539164127,
+      "refRange": [
+        3.5744880497476554e-05,
+        3.866418719042032
+      ],
+      "rescaleIterations": 9,
+      "status": 9,
+      "verdict": "close"
+    }
+  },
+  "reference": {
+    "convention": "js.sf.RMSA(q=q, R=0.5, scl=scl, gamma=gamma, eta=phi); R radius, scl Debye length 1/kappa, gamma contact potential in kT, eta volume fraction",
+    "description": "jscatter Hayter-Penfold RMSA reference, RESCALING ENGAGED",
+    "jscatter_version": "1.9.0.3"
+  },
+  "summary": "2/9 exact to 1e-10"
+}

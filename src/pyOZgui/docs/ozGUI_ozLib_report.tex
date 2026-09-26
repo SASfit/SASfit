@@ -1,0 +1,184 @@
+% =====================================================================
+% ozGUI / ozLib -- MASTER report.
+%
+% This file is the single source of truth for the combined report. It pulls
+% in the two documents via \input; docmute strips everything outside their
+% \begin{document} ... \end{document}, so
+%
+%   * the two documents remain INDEPENDENTLY BUILDABLE, exactly as before
+%     -- their own preambles are untouched and are used when they are
+%     compiled on their own;
+%   * this master supplies the preamble for the combined build;
+%   * there is NO third copy of the text. The previous
+%     ozGUI_ozLib_complete.tex inlined both documents, so every edit had to
+%     be made twice and the copies drifted. That file is superseded.
+%
+% Same pattern as docs/manuscript/manuscript.tex.
+%
+% Build:  sh build_report.sh          (pdflatex three times: \tableofcontents
+%                                      and \part numbering need the extra pass)
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+%lmodern BEFORE fontenc: Latin Modern ships TS1 (Text Companion) in Type 1.
+%Without it, any TS1 glyph -- a degree sign, a micro sign, the upright quotes
+%that listings uses -- sends pdflatex looking for a bitmap font it cannot
+%generate, and the build dies with
+%    !pdfTeX error: pdflatex.exe (file tcrm1000): Font tcrm1000 at 600 not found
+%producing NO PDF at all. A full TeX Live installation has the Type 1
+%versions and never hits this; a default MiKTeX does.
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+%Figures live in docs/figures/. This declaration MUST be here in the master:
+%docmute discards each fragment's preamble, so the \graphicspath the two
+%fragments carry for their standalone builds never reaches this one. Without
+%it every \includegraphics fails with "File not found ... using draft
+%setting", which does NOT stop the build -- the PDF is produced with empty
+%boxes where the figures should be, so a run can look entirely successful
+%and be missing every figure.
+%
+%The trailing {./} keeps anything still loose in docs/ working, so figures
+%can be moved into figures/ without touching a single \includegraphics.
+\graphicspath{{figures/}{./}}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{comment}
+
+%docmute MUST be loaded after the packages the fragments would otherwise
+%load themselves: it discards their preambles, so anything they relied on
+%has to be present here. The two fragments currently share this preamble
+%exactly, so the union is this list.
+\usepackage{docmute}
+
+%LONG IDENTIFIERS RUNNING PAST THE RIGHT MARGIN.
+%The report names a lot of code: boltzmannOfP2Ppotential,
+%CONSISTENT_PARAMETER_CLOSURES, sasfit_sq_sticky_hard_sphere.c,
+%setStarPolymerHighFPotential(). TeX will not hyphenate typewriter text by
+%default, so any of these landing near a line end sticks out into the margin.
+%A build produced 44 overfull hboxes, the worst 117pt (about 4 cm).
+%
+%[htt] lets TeX hyphenate inside \texttt, which fixes the identifiers;
+%emergencystretch gives it room to stretch a line rather than overrun when
+%hyphenation is still not enough. Both are needed: the first alone leaves the
+%few cases with no legal break point, the second alone cannot break a long
+%word at all.
+%
+%hyphenat is a standard package and MiKTeX installs it on demand. If you ever
+%build on the MSYS2 TeX Live instead, install
+%mingw-w64-x86_64-texlive-latex-extra first -- that installation also lacks
+%lmodern, which is why the build_report*.log files in this directory record a
+%fatal error while MiKTeX builds the same source cleanly.
+\usepackage[htt]{hyphenat}
+\emergencystretch=2em
+
+%natbib for author-year citations against the SHARED bibliography
+%docs/ozgui.bib, which the manuscript also uses. The two fragments used to
+%carry a \begin{thebibliography} block each, which meant the report printed
+%TWO reference lists and produced duplicate-key warnings wherever both cited
+%the same paper (rogersyoung1984 and lee1995 did). One \bibliography here
+%replaces both.
+%
+%The fragments' citation KEYS are unchanged, so no \cite in the text needed
+%editing -- tools/bibitem_to_bibtex.py transcribed their \bibitem entries
+%into BibTeX keeping the keys. Note ozgui.bib therefore holds nine papers
+%twice, under the report's lowercase keys and the manuscript's CamelCase
+%ones. That is deliberate: no single document cites both, so each prints a
+%correct list, and deduplicating would mean editing 44 \cite commands for no
+%gain.
+\usepackage[numbers,sort&compress]{natbib}
+
+%The fragments' old thebibliography blocks are commented out with
+%\begin{comment} ... \end{comment} rather than deleted, which keeps the
+%metadata visible next to the text it belongs to. That needs the `comment`
+%package HERE: docmute discards each fragment's preamble, so a
+%\usepackage{comment} inside a fragment does not reach the combined build and
+%\begin{comment} would fail with "Environment comment undefined".
+%
+%Note the fragments are then no longer independently buildable unless they
+%load `comment' themselves as well -- worth adding to their own preambles too
+%if that matters.
+\usepackage{comment}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={ozGUI / ozLib: Ornstein--Zernike Solver Toolkit},
+  pdfauthor={ozGUI/ozLib project}
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!8},
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{red!60!black},
+  language=Python,
+  showstringspaces=false
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{ozGUI / ozLib Documentation}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newtheorem{remark}{Remark}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\title{\bfseries ozGUI / ozLib\\[2mm]
+Ornstein--Zernike Solver Toolkit\\[1mm]
+\large including the multicomponent and polydisperse extension}
+\author{ozGUI/ozLib project}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+
+%The two fragments each call \maketitle and \tableofcontents inside their own
+%document body, because each is also a standalone report. docmute keeps the
+%body verbatim, so those calls arrive here too and would print the title and
+%contents three times over. Neutralising them HERE rather than editing the
+%fragments is what keeps the fragments independently buildable -- which is the
+%whole point of this arrangement.
+%
+%\def, not \renewcommand: the article class does \let\maketitle\relax once
+%the master's own \maketitle has run, so \maketitle is then no longer a
+%defined command and \renewcommand fails with "Command \maketitle undefined".
+\def\maketitle{}
+\def\tableofcontents{}
+
+\part{The one-component toolkit}
+\input{ozGUI_ozLib_documentation}
+
+\clearpage
+\part{Multicomponent and polydisperse extension}
+\input{ozGUI_ozLib_multicomponent_supplement}
+
+%ONE bibliography for both parts, replacing the thebibliography block each
+%fragment used to carry. Needs a bibtex pass: build_report.sh runs pdflatex,
+%bibtex, pdflatex, pdflatex and reports undefined citations, because an
+%unresolved \cite renders as (?) in an otherwise clean build.
+\clearpage
+\bibliography{ozgui}
+\bibliographystyle{unsrtnat}
+
+\end{document}

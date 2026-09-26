@@ -1,0 +1,187 @@
+{
+  "FAILURES": [],
+  "S0_type1_firstOrder_phi0.3": {
+    "detail": "3.666 % -> 0.924 % for a fourfold refinement, ratio 3.97 (want ~4; measured 3.96)",
+    "pass": true
+  },
+  "S0_type1_firstOrder_phi0.4": {
+    "detail": "5.269 % -> 1.331 % for a fourfold refinement, ratio 3.96 (want ~4; measured 3.96)",
+    "pass": true
+  },
+  "S0_type4BeatsType1_phi0.3": {
+    "detail": "type 1 3.666 %, type 4 0.0147 % on the same grid -- a factor of 249",
+    "pass": true
+  },
+  "S0_type4BeatsType1_phi0.4": {
+    "detail": "type 1 5.269 %, type 4 0.0356 % on the same grid -- a factor of 148",
+    "pass": true
+  },
+  "S0_type4_phi0.3": {
+    "detail": "error 0.0147 % at 100 points per diameter (measured 0.015 % at phi=0.30, 0.036 % at 0.40)",
+    "pass": true
+  },
+  "S0_type4_phi0.4": {
+    "detail": "error 0.0356 % at 100 points per diameter (measured 0.015 % at phi=0.30, 0.036 % at 0.40)",
+    "pass": true
+  },
+  "divergence_notRefused_phi0.1": {
+    "detail": "slope +0.00085, trace 2.47050",
+    "pass": true
+  },
+  "divergence_notRefused_phi0.3": {
+    "detail": "slope -0.00002, trace 2.16158",
+    "pass": true
+  },
+  "divergence_notRefused_phi0.45": {
+    "detail": "slope -0.00080, trace 2.16463",
+    "pass": true
+  },
+  "divergence_refused": {
+    "detail": "refused, measured slope -1.0000 (want -1.000 for 1/q)",
+    "pass": true
+  },
+  "dream_completes": {
+    "detail": "chi2_red=3.749393337149508e-07, 3697 evaluations, 0 failed",
+    "pass": true
+  },
+  "dream_correlationPresent": {
+    "detail": "present",
+    "pass": true
+  },
+  "dream_correlationShape": {
+    "detail": "(2, 2)",
+    "pass": true
+  },
+  "dream_correlationValid": {
+    "detail": "diagonal [1. 1.], max |off-diagonal| 0.0082",
+    "pass": true
+  },
+  "dream_parametersByLabel": {
+    "detail": "returned {'phi': np.float64(0.23728404050733837), 'srel': np.float64(0.06353948761585182)}; bumps order was ['phi', 'srel']",
+    "pass": true
+  },
+  "dream_uncertaintyPositive": {
+    "detail": "{'phi': 0.10014493383973445, 'srel': 0.0858311804620184}",
+    "pass": true
+  },
+  "dream_uncertaintyPresent": {
+    "detail": "{'phi': 0.10014493383973445, 'srel': 0.0858311804620184}",
+    "pass": true
+  },
+  "highQ_tendsToIdentity": {
+    "detail": "max deviation from the identity 0.00e+00",
+    "pass": true
+  },
+  "linearSolve_fixedBackground": {
+    "detail": "scale=3.70000000, bg held at 0.42",
+    "pass": true
+  },
+  "linearSolve_illConditioned": {
+    "detail": "scale=2.30000e-20 (true 2.3e-20), bg=0.500000 (true 0.5), A=2.00000e-03 (true 2e-03); cond=1.80e+20",
+    "pass": true
+  },
+  "linearSolve_nonNegativeAmplitude": {
+    "detail": "unconstrained A=-5.000e-03 (should be negative), constrained A=+0.000e+00 (should be exactly 0)",
+    "pass": true
+  },
+  "linearSolve_wellConditioned": {
+    "detail": "scale=3.70000000 (true 3.7), bg=0.42000000 (true 0.42)",
+    "pass": true
+  },
+  "lowQ_continuous_phi0.1": {
+    "detail": "jump across q_0 is 3.260e-05 absolute, 0.0072 % relative (a least-squares fit does not interpolate q_0)",
+    "pass": true
+  },
+  "lowQ_continuous_phi0.3": {
+    "detail": "jump across q_0 is 2.691e-05 absolute, 0.0287 % relative (a least-squares fit does not interpolate q_0)",
+    "pass": true
+  },
+  "lowQ_continuous_phi0.4": {
+    "detail": "jump across q_0 is 1.146e-05 absolute, 0.0287 % relative (a least-squares fit does not interpolate q_0)",
+    "pass": true
+  },
+  "lowQ_extrapolatesToAnalyticS0_phi0.1": {
+    "detail": "S(0) = 0.455594 against exact 0.455625, 0.007 % (lowest grid point is q*sigma = 0.0383)",
+    "pass": true
+  },
+  "lowQ_extrapolatesToAnalyticS0_phi0.3": {
+    "detail": "S(0) = 0.093750 against exact 0.093789, 0.041 % (lowest grid point is q*sigma = 0.0383)",
+    "pass": true
+  },
+  "lowQ_extrapolatesToAnalyticS0_phi0.4": {
+    "detail": "S(0) = 0.039975 against exact 0.040000, 0.062 % (lowest grid point is q*sigma = 0.0383)",
+    "pass": true
+  },
+  "lowQ_stableUnderRefinement": {
+    "detail": "S(0) = 0.093750 at 100 pts/diameter, 0.093761 at 400, relative spread 1.17e-04 (a two-point fit would WORSEN here)",
+    "pass": true
+  },
+  "moments_Gamma_srel0.1": {
+    "detail": "mean=1.000000 (want 1), cv=0.100000 (want 0.1), tolerance 0.0001",
+    "pass": true
+  },
+  "moments_Gamma_srel0.25": {
+    "detail": "mean=1.000000 (want 1), cv=0.250000 (want 0.25), tolerance 0.0001",
+    "pass": true
+  },
+  "moments_Gaussian_srel0.1": {
+    "detail": "mean=1.000000 (want 1), cv=0.100000 (want 0.1), tolerance 0.005",
+    "pass": true
+  },
+  "moments_Gaussian_srel0.25": {
+    "detail": "mean=1.000043 (want 1), cv=0.249904 (want 0.25), tolerance 0.005",
+    "pass": true
+  },
+  "moments_LogNormal_srel0.1": {
+    "detail": "mean=1.000000 (want 1), cv=0.100000 (want 0.1), tolerance 0.0001",
+    "pass": true
+  },
+  "moments_LogNormal_srel0.25": {
+    "detail": "mean=1.000000 (want 1), cv=0.250000 (want 0.25), tolerance 0.0001",
+    "pass": true
+  },
+  "moments_Schulz_srel0.1": {
+    "detail": "mean=1.000000 (want 1), cv=0.100000 (want 0.1), tolerance 0.0001",
+    "pass": true
+  },
+  "moments_Schulz_srel0.25": {
+    "detail": "mean=1.000000 (want 1), cv=0.250000 (want 0.25), tolerance 0.0001",
+    "pass": true
+  },
+  "moments_Weibull_srel0.1": {
+    "detail": "mean=1.000000 (want 1), cv=0.100000 (want 0.1), tolerance 0.0001",
+    "pass": true
+  },
+  "moments_Weibull_srel0.25": {
+    "detail": "mean=1.000000 (want 1), cv=0.250000 (want 0.25), tolerance 0.0001",
+    "pass": true
+  },
+  "porodClamp_guardIndependent": {
+    "detail": "smeared value at Q_min across guards 1e-3/1e-2/1e-1: 17108.7, 17103.7, 17037.4; relative spread 0.0042 (must be small: unclamped it was five orders)",
+    "pass": true
+  },
+  "porodClamp_invisibleAwayFromEdge": {
+    "detail": "smeared/unsmeared at Q=0.5 is 1.1700 (must be near 1: the clamp may not distort the range that was measured)",
+    "pass": true
+  },
+  "resolution_gaussian_dQtoZero": {
+    "detail": "max relative error 2.220e-16 (must vanish: a kernel that cannot reproduce the input as dQ -> 0 is mis-normalised)",
+    "pass": true
+  },
+  "resolution_gaussian_normalised": {
+    "detail": "row sums span 1.000000000000..1.000000000000",
+    "pass": true
+  },
+  "resolution_ricianSuppressesOrigin": {
+    "detail": "weight of the first point below Q_min: gaussian 0.3880, rician 0.2644",
+    "pass": true
+  },
+  "resolution_rician_dQtoZero": {
+    "detail": "max relative error 2.220e-16 (must vanish: a kernel that cannot reproduce the input as dQ -> 0 is mis-normalised)",
+    "pass": true
+  },
+  "resolution_rician_normalised": {
+    "detail": "row sums span 1.000000000000..1.000000000000",
+    "pass": true
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "regression": {
+    "HS_phi0.3_s0.2": {
+      "Imax": 0.039137276593270626,
+      "Isum": 3.072456806418155
+    },
+    "SW_phi0.2_s0.2": {
+      "Imax": 0.039247531457049845,
+      "Isum": 3.5860188354432827
+    }
+  },
+  "alignment": {
+    "100": {
+      "accepted": false,
+      "message": "transformType 4 needs every pair core between grid points, but sigma_02 = 0.854815 sits 0.018 from ideal (need 0.49). A misaligned type-4 grid is FIRST order, not second -- about a"
+    },
+    "150": {
+      "accepted": false,
+      "message": "transformType 4 needs every pair core between grid points, but sigma_00 = 0.603359 sits 0.004 from ideal (need 0.49). A misaligned type-4 grid is FIRST order, not second -- about a"
+    },
+    "200": {
+      "accepted": false,
+      "message": "transformType 4 needs every pair core between grid points, but sigma_24 = 1.46731 sits 0.037 from ideal (need 0.49). A misaligned type-4 grid is FIRST order, not second -- about a "
+    }
+  },
+  "accuracy": {
+    "note": "compared via mixscatter_bridge on the caller's q grid; the bridge's own interpolation floors this at ~1e-4, so read the RATIO between type 1 and type 4, not the absolute value",
+    "type1_pps200": 0.0018252427990891953,
+    "type1_pps400": 0.0008839619362844062,
+    "type4_pps200": 0.00011969130618989745,
+    "type4_pps400": 0.00012163223228003656
+  }
+}

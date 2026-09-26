@@ -1,0 +1,146 @@
+{
+  "matchesPublishedClaim": true,
+  "points": {
+    "phi=0.1,gamma=10.0,scl=0.3": {
+      "maxAbsDiff": 2.220446049250313e-16,
+      "maxRelDiff": 2.0465233972274757e-16,
+      "ourRange": [
+        0.38048468326231766,
+        1.0849844434998686
+      ],
+      "refRange": [
+        0.3804846832623177,
+        1.0849844434998686
+      ],
+      "rescaleIterations": 0,
+      "status": 0,
+      "verdict": "exact"
+    },
+    "phi=0.1,gamma=20.0,scl=0.2": {
+      "maxAbsDiff": 2.220446049250313e-16,
+      "maxRelDiff": 2.0392497186546175e-16,
+      "ourRange": [
+        0.434584673548194,
+        1.0888544100009678
+      ],
+      "refRange": [
+        0.434584673548194,
+        1.0888544100009678
+      ],
+      "rescaleIterations": 0,
+      "status": 0,
+      "verdict": "exact"
+    },
+    "phi=0.1,gamma=5.0,scl=0.5": {
+      "maxAbsDiff": 5.551115123125783e-16,
+      "maxRelDiff": 5.148207010760917e-16,
+      "ourRange": [
+        0.2729462379241779,
+        1.0782618320364152
+      ],
+      "refRange": [
+        0.27294623792417805,
+        1.0782618320364152
+      ],
+      "rescaleIterations": 0,
+      "status": 0,
+      "verdict": "exact"
+    },
+    "phi=0.2,gamma=10.0,scl=0.3": {
+      "maxAbsDiff": 4.440892098500626e-16,
+      "maxRelDiff": 3.58898423080404e-16,
+      "ourRange": [
+        0.17089437186721024,
+        1.2373674033964015
+      ],
+      "refRange": [
+        0.17089437186721038,
+        1.2373674033964015
+      ],
+      "rescaleIterations": 0,
+      "status": 0,
+      "verdict": "exact"
+    },
+    "phi=0.2,gamma=20.0,scl=0.2": {
+      "maxAbsDiff": 4.440892098500626e-16,
+      "maxRelDiff": 3.575375247041786e-16,
+      "ourRange": [
+        0.19736576250834284,
+        1.242077206350566
+      ],
+      "refRange": [
+        0.1973657625083429,
+        1.242077206350566
+      ],
+      "rescaleIterations": 0,
+      "status": 0,
+      "verdict": "exact"
+    },
+    "phi=0.2,gamma=5.0,scl=0.5": {
+      "maxAbsDiff": 1.7763568394002505e-15,
+      "maxRelDiff": 1.444044472731224e-15,
+      "ourRange": [
+        0.12359309601801412,
+        1.2301261304234616
+      ],
+      "refRange": [
+        0.12359309601801374,
+        1.230126130423463
+      ],
+      "rescaleIterations": 0,
+      "status": 0,
+      "verdict": "exact"
+    },
+    "phi=0.3,gamma=10.0,scl=0.3": {
+      "maxAbsDiff": 1.3322676295501878e-15,
+      "maxRelDiff": 8.807025296601008e-16,
+      "ourRange": [
+        0.07956204471832963,
+        1.5127328293974192
+      ],
+      "refRange": [
+        0.07956204471832971,
+        1.5127328293974183
+      ],
+      "rescaleIterations": 0,
+      "status": 0,
+      "verdict": "exact"
+    },
+    "phi=0.3,gamma=20.0,scl=0.2": {
+      "maxAbsDiff": 0.0,
+      "maxRelDiff": 0.0,
+      "ourRange": [
+        0.08922401860273307,
+        1.5151457079936528
+      ],
+      "refRange": [
+        0.08922401860273307,
+        1.5151457079936528
+      ],
+      "rescaleIterations": 0,
+      "status": 0,
+      "verdict": "exact"
+    },
+    "phi=0.3,gamma=5.0,scl=0.5": {
+      "maxAbsDiff": 1.056932319443149e-13,
+      "maxRelDiff": 7.014103053439843e-14,
+      "ourRange": [
+        0.06212677661062823,
+        1.5068673947194737
+      ],
+      "refRange": [
+        0.06212677661061984,
+        1.5068673947195719
+      ],
+      "rescaleIterations": 0,
+      "status": 0,
+      "verdict": "exact"
+    }
+  },
+  "reference": {
+    "convention": "js.sf.RMSA(q=q, R=0.5, scl=scl, gamma=gamma, eta=phi); R is radius, scl the Debye screening length 1/kappa, gamma the contact potential in kT, eta the volume fraction",
+    "description": "jscatter Hayter-Penfold RMSA reference values",
+    "jscatter_version": "1.9.0.3"
+  },
+  "summary": "9/9 exact to 1e-10"
+}

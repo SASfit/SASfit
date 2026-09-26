@@ -1,0 +1,84 @@
+{
+  "machine": {
+    "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "machine": "AMD64",
+    "system": "Windows 11",
+    "python": "3.14.7",
+    "numpy": "2.5.3"
+  },
+  "classes": {
+    "1": 0.0746,
+    "3": 1.6492,
+    "5": 3.0181,
+    "7": 7.2151,
+    "10": 15.6004
+  },
+  "schemes": {
+    "I_exact": 0.037,
+    "I_monodisperse": 0.0023,
+    "I_decoupling": 0.0017,
+    "I_lma": 0.0028,
+    "I_partial_sf": 0.1213,
+    "I_scaling": 0.1801,
+    "I_vdw1": 0.1515
+  },
+  "solvers": {
+    "sundials4py: Fixed-Point (Anderson)": 0.0079,
+    "Picard iteration": 0.1079,
+    "Anderson acceleration": 0.0146,
+    "scipy Anderson": 0.0131,
+    "scipy Newton-Krylov": 0.0381,
+    "Biggs-Andrews": 0.0722,
+    "sundials4py: Newton-Krylov (GMRES)": 0.012,
+    "sundials4py: Newton-Krylov (FGMRES)": 0.0168,
+    "sundials4py: Newton-Krylov (TFQMR)": 0.0366
+  },
+  "grid": {
+    "50": 0.006,
+    "100": 0.0082,
+    "200": 0.0166,
+    "400": 0.0403,
+    "800": 0.0761
+  },
+  "transform": {
+    "type1_pps100": {
+      "seconds": 0.1053,
+      "error": 0.013715699084417205,
+      "gridN": 4095
+    },
+    "type1_pps400": {
+      "seconds": 0.4694,
+      "error": 0.003372625350651963,
+      "gridN": 16383
+    },
+    "type1_pps800": {
+      "seconds": 1.2146,
+      "error": 0.0016817292453615387,
+      "gridN": 32767
+    },
+    "type4_pps100": {
+      "seconds": 0.0794,
+      "error": 9.860473241058542e-05,
+      "gridN": 4096
+    },
+    "type4_pps400": {
+      "seconds": 0.3167,
+      "error": 6.161261815579757e-06,
+      "gridN": 16384
+    },
+    "type4_pps800": {
+      "seconds": 0.5643,
+      "error": 1.5402948518135696e-06,
+      "gridN": 32768
+    }
+  },
+  "verify": {
+    "off": 0.0081,
+    "on": 0.0775
+  },
+  "fit": {
+    "seconds": 24.745,
+    "chi2": 0.7468,
+    "nfev": null
+  }
+}

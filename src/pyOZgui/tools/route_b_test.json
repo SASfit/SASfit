@@ -1,0 +1,84 @@
+{
+  "settings": {
+    "srel": 0.2,
+    "phi": 0.2
+  },
+  "B_discretisation": {
+    "3": {
+      "quadrature": {
+        "m3": 4.440892098500626e-16,
+        "m6": 0.0002463054187193947
+      },
+      "equal": {
+        "m3": 0.0017340986398377556,
+        "m6": 0.09218620327342997
+      }
+    },
+    "5": {
+      "quadrature": {
+        "m3": 4.440892098500626e-16,
+        "m6": 1.2212453270876722e-15
+      },
+      "equal": {
+        "m3": 0.010273112972375875,
+        "m6": 0.0421719585459267
+      }
+    },
+    "7": {
+      "quadrature": {
+        "m3": 4.440892098500626e-16,
+        "m6": 7.771561172376096e-16
+      },
+      "equal": {
+        "m3": 0.015985220252102028,
+        "m6": 0.061745148243711356
+      }
+    },
+    "10": {
+      "quadrature": {
+        "m3": 5.551115123125783e-16,
+        "m6": 5.551115123125783e-16
+      },
+      "equal": {
+        "m3": 0.02094045394145394,
+        "m6": 0.0770580386817088
+      }
+    },
+    "15": {
+      "quadrature": {
+        "m3": 5.551115123125783e-16,
+        "m6": 8.881784197001252e-16
+      },
+      "equal": {
+        "m3": 0.024862880005501076,
+        "m6": 0.08892711098107642
+      }
+    }
+  },
+  "A_solver": {
+    "p3_type1_pps200": {
+      "error": 0.001531874424279457,
+      "seconds": 0.9558,
+      "nq": 266
+    },
+    "p3_type4_pps200": "ValueError: transformType 4 needs every pair core between grid points, but sigma_22 = 1.46819 sits 0.138 from ideal (need 0.49). A misaligned ",
+    "p3_type1_pps400": {
+      "error": 0.00020714465584652933,
+      "seconds": 2.217,
+      "nq": 266
+    },
+    "p3_type4_pps400": "ValueError: transformType 4 needs every pair core between grid points, but sigma_02 = 0.978795 sits 0.018 from ideal (need 0.49). A misaligned",
+    "p5_type1_pps200": {
+      "error": 0.0003452610339309593,
+      "seconds": 3.6374,
+      "nq": 260
+    },
+    "p5_type4_pps200": "ValueError: transformType 4 needs every pair core between grid points, but sigma_14 = 1.12746 sits 0.009 from ideal (need 0.49). A misaligned ",
+    "p5_type1_pps400": {
+      "error": 0.0013269926679253794,
+      "seconds": 7.9091,
+      "nq": 260
+    },
+    "p5_type4_pps400": "ValueError: transformType 4 needs every pair core between grid points, but sigma_01 = 0.626365 sits 0.046 from ideal (need 0.49). A misaligned"
+  }
+}

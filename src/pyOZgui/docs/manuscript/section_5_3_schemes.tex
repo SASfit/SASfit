@@ -1,0 +1,254 @@
+% Included by manuscript.tex via \input{section_5_3_schemes}.
+% Not standalone: no preamble, no \begin{document}.
+%
+% Numbers are the COMPLETE survey: 120 state points, 4 systems x 6
+% polydispersities x 5 volume fractions, every point converged and screened.
+% Source data: tools/survey.jsonl. Regenerate the tables and figure with
+%     python tools/section53_survey.py --summarise survey.jsonl
+%     python tools/section53_survey.py --plot survey.jsonl
+%
+% CAUTION FOR WHOEVER EDITS THIS. Five successive versions of this section
+% have supported five different conclusions, each overturned by adding data.
+% Do not tighten the language below without adding state points first.
+
+\subsection{Comparison of the approximation schemes}
+\label{sec:schemes}
+
+We computed all six schemes alongside the exact multicomponent result over a
+grid of relative polydispersity $s = 0.05$--$0.40$ and volume fraction
+$\varphi = 0.05$--$0.40$ for four systems: hard spheres and adhesive hard
+spheres ($\tau = 0.3$, $\delta = 0.02\sigma$) in the Percus--Yevick closure,
+and a square-\emph{shoulder} fluid ($\varepsilon = +1\,k_BT$,
+$\delta = 0.1\sigma$) and a
+hard-core Yukawa fluid (screening length $0.5\sigma$, contact strength
+$2\,k_BT$) in the hypernetted-chain closure. That is 120 state points, every
+one converged and screened for physicality. The error measure is
+$\max|I_{\mathrm{approx}}/I_{\mathrm{exact}} - 1|$ over
+$0.3 \le Q\sigma \le 20$, with five structure-factor classes and sixty
+form-factor classes. The narrow-well systems were computed at the resolution
+their well width demands (\S\ref{sec:welltrap}): 300 points per diameter for
+the square shoulder, 1500 for the adhesive spheres.
+
+\subsubsection{Three systems share a pattern; the Yukawa fluid does not}
+
+\begin{quote}\small\itshape
+Note on the sign convention. The implementation writes the pair potential as
+$u(r) = \varepsilon$ for $\sigma < r < \sigma+\delta$ and forms
+$\exp(-u)$, so a POSITIVE $\varepsilon$ gives $\exp(-\varepsilon) < 1$ and is
+REPULSIVE --- a square shoulder. Attraction requires $\varepsilon < 0$. The
+survey was run at $\varepsilon = +1\,k_BT$ and is therefore a shoulder
+throughout; the calculations are unaffected, but every description of this
+row as a ``square well'' was wrong and has been corrected. Before submission,
+consider adding a genuinely attractive row ($\varepsilon < 0$): an attractive
+well and a repulsive shoulder are different physics, and the adhesive-sphere
+row is the only attractive system currently in the survey.
+\end{quote}
+
+For the hard-sphere, square-shoulder and adhesive-sphere fluids the same three
+schemes divide the $(s,\varphi)$ plane between them, in a consistent
+arrangement (Table~\ref{tab:map}): the scaling approximation at low
+polydispersity and low volume fraction, the local monodisperse approximation
+through the middle of the plane and increasingly as $s$ grows, and the van der
+Waals one-fluid scheme along the high-$\varphi$ edge. The boundaries move
+between potentials --- the scaling region shrinks as attraction is added, and
+vanishes altogether for the adhesive spheres --- but the arrangement does not.
+In all three, the decoupling and partial-structure-factor schemes are never
+the best choice at any state point.
+
+The hard-core Yukawa fluid behaves differently in both respects. There the
+decoupling approximation is the \emph{best} scheme at 21 of 30 points, and
+every scheme carries a median error between 29 and 58\,\%. That is a statement
+about which approximation is least bad rather than about any of them being
+usable: a parameter extracted through any of these schemes for such a system
+carries a systematic error of tens of per cent.
+
+This is not an artefact of the particular Yukawa parameters. Varying the
+screening length over a fivefold range and the contact strength by a factor
+of two and a half leaves both halves of the statement intact: decoupling is
+the best scheme at every state point tested, and the median error across all
+six schemes stays between $0.55$ and $0.79$ throughout
+(Table~\ref{tab:yukawa}).
+
+\begin{table}[htbp]
+\centering
+\caption{The Yukawa behaviour is insensitive to the interaction parameters.
+$\lambda$ is the screening length in units of $\sigma$ and $K$ the contact
+strength in $k_BT$; the median is taken across all six approximation schemes.}
+\label{tab:yukawa}
+\small
+\begin{tabular}{ccccll}
+\toprule
+$\lambda$ & $K$ & $s$ & $\varphi$ & best scheme & median\\
+\midrule
+0.5 & 2.0 & 0.20 & 0.20 & decoupling (0.42) & 0.60\\
+0.5 & 2.0 & 0.30 & 0.30 & decoupling (0.35) & 0.79\\
+0.2 & 2.0 & 0.20 & 0.20 & decoupling (0.18) & 0.55\\
+0.2 & 2.0 & 0.30 & 0.30 & decoupling (0.24) & 0.76\\
+1.0 & 2.0 & 0.20 & 0.20 & decoupling (0.39) & 0.70\\
+0.5 & 5.0 & 0.20 & 0.20 & decoupling (0.44) & 0.73\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two further combinations --- the longest-ranged and the strongest attraction,
+both at $s = \varphi = 0.30$ --- failed to converge. That is expected on
+approaching a spinodal rather than a defect, but it does mean the Yukawa
+behaviour is characterised on its convergent side only.
+
+\begin{table}[htbp]
+\centering
+\caption{Scheme with the smallest maximum relative error at each state point.
+Three systems share an arrangement; the Yukawa fluid is the exception.
+``dec'' is the decoupling and ``part'' the partial-$S_{ij}$ scheme.}
+\label{tab:map}
+\small
+\begin{tabular}{c|ccccc|ccccc}
+\toprule
+& \multicolumn{5}{c|}{hard sphere, $\varphi$}
+& \multicolumn{5}{c}{square shoulder, $\varphi$}\\
+$s$ & 0.05 & 0.10 & 0.20 & 0.30 & 0.40 & 0.05 & 0.10 & 0.20 & 0.30 & 0.40\\
+\midrule
+0.05 & scal & scal & scal & scal & scal & scal & vdW1 & vdW1 & vdW1 & vdW1\\
+0.10 & scal & scal & scal & vdW1 & vdW1 & scal & vdW1 & vdW1 & vdW1 & vdW1\\
+0.15 & scal & scal & LMA  & LMA  & vdW1 & scal & LMA  & LMA  & LMA  & vdW1\\
+0.20 & scal & LMA  & LMA  & LMA  & vdW1 & LMA  & LMA  & LMA  & LMA  & vdW1\\
+0.30 & scal & LMA  & LMA  & LMA  & vdW1 & LMA  & LMA  & LMA  & LMA  & vdW1\\
+0.40 & LMA  & LMA  & LMA  & LMA  & vdW1 & LMA  & LMA  & LMA  & LMA  & LMA\\
+\midrule
+& \multicolumn{5}{c|}{adhesive HS, $\varphi$}
+& \multicolumn{5}{c}{Yukawa, $\varphi$}\\
+$s$ & 0.05 & 0.10 & 0.20 & 0.30 & 0.40 & 0.05 & 0.10 & 0.20 & 0.30 & 0.40\\
+\midrule
+0.05 & vdW1 & vdW1 & vdW1 & vdW1 & vdW1 & scal & scal & dec  & dec  & dec\\
+0.10 & vdW1 & vdW1 & vdW1 & vdW1 & vdW1 & scal & scal & dec  & dec  & dec\\
+0.15 & vdW1 & vdW1 & vdW1 & vdW1 & vdW1 & scal & scal & dec  & dec  & dec\\
+0.20 & vdW1 & vdW1 & LMA  & LMA  & vdW1 & dec  & scal & dec  & dec  & dec\\
+0.30 & LMA  & LMA  & LMA  & LMA  & vdW1 & dec  & dec  & dec  & dec  & dec\\
+0.40 & LMA  & LMA  & LMA  & LMA  & vdW1 & dec  & dec  & dec  & part & part\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Typical and worst-case accuracy}
+
+Over all 120 points the local monodisperse approximation and the van der Waals
+one-fluid scheme are the best choice about equally often (38 and 37 points
+respectively), the scaling approximation at 22 and the decoupling
+approximation at 21 --- the latter almost entirely from the Yukawa system. The
+partial-structure-factor scheme wins twice. Within-5\,\% rates over all
+points are 35.8\,\% for vdW1, 31.7\,\% for both the local monodisperse and
+scaling approximations, 16.7\,\% for the monodisperse approximation and
+11.7\,\% for decoupling and partial $S_{ij}$.
+
+Typical and worst-case accuracy do not agree, and the choice between them
+depends on the application (Table~\ref{tab:schemestats}). For hard spheres the
+local monodisperse approximation has the smallest median error but the van der
+Waals one-fluid scheme the smallest worst case, by a factor of nearly six.
+Reporting only one of these would mislead.
+
+\begin{table}[htbp]
+\centering
+\caption{Median and worst-case error over the thirty state points of each
+system. Best in each column in bold.}
+\label{tab:schemestats}
+\small
+\begin{tabular}{lcccccccc}
+\toprule
+& \multicolumn{2}{c}{hard sphere} & \multicolumn{2}{c}{square well}
+& \multicolumn{2}{c}{adhesive HS} & \multicolumn{2}{c}{Yukawa}\\
+Scheme & med. & worst & med. & worst & med. & worst & med. & worst\\
+\midrule
+monodisperse       & 0.181 & 16.79 & 0.212 & 1.48 & 0.099 & 0.76 & 0.568 & 0.96\\
+decoupling         & 0.558 & 286.07 & 0.716 & 28.22 & 0.167 & 5.92 & \textbf{0.287} & \textbf{0.42}\\
+local monodisperse & \textbf{0.059} & 17.06 & \textbf{0.071} & 1.50 & 0.068 & 0.76 & 0.566 & 0.95\\
+partial $S_{ij}$   & 0.558 & 286.11 & 0.717 & 28.22 & 0.167 & 5.92 & 0.290 & \textbf{0.42}\\
+scaling            & 0.072 & 66.42 & 0.129 & 6.36 & 0.059 & 1.71 & 0.417 & 0.79\\
+vdW1               & 0.085 & \textbf{11.87} & 0.088 & 2.00 & \textbf{0.044} & \textbf{0.61} & 0.575 & 1.11\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{The decoupling approximation}
+
+The decoupling and partial-structure-factor schemes track each other closely
+throughout, which is expected: both replace the distinct pair correlations by
+a single common structure factor. Measured against the best scheme available
+at the same state point, the decoupling approximation is typically worse by a
+factor of
+
+\begin{center}\small
+\begin{tabular}{lcc}
+\toprule
+System & median ratio & worst\\
+\midrule
+hard sphere & 13.0 & 48.4\\
+square well & 14.8 & 43.2\\
+adhesive HS & 4.9 & 10.1\\
+Yukawa & 1.0 & 1.6\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent so its penalty falls monotonically as the interaction becomes softer
+and longer ranged, until for the Yukawa fluid it disappears.
+
+This is consistent with the known reason for its failure, and with an
+independent result. Gazzillo \emph{et al.} (1999) reached the same conclusion
+for polydisperse ionic fluids --- that the extended decoupling approximation
+behaves poorly across essentially the whole $Q$ range while the scaling
+approximation is accurate over the experimentally accessible range --- and
+identified the cause: the decoupling approximation neglects the excluded-volume
+conditions $g_{\alpha\beta}(r) = 0$ inside the hard cores, because it
+replaces the distinct pair correlation functions by a small number of
+effective ones. Where the structure factor is dominated by excluded volume the
+approximation that discards excluded-volume detail loses most; where it is
+dominated by a long-ranged soft tail, it loses least. Our implementation of
+the scaling approximation retains both ingredients Gazzillo identifies as
+necessary, the volume prefactor and evaluation of the reference structure
+factor at a scaled argument, while our decoupling approximation uses a single
+common structure factor, the $\lambda = 1$ limit in their notation.
+
+\begin{quote}\small\itshape
+Draft note. This section has now been written five times, on 4, 9, 60, 98 and
+120 state points, and each version supported a different conclusion: that the
+scheme ordering reverses between potentials (an artefact of the defect
+described in \S\ref{sec:validation}); that the local monodisperse
+approximation is uniformly best; that three schemes divide the plane; that the
+systems fall into three regimes including one where the choice barely matters;
+and the account above. The fourth of those was an artefact of having run only
+the eight lowest-polydispersity adhesive points, which are indeed insensitive
+to the choice --- the completed row is not. The $s = \varphi = 0.40$ corner
+has now been checked and IS physical --- the diagonal partial structure
+factors stay near $0.97$, the intensity is positive throughout, the packing
+fraction reproduces exactly, and $\varphi = 0.40$ with a twofold spread in
+diameter is nowhere near jamming, polydispersity raising the close-packing
+threshold rather than lowering it. The factor of 286 therefore stands as a
+genuine failure of the approximation at an ordinary state point, not a
+numerical artefact.
+\end{quote}
+
+\subsection{Two cautions for the practitioner}
+
+Both of the following were established while validating this work and are easy
+to fall foul of.
+
+\paragraph{Grid resolution is set by the narrowest feature.}
+For potentials with a narrow attractive well the discretisation must resolve
+the \emph{well}, not the particle: $\gtrsim 30\,\sigma/\delta$ points per
+diameter. At the default resolution an adhesive-sphere calculation with
+$\delta = 0.02\sigma$ is in error by ninety per cent, and the resulting
+structure factor is smooth, plausible and wrong. In an earlier version of this
+comparison this made all six schemes appear uniformly poor ($0.72$--$0.80$)
+for that system, because each was being compared against a reference that was
+itself badly in error.
+
+\paragraph{Convergence flags and residuals are not sufficient.}
+The closure equations admit multiple fixed points. At one strongly coupled
+state two different accelerated solvers converged to residuals of
+$\sim10^{-12}$ and returned $S(Q)=17.0$ and $9.7$ respectively, both with
+$\min S(Q) < 0$. Since a structure factor is a variance it cannot be negative,
+and solutions are therefore screened for physicality in addition to the
+residual test. Separately, the SUNDIALS KINSOL solver was observed to report
+success after diverging, because exponent clipping in the closure pins values
+at $\sim10^{217}$ and defeats its internal stopping criterion; every solve
+consequently recomputes its own residual before the result is accepted.

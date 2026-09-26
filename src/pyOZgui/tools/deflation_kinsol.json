@@ -1,0 +1,18 @@
+{
+  "states": {
+    "LJ_eps0.8_phi0.3_HNC": {
+      "anderson_root": {
+        "g_max": 2.163593,
+        "min_S": 0.2104,
+        "residual": 4.463342683010264e-14,
+        "is_a_fixed_point": true
+      },
+      "GMRES_CONTROL": {
+        "g_max": 1.248003,
+        "min_S": -10.2912,
+        "residual": 1.150601342768234e-11,
+        "is_a_fixed_point": true
+      }
+    }
+  }
+}

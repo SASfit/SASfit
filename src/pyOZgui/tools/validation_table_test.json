@@ -1,0 +1,70 @@
+{
+  "adhesiveSpheres": {
+    "note": "self-convergence, no external reference needed. Ratios near 2 for each doubling is first order in dr/delta, which is what the manuscript claims; near 1 would mean the error is not discretisation. Published: 2 pts -> 0.916, 8 -> 0.142, 32 -> 0.035.",
+    "value": {
+      "errors_vs_finest": {
+        "16_across_well": 0.051954271011155476,
+        "2_across_well": 0.9669239181078437,
+        "32_across_well": 0.016782630787214786,
+        "4_across_well": 0.3212860405174885,
+        "8_across_well": 0.12949346504010173
+      },
+      "reference_resolution": "64 points across well",
+      "successive_ratios": [
+        3.0095422650496744,
+        2.4810984895491996,
+        2.49245081337581,
+        3.09571673654019
+      ]
+    }
+  },
+  "percusYevick": {
+    "note": "per cent, max relative over 0.1 <= q <= 25. The table's quoted 0.12 % corresponds to the type-4 column; type 1 is an order of magnitude worse and is what the polydisperse route uses.",
+    "value": {
+      "phi=0.2": {
+        "type1_pps100": 0.7046396083171608,
+        "type1_pps100_rmax": 40.95,
+        "type1_pps400": 0.16877927110524335,
+        "type1_pps400_rmax": 40.9575,
+        "type4_pps100": 0.02114878151682393,
+        "type4_pps100_rmax": 40.96,
+        "type4_pps400": 0.023896455239702637,
+        "type4_pps400_rmax": 40.96
+      },
+      "phi=0.3": {
+        "type1_pps100": 1.3651263500831674,
+        "type1_pps100_rmax": 40.95,
+        "type1_pps400": 0.3322312046964487,
+        "type1_pps400_rmax": 40.9575,
+        "type4_pps100": 0.04740540793774677,
+        "type4_pps100_rmax": 40.96,
+        "type4_pps400": 0.053851739366640186,
+        "type4_pps400_rmax": 40.96
+      },
+      "phi=0.4": {
+        "type1_pps100": 2.330080133129807,
+        "type1_pps100_rmax": 40.95,
+        "type1_pps400": 0.5107452977314053,
+        "type1_pps400_rmax": 40.9575,
+        "type4_pps100": 0.11841129739700527,
+        "type4_pps100_rmax": 40.96,
+        "type4_pps400": 0.14113402421274793,
+        "type4_pps400_rmax": 40.96
+      }
+    }
+  },
+  "rmsa": {
+    "note": "rmsa_compute at the nine state points behind the table's 'exact (9/9)'. Without jscatter there is nothing to compare against here, so this records only that each point solves and returns a physical S(Q); the 9/9 claim itself needs jscatter or another Hayter-Penfold implementation to re-verify.",
+    "value": {
+      "phi=0.1,gamma=10.0,scl=0.3": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneo",
+      "phi=0.1,gamma=20.0,scl=0.2": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneo",
+      "phi=0.1,gamma=5.0,scl=0.5": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneo",
+      "phi=0.2,gamma=10.0,scl=0.3": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneo",
+      "phi=0.2,gamma=20.0,scl=0.2": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneo",
+      "phi=0.2,gamma=5.0,scl=0.5": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneo",
+      "phi=0.3,gamma=10.0,scl=0.3": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneo",
+      "phi=0.3,gamma=20.0,scl=0.2": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneo",
+      "phi=0.3,gamma=5.0,scl=0.5": "ValueError: setting an array element with a sequence. The requested array has an inhomogeneo"
+    }
+  }
+}

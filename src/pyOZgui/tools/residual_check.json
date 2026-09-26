@@ -1,0 +1,225 @@
+{
+  "grid": {
+    "N": 4095,
+    "pointsPerSigma": 100
+  },
+  "cases": {
+    "LJ_eps0.8_phi0.3_HNC": {
+      "sundials4py: Fixed-Point (Anderson)": {
+        "g_max": 2.163595,
+        "min_S": 0.2102,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 9.943932923694197e-13,
+        "is_a_fixed_point": true
+      },
+      "Picard iteration": {
+        "g_max": 2.163595,
+        "min_S": 0.2102,
+        "finite": true,
+        "converged_flag": true,
+        "residual": 3.397350987392622e-11,
+        "is_a_fixed_point": true
+      },
+      "Anderson acceleration": {
+        "g_max": 2.163595,
+        "min_S": 0.2102,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 5.741165003453497e-12,
+        "is_a_fixed_point": true
+      },
+      "scipy Anderson": {
+        "g_max": 2.163595,
+        "min_S": 0.2102,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 9.620585285897286e-13,
+        "is_a_fixed_point": true
+      },
+      "scipy Newton-Krylov": {
+        "g_max": 1.131453,
+        "min_S": -36.4671,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 1.6142974016900193e-12,
+        "is_a_fixed_point": true
+      },
+      "Biggs-Andrews": {
+        "g_max": 2.163595,
+        "min_S": 0.2102,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 2.3660995842760567e-11,
+        "is_a_fixed_point": true
+      },
+      "sundials4py: Newton-Krylov (GMRES)": {
+        "g_max": 1.221387,
+        "min_S": -38.9647,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 9.918017880658011e-13,
+        "is_a_fixed_point": true
+      },
+      "sundials4py: Newton-Krylov (FGMRES)": {
+        "g_max": 1.221387,
+        "min_S": -38.9647,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 9.918017880658011e-13,
+        "is_a_fixed_point": true
+      },
+      "sundials4py: Newton-Krylov (TFQMR)": {
+        "g_max": 1.221387,
+        "min_S": -38.9647,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 9.918017880658011e-13,
+        "is_a_fixed_point": true
+      }
+    },
+    "BPGG_a0.5_phi0.4": {
+      "sundials4py: Fixed-Point (Anderson)": {
+        "g_max": 5.252805,
+        "min_S": 0.0646,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 4.809791130854909e-12,
+        "is_a_fixed_point": true
+      },
+      "Picard iteration": {
+        "g_max": 3.004642,
+        "min_S": 0.0619,
+        "finite": true,
+        "converged_flag": false,
+        "residual": 19.37326066721267,
+        "is_a_fixed_point": false
+      },
+      "Anderson acceleration": {
+        "g_max": 5.252805,
+        "min_S": 0.0646,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 3.767038551104743e-12,
+        "is_a_fixed_point": true
+      },
+      "scipy Anderson": {
+        "g_max": 5.252805,
+        "min_S": 0.0646,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 1.5982472669788086e-12,
+        "is_a_fixed_point": true
+      },
+      "scipy Newton-Krylov": {
+        "error": "NoConvergence: [ 7.22090321e-01  7.11410044e-01  7.02483431e-01 ... -1.01285901e-10\n -7.8521578"
+      },
+      "Biggs-Andrews": {
+        "g_max": 5.252805,
+        "min_S": 0.0646,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 3.559638675780111e-10,
+        "is_a_fixed_point": true
+      },
+      "sundials4py: Newton-Krylov (GMRES)": {
+        "g_max": 5.252805,
+        "min_S": 0.0646,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 5.51642452521045e-13,
+        "is_a_fixed_point": true
+      },
+      "sundials4py: Newton-Krylov (FGMRES)": {
+        "g_max": 5.252805,
+        "min_S": 0.0646,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 5.51642452521045e-13,
+        "is_a_fixed_point": true
+      },
+      "sundials4py: Newton-Krylov (TFQMR)": {
+        "g_max": 5.252805,
+        "min_S": 0.0646,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 5.51642452521045e-13,
+        "is_a_fixed_point": true
+      }
+    },
+    "HS_PY_phi0.3": {
+      "sundials4py: Fixed-Point (Anderson)": {
+        "g_max": 2.356118,
+        "min_S": 0.0904,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 6.118190256418942e-14,
+        "is_a_fixed_point": true
+      },
+      "Picard iteration": {
+        "g_max": 2.356118,
+        "min_S": 0.0904,
+        "finite": true,
+        "converged_flag": true,
+        "residual": 5.204765539528836e-11,
+        "is_a_fixed_point": true
+      },
+      "Anderson acceleration": {
+        "g_max": 2.356118,
+        "min_S": 0.0904,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 2.1283351223814043e-13,
+        "is_a_fixed_point": true
+      },
+      "scipy Anderson": {
+        "g_max": 2.356118,
+        "min_S": 0.0904,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 1.2553901309549037e-14,
+        "is_a_fixed_point": true
+      },
+      "scipy Newton-Krylov": {
+        "g_max": 2.356118,
+        "min_S": 0.0904,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 1.1255463250869913e-14,
+        "is_a_fixed_point": true
+      },
+      "Biggs-Andrews": {
+        "g_max": 2.356118,
+        "min_S": 0.0904,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 6.390672854137756e-11,
+        "is_a_fixed_point": true
+      },
+      "sundials4py: Newton-Krylov (GMRES)": {
+        "g_max": 2.356118,
+        "min_S": 0.0904,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 3.6363971390251385e-13,
+        "is_a_fixed_point": true
+      },
+      "sundials4py: Newton-Krylov (FGMRES)": {
+        "g_max": 2.356118,
+        "min_S": 0.0904,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 3.6363971390251385e-13,
+        "is_a_fixed_point": true
+      },
+      "sundials4py: Newton-Krylov (TFQMR)": {
+        "g_max": 2.356118,
+        "min_S": 0.0904,
+        "finite": true,
+        "converged_flag": null,
+        "residual": 3.6363971390251385e-13,
+        "is_a_fixed_point": true
+      }
+    }
+  }
+}

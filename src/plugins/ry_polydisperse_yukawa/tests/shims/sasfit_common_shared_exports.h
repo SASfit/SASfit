@@ -1,0 +1,6 @@
+/* TEST-ONLY SHIM - not the real SASfit header. */
+#ifndef SASFIT_COMMON_SHARED_EXPORTS_H_SHIM
+#define SASFIT_COMMON_SHARED_EXPORTS_H_SHIM
+#define SASFIT_LIB_EXPORT
+#define SASFIT_LIB_IMPORT
+#endif

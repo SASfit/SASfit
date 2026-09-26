@@ -737,15 +737,43 @@ class OZfixpointOperator:
           #meaningful when the active potential is HardSphere).
           #self.zsep_zeta/phi/alpha are the closure's own three free
           #parameters (set directly via setZSEPclosure(), or fitted via
-          #fitZSEPparameters()). Gstar here uses the SAME Mayer-factor
-          #renormalization pattern as this project's other Gstar-based
-          #closures (HMSA/VM/CJVM/BB/DH/CG), but is written out
-          #explicitly (rather than reusing self.attractivePartOfP2Ppotential)
-          #since ZSEP's own renormalization is specifically
-          #rho/2*(bare hard-sphere Mayer function), not a potential-
-          #specific attractive tail -- matching the paper's own
-          #gamma*(r) = gamma(r) + (rho/2)*f(r), f(r)=EN(r)-1.
-          MAYER = EN - 1.0
+          #fitZSEPparameters()).
+          #THE RENORMALISATION IS THE SUBTLE PART, and this code got it
+          #wrong for a long time while asserting otherwise.
+          #
+          #Lee's Eq. (12) is gamma*(r) = gamma(r) + (rho/2) f_WCA(r), where
+          #f_WCA is the Mayer function of the WEEKS-CHANDLER-ANDERSEN
+          #repulsive part of a Lennard-Jones potential at a FIXED
+          #pseudotemperature kT/eps = 9 -- not the bare hard-sphere Mayer
+          #function. The paper is explicit about why: "The purpose here is
+          #to 'soften' the Mayer factor, when used as the renormalizing
+          #function with no discontinuities." A hard-sphere f(r) is a step,
+          #which is exactly what the softening exists to avoid.
+          #
+          #Using the bare step instead does not fail loudly. It converges
+          #and returns parameters -- they simply are not Lee's. Against
+          #Table I of L. L. Lee, J. Chem. Phys. 110, 7589 (1999), the bare
+          #version gives alpha varying from -0.004 to 0.57 where the paper
+          #has alpha = 1.0 at every density, and zeta rising from 0.05 to
+          #0.71 where the paper stays near 1.0.
+          #
+          #`zsepSoftenedRenormalisation` selects between them, defaulting
+          #to the paper's form. Set it False to reproduce results computed
+          #before this was corrected.
+          if getattr(self, 'zsepSoftenedRenormalisation', True):
+              #WCA split of Lennard-Jones at kT/eps = ZSEP_PSEUDO_T: the
+              #repulsive branch shifted to zero at the minimum r_min =
+              #2^(1/6) sigma, and identically zero beyond it.
+              kT_over_eps = getattr(self, 'zsepPseudoTemperature', 9.0)
+              r = self.getrArray()
+              rmin = 2.0**(1.0/6.0)
+              with np.errstate(over='ignore', divide='ignore', invalid='ignore'):
+                  x = np.where(r > 1e-12, r, 1e-12)
+                  lj = 4.0*((1.0/x)**12 - (1.0/x)**6) + 1.0
+                  uWCA = np.where(r < rmin, lj, 0.0)
+                  MAYER = np.expm1(-uWCA/kT_over_eps)
+          else:
+              MAYER = EN - 1.0
           Gstar = G + 0.5*self.particleDensity*MAYER
           zeta, phi, alpha = self.zsep_zeta, self.zsep_phi, self.zsep_alpha
           denom = 1.0 + alpha*Gstar

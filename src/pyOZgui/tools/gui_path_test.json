@@ -1,0 +1,51 @@
+{
+  "FAILURES": [],
+  "build": "ok",
+  "computeDataSmeared": {
+    "chi2": 233153072546.3593,
+    "error": null,
+    "seconds": 0.16,
+    "solves": 2
+  },
+  "computeDataUnsmeared": {
+    "chi2": 253321905263.97446,
+    "error": null,
+    "seconds": 0.17,
+    "solves": 2
+  },
+  "computeNoData": {
+    "error": null,
+    "finite": true,
+    "seconds": 0.14,
+    "solves": 2
+  },
+  "controlsReachModel": {
+    "mannAlpha=0.5": "ok",
+    "mannAlpha=1.0": "ok",
+    "solverClass": "Sundials4pyKinsolFPOZsolver"
+  },
+  "fitFlagsPresent": [
+    "background",
+    "linkC",
+    "meanRadius",
+    "phi",
+    "porodA",
+    "porodD",
+    "rhoRatio",
+    "scale",
+    "shell",
+    "srel"
+  ],
+  "fitThenCompute": {
+    "agree": true,
+    "chi2Compute": 2.8234970938489385,
+    "chi2Fit": 2.8234970938516586,
+    "error": null
+  },
+  "variants": {
+    "Core-shell_porodOff": "ok",
+    "Core-shell_porodOn": "ok",
+    "Sphere_porodOff": "ok",
+    "Sphere_porodOn": "ok"
+  }
+}

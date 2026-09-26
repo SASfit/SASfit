@@ -1,0 +1,519 @@
+% Included by manuscript.tex via \input{validation_section}.
+% Not standalone: no preamble, no \begin{document}.
+% Every number here was measured against an INDEPENDENT implementation
+% or an analytic result -- never against a previous version of this code.
+
+\section{Validation}
+\label{sec:validation}
+
+The implementation was checked against analytic solutions, against published
+tabulations, and against four independently written software packages. We
+report the comparisons in full, including the two cases in which they
+uncovered defects in our own code, because the pattern is itself informative:
+every defect found late in this work was invisible to internal consistency
+checks and was exposed only by an external reference.
+
+\subsection{Analytic and literature references}
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison with analytic results and published tabulations. Where a
+difference is quoted it is the deviation from the reference, not from a
+previous version of this code.}
+\label{tab:analytic}
+\small
+\begin{tabular}{llll}
+\toprule
+Reference & Quantity & Ours & Agreement\\
+\midrule
+\citet{Wertheim1963}, \citet{Thiele1963} & $c(r)$, PY hard spheres & numerical & first order in $\Delta r$\\
+                               & $g(\sigma^+)$, $\eta=0.1$--$0.4$ & numerical & $0.1\,\%$\\
+                               & $S(0)=(1-\eta)^4/(1+2\eta)^2$ & numerical & converges\\
+Analytic PY, $\eta=0.3$        & $\chi^{-1}$ & 11.07 & 10.66 (extrapolation)\\
+                               & $\beta P/\rho$ & 3.890 & 3.816 (grid)\\
+                               & PY inconsistency & $+1.33$ & $+1.25$\\
+D'Aguanno \& Klein (1991)      & $1/S(0)$, excess pressure & --- & $0.01\,\%$, $0.02\,\%$\\
+                               & excess energy, $g_{\max}$ & --- & $0.27\,\%$, $0.54\,\%$\\
+\citet{Vrij1979} mixture PY         & $S^{\mathrm{AL}}_{ij}$, 3 classes & numerical & $0.09\,\%$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Comparison with independent software}
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison with independently written packages. ``exact'' denotes
+agreement to all printed digits; the remaining entries are limited by
+discretisation and converge as $\Delta r$ is reduced.}
+\label{tab:software}
+\small
+\begin{tabular}{lllc}
+\toprule
+Package & Model & Method & Agreement\\
+\midrule
+\code{mixscatter} \citep{DiazMaier2024} & mixture PY \citep{Vrij1979} & analytic & $0.09\,\%$\\
+\code{jscatter} & one-component PY & analytic & $0.02$--$0.12\,\%$\\
+\code{jscatter} & RMSA \citep{HayterPenfold1981} & analytic & see \S\ref{sec:rmsarescale}\\
+\code{two\_yukawa\_reference} & two-Yukawa MSA \citep{Liu2005} & analytic & $0.21\,\%$\\
+\code{jscatter} & adhesive hard spheres & analytic & see \S\ref{sec:welltrap}\\
+\code{jscatter} & OZ solver, PY and HNC & numerical & $0.2$--$0.4\,\%$\\
+\code{OrnsteinZernike.jl} & 4 bridge functions & analytic & $\sim10^{-16}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{An absolute check: the compressibility.} Every comparison above
+sets one calculation against another. One quantity admits an exact answer
+instead. For monodisperse hard spheres the Percus--Yevick compressibility is
+\begin{equation}
+  S(0) = \frac{(1-\varphi)^{4}}{(1+2\varphi)^{2}},
+  \label{eq:pyS0}
+\end{equation}
+so extrapolating the computed partials to the origin and comparing measures
+absolute accuracy rather than agreement.
+
+The result is that the transform type matters far more than its place in a
+cost table suggests. At $\varphi = 0.40$ and 100 radial points per diameter,
+the first-order DST-I gives $S(0)$ low by $5.27\,\%$; the second-order DST-IV
+is low by $0.036\,\%$ on the same grid, and by $0.004\,\%$ at four times the
+resolution. Type 1 refines as $3.96$ per fourfold step, textbook first order,
+so it reaches $1.33\,\%$ where type 4 began 150 times better.
+
+The cause is where the discontinuity lands. A DST-I places nodes at
+$r = (n+1)\Delta r$, so the hard core at $r = \sigma$ falls ON a node and is
+carried by a point that is neither inside nor outside; the excluded volume is
+then wrong at first order in $\Delta r$. A DST-IV places them at
+$(n+\frac{1}{2})\Delta r$, the core falls between points, and the step is
+resolved to second order.
+
+Two things make this worth reporting rather than absorbing into a
+recommendation. First, the error is independent of the real-space range:
+extending $r_{\max}$ from $41\sigma$ to $655\sigma$ left $S(0)$ unchanged in
+the sixth decimal. A convergence study that refines resolution sees orderly
+first-order behaviour and concludes the method works --- which it does, slowly,
+towards an answer whose leading error is set by grid alignment. Second,
+$S(0)$ is the isothermal compressibility, so this is a systematic bias in
+exactly the quantity the volume fraction controls, and a fit will move
+$\varphi$ to absorb it.
+
+It also accounts for a discrepancy that had resisted explanation: a
+multicomponent solve converged to a fixed point at $7\times10^{-12}$ yet
+differing from two independent analytic references by $\sim10^{-3}$, the
+difference immune to refinement and growing with $\varphi$. That is the same
+effect seen from the other side.
+
+The practical consequence is a restriction rather than a fix. Type 4 needs
+every pair core between grid points, which one size class can be given and a
+mixture cannot: the pair diameters $\sigma_{ij} = (\sigma_i+\sigma_j)/2$ come
+from a moment-matched quadrature and are mutually incommensurate. The
+polydisperse route is therefore first order, and until a mixture-capable
+second-order treatment exists a dense polydisperse fit should use the finest
+affordable resolution, with its fitted volume fraction read accordingly.
+
+\paragraph{Reproducibility of the figures and of the table.} Three gaps are
+recorded here rather than left to be discovered.
+
+The remaining \code{jscatter} rows above --- one-component PY, RMSA, adhesive
+hard spheres and the numerical OZ comparison --- were measured where
+\code{jscatter} was installed. Its dependency chain does not build under
+MinGW, so they cannot be re-run on the machine this work is written on. The
+two-Yukawa row was brought back within reach by extracting that solver into
+\code{tools/two\_yukawa\_reference.py}, which needs \code{numpy} alone; the
+others deserve the same treatment before submission.
+
+\code{fig3\_oscillation.pdf} has no generator in the repository. The figure
+exists and nothing can reproduce it, which means a referee asking for any
+change to it would find there is nothing to change.
+\code{fig\_survey.pdf} names \code{tools/section53\_survey.py} in its own
+caption and is the model the others should follow;
+\code{fig1\_discretisation.pdf} now has
+\code{tools/fig1\_discretisation.py}.
+
+Regenerating it also caught a discrepancy in the figure itself.
+\code{polydisperse\_nodes} offers two discretisations --- \code{sizeClasses},
+the moment-matched generalised Gauss--Laguerre rule the caption describes,
+and \code{quantileClasses}, which is quantile-based --- and only the first
+reproduces the moments exactly. At $p = 3$ the Gauss--Laguerre rule returns
+$\langle\sigma\rangle = 1.000000$ and $\langle\sigma^{2}\rangle = 1.062500$,
+exactly $1 + s^{2}$; the quantile rule returns $0.9794$ and $0.9596$. Both
+are usable discretisations, but only the first supports the claim printed
+beside the figure. The moments are now shown on each panel so that the claim
+can be checked rather than taken on trust.
+
+\paragraph{The table's figures depend on the transform, and the table does
+not say so.} The one-component Percus--Yevick row is quoted as
+$0.02$--$0.12\,\%$ over $0.2 \le \varphi \le 0.4$, and that is a DST-IV
+result. With the first-order DST-I at the same 100 radial points per
+diameter the same comparison gives $0.70$, $1.37$ and $2.33\,\%$ at
+$\varphi = 0.2$, $0.3$ and $0.4$ --- an order of magnitude worse, rising with
+density, and reducible only fourfold per fourfold refinement
+($0.17$, $0.33$, $0.51\,\%$ at 400 points).
+
+This is the grid-alignment effect described above --- the hard core falling ON
+a DST-I node rather than between DST-IV nodes --- seen in a second
+quantity, and it carries the same caveat: type 4 is available for ONE size
+class and not for a mixture, so the polydisperse route --- which is what this
+paper is about --- carries the first-order figures rather than the quoted
+ones. A reader comparing packages should know which transform produced a
+number before comparing it with their own.
+
+\paragraph{RMSA: exact until the rescaling engages.}
+\label{sec:rmsarescale}
+This row was quoted as exact at all nine state points tested, and that was
+true of the points tested. It was not a useful claim, because at none of
+them did the Hayter--Penfold rescaling actually trigger: the rescale
+iteration count is zero throughout, so all nine agreements are for the
+unrescaled mean spherical approximation and the feature the method is named
+for went unexercised. Agreement to $10^{-16}$ on nine points that never
+invoke the mechanism under test is a weaker result than it appears, and the
+error was ours for choosing conditions gentle enough that plain MSA already
+returns a physical answer.
+
+Repeating the comparison where the rescaling does engage --- dilute, strongly
+charged and long-screened, which is the case Hayter and Penfold wrote it for,
+with the effective volume fraction lifted by factors of $2.3$ to $34$ ---
+gives a different picture. Both implementations find the SAME rescaled volume
+fraction, agreeing to four decimals at eight of the nine points, so the
+rescaling search itself is right. The resulting curves, however, agree only
+to between $10^{-14}$ and $3\times10^{-5}$, and the discrepancy grows
+systematically with coupling strength: $10^{-14}$ at $\gamma = 50$,
+$3\times10^{-5}$ at $\gamma = 500$. That is the signature of an iterative
+tolerance inside the rescaling rather than of two different closed forms, and
+it is small enough to be irrelevant to any fit --- but it is not exactness,
+and the distinction matters because both routes solve the same equations and
+should in principle agree to rounding.
+
+One of the nine does not solve. At $\varphi = 0.1$, $\gamma = 50$ and a
+screening length of $10$ particle radii the library returns
+\emph{``NEWTON ITERATION NON-CONVERGENT while searching for the rescaled
+volume fraction''}, and the array returned alongside that status is the
+unrescaled result --- meaningful to inspect, but not offered as an answer.
+The failure is reported clearly; it was our comparison script that ignored
+the status and compared the array regardless, producing a $168\,\%$
+``discrepancy'' that was nearly written up as a silent fallback to MSA. That
+is the more instructive half of the episode: a check which discards the error
+code it is handed does not find defects, it manufactures them.
+
+The message also explains the drift. The rescaling is not a closed form but a
+ROOT-FIND: Hayter and Penfold solve for the effective volume fraction at
+which the MSA solution becomes physical, and that condition is
+transcendental. Two implementations descending from the same algorithm
+converge to the same root --- hence the four-decimal agreement in
+$\varphi_{\mathrm{eff}}$ --- but stop at different points along the way, and
+the residual difference grows as the root becomes harder to locate, which is
+exactly the observed scaling with $\gamma$. Pushed further the iteration
+fails outright, and it does so in both codes: \code{jscatter} raises the same
+non-convergence at three conditions neighbouring the one that defeats ours.
+
+That makes this the second method examined here whose domain is unmapped. The
+other is the Carbajal--Tinoco bridge function \citep{CarbajalTinoco2022},
+which is implicit, $b = T(\gamma + b)$, and has no solution at all below a
+threshold: substituting $w = \gamma + b$ turns it into the explicit map
+$\gamma(w) = w - T(w)$, whose range is bounded below. Numerically
+$\gamma_{\min} = -0.509$ at $\lambda = 0$, rising towards zero as $\lambda$
+grows, with two solutions above it and none below. Neither the source paper
+nor the comparison of \citet{PihlajamaaJanssen2024} locates that boundary;
+the latter simply excludes closures from its figures ``due to convergence
+issues at this state point''.
+
+In both cases the literature reports the method without stating where it
+stops working, and in both the boundary lies at conditions that are not
+exotic --- here dilute and strongly charged, which is precisely the regime
+RMSA is used for in small-angle scattering, and there a contact value of
+$\gamma$ routinely reached at moderate density. Locating such boundaries is
+open work, and the practical consequence for a user is that a closure or a
+rescaling failing to converge is not necessarily a sign of a bad state point
+or a bad implementation: it may be a region where the method has no answer
+to give.
+
+\subsection{Analytic references implemented in this work}
+\label{sec:analyticrefs}
+
+Two of the three classical solvable polydisperse models had no reference
+implementation available to us, so we implemented them. Together with the
+Vrij hard-sphere solution supplied by \code{mixscatter}, they give exact
+analytic coverage of the polydisperse hard-sphere, charged-hard-sphere and
+sticky-hard-sphere fluids, against which the numerical solver can be checked
+at any state point.
+
+\paragraph{Polydisperse charged hard spheres.}
+Appendix A of Gazzillo, Giacometti \& Carsughi (1999), the corrected form of
+their 1997 paper --- the correction supplies a factor $\pi$ omitted from
+$P_z$ and repairs an error in the determinant. This is the same physics
+implemented by the FLAC program of Carsughi \emph{et al.}, which cites the
+uncorrected 1997 paper. Our implementation reproduces the neutral
+monodisperse limit against analytic Percus--Yevick to $3\times10^{-14}$, the
+neutral polydisperse limit against \code{mixscatter} to $1\times10^{-13}$,
+and, for charged systems, all three effects the authors report for increasing
+polydispersity: the first peak is lowered ($1.7350\to1.3546$), shifted to
+smaller $Q$ ($5.841\to5.030$ in units of $Q\langle\sigma\rangle$) and
+$S(0)$ increased ($0.0187\to0.0484$), reproducing their component counts (79,
+112, 149) exactly.
+
+\paragraph{Polydisperse sticky hard spheres.}
+\citet{GazzilloGiacometti2000}, a mean-spherical solution in the Baxter sticky
+limit with factorisable coupling parameters $K_{ij}=Y_iY_j$, which renders
+the Baxter factor matrix three-dyadic and collapses the $p\times p$ inversion
+to a $4\times4$ determinant for any number of components. Validation:
+the $\gamma_0=0$ limits against analytic Percus--Yevick ($4\times10^{-14}$)
+and \code{mixscatter} ($1\times10^{-13}$); the monodisperse sticky
+compressibility against their closed form ($3\times10^{-8}$); the critical
+point $\eta_c=(\sqrt3-1)/2$, $\gamma_{0c}^2=(\sqrt3+2)/6$ located as the
+divergence of $S(0)$; and the generalised Boyle temperatures of their
+Eq.~(53) to the printed digits ($2.787$, $1.677$, $2.986$, $2.897$ against
+$2.79$, $1.68$, $2.99$, $2.90$).
+
+Note that the stickiness parameter of this model is \emph{not} Baxter's
+$\tau$ \citep{Baxter1968}: Baxter's Percus--Yevick solution for mixtures requires $p(p+1)/2$
+coupled quadratic equations and is not in general dyadic, which is why the
+mean-spherical model exists. The two agree only in the hard-sphere limit.
+
+Three entries in Table~\ref{tab:software} deserve comment.
+
+The \textbf{RMSA} comparison was exact at all nine state points tested
+($\eta = 0.05$--$0.25$, screening lengths $2$--$10$\,nm, contact potentials
+$20$--$100\,k_BT$), including four at which the Hayter--Penfold rescaling
+\citep{HayterPenfold1981}
+procedure engaged, so the agreement is not merely that of the underlying MSA
+branch. Two independently written implementations of a numerically delicate
+algorithm reproduce each other to all printed digits.
+
+The \textbf{two-Yukawa} comparison validates the hard-core double-Yukawa
+potential, including cases of mixed sign (attractive $K_1$, repulsive $K_2$),
+which is the regime in which a sign convention is most easily mistaken. The
+reference implementation states the identical convention,
+$V(r) = -k_BT[K_1 e^{-Z_1(r-1)} + K_2 e^{-Z_2(r-1)}]/r$ for $r>\sigma$.
+
+The \textbf{numerical} comparison is the only external check available for the
+hypernetted-chain closure, which has no analytic solution. Both solvers are
+discretised and differ in transform, mixing scheme and hard-core
+representation, so the $0.3\,\%$ agreement is the expected order.
+
+\subsection{Two defects found by external comparison}
+
+\paragraph{Identical hard cores in mixtures.}
+Comparison with \code{mixscatter} revealed a discrepancy of $5.2\,\%$ that,
+diagnostically, did \emph{not} decrease under grid refinement and was
+\emph{linear in the size spread}, vanishing exactly in the monodisperse limit.
+The cause was that the hard-sphere potential routine positioned its core by
+array index rather than against the radial grid, so it did not see the
+rescaled grid on which the polydisperse construction of
+equation~(\ref{eq:reducedtail}) relies. Every pair therefore received its core
+at the same radius: the mixture was being solved as though all particles were
+identical. After correction the agreement is $0.09\,\%$ and converges. It was
+the only one of twenty-one potentials written in that form.
+
+\subsection{Two numerical traps in fitting}
+
+Both of the following are properties of the fitting problem rather than of
+this implementation, and both produce a converged fit with a plausible
+$\chi^2$ and silently wrong parameters. We report them because neither is
+evident from the literature and both cost us considerable time.
+
+\paragraph{A rank-revealing linear solve can discard a parameter entirely.}
+It is natural to split the fit: the scale, the flat background and any
+power-law amplitude enter the intensity linearly and can be obtained exactly
+by weighted least squares at every iteration, leaving only the shape
+parameters to the nonlinear optimiser. The saving is real. The hazard is
+that the design columns need not be comparable in magnitude. A model built
+from scattering length densities in $\mathrm{cm}^{-2}$ carries the contrast
+squared and so has magnitude $\sim10^{20}$, while the constant background
+column is unity --- a condition number near $10^{20}$.
+\code{numpy.linalg.lstsq}, like any rank-revealing solver, discards singular
+values below $\max(M,N)\epsilon$, so the background and power-law
+coefficients are returned as \emph{exactly} zero and the solve reports
+success. The symptom is a fit that a hand-chosen background beats by tens of
+percent in $\chi^2$, which is indistinguishable from a broken optimiser.
+Equilibrating the columns to unit norm before the solve and rescaling
+afterwards recovers all coefficients to five figures and changes nothing
+where the problem was already well conditioned \citep{GolubVanLoan2013}.
+
+The same scaling defeats the nonlinear optimiser: a parameter of order
+$10^{10}$ satisfies \code{least\_squares}'s gradient test after a single
+evaluation, so it never moves and is reported with a meaningless
+uncertainty. Since the absolute scattering length densities are in any case
+perfectly correlated with the scale, we fit their RATIO, which is of order
+unity and whose sign is the quantity the data actually determine.
+
+\paragraph{Gaussian resolution smearing fails where it is needed most.} A
+small-angle instrument broadens $\mathbf{Q}$ in two dimensions in the
+detector plane, and the data are then radially averaged; the distribution of
+the magnitude about a true $Q_0$ is Rician, Eq.~\eqref{eq:rician} below, not
+Gaussian \citep{Pedersen1990,BarkerPedersen1995}. A Gaussian in $Q$ is its
+$Q_0/\sigma \gg 1$ limit and is entirely adequate wherever
+$\mathrm{d}Q/Q$ is small.
+
+\begin{equation}
+  P(Q\,|\,Q_0) \;=\; \frac{Q}{\sigma^{2}}
+  \exp\!\left(-\frac{Q^{2}+Q_0^{2}}{2\sigma^{2}}\right)
+  I_0\!\left(\frac{QQ_0}{\sigma^{2}}\right)
+  \label{eq:rician}
+\end{equation}
+
+It is not always small. For a spherical-shell dataset used to develop this
+work, $\mathrm{d}Q/Q$ reaches $0.55$ at the lowest measured point, where a
+Gaussian kernel places $44\,\%$ of that point's weight below $Q_{\min}$ and
+some of it at \emph{negative} $Q$. The leading factor of $Q$ in
+\eqref{eq:rician} suppresses the origin and excludes negative $Q$ by
+construction, reducing that to $34\,\%$. Both forms reproduce the unsmeared
+curve to $2\times10^{-16}$ as $\mathrm{d}Q \to 0$, which is the check that
+catches a mis-normalised kernel. Evaluate \eqref{eq:rician} through the
+exponentially scaled $\tilde{I}_0(x) = e^{-|x|}I_0(x)$: the argument reaches
+several hundred at these widths, where $I_0$ overflows a double long before
+the prefactor cancels it.
+
+A related trap follows. A background term $A\,Q^{-4+d}$ diverges at the
+origin while the smearing kernel reaches below the measured range, so the
+smeared value at the lowest point is governed by whatever guard prevents
+division by zero --- in our case $6.6\times10^{5}$ times the unsmeared value,
+and varying by five orders of magnitude as that guard was moved. The power
+law describes the measured range and says nothing about $Q \to 0$, where any
+real curve turns over; holding it constant below the lowest measured $Q$
+removes the arbitrariness.
+
+\begin{quote}\small\itshape
+Draft note on citations. Now placed: \code{OrnsteinZernike1914} and
+\code{PercusYevick1958} (the equation and closure, \S2),
+\code{HansenMcDonald2013}, \code{Anderson1965}, \code{WalkerNi2011},
+\code{HayterPenfold1981}, \code{Liu2005}, \code{DiazMaier2024}
+(\code{mixscatter}), \code{BarkerPedersen1995} and
+\code{GolubVanLoan2013}.
+
+Still in \code{ozgui.bib} and uncited: \code{DuhHenderson1996},
+\code{Gazzillo1999}, \code{Gazzillo2006}, \code{KalyuzhnyiCummings2006},
+\code{Carsughi2000}. Each has a natural home --- the first in the discussion
+of mixing rules, the Gazzillo papers where stickiness and its size
+dependence are treated --- but placing a citation where it is not actually
+used is worse than leaving it out, so they are left for whoever writes those
+sections.
+
+Still absent and worth adding: software citations for NumPy, SciPy, SUNDIALS
+and NLopt, all of which the work depends on.
+
+One substantive point from the verification. \citet{BarkerPedersen1995}
+conclude that a Gaussian approximation to the resolution is PREFERRED in most
+experiments for ease of calculation, and is inadequate only in particular
+cases --- of which they name Porod scattering. The argument above should be
+framed as identifying one of those known exceptions rather than as a general
+correction, which is both more defensible and more useful.
+\end{quote}
+
+\subsection{What these figures measure}
+
+A note on what these figures measure. Every agreement quoted in this section
+was obtained with the type-1 discrete sine transform, whose grid points fall
+\emph{on} the hard core, and which is therefore first order in $\Delta r$. A
+type-4 transform places the grid at $(n+\tfrac12)\Delta r$ so that the core
+lies between points --- the midpoint rule --- and is second order. For one
+component it is both more accurate and cheaper, and both advantages grow with
+resolution:
+
+\begin{center}\small
+\begin{tabular}{rrrr}
+\toprule
+points per $\sigma$ & type-4 time & accuracy gain\\
+\midrule
+100 & $0.73\times$ & $139\times$\\
+400 & $0.65\times$ & $547\times$\\
+800 & $0.49\times$ & $1092\times$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The times are relative to type 1 at the same points per diameter; the
+accuracy gain is the ratio of the two errors. The growth of that ratio with
+resolution is the second-order against first-order signature. The figures
+quoted above would improve correspondingly.
+
+The two transforms require different grid \emph{lengths}, which is easy to
+overlook and costly to get wrong: a DST-I is computed through an FFT of
+length $2(N+1)$ and so wants $N = 2^{k}-1$, whereas a DST-IV is a length-$N$
+transform and wants $N = 2^{k}$. Sizing both for the former leaves the latter
+on a composite length ($16383 = 3\times43\times127$) and costs it a factor of
+three in the transform, enough to make the second-order method appear slower
+than the first-order one. Accuracy is unaffected by the choice.
+
+We nevertheless retain type 1 as the default, because the type-4 condition
+cannot be met for a mixture. It requires every pair core $\sigma_{ij}$ to
+fall between grid points, and with size classes drawn from a Gaussian
+quadrature the $\sigma_i$ are irrational, so the $p(p+1)/2$ conditions cannot
+be satisfied simultaneously by any choice of resolution. Type 4 is available
+as an option and is correct for one component, where the single core
+coincides with the reduced unit by construction.
+
+
+The defect had been invisible to every existing test because the resulting
+error vanishes in precisely the monodisperse limit where those tests looked.
+
+\paragraph{Under-resolved narrow wells.}
+\label{sec:welltrap}
+Comparison with an analytic adhesive-sphere solution showed errors that are
+governed not by the number of grid points per particle diameter but by the
+number \emph{across the attractive well}:
+
+\begin{center}\small
+\begin{tabular}{cc}
+\toprule
+points across well & max.\ relative error\\
+\midrule
+2 & 0.916\\
+4 & 0.324\\
+8 & 0.142\\
+16 & 0.068\\
+32 & 0.035\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is ordinary first-order convergence in $\Delta r/\delta$ and not a
+defect, but the default discretisation violates it badly: at 100 points per
+diameter a well of width $\delta = 0.02\sigma$ spans two grid points and the
+structure factor is in error by ninety per cent, without any warning. We
+recommend $\;\gtrsim 30\,\sigma/\delta$ points per diameter for any potential
+with a narrow feature, and note that this requirement applies equally to
+square-well and piecewise-constant potentials.
+
+\subsection{Internal consistency}
+
+The following are not independent checks but constrain the implementation:
+reduction of the polydisperse construction to a single size class reproduces
+the original one-component routines bit-identically; the extended
+Rogers--Young closure reduces to Rogers--Young to $2.5\times10^{-16}$ when its
+additional parameter vanishes; the hard-core double-Yukawa potential agrees
+with the three-Yukawa form to $\sim10^{-16}$ under the stated
+reparameterisation; and the exact intensity reproduces brute-force
+integration of $\langle|F|^2\rangle$ in the dilute limit
+(ripple $0.041$ against $0.038$).
+
+% ---------------------------------------------------------------------
+% References to add to the bibliography
+% ---------------------------------------------------------------------
+% Gazzillo, D., Giacometti, A. & Carsughi, F. (1997). J. Chem. Phys. 107,
+%   10141. [polydisperse charged hard spheres, MSA]
+% Gazzillo, D., Giacometti, A. & Carsughi, F. (1999). arXiv:cond-mat/9909153.
+%   [corrected Appendix A; scaling vs decoupling approximation]
+% Gazzillo, D. & Giacometti, A. (2000). arXiv:cond-mat/0011330.
+%   [polydisperse sticky hard spheres, MSA, factorisable coupling]
+% Carsughi, F., Giacometti, A. & Gazzillo, D. (2000). arXiv:cond-mat/0011242.
+%   [the FLAC program]
+% Tutschka, C. & Kahl, G. (1998). J. Chem. Phys. 108, 9498.
+% Blum, L. & Hoye, J. S. (1978). J. Stat. Phys. 19, 317.
+%   [multicomponent multi-Yukawa MSA; the finite-range generalisation]
+% Hoye, J. S. & Stell, G. [SCOZA]; Reiner, A. & Hoye, J. S. (2008).
+%   arXiv:0712.3739. [SCOZA near the critical point]
+% Bergmann, M. J. et al. mixscatter (Python package).
+%   [add version/DOI; used for the analytic Vrij mixture PY]
+% Biehl, R. (2019). jscatter. PLoS ONE 14, e0218789.
+%   [Two_Yukawa after Liu et al. (2005); RMSA after Hayter & Penfold (1981)]
+% Hayter, J. B. & Penfold, J. (1981). Mol. Phys. 42, 109-118.
+% Liu, Y., Chen, W.-R. & Chen, S.-H. (2005). J. Chem. Phys. 122, 044507.
+%   [two-Yukawa analytic solution]
+% Pihlajamaa, I. & Janssen, L. M. C. (2024). Phys. Rev. E 110, 044608.
+%   [closure comparison; OrnsteinZernike.jl]
+% Vrij, A. (1979). J. Chem. Phys. 71, 3267-3270.
+%   [mixture PY, the reference for the mixture comparison]
+% Wertheim, M. S. (1963). Phys. Rev. Lett. 10, 321.
+% Thiele, E. (1963). J. Chem. Phys. 39, 474.
+% Baxter, R. J. (1968). J. Chem. Phys. 49, 2770.
+% Malijevsky, A. & Labik, S. (1987). Mol. Phys. 60, 663.

@@ -1,0 +1,301 @@
+{
+  "FAILURES": [],
+  "cases": {
+    "authors_sample__full": {
+      "K1": 6.0,
+      "K2": -1.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": 0.038142816495497854,
+        "1600": 0.002132808368950802,
+        "400": 0.009033783232602472
+      },
+      "name": "authors_sample",
+      "phi": 0.2,
+      "qRange": [
+        0.2,
+        25.0
+      ],
+      "referenceRange": [
+        0.2861978741102402,
+        1.3607769672889416
+      ],
+      "successiveRatios": [
+        4.22224172457917,
+        4.235628181188394
+      ],
+      "verdict": "first order throughout"
+    },
+    "authors_sample__peak": {
+      "K1": 6.0,
+      "K2": -1.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": 0.03827000154385782,
+        "1600": 0.0022365310877318326,
+        "400": 0.009125387557778478
+      },
+      "name": "authors_sample",
+      "phi": 0.2,
+      "qRange": [
+        1.0,
+        12.0
+      ],
+      "referenceRange": [
+        0.3973016561527047,
+        1.3604458829712143
+      ],
+      "successiveRatios": [
+        4.19379465272535,
+        4.080152342989762
+      ],
+      "verdict": "first order throughout"
+    },
+    "close_screening__full": {
+      "K1": 6.0,
+      "K2": -1.0,
+      "Z1": 6.0,
+      "Z2": 4.0,
+      "name": "close_screening",
+      "phi": 0.2,
+      "qRange": [
+        0.2,
+        25.0
+      ],
+      "reference": "no physical root (scalar returned)"
+    },
+    "close_screening__peak": {
+      "K1": 6.0,
+      "K2": -1.0,
+      "Z1": 6.0,
+      "Z2": 4.0,
+      "name": "close_screening",
+      "phi": 0.2,
+      "qRange": [
+        1.0,
+        12.0
+      ],
+      "reference": "no physical root (scalar returned)"
+    },
+    "no_repulsion__full": {
+      "K1": 6.0,
+      "K2": 0.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": "MULTIPLE ROOTS: solver 'sundials4py: Fixed-Point (Anderson)' and 'Biggs-Andrews' disagree by 1 (tolerance 0.001) on S(Q) for HardSphereD",
+        "1600": 0.023005693822170208,
+        "400": "MULTIPLE ROOTS: solver 'sundials4py: Fixed-Point (Anderson)' and 'Biggs-Andrews' disagree by 1 (tolerance 0.001) on S(Q) for HardSphereD"
+      },
+      "name": "no_repulsion",
+      "phi": 0.2,
+      "qRange": [
+        0.2,
+        25.0
+      ],
+      "referenceRange": [
+        0.44168659968440244,
+        6.721137042101484
+      ],
+      "successiveRatios": [
+        null,
+        null
+      ]
+    },
+    "no_repulsion__peak": {
+      "K1": 6.0,
+      "K2": 0.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": "MULTIPLE ROOTS: solver 'sundials4py: Fixed-Point (Anderson)' and 'Biggs-Andrews' disagree by 1 (tolerance 0.001) on S(Q) for HardSphereD",
+        "1600": 0.0066302494968368784,
+        "400": "MULTIPLE ROOTS: solver 'sundials4py: Fixed-Point (Anderson)' and 'Biggs-Andrews' disagree by 1 (tolerance 0.001) on S(Q) for HardSphereD"
+      },
+      "name": "no_repulsion",
+      "phi": 0.2,
+      "qRange": [
+        1.0,
+        12.0
+      ],
+      "referenceRange": [
+        0.4416821845389757,
+        1.7650337091053048
+      ],
+      "successiveRatios": [
+        null,
+        null
+      ]
+    },
+    "phi_0.10__full": {
+      "K1": 6.0,
+      "K2": -1.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": 0.03159475963711403,
+        "1600": 0.0018776043854293765,
+        "400": 0.007621534559980677
+      },
+      "name": "phi_0.10",
+      "phi": 0.1,
+      "qRange": [
+        0.2,
+        25.0
+      ],
+      "referenceRange": [
+        0.47955097181902906,
+        1.1650406090996217
+      ],
+      "successiveRatios": [
+        4.145459078938314,
+        4.059180208102124
+      ],
+      "verdict": "first order throughout"
+    },
+    "phi_0.10__peak": {
+      "K1": 6.0,
+      "K2": -1.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": 0.031598885971084255,
+        "1600": 0.001885241251261523,
+        "400": 0.007639590384369347
+      },
+      "name": "phi_0.10",
+      "phi": 0.1,
+      "qRange": [
+        1.0,
+        12.0
+      ],
+      "referenceRange": [
+        0.6228412756006211,
+        1.1657416096738626
+      ],
+      "successiveRatios": [
+        4.136201599988369,
+        4.0523144606862695
+      ],
+      "verdict": "first order throughout"
+    },
+    "phi_0.35__full": {
+      "K1": 6.0,
+      "K2": -1.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": 0.029058132533059874,
+        "1600": 0.0021556576646600857,
+        "400": 0.007372642601208673
+      },
+      "name": "phi_0.35",
+      "phi": 0.35,
+      "qRange": [
+        0.2,
+        25.0
+      ],
+      "referenceRange": [
+        0.12798406619115058,
+        1.7709534365215278
+      ],
+      "successiveRatios": [
+        3.9413456076517366,
+        3.420136101420921
+      ],
+      "verdict": "first order throughout"
+    },
+    "phi_0.35__peak": {
+      "K1": 6.0,
+      "K2": -1.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": 0.02938748814682793,
+        "1600": 0.0021447359566460085,
+        "400": 0.0076013634550497694
+      },
+      "name": "phi_0.35",
+      "phi": 0.35,
+      "qRange": [
+        1.0,
+        12.0
+      ],
+      "referenceRange": [
+        0.16805431785315963,
+        1.7700729057694837
+      ],
+      "successiveRatios": [
+        3.8660811735432956,
+        3.5441954668102693
+      ],
+      "verdict": "first order throughout"
+    },
+    "weak_attraction__full": {
+      "K1": 2.0,
+      "K2": -1.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": 0.011263075181937822,
+        "1600": 0.0008001303402983401,
+        "400": 0.002900541615469898
+      },
+      "name": "weak_attraction",
+      "phi": 0.2,
+      "qRange": [
+        0.2,
+        25.0
+      ],
+      "referenceRange": [
+        0.13825574765484858,
+        1.206322629195438
+      ],
+      "successiveRatios": [
+        3.883093806296988,
+        3.625086400783639
+      ],
+      "verdict": "first order throughout"
+    },
+    "weak_attraction__peak": {
+      "K1": 2.0,
+      "K2": -1.0,
+      "Z1": 10.0,
+      "Z2": 2.0,
+      "maxRelError": {
+        "100": 0.011247348702452375,
+        "1600": 0.0007891097023940611,
+        "400": 0.002882445982950324
+      },
+      "name": "weak_attraction",
+      "phi": 0.2,
+      "qRange": [
+        1.0,
+        12.0
+      ],
+      "referenceRange": [
+        0.1749188785763315,
+        1.2064082756944916
+      ],
+      "successiveRatios": [
+        3.902015430290966,
+        3.652782337114016
+      ],
+      "verdict": "first order throughout"
+    }
+  },
+  "ranges": {
+    "full": [
+      0.2,
+      25.0
+    ],
+    "peak": [
+      1.0,
+      12.0
+    ]
+  },
+  "reference": "two_yukawa_reference.twoYukawa",
+  "z1LessThanZ2": "correctly refused (scalar returned)"
+}

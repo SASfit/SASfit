@@ -1,0 +1,52 @@
+{
+  "probe": {
+    "sundials4py: Fixed-Point (Anderson)": {
+      "signature": "(self, x)",
+      "doc": ""
+    },
+    "sundials4py: Newton-Krylov (GMRES)": {
+      "signature": "(self, x)",
+      "doc": ""
+    },
+    "sundials4py: Newton-Krylov (FGMRES)": {
+      "signature": "(self, x)",
+      "doc": ""
+    },
+    "sundials4py: Newton-Krylov (TFQMR)": {
+      "signature": "(self, x)",
+      "doc": ""
+    }
+  },
+  "states": {
+    "LJ_eps0.8_phi0.3_HNC": {
+      "anderson_root": {
+        "g_max": 2.163593,
+        "min_S": 0.2104,
+        "residual": 4.463342683010264e-14,
+        "is_a_fixed_point": true
+      },
+      "nk_undeflated_CONTROL": {
+        "g_max": 1.248003,
+        "min_S": -10.2912,
+        "residual": 9.632677216012222e-13,
+        "is_a_fixed_point": true
+      },
+      "nk_deflating_its_own_root": "NoConvergence",
+      "nk_deflating_all_known": {
+        "g_max": 1.47628,
+        "min_S": -12.08,
+        "residual": 3.6491422868753895e-10,
+        "is_a_fixed_point": true
+      }
+    },
+    "BPGG_a0.5_phi0.4": {
+      "anderson_root": {
+        "g_max": 5.252805,
+        "min_S": 0.0649,
+        "residual": 3.7138959677447935e-12,
+        "is_a_fixed_point": true
+      },
+      "nk_undeflated_CONTROL": "NoConvergence"
+    }
+  }
+}
