@@ -553,7 +553,7 @@ indirect correlation function, shared with several closures below):
   c(r) = \exp\!\big[U_{\mathrm{attr}}(r)/k_BT\big]\big[\Gamma^*(r)+1\big] - \Gamma(r) - 1.
 \end{equation}
 
-\subsection{Rogers--Young (RY) \cite{rogersyoung1984}}
+\subsection{Rogers--Young (RY) \cite{RogersYoung1984}}
 Interpolates between PY ($\alpha\to\infty$) and HNC ($\alpha\to0$) via a
 switching function $f(r)=1-e^{-\alpha r}$:
 \begin{equation}
@@ -561,7 +561,7 @@ switching function $f(r)=1-e^{-\alpha r}$:
 \end{equation}
 with $\alpha$ supplied by the user (\code{doRYclosure(alpha)}).
 
-\subsection{HMSA (Zerah--Hansen) \cite{zerahhansen1986}}
+\subsection{HMSA (Zerah--Hansen) \cite{ZerahHansen1986}}
 Same switching-function structure as RY, but using $\Gamma^*(r)$ in the
 switching term and the full Boltzmann factor split into repulsive/attractive
 parts:
@@ -634,7 +634,7 @@ This is the real literature formula (equivalently,
 $b(r)=[\ln(1+d(r))-d(r)]\,\theta(d(r))$, matching Kovalenko \& Hirata's own
 closure \cite{kovalenkohirata1998} as reproduced independently in
 Pihlajamaa \& Janssen's (2024) closure-comparison table
-\cite{pihlajamaa2024}) -- identical to HNC wherever $d(r)\le0$, and linearised
+\cite{PihlajamaaJanssen2024}) -- identical to HNC wherever $d(r)\le0$, and linearised
 (bounded, non-exponential in $\Gamma(r)$) wherever $d(r)>0$. This is the
 actual mechanism behind KH's well-documented good numerical convergence
 \cite{ebato2016}: HNC's own $c(r)$ grows without bound as $\Gamma(r)$
@@ -683,7 +683,7 @@ A rational-function bridge approximation:
   c(r) = \mathrm{EN}(r)\,e^{\Gamma(r)+B(r)} - \Gamma(r) - 1.
 \end{equation}
 Independently verified against Pihlajamaa \& Janssen (2024)
-\cite{pihlajamaa2024}, Table~1: $b(r)=-\tfrac12\gamma^2(r)\big[1+\gamma(r)(5\gamma(r)+11)/(7\gamma(r)+9)\big]^{-1}$,
+\cite{PihlajamaaJanssen2024}, Table~1: $b(r)=-\tfrac12\gamma^2(r)\big[1+\gamma(r)(5\gamma(r)+11)/(7\gamma(r)+9)\big]^{-1}$,
 an exact match. \emph{Known gap:} SASfit's own \code{case DH:} additionally
 special-cases the $\Gamma^*$ formula specifically when the active potential is
 Lennard-Jones (a narrower numerical-stability tweak for that potential's own
@@ -701,7 +701,7 @@ A piecewise bridge function with a density-dependent coefficient:
   c(r) = \mathrm{EN}(r)\,e^{\Gamma(r)+B(r)} - \Gamma(r) - 1.
 \end{equation}
 Independently verified against Pihlajamaa \& Janssen (2024)
-\cite{pihlajamaa2024}, Table~1: $\zeta(\rho)=1.0175-0.275\,\rho\sigma^3$, and
+\cite{PihlajamaaJanssen2024}, Table~1: $\zeta(\rho)=1.0175-0.275\,\rho\sigma^3$, and
 since $\rho\sigma^3=6\varphi/\pi$ for spheres, this is an exact match
 (including the same $\Gamma^*\le0$ piecewise branch).
 
@@ -741,7 +741,7 @@ with $(\zeta,\varphi_{\mathrm{Z}},\alpha)$ fixed by requiring, simultaneously:
     reused here in a three-parameter-aware form.
 \end{itemize}
 Matching the validated practice of Pihlajamaa \& Janssen (2024)
-\cite{pihlajamaa2024} -- who report being unable to robustly satisfy all
+\cite{PihlajamaaJanssen2024} -- who report being unable to robustly satisfy all
 three conditions via exact simultaneous root-finding -- this port minimises
 the sum of squared residuals (\code{scipy.optimize.least\_squares}) rather
 than attempting an exact $3\times3$ nonlinear solve.
@@ -818,7 +818,7 @@ low-level crashes (segfault/bus error) rather than merely failing to converge.
 The formula's overall structure was independently verified as plausible (see
 above), and the literature explicitly notes that this class of ``second-order''
 closure is excluded from standard closure-comparison studies for
-``numerical complexity'' \cite{pihlajamaa2024}; the instability found here is
+``numerical complexity'' \cite{PihlajamaaJanssen2024}; the instability found here is
 consistent with that being a genuine property of the theory rather than an
 implementation error.
 
@@ -845,7 +845,7 @@ where one is available.
     the densities tested here -- though see Section~\ref{sec:mc-literature}
     below: against genuine Monte Carlo data (not the exact PY solution
     itself), PY's own contact-value error is not actually small at high
-    density \cite{pihlajamaa2024}. \textbf{ZSEP} (Section~\ref{sec:zsep}) is a
+    density \cite{PihlajamaaJanssen2024}. \textbf{ZSEP} (Section~\ref{sec:zsep}) is a
     genuinely more accurate option specifically for HardSphere (only), if its
     known ill-conditioning (fix $\alpha=1$, check the fitted parameters look
     physically reasonable) is acceptable for the use case.
@@ -855,7 +855,7 @@ where one is available.
     closure comparison shows PY and HNC bracketing the true contact value
     from opposite sides at high density, a general feature that sharpens with
     attraction, confirmed quantitatively against Monte Carlo in
-    Section~\ref{sec:mc-literature} \cite{pihlajamaa2024}); an empirical
+    Section~\ref{sec:mc-literature} \cite{PihlajamaaJanssen2024}); an empirical
     bridge-function closure (\textbf{Verlet}, \textbf{MS}, \textbf{VM},
     \textbf{DH}, \textbf{CG}) or \textbf{HNC} itself is generally a better
     default. \textbf{HMSA} (needs a manually chosen or fitted $\alpha$) is
@@ -893,7 +893,7 @@ where one is available.
     substitute for plain HNC at strong coupling if MSA/RMSA is not
     applicable.
   \item \textbf{When nothing is known about the system}: \textbf{Verlet}.
-    This is the headline recommendation of \cite{pihlajamaa2024}, whose
+    This is the headline recommendation of \cite{PihlajamaaJanssen2024}, whose
     comparison across hard-sphere, inverse-power-law, Gaussian-core and
     Lennard-Jones systems in both two and three dimensions found Verlet
     ``robustly performed well for all our benchmark systems, indicating that
@@ -938,7 +938,7 @@ where one is available.
     Section~\ref{sec:mc-literature}'s own finding that MHNC-type closures
     (parameterised directly from simulation data) systematically outperform
     parameter-free closures against genuine Monte Carlo benchmarks
-    \cite{pihlajamaa2024}.
+    \cite{PihlajamaaJanssen2024}.
   \item \textbf{Avoid}: \textbf{Euler--Rahman} (Section~\ref{sec:eurah}) --
     excluded from the GUI/\code{ozLib.solve()} entirely for a
     genuine, documented convergence instability, not merely a missing
@@ -982,7 +982,7 @@ where one is available.
     (Section~\ref{sec:alpha}) -- the extra parameter gives the search
     somewhere else to go. Use it as the first fallback when Rogers--Young
     cannot be made consistent for a given system.
-  \item \textbf{Carbajal--Tinoco} \cite{carbajaltinoco2022}: the bridge
+  \item \textbf{Carbajal--Tinoco} \cite{CarbajalTinoco2022}: the bridge
     function of the 2022 paper on local thermodynamic consistency, in which
     $\lambda$ interpolates between known closures --- $\lambda=0$ recovers
     Martynov--Sarkisov and $\lambda\to\infty$ recovers HNC. The amplitude is
@@ -1002,7 +1002,7 @@ where one is available.
     shrinks the admissible region. No iteration can find a root that does not
     exist, and damped Picard, Newton, and Newton with a backtracking line
     search were each tried. Neither the source paper nor the comparison of
-    \cite{pihlajamaa2024} locates that boundary; the latter simply excludes
+    \cite{PihlajamaaJanssen2024} locates that boundary; the latter simply excludes
     closures from its figures for convergence issues.
 
     The current code iterates 500 damped passes and returns the last one
@@ -1029,7 +1029,7 @@ where one is available.
 
     \textbf{ZSEP's exclusion is technical rather than one of principle}, and
     is worth stating because the closure does exist for mixtures:
-    \citet{leemalijevsky2001} formulate exactly that. The obstacle is the
+    \citet{LeeMalijevsky2001} formulate exactly that. The obstacle is the
     parameter count. The one-component form carries three parameters
     ($\alpha$, $\phi$, $\zeta$); a mixture carries $\alpha_{ij}$,
     $\phi_{ij}$, $\psi_{ij}$ per pair, so nine for a binary system against
@@ -1047,8 +1047,8 @@ where one is available.
     than it first appears: the zero-separation theorems for a mixture
     involve \emph{dimer} chemical potentials, not only monomer ones, and
     this solver computes neither. They are not, however, an integration
-    problem --- \citet{wilsonlee2005} evaluate them from the direct
-    chemical-potential formula of \citet{lee1992}, which requires neither
+    problem --- \citet{WilsonLee2005} evaluate them from the direct
+    chemical-potential formula of \citet{Lee1992}, which requires neither
     temperature nor density integration, and note that the dimer--dimer pair
     correlations are not needed for the thermodynamics and can simply be
     omitted. So implementing ZSEP for a size distribution means adding a
@@ -1080,7 +1080,7 @@ where combinations are \emph{known to give poor results}, not only where
 they succeed -- since a plugin's own thermodynamic self-consistency check
 passing is not, by itself, evidence of accuracy against MC.
 
-\textbf{Hard spheres.} Pihlajamaa \& Janssen (2024) \cite{pihlajamaa2024}
+\textbf{Hard spheres.} Pihlajamaa \& Janssen (2024) \cite{PihlajamaaJanssen2024}
 performed a systematic MC comparison across many closures at
 $\rho\sigma^3=0.94$ (just below melting) and report the PY and HNC closures
 as the two \emph{worst}-performing of every closure they tested, PY
@@ -1117,7 +1117,7 @@ with this project's own choice to offer the Baxter/PY solution
 that regime rather than as a claim of general accuracy.
 
 \textbf{Lennard-Jones.} The same Pihlajamaa \& Janssen study
-\cite{pihlajamaa2024} finds that renormalising the indirect correlation
+\cite{PihlajamaaJanssen2024} finds that renormalising the indirect correlation
 function ($\gamma^*(r)=\gamma(r)-\beta u_{\mathrm{LR}}(r)$, the same
 attractive/repulsive potential split this project's own HMSA/RY closures
 use, Section~\ref{sec:potentials}) is necessary for good accuracy: plain PY
@@ -1895,246 +1895,9 @@ Formulas and algorithms throughout this document were ported directly from
 SASfit's own source code (\code{src/sasfit\_oz/}, \code{src/plugins/*}), with
 independent literature verification sought wherever practical.
 
-\begin{comment}
-\begin{thebibliography}{99}
+%NO BIBLIOGRAPHY HERE ON PURPOSE. The master ozGUI_ozLib_report.tex
+%inputs this fragment and carries the single bibliography for both
+%parts. Adding one here printed the reference list twice, which is
+%why the original thebibliography block was inside a comment.
 
-\bibitem{eurah1999}
-B.~C.~Eu and K.~Rah,
-\emph{A closure for the Ornstein--Zernike relation that gives rise to the
-thermodynamic consistency},
-J.\ Chem.\ Phys.\ \textbf{111}, 3327 (1999).
-
-\bibitem{lee1992}
-L.~L.~Lee,
-\emph{Chemical potentials based on the molecular distribution functions.
-An exact diagrammatical representation and the star function},
-J.\ Chem.\ Phys.\ \textbf{97}, 8606 (1992).
-% The direct chemical-potential formula, which needs NEITHER temperature NOR
-% density integration. This is what makes the mixture zero-separation
-% theorems tractable: the dimer chemical potentials they contain are
-% evaluated from it in closed form.
-
-\bibitem{wilsonlee2005}
-D.~S.~Wilson and L.~L.~Lee,
-\emph{Chemical potentials and phase equilibria of Lennard-Jones mixtures:
-A self-consistent integral equation approach},
-J.\ Chem.\ Phys.\ \textbf{123}, 044512 (2005).
-% Applies ZSEP to LJ MIXTURES. Two points matter for any attempt to extend
-% ZSEP to a size distribution here: the dimer chemical potentials in the
-% zero-separation theorems come from lee1992 without integration, and the
-% dimer-dimer pair correlations are NOT needed for the thermodynamics and
-% are simply omitted -- for a binary system that drops 6 of the 15 pair
-% equations. The burden is therefore smaller than the pair count suggests.
-
-\bibitem{hlushakkalyuzhnyi2008}
-S.~P.~Hlushak and Yu.~V.~Kalyuzhnyi,
-\emph{Thermodynamics of the multi-component dimerizing hard-sphere Yukawa
-mixture in the associative mean spherical approximation},
-arXiv:0805.0688 (2008).
-% NOT about ZSEP, but a lead worth keeping: explicit analytic expressions
-% for the free energy, chemical potential, entropy and pressure of a
-% multi-component hard-sphere Yukawa fluid, written in terms of Blum's
-% scaling parameter Gamma, where the AMSA reduces to a SINGLE nonlinear
-% equation for Gamma. The authors state this lets the theory describe an
-% arbitrary number of components "including the limiting case of
-% polydisperse fluids".
-%
-% Relevant because polydisperse_yukawa_msa.py is still marked DRAFT and
-% this package has no validated analytic reference for the polydisperse
-% Yukawa case. Worth reading before extending that module.
-
-\bibitem{leemalijevsky2001}
-L.~L.~Lee and A.~Malijevsk\'y,
-\emph{Structures and properties of hard sphere mixtures based on a
-self-consistent integral equation},
-J.\ Chem.\ Phys.\ \textbf{114}, 7109--7117 (2001);
-\url{https://doi.org/10.1063/1.1359182}.
-% The mixture form of ZSEP, and the reason this package does not offer it
-% for a size distribution. Nine parameters (alpha_ij, phi_ij, psi_ij) against
-% nine consistency conditions for a BINARY mixture -- formally determined,
-% but the authors reduce the search by setting alpha_SB = alpha_SS = 1,
-% noting the high-dimensional search is "extremely difficult and time
-% consuming". For p size classes the count is 3p(p+1)/2. Also the source of
-% the useful check that psi=0, phi=1, alpha=0.8 recovers the Verlet closure.
-
-\bibitem{carbajaltinoco2022}
-M.~D.~Carbajal-Tinoco,
-\emph{Local thermodynamic consistency for integral equations describing
-single-component fluids},
-J.\ Chem.\ Phys.\ \textbf{157}, 204502 (2022).
-% Source of the Carbajal-Tinoco bridge function implemented here, Eqs. 15-16.
-% NOT the same author's 2008 paper (JCP 128, 184507), which is the source of
-% Extended Rogers-Young -- see carbajaltinoco2008 below. The two were
-% conflated until this was checked against the formula: reading the 2008
-% paper while looking for this bridge function finds Eq. 13 and no trace of
-% it. The misattribution came from OrnsteinZernike.jl's source docstring,
-% which contradicts Table I of the paper accompanying that package.
-
-\bibitem{carbajaltinoco2008}
-M.~D.~Carbajal-Tinoco,
-\emph{Thermodynamically consistent integral equation for soft repulsive
-spheres},
-J.\ Chem.\ Phys.\ \textbf{128}, 184507 (2008).
-% Source of EXTENDED ROGERS-YOUNG, Eq. 13:
-%   b = ln(1 + phi + a phi^2) - gamma,  phi = [exp(f gamma) - 1]/f,
-%   f = 1 - exp(-alpha r)
-% with alpha and a fixed by the compressibility and energy-pressure
-% relations together.
-
-\bibitem{pihlajamaa2024}
-I.~Pihlajamaa and L.~M.~C.~Janssen,
-\emph{Comparison of integral equation theories of the liquid state},
-Phys.\ Rev.\ E \textbf{110}, 044608 (2024); arXiv:2407.18680.
-
-\bibitem{sharma1977}
-S.~K.~Sharma and R.~C.~Sharma,
-\emph{Structure factor for square-well potential in the Percus--Yevick
-approximation},
-Physica A \textbf{89}, 213 (1977).
-
-\bibitem{hayter1981}
-J.~B.~Hayter and J.~Penfold,
-\emph{An analytic structure factor for macroion solutions},
-Mol.\ Phys.\ \textbf{42}, 109 (1981).
-
-\bibitem{pini2002}
-D.~Pini, A.~Parola, and L.~Reatto,
-\emph{A simple approximation for fluids with narrow attractive potentials},
-Mol.\ Phys.\ \textbf{100}, 1507 (2002); arXiv:cond-mat/0109311.
-
-\bibitem{santos2012}
-A.~Santos, S.~B.~Yuste, and M.~L\'opez de Haro,
-\emph{Rational-function approximation for fluids interacting via piece-wise
-constant potentials},
-Condens.\ Matter Phys.\ \textbf{15}, 23602 (2012).
-
-\bibitem{baxter1968}
-R.~J.~Baxter,
-\emph{Percus--Yevick equation for hard spheres with surface adhesion},
-J.\ Chem.\ Phys.\ \textbf{49}, 2770 (1968).
-
-\bibitem{rogersyoung1984}
-F.~J.~Rogers and D.~A.~Young,
-\emph{New, thermodynamically consistent, integral equation for simple
-fluids},
-Phys.\ Rev.\ A \textbf{30}, 999 (1984).
-
-\bibitem{zerahhansen1986}
-G.~Zerah and J.-P.~Hansen,
-\emph{Self-consistent integral equations for fluid pair distribution
-functions: Another attempt},
-J.\ Chem.\ Phys.\ \textbf{84}, 2336 (1986).
-
-\bibitem{verlet1980}
-L.~Verlet,
-\emph{Integral equations for classical fluids: I. The hard sphere case},
-Mol.\ Phys.\ \textbf{41}, 183 (1980).
-
-\bibitem{verlet1981}
-L.~Verlet,
-\emph{Integral equations for classical fluids: II. Hard spheres again},
-Mol.\ Phys.\ \textbf{42}, 1291 (1981).
-
-\bibitem{martynovsarkisov1983}
-G.~A.~Martynov and G.~N.~Sarkisov,
-\emph{Exact equations and the theory of liquids. V},
-Mol.\ Phys.\ \textbf{49}, 1495 (1983).
-
-\bibitem{vompemartynov1994}
-A.~G.~Vompe and G.~A.~Martynov,
-\emph{The bridge function expansion and the self-consistency problem of the
-Ornstein--Zernike equation solution},
-J.\ Chem.\ Phys.\ \textbf{100}, 5249 (1994).
-
-\bibitem{ballone1986}
-P.~Ballone, G.~Pastore, G.~Galli, and D.~Gazzillo,
-\emph{Additive and non-additive hard sphere mixtures: Monte Carlo simulation
-and integral equation results},
-Mol.\ Phys.\ \textbf{59}, 275 (1986).
-
-\bibitem{charpentierjakse2001}
-I.~Charpentier and N.~Jakse,
-\emph{Exact numerical derivatives of the pair-correlation function of simple
-liquids using the tangent linear method},
-J.\ Chem.\ Phys.\ \textbf{114}, 2284 (2001).
-
-\bibitem{bomontbretonnet2001}
-J.~M.~Bomont and J.~L.~Bretonnet,
-\emph{Renormalization of the indirect correlation function to extract the
-bridge function of simple fluids},
-J.\ Chem.\ Phys.\ \textbf{114}, 4141 (2001).
-
-\bibitem{kovalenkohirata1998}
-A.~Kovalenko and F.~Hirata,
-\emph{Three-dimensional density profiles of water in contact with a solute
-of arbitrary shape: a RISM approach},
-Chem.\ Phys.\ Lett.\ \textbf{290}, 237 (1998).
-
-\bibitem{duhhaymet1995}
-D.-M.~Duh and A.~D.~J.~Haymet,
-\emph{Integral equation theory for uncharged liquids: The Lennard-Jones
-fluid and the bridge function},
-J.\ Chem.\ Phys.\ \textbf{103}, 2625 (1995).
-
-\bibitem{choudhuryghosh2002}
-N.~Choudhury and S.~K.~Ghosh,
-\emph{Integral equation theory of Lennard-Jones fluids: A modified Verlet
-bridge function approach},
-J.\ Chem.\ Phys.\ \textbf{116}, 8517 (2002).
-
-\bibitem{likos2002}
-C.~N.~Likos and H.~M.~Harreis,
-\emph{Star polymers: From conformations to interactions to phase diagrams},
-Condens.\ Matter Phys.\ \textbf{5}, No.~1(29), 173 (2002).
-
-\bibitem{oversteegen2004}
-S.~M.~Oversteegen and H.~N.~W.~Lekkerkerker,
-\emph{On the accuracy of the Derjaguin approximation for depletion
-potentials},
-Physica A \textbf{341}, 23 (2004).
-
-\bibitem{likos1998}
-C.~N.~Likos, M.~Watzlawek, and H.~L\"owen,
-\emph{Freezing and clustering transitions for penetrable spheres},
-Phys.\ Rev.\ E \textbf{58}, 3135 (1998).
-
-\bibitem{fernaud2000}
-M.~J.~Fernaud, E.~Lomba, and L.~L.~Lee,
-\emph{A self-consistent integral equation study of the structure and
-thermodynamics of the penetrable sphere fluid},
-J.\ Chem.\ Phys.\ \textbf{112}, 810 (2000).
-
-\bibitem{lee1995}
-L.~L.~Lee,
-\emph{An accurate integral equation theory for hard spheres: Role of the
-zero-separation theorems in the closure relation},
-J.\ Chem.\ Phys.\ \textbf{103}, 9388 (1995).
-
-\bibitem{lee1999}
-L.~L.~Lee,
-\emph{Erratum: An accurate integral equation theory for hard spheres: Role
-of the zero-separation theorems in the closure relation},
-J.\ Chem.\ Phys.\ \textbf{110}, 7589 (1999).
-
-\bibitem{gazzillo2004}
-D.~Gazzillo and A.~Giacometti,
-\emph{Analytic solutions for Baxter's model of sticky hard sphere fluids
-within closures different from the Percus--Yevick approximation},
-J.\ Chem.\ Phys.\ \textbf{120}, 4742 (2004).
-
-\bibitem{rosenfeld1986}
-Y.~Rosenfeld,
-\emph{Comments on the variational modified-hypernetted-chain theory for
-simple fluids},
-J.\ Stat.\ Phys.\ \textbf{42}, 437 (1986).
-
-\bibitem{ebato2016}
-Y.~Ebato and T.~Miyata,
-\emph{A pressure consistent bridge correction of Kovalenko--Hirata closure
-in Ornstein--Zernike theory for Lennard-Jones fluids by apparently
-adjusting sigma parameter},
-AIP Advances \textbf{6}, 055111 (2016).
-
-\end{thebibliography}
-\end{comment}
 \end{document}

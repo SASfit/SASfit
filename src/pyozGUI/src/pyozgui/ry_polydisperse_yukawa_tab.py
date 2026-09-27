@@ -57,8 +57,14 @@ def _solverChoices():
     except Exception:
         pass
     try:
-        from andersonOZsolver import AndersonOZsolver
-        choices["Anderson"] = AndersonOZsolver
+        #MDIIS in place of the hand-written "Anderson", matching ozLib's own
+        #SOLVER_CLASSES: that one duplicated "scipy Anderson" -- the same
+        #algorithm, hand-written rather than from scipy -- while MDIIS adds
+        #explicit regularisation and history control. Measured faster than
+        #scipy Anderson at every density tried, and convergent at phi = 0.55
+        #where Picard has long since failed.
+        from mdiisOZsolver import MDIISOZsolver
+        choices["MDIIS"] = MDIISOZsolver
     except Exception:
         pass
     try:

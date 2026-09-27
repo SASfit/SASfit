@@ -38,6 +38,7 @@ from andersonOZsolver import AndersonOZsolver
 from scipyAndersonOZsolver import ScipyAndersonOZsolver
 from scipyNewtonKrylovOZsolver import ScipyNewtonKrylovOZsolver
 from biggsAndrewsOZsolver import BiggsAndrewsOZsolver
+from mdiisOZsolver import MDIISOZsolver
 try:
     from sundials4pyKinsolOZsolver import Sundials4pyKinsolOZsolver, AVAILABLE_LINEAR_SOLVERS
     from sundials4pyKinsolFPOZsolver import Sundials4pyKinsolFPOZsolver
@@ -53,8 +54,28 @@ except ImportError:
 # attribute, not a constructor argument).
 _BASE_SOLVER_CLASSES = {
     "Picard iteration": (PicardOZsolver, None),
-    "Anderson acceleration": (AndersonOZsolver, None),
+    #"Anderson acceleration" (andersonOZsolver.AndersonOZsolver) is
+    #DELIBERATELY NOT REGISTERED. The module is still present and importable;
+    #it is simply not offered, because it duplicates "scipy Anderson" in
+    #substance -- the same algorithm, one hand-written here and one from
+    #scipy -- and two entries for one method cost the user a choice they
+    #have no basis to make.
+    #
+    #IN FAIRNESS TO THE ONE REMOVED: measured at N = 1023 it was the FASTER
+    #of the two at high density (0.009 s against scipy's 0.013 s at
+    #phi = 0.52, 0.006 against 0.008 at 0.45), so this is a maintenance
+    #decision rather than a performance one. Single runs, so the margin may
+    #be noise; re-measure before reversing it.
     "scipy Anderson": (ScipyAndersonOZsolver, None),
+    #MDIIS is offered in its place. It is not a new class of method --
+    #Anderson mixing and Pulay's DIIS are algebraically the same thing for
+    #this problem -- but it adds explicit regularisation and history-depth
+    #control, and is the standard accelerator in the 3D-RISM literature.
+    #Measured competitive with scipy Anderson rather than superior: 0.003 s
+    #against 0.005 s at phi = 0.30, 0.011 against 0.013 at phi = 0.52. See
+    #mdiisOZsolver.py for why its default parameters are what they are; a
+    #poor delta makes it look broken rather than mistuned.
+    "MDIIS": (MDIISOZsolver, None),
     "scipy Newton-Krylov": (ScipyNewtonKrylovOZsolver, None),
     "Biggs-Andrews": (BiggsAndrewsOZsolver, None),
 }

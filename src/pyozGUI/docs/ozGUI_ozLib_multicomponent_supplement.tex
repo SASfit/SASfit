@@ -155,7 +155,7 @@ The changes to \code{oZfixpointOperator.py} and \code{oZsolver.py} are:
 Because every closure in \code{update\_c} is elementwise \code{numpy}, PY,
 HNC, RY, HMSA, Verlet, BPGG and the rest all become multicomponent as soon as
 the potential arrays carry pair indices. Closures requiring an auxiliary
-reference solve (RHNC, MHNC, RMSA, ZSEP, EuRah) remain one-component, as do those
+reference solve (RHNC, MHNC, RMSA, EuRah) remain one-component, as do those
 reading \code{repulsivePartOfP2Ppotential} (HMSA, VM, CJVM, BB, DH, CG,
 SMSA), whose split arrays are still 1-D.
 \end{remark}
@@ -181,7 +181,7 @@ Three conventions appear in this problem and confusing them is an
 order-of-magnitude error, so they are stated explicitly.
 
 \paragraph{D'Aguanno--Klein (number-fraction) form.} Used internally by the
-solver, following \cite{daguanno1991}:
+solver, following \cite{DAguannoKlein1991}:
 \begin{equation}
 S^{\mathrm{DAG}}_{ij}(q) = x_i\delta_{ij} + n\,x_i x_j\,\hat h_{ij}(q).
 \end{equation}
@@ -222,7 +222,7 @@ a silent factor-of-nine error.
 A continuous distribution $F(\sigma)$ must be reduced to $p$ classes. The
 naive choice of $p$ equally spaced diameters spanning
 $\langle\sigma\rangle\pm3s$ is what the existing Robertus code uses. Following
-\cite{daguanno1992} we instead impose
+\cite{DAguannoKlein1992} we instead impose
 \begin{equation}
 \sum_{i=1}^{p} x_i\,\sigma_i^{\,m} = \langle\sigma^m\rangle,
 \qquad m=0,1,\dots,2p-1,
@@ -264,7 +264,7 @@ $m$ & discrete & Schulz & \\
 
 \subsection{How many classes are needed?}
 
-\cite{daguanno1992} report that $p=3$ is indistinguishable from $p=5$ up to
+\cite{DAguannoKlein1992} report that $p=3$ is indistinguishable from $p=5$ up to
 $s_\sigma=0.3$. This was reproduced independently
 (Table~\ref{tab:pconv}): going from $p=1$ to $p=3$ changes $S^M$ by $0.54$,
 whereas $p=3\rightarrow5$ changes it by $0.0015$. Polydispersity is therefore
@@ -309,7 +309,7 @@ the contact region.
 
 \subsection{Charge-parameterised form}
 
-Following \cite{daguanno1992}, the pair potential is
+Following \cite{DAguannoKlein1992}, the pair potential is
 \begin{equation}
 \beta\varphi_{ij}(r) = A_iA_j\,\frac{e^{-\kappa r}}{r},\qquad r>\sigma_{ij},
 \qquad
@@ -335,7 +335,7 @@ $S(q)$ (see \S\ref{sec:traps}).
 \label{sec:charge}
 
 How the valence scales with size is genuinely unsettled, so it is a user
-input rather than a constant. \cite{daguanno1991} assume constant surface
+input rather than a constant. \cite{DAguannoKlein1991} assume constant surface
 charge density, $Z\propto\sigma^2$, and explicitly flag it as having ``little
 precise experimental information''. Charge-renormalisation saturation
 (Alexander \emph{et al.}) and electrophoresis on highly charged low-salt
@@ -417,7 +417,7 @@ exponential in \eqref{eq:msapot} must not be applied a second time
 \subsection{Closure}
 
 The RY closure is applied pairwise with a \emph{single shared} mixing
-function --- there is no $ij$ subscript on $f$ in \cite{daguanno1991}:
+function --- there is no $ij$ subscript on $f$ in \cite{DAguannoKlein1991}:
 \begin{equation}
 h_{ij}(r) = -1 + e^{-\beta\varphi_{ij}(r)}
   \left[1+\frac{e^{f(r)\gamma_{ij}(r)}-1}{f(r)}\right],
@@ -449,7 +449,7 @@ with the virial pressure
 \label{eq:virial}
 \end{equation}
 
-\paragraph{The contact term.} \cite{daguanno1991}'s equation for $\beta P$
+\paragraph{The contact term.} \cite{DAguannoKlein1991}'s equation for $\beta P$
 omits the second term of \eqref{eq:virial}, legitimately, because their
 macroions are so strongly charged that $g_{ij}(\sigma_{ij}^+)\approx0$. That
 is \emph{not} safe in general: this model has a genuine hard core and $K$ may
@@ -470,7 +470,7 @@ such in the code.
       does not arise.
 \item \textbf{cold-start each $\alpha$}. Warm-starting across qualitatively
       different $\alpha$ destabilises the search; warm-starting across the
-      $n\pm\Delta n$ perturbations is fine, and is what \cite{daguanno1991}
+      $n\pm\Delta n$ perturbations is fine, and is what \cite{DAguannoKlein1991}
       do, holding $\alpha$ fixed there because it varies slowly with $n$.
 \end{enumerate}
 
@@ -504,13 +504,13 @@ solution. This is a property of the closure, not a numerical failure.
 
 \subsection{Validation against the literature}
 
-The one-component limit reproduces Table~1 of \cite{daguanno1991}
+The one-component limit reproduces Table~1 of \cite{DAguannoKlein1991}
 (their test~3: $\beta\varphi(x)=(1000/x)e^{-0.95x}$, $n\sigma^3=0.01432$).
 The self-consistent $\alpha=0.3942$ gives Table~\ref{tab:dk}.
 
 \begin{table}[htbp]
 \centering
-\caption{One-component RY against \cite{daguanno1991} Table~1, test~3.}
+\caption{One-component RY against \cite{DAguannoKlein1991} Table~1, test~3.}
 \label{tab:dk}
 \begin{tabular}{lrrr}
 \toprule
@@ -748,7 +748,7 @@ OZ solves per trial value and is far too slow inside a fit. The plugin
 therefore takes $\alpha$ as a parameter; it should be determined once in the
 GUI (\S\ref{sec:alpha}) and then held fixed, which is justified because
 $\alpha$ varies slowly with density --- the same reasoning
-\cite{daguanno1991} use when holding it constant across their own
+\cite{DAguannoKlein1991} use when holding it constant across their own
 finite-difference density derivative.
 
 %======================================================================
@@ -1950,15 +1950,7 @@ volume fraction read with this bias in mind.
 
 \begin{enumerate}[nosep]
 \item Closures requiring an auxiliary reference solve (RHNC, MHNC, RMSA,
-      EuRah) remain one-component. ZSEP is excluded too, but for a different
-      reason: its exclusion is the PARAMETER COUNT, not a reference solve.
-      The one-component form carries three parameters; a mixture carries
-      $\alpha_{ij}, \phi_{ij}, \psi_{ij}$ per pair, so $3p(p+1)/2$ --- 45 at
-      five size classes, where the three-parameter search already misbehaves
-      at low density unless $\alpha$ is pinned. The mixture form exists
-      \cite{leemalijevsky2001} and the dimer chemical potentials it needs
-      are closed-form \cite{lee1992,wilsonlee2005}, so this is a port rather
-      than research --- just not a small one.
+      EuRah) remain one-component.
 \item Closures reading the repulsive/attractive potential split (HMSA, VM,
       CJVM, BB, DH, CG, SMSA) are not yet wired for the multicomponent
       potential; those arrays remain 1-D. PY, HNC, RY, Verlet and BPGG work.
@@ -1976,57 +1968,9 @@ volume fraction read with this bias in mind.
 \end{enumerate}
 
 %======================================================================
-\begin{comment}
-\begin{thebibliography}{9}
+%NO BIBLIOGRAPHY HERE ON PURPOSE. The master ozGUI_ozLib_report.tex
+%inputs this fragment and carries the single bibliography for both
+%parts. Adding one here printed the reference list twice, which is
+%why the original thebibliography block was inside a comment.
 
-\bibitem{daguanno1991}
-B.~D'Aguanno and R.~Klein,
-\emph{Structural effects of polydispersity in charged colloidal dispersions},
-J.~Chem.\ Soc.\ Faraday Trans.\ \textbf{87}, 379 (1991).
-
-\bibitem{daguanno1992}
-B.~D'Aguanno and R.~Klein,
-\emph{Integral-equation theory of polydisperse Yukawa systems},
-Phys.\ Rev.\ A \textbf{46}, 7652 (1992).
-
-\bibitem{rogersyoung1984}
-F.~J.~Rogers and D.~A.~Young,
-\emph{New, thermodynamically consistent, integral equation for simple
-fluids}, Phys.\ Rev.\ A \textbf{30}, 999 (1984).
-
-\bibitem{robertus1989}
-C.~Robertus, A.~P.~Philipse, J.~G.~H.~Joosten and Y.~K.~Levine,
-\emph{Solution of the Percus--Yevick approximation of the multicomponent
-adhesive spheres system applied to the small angle X-ray scattering from
-microemulsions}, J.~Chem.\ Phys.\ \textbf{90}, 4482 (1989).
-
-\bibitem{blumhoye1978}
-L.~Blum and J.~S.~H\o ye,
-\emph{Solution of the Ornstein--Zernike equation with Yukawa closure for a
-mixture}, J.~Stat.\ Phys.\ \textbf{19}, 317 (1978).
-
-\bibitem{blumarias2006}
-L.~Blum and M.~Arias,
-\emph{Structure of multi-component/multi-Yukawa mixtures},
-arXiv:cond-mat/0602477 (2006).
-
-\bibitem{wagner1991}
-N.~J.~Wagner, R.~Krause, A.~R.~Rennie, B.~D'Aguanno and J.~Goodwin,
-\emph{The microstructure of polydisperse, charged colloidal suspensions by
-light and neutron scattering}, J.~Chem.\ Phys.\ \textbf{95}, 494 (1991).
-
-\bibitem{rastogi1996}
-S.~R.~Rastogi, N.~J.~Wagner and S.~R.~Lustig,
-\emph{Rheology, self-diffusion, and microstructure of charged colloids under
-simple shear by massively parallel dynamic simulations},
-J.~Chem.\ Phys.\ \textbf{104}, 9249 (1996).
-
-\bibitem{lee1995}
-L.~L.~Lee,
-\emph{An accurate integral equation theory for hard spheres: role of the
-zero-separation theorems in the closure relation},
-J.~Chem.\ Phys.\ \textbf{103}, 9388 (1995).
-
-\end{thebibliography}
-\end{comment}
 \end{document}

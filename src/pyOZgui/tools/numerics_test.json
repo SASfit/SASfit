@@ -1,5 +1,4 @@
 {
-  "FAILURES": [],
   "S0_type1_firstOrder_phi0.3": {
     "detail": "3.666 % -> 0.924 % for a fourfold refinement, ratio 3.97 (want ~4; measured 3.96)",
     "pass": true
@@ -40,34 +39,6 @@
     "detail": "refused, measured slope -1.0000 (want -1.000 for 1/q)",
     "pass": true
   },
-  "dream_completes": {
-    "detail": "chi2_red=3.749393337149508e-07, 3697 evaluations, 0 failed",
-    "pass": true
-  },
-  "dream_correlationPresent": {
-    "detail": "present",
-    "pass": true
-  },
-  "dream_correlationShape": {
-    "detail": "(2, 2)",
-    "pass": true
-  },
-  "dream_correlationValid": {
-    "detail": "diagonal [1. 1.], max |off-diagonal| 0.0082",
-    "pass": true
-  },
-  "dream_parametersByLabel": {
-    "detail": "returned {'phi': np.float64(0.23728404050733837), 'srel': np.float64(0.06353948761585182)}; bumps order was ['phi', 'srel']",
-    "pass": true
-  },
-  "dream_uncertaintyPositive": {
-    "detail": "{'phi': 0.10014493383973445, 'srel': 0.0858311804620184}",
-    "pass": true
-  },
-  "dream_uncertaintyPresent": {
-    "detail": "{'phi': 0.10014493383973445, 'srel': 0.0858311804620184}",
-    "pass": true
-  },
   "highQ_tendsToIdentity": {
     "detail": "max deviation from the identity 0.00e+00",
     "pass": true
@@ -89,15 +60,15 @@
     "pass": true
   },
   "lowQ_continuous_phi0.1": {
-    "detail": "jump across q_0 is 3.260e-05 absolute, 0.0072 % relative (a least-squares fit does not interpolate q_0)",
+    "detail": "jump across q_0 is 3.257e-05 absolute, 0.0071 % relative (a least-squares fit does not interpolate q_0)",
     "pass": true
   },
   "lowQ_continuous_phi0.3": {
-    "detail": "jump across q_0 is 2.691e-05 absolute, 0.0287 % relative (a least-squares fit does not interpolate q_0)",
+    "detail": "jump across q_0 is 2.690e-05 absolute, 0.0287 % relative (a least-squares fit does not interpolate q_0)",
     "pass": true
   },
   "lowQ_continuous_phi0.4": {
-    "detail": "jump across q_0 is 1.146e-05 absolute, 0.0287 % relative (a least-squares fit does not interpolate q_0)",
+    "detail": "jump across q_0 is 1.145e-05 absolute, 0.0286 % relative (a least-squares fit does not interpolate q_0)",
     "pass": true
   },
   "lowQ_extrapolatesToAnalyticS0_phi0.1": {

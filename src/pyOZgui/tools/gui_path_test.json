@@ -2,21 +2,21 @@
   "FAILURES": [],
   "build": "ok",
   "computeDataSmeared": {
-    "chi2": 233153072546.3593,
+    "chi2": 233212226141.9403,
     "error": null,
-    "seconds": 0.16,
+    "seconds": 0.22,
     "solves": 2
   },
   "computeDataUnsmeared": {
-    "chi2": 253321905263.97446,
+    "chi2": 253431715204.43143,
     "error": null,
-    "seconds": 0.17,
+    "seconds": 0.18,
     "solves": 2
   },
   "computeNoData": {
     "error": null,
     "finite": true,
-    "seconds": 0.14,
+    "seconds": 0.18,
     "solves": 2
   },
   "controlsReachModel": {
@@ -38,8 +38,8 @@
   ],
   "fitThenCompute": {
     "agree": true,
-    "chi2Compute": 2.8234970938489385,
-    "chi2Fit": 2.8234970938516586,
+    "chi2Compute": 2.827175930396346,
+    "chi2Fit": 2.827175930400144,
     "error": null
   },
   "variants": {

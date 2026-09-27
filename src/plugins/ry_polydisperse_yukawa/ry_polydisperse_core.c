@@ -711,7 +711,7 @@ double ryp_Sij(const ryp_system *sys, int i, int j, int k)
 double ryp_SM(const ryp_system *sys, double q)
 {
     int k;
-    double t;
+    double t, p0, p1, p2, p3;
     if (!sys || !sys->solved) return 1.0;
     if (q <= sys->qgrid[0]) return sys->SM[0];
     if (q >= sys->qgrid[sys->N - 1]) return 1.0;   /* S -> 1 at large q */
@@ -719,7 +719,48 @@ double ryp_SM(const ryp_system *sys, double q)
     if (k < 0) k = 0;
     if (k > sys->N - 2) k = sys->N - 2;
     t = (q - sys->qgrid[k]) / (sys->qgrid[k + 1] - sys->qgrid[k]);
-    return (1.0 - t) * sys->SM[k] + t * sys->SM[k + 1];
+
+    /* CUBIC (Catmull-Rom), not linear.
+     *
+     * Linear interpolation on this grid is wrong by about 1e-3 between
+     * nodes -- measured on a hard-sphere S(q) at phi = 0.40 with the
+     * standard 4095-point grid, where dq = 0.0767 in units of 1/sigma.
+     * That is the same size as the discretisation errors this package
+     * works to quantify, so the interpolation artefact sat in exactly the
+     * range where the physics is judged. Cubic drops it by two orders, and
+     * the gap widens as the grid is refined: linear is O(dq^2), cubic
+     * O(dq^4).
+     *
+     * The Python side of this model uses splines.CatmullRom for the same
+     * reason (rypolydisperseWrapper.S_matrix, and S_partials in
+     * generic_polydisperse_sas). This four-point form was verified against
+     * that library to 4e-16 -- identical -- before being written here,
+     * which matters because the two routes are supposed to agree and a
+     * different interpolant would make them differ for a reason that has
+     * nothing to do with the physics.
+     *
+     * UNIFORM GRID ASSUMED: qgrid[k] = dq*(k+1), which is what the DST
+     * produces. The coefficients below are the uniform-parameterisation
+     * Catmull-Rom; on a non-uniform grid they are silently wrong rather
+     * than merely inaccurate.
+     *
+     * The two end intervals fall back to linear, where the four-point
+     * stencil would read outside the array. That is harmless here: the
+     * ends are q -> 0, where S is smooth and flat, and q -> q_max, where
+     * it has already reached 1. */
+    if (k < 1 || k > sys->N - 3)
+        return (1.0 - t) * sys->SM[k] + t * sys->SM[k + 1];
+
+    p0 = sys->SM[k - 1];
+    p1 = sys->SM[k];
+    p2 = sys->SM[k + 1];
+    p3 = sys->SM[k + 2];
+    /* Horner form: fewer operations, and it returns p1 and p2 exactly at
+     * t = 0 and t = 1, which a rearranged version need not do in floating
+     * point. */
+    return p1 + 0.5 * t * ((p2 - p0)
+                + t * ((2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3)
+                + t * (3.0 * (p1 - p2) + p3 - p0)));
 }
 
 

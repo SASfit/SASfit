@@ -13,8 +13,15 @@ distribution on the bottom.
 """
 from __future__ import annotations
 
+import os
 import sys
 import traceback
+
+# Allow running this file directly (`python gui/app.py`) as well as via
+# `python -m gui.app` from the project root -- when run as a plain script,
+# Python puts only gui/'s own directory on sys.path, not the project root
+# where sasfit_inversion/ actually lives, so add it explicitly.
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 import numpy as np
 from PySide6.QtWidgets import (

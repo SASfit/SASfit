@@ -592,8 +592,13 @@ class PolydisperseFit:
         #itself refined away from it -- leaving the potential inconsistent
         #with the form factor and no sign that anything was wrong.
         self.linkedArg = linkedArg
-        #solverClass: the OZ solver to use, or None for the package default
-        #(Picard). Previously there was NO such parameter, so the fitter
+        #solverClass: the OZ solver to use, or None for the package default,
+        #which is now whatever ozLib.SOLVER_CLASSES lists first -- SUNDIALS
+        #KIN_FP where SUNDIALS is installed, scipy Anderson otherwise. It
+        #used to be Picard, hardcoded in GenericPolydisperseSAS._makeSolver,
+        #which meant a fit constructed directly rather than through the GUI
+        #silently ran on the slowest of the nine solvers -- and one that
+        #diverges above phi = 0.42. Previously there was NO such parameter, so the fitter
         #always used the default however the interface was set: the GUI read
         #the user's choice, passed it to the calculate path, and silently
         #dropped it here. The symptom was a solver that appeared to fall back

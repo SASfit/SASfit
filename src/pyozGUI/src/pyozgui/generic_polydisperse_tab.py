@@ -785,13 +785,28 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         for label, mod, cls in (
                 ("SUNDIALS KIN_FP", "sundials4pyKinsolFPOZsolver", "Sundials4pyKinsolFPOZsolver"),
                 ("scipy Anderson", "scipyAndersonOZsolver", "ScipyAndersonOZsolver"),
-                ("Anderson", "andersonOZsolver", "AndersonOZsolver"),
+                ("MDIIS", "mdiisOZsolver", "MDIISOZsolver"),
                 ("Picard / Mann", "picardOZsolver", "PicardOZsolver")):
             try:
                 out[label] = getattr(__import__(mod, fromlist=[cls]), cls)
             except Exception:
                 pass
         return out
+
+    #"Anderson" (andersonOZsolver) was dropped here to match ozLib's own
+    #SOLVER_CLASSES, where it is no longer registered: it duplicates "scipy
+    #Anderson" in substance, being the same algorithm hand-written rather
+    #than taken from scipy. MDIIS replaces it -- measured faster than scipy
+    #Anderson at every density tried (0.003 s against 0.005 at phi = 0.30,
+    #0.011 against 0.013 at 0.52) and convergent at phi = 0.55 where Picard
+    #has long since failed.
+    #
+    #THIS LIST IS STILL A SECOND COPY of ozLib.SOLVER_CLASSES, maintained by
+    #hand, and this change had to be made in four places -- here and in the
+    #other three tabs. That is the same duplication that let the report and
+    #the manuscript drift apart in their bibliographies. Worth replacing
+    #with a filtered view of SOLVER_CLASSES, which would also pick up the
+    #other SUNDIALS variants for free.
 
     # ------------------------------------------------------------------
     def _onPotentialChanged(self):

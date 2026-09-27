@@ -238,6 +238,81 @@
   publisher = {American Physical Society (APS)},
 }
 
+@Article{Lee1992,
+  author  = {Lee, Lloyd L.},
+  title   = {Chemical potentials based on the molecular distribution
+             functions. An exact diagrammatical representation and the star
+             function},
+  journal = {J. Chem. Phys.},
+  year    = {1992},
+  volume  = {97},
+  number  = {11},
+  pages   = {8606},
+  doi     = {10.1063/1.463379},
+  note    = {The direct chemical-potential formula, requiring NEITHER
+             temperature NOR density integration. This is what makes the
+             mixture zero-separation theorems tractable: the dimer chemical
+             potentials they contain are evaluated from it in closed form},
+}
+
+@Article{LeeMalijevsky2001,
+  author  = {Lee, Lloyd L. and Malijevsk{\'y}, Anatol},
+  title   = {Structures and properties of hard sphere mixtures based on a
+             self-consistent integral equation},
+  journal = {J. Chem. Phys.},
+  year    = {2001},
+  volume  = {114},
+  number  = {16},
+  pages   = {7109--7117},
+  doi     = {10.1063/1.1359182},
+  note    = {The mixture form of ZSEP, and the reason this package does not
+             offer that closure for a size distribution. Nine parameters
+             ($\alpha_{ij}$, $\phi_{ij}$, $\psi_{ij}$) against nine
+             consistency conditions for a BINARY mixture -- formally
+             determined, but the authors reduce the search by setting
+             $\alpha_{SB} = \alpha_{SS} = 1$, noting a high-dimensional
+             search is "extremely difficult and time consuming". For $p$
+             size classes the count is $3p(p+1)/2$: 45 at five classes.
+             Also the source of the useful check that $\psi = 0$,
+             $\phi = 1$, $\alpha = 0.8$ recovers the Verlet closure},
+}
+
+@Article{WilsonLee2005,
+  author  = {Wilson, David S. and Lee, Lloyd L.},
+  title   = {Chemical potentials and phase equilibria of {L}ennard-{J}ones
+             mixtures: A self-consistent integral equation approach},
+  journal = {J. Chem. Phys.},
+  year    = {2005},
+  volume  = {123},
+  number  = {4},
+  pages   = {044512},
+  doi     = {10.1063/1.1979490},
+  note    = {Applies ZSEP to Lennard-Jones MIXTURES. Two points matter for
+             extending ZSEP to a size distribution: the dimer chemical
+             potentials in the zero-separation theorems come from Lee (1992)
+             without integration, and the dimer-dimer pair correlations are
+             NOT needed for the thermodynamics and are simply omitted -- for
+             a binary system that drops 6 of 15 pair equations},
+}
+
+@Misc{HlushakKalyuzhnyi2008,
+  author = {Hlushak, S. P. and Kalyuzhnyi, Yu. V.},
+  title  = {Thermodynamics of the multi-component dimerizing hard-sphere
+            {Y}ukawa mixture in the associative mean spherical
+            approximation},
+  year   = {2008},
+  eprint = {0805.0688},
+  note   = {READ BEFORE CITING: this is the ASSOCIATING (sticky-site) case,
+            a two-density Ornstein-Zernike theory with a mass-action law,
+            not a plain polydisperse Yukawa fluid. Its abstract mentions
+            "the limiting case of polydisperse fluids", which is true of
+            the associating model and was misread here as a general
+            polydisperse Yukawa reference. Its Eq. (37) does reduce the
+            multicomponent problem to a quadratic in Gamma, but only for
+            factorized coefficients, and the non-associating solution it
+            builds on is Ginoza (1986) and Blum-Hoye},
+}
+
 @Article{Ginoza1986,
   author  = {Ginoza, Mitsuaki},
   journal = {J. Phys. Soc. Jpn.},
@@ -625,7 +700,7 @@
   year      = {2005},
   issn      = {1089-7690},
   month     = Oct,
-  note      = {Cite this where a closure's no-solution domain is discussed. It establishes that such domains are a KNOWN and accepted property rather than an implementation failure -- the abstract calls the wide no-solution region "the major limitation of the RHNC closure" for asymmetric mixtures -- and proposes a modified closure specifically to shrink it. Directly relevant to the Carbajal-Tinoco fold documented in generic_polydisperse_tab.md},
+  note      = {Cite this where a closure's no-solution domain is discussed. It establishes that such domains are a KNOWN and accepted property rather than an implementation failure -- the abstract calls the wide no-solution region "the major limitation of the RHNC closure" for asymmetric mixtures -- and proposes a modified closure specifically to shrink it. Directly relevant to the Carbajal-Tinoco fold documented in \code{generic\_polydisperse\_tab.md}},
   number    = {17},
   pages     = {174508},
   volume    = {123},
@@ -804,7 +879,7 @@ deleted so the pair can be re-checked.}
 }
 
 @Article{ballone1986,
-  author  = {P. Ballone, G. Pastore, G. Galli, and D. Gazzillo},
+  author  = {P. Ballone and G. Pastore and G. Galli and D. Gazzillo},
   title   = {Additive and non-additive hard sphere mixtures: Monte Carlo simulation and integral equation results},
   journal = {Mol. Phys},
   volume  = {59},
@@ -874,7 +949,7 @@ deleted so the pair can be re-checked.}
 }
 
 @Article{likos1998,
-  author  = {C. N. Likos, M. Watzlawek, and H. L\"owen},
+  author  = {C. N. Likos and M. Watzlawek and H. L\"owen},
   title   = {Freezing and clustering transitions for penetrable spheres},
   journal = {Phys. Rev. E},
   volume  = {58},
@@ -883,7 +958,7 @@ deleted so the pair can be re-checked.}
 }
 
 @Article{fernaud2000,
-  author  = {M. J. Fernaud, E. Lomba, and L. L. Lee},
+  author  = {M. J. Fernaud and E. Lomba and L. L. Lee},
   title   = {A self-consistent integral equation study of the structure and thermodynamics of the penetrable sphere fluid},
   journal = {J. Chem. Phys},
   volume  = {112},

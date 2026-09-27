@@ -122,8 +122,24 @@ class OZLiquidStructure:
         sigmaReduced = sigma/self._L
 
         if solverClass is None:
-            from picardOZsolver import PicardOZsolver
-            solverClass = PicardOZsolver
+            #Same reasoning as GenericPolydisperseSAS._makeSolver: read
+            #ozLib's own registry rather than hardcoding a solver, so this
+            #and ozLib.solve() cannot drift apart. The hardcoded fallback was
+            #PicardOZsolver -- the slowest of the nine available and one that
+            #diverges above phi = 0.42 -- while ozLib has defaulted to
+            #SUNDIALS KIN_FP for some time.
+            #
+            #This route is the MIXTURE VALIDATION TAB's, so its comparisons
+            #against the analytic references were being made with Picard
+            #unless a solver was picked explicitly. That does not change a
+            #converged answer, but it does change which state points converge
+            #at all -- and the tab exists precisely to test the hard ones.
+            try:
+                import ozLib
+                solverClass = next(iter(ozLib.SOLVER_CLASSES.values()))[0]
+            except Exception:
+                from picardOZsolver import PicardOZsolver
+                solverClass = PicardOZsolver
         sol = solverClass(port=0, numberOfRadialSamplingPoints=gridN,
                           hardSphereDiameterInPoints=pointsPerSigma)
         #Set BEFORE the potential: getrArray() depends on transformType, so a
