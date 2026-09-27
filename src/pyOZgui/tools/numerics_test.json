@@ -1,4 +1,5 @@
 {
+  "FAILURES": [],
   "S0_type1_firstOrder_phi0.3": {
     "detail": "3.666 % -> 0.924 % for a fourfold refinement, ratio 3.97 (want ~4; measured 3.96)",
     "pass": true
@@ -37,6 +38,34 @@
   },
   "divergence_refused": {
     "detail": "refused, measured slope -1.0000 (want -1.000 for 1/q)",
+    "pass": true
+  },
+  "dream_completes": {
+    "detail": "chi2_red=2.0036936578746119e-07, 3697 evaluations, 0 failed",
+    "pass": true
+  },
+  "dream_correlationPresent": {
+    "detail": "present",
+    "pass": true
+  },
+  "dream_correlationShape": {
+    "detail": "(2, 2)",
+    "pass": true
+  },
+  "dream_correlationValid": {
+    "detail": "diagonal [1. 1.], max |off-diagonal| 0.0103",
+    "pass": true
+  },
+  "dream_parametersByLabel": {
+    "detail": "returned {'phi': np.float64(0.23781302551714378), 'srel': np.float64(0.06325606134289358)}; bumps order was ['phi', 'srel']",
+    "pass": true
+  },
+  "dream_uncertaintyPositive": {
+    "detail": "{'phi': 0.09755532078311734, 'srel': 0.08329892426254257}",
+    "pass": true
+  },
+  "dream_uncertaintyPresent": {
+    "detail": "{'phi': 0.09755532078311734, 'srel': 0.08329892426254257}",
     "pass": true
   },
   "highQ_tendsToIdentity": {

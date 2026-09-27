@@ -521,7 +521,7 @@ class PolydisperseFit:
         #solution is an excellent guess for the next. Measured on eight
         #nearby volume fractions with Anderson on one component: 1.29x
         #faster. The gain grows with the cost of a single solve -- at seven
-        #size classes a solve is 2.5 s rather than 0.015 s -- and grows again
+        #size classes a solve is 0.52 s rather than 0.065 s -- and grows again
         #for a population fitter making thousands of nearby evaluations.
         #
         #WHY IT MAY ALSO BE MORE CORRECT. The closure equations admit several
@@ -909,10 +909,19 @@ class PolydisperseFit:
 
         WHY THIS RATHER THAN A GLOBAL OPTIMISER. A genetic algorithm or
         differential evolution needs thousands of evaluations, and here one
-        evaluation is a full OZ solve -- 2.5 s at seven size classes, so a
-        modest population run is several hours. Ten local fits cost about
-        300 evaluations, roughly fifteen minutes, and answer the question
-        that actually matters: is the minimum we found the only one?
+        evaluation is a full OZ solve -- 0.52 s at five size classes and
+        1.30 s at seven. A differential-evolution run of some two thousand
+        evaluations is therefore about 17 minutes at five classes and 43 at
+        seven. Ten local fits cost about 300 evaluations, under three
+        minutes, and answer the question that actually matters: is the
+        minimum we found the only one?
+
+        (Both figures used to be quoted four times larger -- "several hours"
+        against "fifteen minutes" -- from measurements made when this class
+        silently defaulted to Picard, the slowest of the nine solvers, rather
+        than to the SUNDIALS fixed-point solver ozLib has long preferred. The
+        conclusion below is unchanged, but the margin is narrower than it
+        was: a global search is no longer obviously unaffordable.)
 
         That question is not academic for this model. A square-well epsilon
         is repulsive when positive and attractive when negative, and a local
@@ -1177,7 +1186,8 @@ BUMPS_METHODS = ("dream", "de", "amoeba", "newton", "lm", "pt")
 #
 #NLopt is used ONLY for this. Its algorithm portfolio is not the attraction --
 #bumps, multi-start and deflation already answer the global-search question --
-#and at 2.5 s per evaluation its population methods are out of reach anyway.
+#and at 0.52 s per evaluation at five size classes its population methods
+#cost 17 minutes rather than the several hours this note used to assume.
 #AUGLAG is the right wrapper: it adds an augmented-Lagrangian layer around an
 #inner optimiser, so an evaluation-frugal derivative-free method can be kept.
 

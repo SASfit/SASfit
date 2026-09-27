@@ -714,8 +714,27 @@ simply looked like a poor optimiser.
    correlation is 0.06 where phi and srel would be expected to correlate
    strongly. Those are the right outputs for a zero-noise fit and say nothing
    about whether the posterior is MEANINGFUL. One run on real data with real
-   error bars is still owed -- at 2.5 s per evaluation and some ten thousand
-   evaluations that is an overnight job, so reduce the size classes to 3.
+   error bars is still owed -- and it is a far smaller job than this section
+   used to claim. At 0.52 s per evaluation with five size classes, ten
+   thousand evaluations is about an hour and a half, not a night. The old
+   figure of 2.5 s per evaluation was measured when
+   `GenericPolydisperseSAS` still defaulted to Picard, the slowest of the
+   nine solvers, while `ozLib.solve()` had long defaulted to SUNDIALS
+   KIN_FP; a fit constructed directly silently got the weak one. With that
+   corrected the same benchmark fit takes 6.7 s rather than 19.6 s for an
+   unchanged chi-squared of 0.7468.
+
+   | classes | per evaluation | amoeba (~200) | de (~2000) | dream (~10000) |
+   |---|---|---|---|---|
+   | 5 | 0.52 s | 2 min | 17 min | 1.5 h |
+   | 7 | 1.30 s | 4 min | 43 min | 3.6 h |
+
+   Cost grows as roughly p^2.2 in the number of classes (0.065 s at one,
+   2.67 s at ten), so reducing the classes remains much the cheapest way to
+   make a long search viable -- but the search was never as expensive as the
+   old numbers suggested, and that mattered: those figures exist to help a
+   user decide whether a global search is affordable, and being four times
+   pessimistic could rule out something quite practical.
 4. Resolution smearing **is** exposed in the tab: `Load data...` reads an
    optional 4th dQ column and enables an "apply Q resolution (dQ column)"
    checkbox, ticked by default when the column is present. Verified live:

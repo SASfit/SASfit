@@ -570,15 +570,27 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #"scipy least_squares" is the default and right for routine work: a
         #trust-region Levenberg-Marquardt converges in ~30 model evaluations.
         #The bumps methods evaluate the model FAR more often, and each
-        #evaluation here is a full OZ solve -- 0.05 s for one component but
-        #2.5 s at seven size classes. Measured on a small test problem,
-        #amoeba took 79 s where least_squares took about one second.
+        #evaluation here is a full OZ solve -- 0.065 s for one component,
+        #0.52 s at five size classes, 1.30 s at seven.
         #
-        #Rough guide at 2.5 s per evaluation:
-        #    least_squares  ~30 evaluations   ~1 minute
-        #    amoeba         ~200              ~8 minutes
-        #    de             ~2000             ~1.5 hours
-        #    dream          ~10000+           ~7 hours
+        #Rough guide, at five classes and seven:
+        #    least_squares  ~30 evaluations    ~15 s      ~40 s
+        #    amoeba         ~200               ~2 min     ~4 min
+        #    de             ~2000              ~17 min    ~43 min
+        #    dream          ~10000+            ~1.5 h     ~3.6 h
+        #
+        #THESE ARE FOUR TIMES SMALLER than the figures this comment used to
+        #carry (2.5 s per evaluation, de ~1.5 hours, dream ~7 hours). Those
+        #were measured when GenericPolydisperseSAS still defaulted to Picard,
+        #the slowest of the nine solvers and one that diverges above
+        #phi = 0.42, while ozLib.solve() had long defaulted to SUNDIALS
+        #KIN_FP -- a fit constructed directly silently got the weak one. The
+        #benchmark fit now takes 6.7 s rather than 19.6 s for an unchanged
+        #chi-squared.
+        #
+        #Worth correcting rather than leaving: these numbers exist so a user
+        #can judge whether a global search is affordable, and a fourfold
+        #overestimate could rule out something quite practical.
         #
         #So these are not alternatives for everyday fitting. What they ARE
         #for: `dream` samples a posterior and returns a correlation matrix,
@@ -619,7 +631,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         #instead of starting from zero.
         #
         #Faster -- measured 1.29x on one component, and more at seven size
-        #classes where a single solve costs 2.5 s rather than 0.015 s. It
+        #classes where a single solve costs 1.30 s rather than 0.065 s. It
         #also keeps the fit on ONE branch of the closure equations, which
         #makes the residual smooth in the parameters; a cold start can land
         #on a different branch between adjacent iterations.
