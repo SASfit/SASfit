@@ -187,19 +187,6 @@ makes the result better near contact and worse at low Q, and a convergence
 test done that way measures nothing. Scale both together. This mistake has
 been made twice in this project and caught both times only by a plot.
 
-**Every precision claim in this documentation was checked against that rule.**
-The transform timings and accuracies, the first-order convergence of type 1,
-the stability of the low-q extrapolation: all compare grids at
-r_max = 40.95–40.96 σ, varying only the density. The one comparison that does
-vary the range — 41 σ to 655 σ at fixed resolution, which changed S(0) in the
-sixth decimal — is described as such, and it is what established that the
-type-1 error is a grid-alignment effect rather than truncation.
-
-When writing a new comparison, pair `bestGridSize(N, transformType)` with a
-proportionally scaled `pointsPerSigma` and the range stays fixed without
-anyone having to remember it. Print `N/pointsPerSigma` if in doubt: it takes
-a second and it is the check that would have caught both earlier mistakes.
-
 **Grid size depends on the transform type**, and the difference is large:
 
 | N | DST-I (type 1) | DST-IV (type 4) |
@@ -218,40 +205,6 @@ some time, which is how the rule was found.
 at the same grid, and faster on a power-of-two grid. It is **correct only for
 one size class**: it requires every pair core to fall between grid points,
 which cannot be arranged for a mixture because the σ_ij are irrational.
-
-**How much that costs, measured absolutely.** Percus–Yevick hard spheres have
-a closed form for the compressibility, S(0) = (1−φ)⁴/(1+2φ)², which is the
-only exact answer available anywhere in this package. Against it:
-
-| φ | type 1, pps=100 | type 1, pps=400 | type 4, pps=100 |
-|---|---|---|---|
-| 0.30 | 3.67% | 0.92% | **0.015%** |
-| 0.40 | 5.27% | 1.33% | **0.036%** |
-
-The cause is where the discontinuity lands. A DST-I places nodes at (n+1)Δr,
-so the hard core at r = σ falls **on** a node and is carried by a point that
-is neither inside nor outside; the excluded volume is then wrong at first
-order. A DST-IV places them at (n+½)Δr, the core falls **between** points,
-and the step is resolved to second order.
-
-Two things make this worth knowing rather than filing under "type 4 is
-better". The error is **independent of the real-space range** — extending
-r_max from 41σ to 655σ changed S(0) in the sixth decimal — so the usual
-instinct of giving the solver more room does nothing. And refining the
-resolution *does* reduce it, by a clean factor of 3.96 per fourfold step, so
-a convergence study sees orderly first-order behaviour and concludes the
-method is working. It is, slowly, towards an answer whose leading error is
-set by grid alignment.
-
-S(0) is the isothermal compressibility, so this is a systematic bias in
-exactly the quantity the volume fraction controls: **a fit absorbs it by
-moving φ**, and the denser the sample the more it moves. For one component,
-use type 4. For a mixture there is no such option, and a dense polydisperse
-fit should use the finest affordable resolution with its fitted volume
-fraction read accordingly.
-
-`tools/numerics_test.py` asserts all of this, and
-`tools/validation_table_test.py` reports it per transform and per resolution.
 
 ---
 

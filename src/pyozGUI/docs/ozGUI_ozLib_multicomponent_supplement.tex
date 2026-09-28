@@ -1570,6 +1570,28 @@ converged. It now tests the increment, and exposes a \code{converged}
 attribute that defaults to false, since exhausting the iteration limit
 previously returned the last iterate with nothing a caller could check.
 
+\paragraph{The \code{converged} attribute is now universal, and is not a
+correctness check.} It was for a long time set only by
+\code{Picard iteration}; every other solver left it unset, so
+\code{getattr(solver, "converged", None)} returned \code{None} --- which a
+caller cannot distinguish from ``ran and did not converge''. It is now
+declared in \code{OZsolver.\_\_init\_\_}, defaulting to false so that a
+solver which forgets to set it reports failure rather than a success it never
+established, and every one of the nine sets it.
+
+That makes the table above sharper rather than safer, which is the point
+worth taking from it. Re-running \code{tools/residual\_check.py} with the
+flag in place, all four Newton--Krylov entries on the Lennard-Jones row now
+report \code{converged = True} AND \code{is\_a\_fixed\_point = True} AND a
+residual of $10^{-13}$, at $\min S(Q) \approx -38$. Every question of the
+form ``did it converge?'' answers yes. Only the $\min S(Q) \ge 0$ screen
+separates $g_{\max} = 2.1636$ from $g_{\max} = 1.2214$.
+
+So the flag says the ITERATION met its tolerance, not that the answer is
+physical, and the two checks are independent: a converged solve can be
+nonsense, and the only entry the flag catches by itself is the Picard failure
+on BPGG, where it correctly reads false against a residual of $19$.
+
 Two practical consequences. First, recompute the residual after every solve;
 it costs one operator evaluation and is the only thing that distinguishes the
 two rows above. Second, when using one solver to verify another, note that

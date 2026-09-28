@@ -59,6 +59,11 @@ class ScipyAndersonOZsolver(OZsolver):
       except Exception as inst:
           print(type(inst)) #Typically interrupt or non-convergence
           return
+      #Reaching here means scipy's anderson() returned without raising, so
+      #the iteration met its tolerance. Setting the base class's flag is what
+      #lets a caller distinguish this from a failure -- see oZsolver.__init__
+      #for why that was worth making universal.
+      self.converged = True
       print("scipy Anderson converged after" , self.iterationStep, "steps")
       #As a side effect, we calculate other intersting physical quantities based on the found fixpoint solution
       self.derivePhysicalQuantitiesFromFixpoint(x_fp)

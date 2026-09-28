@@ -25,6 +25,8 @@ class ScipyNewtonKrylovOZsolver(OZsolver):
     #implement the abstract method such that this class can be instantiated
     def solve(self):
       x_fp = newton_krylov(self.rootOperator, self.x_0, maxiter = self.numberOfIterations, verbose=0, x_rtol=self.convergenceCriterion, method='lgmres', callback=self.iterationCounter)
+      #See oZsolver.__init__ for why every solver sets this.
+      self.converged = True
       print("scipy Newton Krylov converged after" , self.iterationStep, "steps")
       #As a side effect, we calculate other intersting physical quantities based on the found fixpoint solution
       self.derivePhysicalQuantitiesFromFixpoint(x_fp)

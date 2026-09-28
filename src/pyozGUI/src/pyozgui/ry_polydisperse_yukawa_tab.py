@@ -60,9 +60,20 @@ def _solverChoices():
         #MDIIS in place of the hand-written "Anderson", matching ozLib's own
         #SOLVER_CLASSES: that one duplicated "scipy Anderson" -- the same
         #algorithm, hand-written rather than from scipy -- while MDIIS adds
-        #explicit regularisation and history control. Measured faster than
-        #scipy Anderson at every density tried, and convergent at phi = 0.55
-        #where Picard has long since failed.
+        #explicit regularisation and history control.
+        #
+        #NOT A SPEED RECOMMENDATION. Benchmarked on the real grid it is third
+        #of nine at 0.0096 s, behind SUNDIALS KIN_FP (0.0049) and scipy
+        #Anderson (0.0077), and it FAILS at phi = 0.58 where both of those
+        #converge. An earlier note here claimed it was faster than scipy
+        #Anderson at every density tried; that came from a sandbox
+        #measurement at a quarter the grid size with SUNDIALS absent, and was
+        #wrong in the flattering direction.
+        #
+        #Its place is as the alternative to try when scipy Anderson stalls on
+        #an installation WITHOUT SUNDIALS -- scipy Anderson's iteration count
+        #swings erratically with density (28, 116, 40, 179) where this one
+        #rises smoothly, and at phi = 0.52 it is the better of the two.
         from mdiisOZsolver import MDIISOZsolver
         choices["MDIIS"] = MDIISOZsolver
     except Exception:

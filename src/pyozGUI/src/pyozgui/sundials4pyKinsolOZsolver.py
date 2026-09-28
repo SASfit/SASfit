@@ -148,6 +148,18 @@ class Sundials4pyKinsolOZsolver(OZsolver):
           return
 
       err, nfe = kinsol.KINGetNumFuncEvals(kin_mem)
+      #See oZsolver.__init__ for why every solver sets this. The KINSOL return
+      #flag was already checked above, so reaching here means success.
+      #
+      #IT SAYS THE ITERATION CONVERGED, NOT THAT THE ANSWER IS PHYSICAL, and
+      #this class is the reason that distinction is worth labouring:
+      #tools/residual_check.py finds all three linear-solver variants of this
+      #solver converging to a residual of 1e-13 at min S(Q) = -38.96 on a
+      #Lennard-Jones case where every fixed-point solver finds
+      #g_max = 2.1636 with min S(Q) = +0.21. Genuine fixed points, on a
+      #branch with negative compressibility. The flag will read True for all
+      #of them; the min S(Q) >= 0 screen is what catches it.
+      self.converged = True
       print("sundials4py KINSOL (" + self.linearSolver + ") converged after", nfe, "function evaluations")
 
       x_fp = np.array(core.N_VGetArrayPointer(u), copy=True)

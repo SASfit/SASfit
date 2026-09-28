@@ -124,6 +124,11 @@ class BiggsAndrewsOZsolver(OZsolver):
       if n >= self.numberOfIterations:
           print("Biggs-Andrews did not converge after", self.numberOfIterations, "steps")
       else:
+          #See oZsolver.__init__ for why every solver sets this. The two
+          #branches were already distinguished here for the printout; the
+          #flag simply makes the same information reachable by a caller
+          #rather than only by a human reading stdout.
+          self.converged = True
           print("Biggs-Andrews converged after", n, "steps")
 
       self.derivePhysicalQuantitiesFromFixpoint(xn)

@@ -336,6 +336,15 @@ def main():
             c2com = None if res is None else getattr(res, "chi2", None)
             results["fitThenCompute"] = dict(
                 chi2Fit=c2fit, chi2Compute=c2com,
+                #RECORD THE FITTED PARAMETERS, not just phi in the error
+                #text. When this check failed with "produced no fixpoint at
+                #phi=0.5326", phi turned out to be reachable by every solver
+                #tried -- so the cause was one of the OTHER fitted values,
+                #and the record did not say what they were. A failure that
+                #cannot be reproduced from its own output is most of a
+                #debugging session wasted.
+                fittedParameters={k: float(v)
+                                  for k, v in fit["parameters"].items()},
                 error=None if err is None
                 else f"{type(err[0]).__name__}: {err[0]}",
                 #They are computed with the same degrees of freedom, so they

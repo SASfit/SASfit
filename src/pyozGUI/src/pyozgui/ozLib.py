@@ -34,7 +34,10 @@ import numpy as np
 
 from oZsolver import OZsolver
 from picardOZsolver import PicardOZsolver
-from andersonOZsolver import AndersonOZsolver
+#andersonOZsolver is no longer imported: "Anderson acceleration" was
+#deregistered below as a duplicate of "scipy Anderson", and the module has
+#been moved to _obsolete/. Restoring it means restoring the file, this
+#import, and the SOLVER_CLASSES entry together.
 from scipyAndersonOZsolver import ScipyAndersonOZsolver
 from scipyNewtonKrylovOZsolver import ScipyNewtonKrylovOZsolver
 from biggsAndrewsOZsolver import BiggsAndrewsOZsolver
@@ -71,10 +74,23 @@ _BASE_SOLVER_CLASSES = {
     #Anderson mixing and Pulay's DIIS are algebraically the same thing for
     #this problem -- but it adds explicit regularisation and history-depth
     #control, and is the standard accelerator in the 3D-RISM literature.
-    #Measured competitive with scipy Anderson rather than superior: 0.003 s
-    #against 0.005 s at phi = 0.30, 0.011 against 0.013 at phi = 0.52. See
-    #mdiisOZsolver.py for why its default parameters are what they are; a
-    #poor delta makes it look broken rather than mistuned.
+    #
+    #NOT A SPEED RECOMMENDATION. Benchmarked on the real grid (N = 4095,
+    #SUNDIALS present) it is third of nine at 0.0096 s, behind KIN_FP at
+    #0.0049 and scipy Anderson at 0.0077, and it FAILS at phi = 0.58 where
+    #both of those converge. An earlier measurement in a sandbox at N = 1023
+    #with SUNDIALS absent put it ahead of scipy Anderson; that was wrong, and
+    #wrong in the flattering direction, because the small grid hid the cost
+    #of its Python-level (m+1)x(m+1) solve per step and the fastest solver
+    #was not in the comparison at all.
+    #
+    #Its place is the SUNDIALS-FREE fallback, which is the configuration this
+    #module drops into when _HAVE_SUNDIALS4PY is false -- anyone installing
+    #from PyPI without building SUNDIALS. There the choice is between this
+    #and scipy Anderson, whose iteration count swings erratically with
+    #density (28, 116, 40, 179 at phi = 0.45, 0.52, 0.55, 0.58) where MDIIS
+    #rises smoothly; at phi = 0.52 it is the better of the two. Offer it as
+    #the alternative to try when scipy Anderson stalls, and nothing more.
     "MDIIS": (MDIISOZsolver, None),
     "scipy Newton-Krylov": (ScipyNewtonKrylovOZsolver, None),
     "Biggs-Andrews": (BiggsAndrewsOZsolver, None),
@@ -332,6 +348,116 @@ class OZResult:
                 f"closure={self.closure!r}, phi={self.phi!r}, solver={self.solverName!r})")
 
 
+def _minSq(curves):
+    """min S(Q) from a curve dict, or +inf when there is nothing to screen."""
+    try:
+        y = np.real(np.asarray(curves["Sq"], float))
+    except Exception:
+        return float("inf")
+    if not np.all(np.isfinite(y)):
+        return float("-inf")
+    return float(np.min(y))
+
+
+def _deflateUntilPhysical(solverInstance, curves, buildAndSolve, maxAttempts,
+                          deriveCurves):
+    """Reject a root with min S(Q) < 0 and re-solve with it deflated away.
+
+    Returns (solverInstance, curves) for the first physical root found, and
+    raises ValueError when there is none.
+
+    WHY SCREEN AT ALL. S(Q) is a variance and cannot be negative, but nothing
+    about the iteration can detect a negative one. tools/residual_check.py
+    finds every Newton-Krylov variant converging at one Lennard-Jones state
+    point to a residual of 1e-13, with `converged` true and the returned
+    point a genuine fixed point -- at min S(Q) = -38.96. It is a real
+    solution of the closure equations on a branch that does not describe a
+    fluid, and only this test separates it from the correct root at the same
+    state point.
+
+    WHY DEFLATION RATHER THAN A DIFFERENT SOLVER. Retrying with the other
+    family would often work, since fixed-point and Newton-Krylov methods
+    empirically favour different branches. Two reasons against. It silently
+    returns a result from a solver the caller did not choose, which is the
+    kind of substitution this package works to eliminate. And it leans on a
+    bias that happens to hold at the state points tested rather than on
+    anything guaranteed -- nothing stops both families landing on the same
+    unphysical root elsewhere.
+
+    Deflation divides the residual by a factor singular at each root already
+    found, so the SAME solver cannot return there: it must find something
+    else or fail honestly. The caller's choice of solver is respected, and
+    since makeDeflatedClass wraps any base class it does not require SUNDIALS
+    to be installed.
+
+    WHEN IT FAILS, THAT IS INFORMATION. Past a spinodal there may be no
+    physical solution at the state point, and deflation will go on finding
+    unphysical ones because that is what exists. The exception therefore
+    names every root found with its min S(Q) rather than reporting a bare
+    non-convergence: those numbers say something about the state point, and
+    discarding them would throw the evidence away.
+    """
+    worst = _minSq(curves)
+    if worst >= 0.0:
+        return solverInstance, curves
+
+    try:
+        from deflation import makeDeflatedClass
+    except Exception as exc:
+        raise ValueError(
+            f"min S(Q) = {worst:.4g} < 0: the solver converged to a root that "
+            f"is not a fluid, and deflation is unavailable "
+            f"({type(exc).__name__}: {exc}). Pass deflateOnUnphysical=0 to "
+            f"accept the unphysical root.") from exc
+
+    roots = []
+    history = [("initial", worst)]
+    for attempt in range(max(1, int(maxAttempts))):
+        #The fixpoint variable is gamma; that is what the deflation factor
+        #measures distance from.
+        try:
+            roots.append(np.asarray(curves["gamma"], float).copy())
+        except Exception:
+            break
+        try:
+            solverInstance = buildAndSolve(
+                makeDeflatedClass(type(solverInstance).__mro__[1]
+                                  if type(solverInstance).__name__.startswith(
+                                      "Deflated") else type(solverInstance),
+                                  list(roots)))
+            curves = deriveCurves(solverInstance)
+        except Exception as exc:
+            #Summarise the exception rather than interpolating it: scipy's
+            #NoConvergence carries the whole residual vector, so str(exc) is
+            #a thousand numbers and the useful part -- that the deflated
+            #solve could not converge -- is lost in them.
+            detail = str(exc).split("\n")[0][:120]
+            raise ValueError(
+                f"min S(Q) = {worst:.4g} < 0, and the re-solve with that root "
+                f"deflated away did not converge ({type(exc).__name__}). "
+                f"Roots found: {_rootSummary(history)}. That the solver "
+                f"cannot reach another root once this one is excluded is "
+                f"itself evidence: there may be no physical solution at this "
+                f"state point. Detail: {detail}") from exc
+        worst = _minSq(curves)
+        history.append((f"deflation {attempt + 1}", worst))
+        if worst >= 0.0:
+            return solverInstance, curves
+
+    raise ValueError(
+        f"no physical solution found after {len(roots)} deflation(s): every "
+        f"root located has min S(Q) < 0. These are genuine solutions of the "
+        f"closure equations on branches with negative compressibility, not "
+        f"failed calculations, which is what a state point at or past a "
+        f"spinodal looks like. Roots found: {_rootSummary(history)}. Try a "
+        f"different solver, a different closure, or a less extreme state; "
+        f"pass deflateOnUnphysical=0 to accept the unphysical root instead.")
+
+
+def _rootSummary(history):
+    return ", ".join(f"{name}: min S(Q) = {v:.4g}" for name, v in history)
+
+
 def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closureParam=None,
           closureParam2=None,
           findConsistentParameter=False,
@@ -339,7 +465,8 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
           numberOfRadialSamplingPoints=None, hardSphereDiameterInPoints=None,
           onSolverCreated=None, verify=True,
           verifyWith=("Biggs-Andrews", "Picard iteration"),
-          verifyTolerance=1e-3, residualTolerance=1e-6):
+          verifyTolerance=1e-3, residualTolerance=1e-6,
+          deflateOnUnphysical=0):
     '''
     Run one full OZ solve and return an OZResult with every derived
     curve. This is the exact same workflow oZgui.py's own "calculate"
@@ -496,60 +623,86 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
     if hardSphereDiameterInPoints is not None:
         gridKwargs["hardSphereDiameterInPoints"] = hardSphereDiameterInPoints
 
-    solverInstance = solverClass(port=0, **gridKwargs)
-    if solverLinearSolver is not None:
-        solverInstance.linearSolver = solverLinearSolver
-    solverInstance.setNumberOfIterations(maxIterations)
-    solverInstance.setVolumeDensity(phi)
-    solverInstance.setPotentialByName(potential, *potentialArgs)
+    #CONSTRUCTION EXTRACTED INTO A CLOSURE so it can be repeated.
+    #
+    #This is the same sequence as before, unchanged, but callable: the
+    #deflation retry below needs to build and run the SAME solver again with
+    #its rootOperator wrapped, and inlining it twice would guarantee the two
+    #copies drift apart. `cls` defaults to the class the caller asked for;
+    #the retry passes a deflated subclass of it.
+    def _buildAndSolve(cls=None):
+        inst = (cls or solverClass)(port=0, **gridKwargs)
+        if solverLinearSolver is not None:
+            inst.linearSolver = solverLinearSolver
+        inst.setNumberOfIterations(maxIterations)
+        inst.setVolumeDensity(phi)
+        inst.setPotentialByName(potential, *potentialArgs)
 
-    if onSolverCreated is not None:
-        onSolverCreated(solverInstance)
+        if onSolverCreated is not None:
+            onSolverCreated(inst)
 
-    if setterName == "doRHNCclosure":
-        solverInstance.solveRHNC()
-    elif setterName == "doRMSAclosure":
-        solverInstance.solveRMSA()
-    elif setterName == "fitZSEPparameters":
-        solverInstance.fitZSEPparameters()
-    elif findConsistentParameter:
-        solverInstance.findThermodynamicallyConsistentParameter(CONSISTENT_PARAMETER_CLOSURES[closure])
-    else:
-        if needsParam:
-            #Closures listed in SECOND_CLOSURE_PARAM take a second scalar;
-            #pass it through when the caller supplied one, otherwise let the
-            #setter apply its own default (a = 0 for Extended RY, which
-            #reduces it exactly to Rogers-Young).
-            extra = SECOND_CLOSURE_PARAM.get(closure)
-            if extra is not None and closureParam2 is not None:
-                getattr(solverInstance, setterName)(closureParam, closureParam2)
-            else:
-                getattr(solverInstance, setterName)(closureParam)
+        if setterName == "doRHNCclosure":
+            inst.solveRHNC()
+        elif setterName == "doRMSAclosure":
+            inst.solveRMSA()
+        elif setterName == "fitZSEPparameters":
+            inst.fitZSEPparameters()
+        elif findConsistentParameter:
+            inst.findThermodynamicallyConsistentParameter(CONSISTENT_PARAMETER_CLOSURES[closure])
         else:
-            getattr(solverInstance, setterName)()
-        solverInstance.solve()
+            if needsParam:
+                #Closures listed in SECOND_CLOSURE_PARAM take a second
+                #scalar; pass it through when the caller supplied one,
+                #otherwise let the setter apply its own default (a = 0 for
+                #Extended RY, which reduces it exactly to Rogers-Young).
+                extra = SECOND_CLOSURE_PARAM.get(closure)
+                if extra is not None and closureParam2 is not None:
+                    getattr(inst, setterName)(closureParam, closureParam2)
+                else:
+                    getattr(inst, setterName)(closureParam)
+            else:
+                getattr(inst, setterName)()
+            inst.solve()
+        return inst
 
-    curves = {}
-    curves["gr"] = solverInstance.getRDF()
-    curves["cr"] = solverInstance.getDirectCorrelationFunction()
-    curves["Sq"] = np.real(solverInstance.getSq())
-    g = curves["gr"]; c = curves["cr"]
-    curves["gamma"] = g - c - 1.0
-    curves["hr"] = g - 1.0
-    U = -np.log(np.clip(solverInstance.boltzmannOfP2Ppotential, 1e-300, None))
-    curves["Ur"] = U
-    EN = solverInstance.boltzmannOfP2Ppotential
-    curves["fr"] = EN - 1.0
-    # cavity y(r)=g/EN outside the hard core, and bridge
-    # B(r)=log(y(r))-Gamma(r) wherever y(r)>0 -- matches the original
-    # Tcl GUI's own B(r)/y(r) tabs, derived the same way (from
-    # whatever g/c/Gamma the chosen closure and solver actually
-    # converged to, not re-solved).
-    valid = EN != 0.0
-    y = np.where(valid, g / np.clip(EN, 1e-300, None), np.nan)
-    curves["yr"] = y
-    with np.errstate(invalid="ignore", divide="ignore"):
-        curves["Br"] = np.where(y > 0, np.log(y) - curves["gamma"], np.nan)
+    solverInstance = _buildAndSolve()
+
+    #CURVE DERIVATION EXTRACTED TOO, for the same reason as the construction
+    #above: the deflation retry produces a new solver instance and needs the
+    #same curves derived from it, and two copies of this would drift.
+    def _deriveCurves(inst):
+        curves = {}
+        curves["gr"] = inst.getRDF()
+        curves["cr"] = inst.getDirectCorrelationFunction()
+        curves["Sq"] = np.real(inst.getSq())
+        g = curves["gr"]; c = curves["cr"]
+        curves["gamma"] = g - c - 1.0
+        curves["hr"] = g - 1.0
+        U = -np.log(np.clip(inst.boltzmannOfP2Ppotential, 1e-300, None))
+        curves["Ur"] = U
+        EN = inst.boltzmannOfP2Ppotential
+        curves["fr"] = EN - 1.0
+        # cavity y(r)=g/EN outside the hard core, and bridge
+        # B(r)=log(y(r))-Gamma(r) wherever y(r)>0 -- matches the original
+        # Tcl GUI's own B(r)/y(r) tabs, derived the same way (from
+        # whatever g/c/Gamma the chosen closure and solver actually
+        # converged to, not re-solved).
+        valid = EN != 0.0
+        y = np.where(valid, g / np.clip(EN, 1e-300, None), np.nan)
+        curves["yr"] = y
+        with np.errstate(invalid="ignore", divide="ignore"):
+            curves["Br"] = np.where(y > 0, np.log(y) - curves["gamma"], np.nan)
+        return curves
+
+    curves = _deriveCurves(solverInstance)
+
+    #PHYSICALITY SCREEN AND DEFLATION RETRY, before verification: there is no
+    #point cross-checking a root that is about to be rejected. See
+    #_deflateUntilPhysical for why deflation rather than switching solver.
+    if deflateOnUnphysical:
+        solverInstance, curves = _deflateUntilPhysical(
+            solverInstance, curves, _buildAndSolve,
+            deflateOnUnphysical, _deriveCurves)
 
     result = OZResult(solverInstance.getrArray(), solverInstance.getqArray(),
                      potential, tuple(potentialArgs), closure, closureParam,
@@ -654,7 +807,20 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
 # ----------------------------------------------------------------------
 def solveWithConsensus(potential, potentialArgs=(), closure="doPYclosure",
                        closureParam=None, volumeDensity=0.3,
-                       solvers=("Anderson acceleration", "Biggs-Andrews",
+                       #"Anderson acceleration" WAS the first default here
+                       #and no longer exists -- removing it from
+                       #_BASE_SOLVER_CLASSES broke every call to this
+                       #function, since the name is looked up there. Found by
+                       #checking the manual's worked example against the
+                       #signature rather than by anything failing, because
+                       #nothing in the package calls this.
+                       #
+                       #The three chosen are deliberately DIFFERENT
+                       #implementations -- scipy's Anderson, Biggs-Andrews
+                       #and plain Picard -- since the point is agreement
+                       #between independent routes. Two copies of one
+                       #algorithm agreeing would prove nothing.
+                       solvers=("scipy Anderson", "Biggs-Andrews",
                                 "Picard iteration"),
                        tolerance=1e-3, gridN=4095, pointsPerSigma=100,
                        maxIterations=8000, transformType=1, quantity="Sq"):

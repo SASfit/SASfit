@@ -56,6 +56,28 @@ class OZsolver(OZfixpointOperator):
       # for all algorithms. (To allow for a fair comparison)
       self.convergenceCriterion = 1e-12
       self.numberOfIterations = 1000; #Upper bound
+      #CONVERGENCE FLAG, part of the base class so that EVERY solver has one.
+      #
+      #Until this was added only picardOZsolver set it, so a caller doing
+      #`solver.converged` got an AttributeError from most of the suite and
+      #`getattr(solver, "converged", None)` got None -- indistinguishable
+      #from "ran and did not converge". tools/residual_check.py shows the
+      #consequence plainly: seven of nine solvers reported converged_flag =
+      #None, including all four Newton-Krylov variants, which on the
+      #Lennard-Jones case converge to machine precision (residual 1e-13) at
+      #min S(Q) = -38.96. A structure factor of minus thirty-nine, reported
+      #by a solver that cannot say whether it converged.
+      #
+      #Each solve() is responsible for setting it True on success and
+      #leaving it False otherwise. False here is the safe default: a solver
+      #that forgets to set it reports failure rather than a success it never
+      #established.
+      #
+      #NOTE what the flag does and does not mean. It says the ITERATION met
+      #its tolerance, not that the answer is physical -- every Newton-Krylov
+      #variant above would set it True. The min S(Q) >= 0 screen is a
+      #separate and independent check, and both are needed.
+      self.converged = False
       #final results (part of solver, not FPO)
       self.radialDistributionFunction = np.zeros(self.numberOfRadialSamplingPoints)
       self.structureFactor = np.zeros(self.numberOfRadialSamplingPoints)

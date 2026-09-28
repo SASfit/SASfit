@@ -150,11 +150,23 @@ def solverCascade():
     import ozLib
     avail = list(ozLib.SOLVER_CLASSES)
     tiers = (("kin",),                              # SUNDIALS KINSOL KIN_FP
-             ("anderson acceleration",),             # in-house Anderson
-             ("newton",),                            # Newton-Krylov / GMRES
-             ("picard",),                            # damped Picard
              ("scipy anderson",),                    # needs alpha=1.0 set
-             ("biggs",))                             # fast, undocumented
+             ("mdiis",),                             # regularised DIIS
+             ("newton",),                            # Newton-Krylov / GMRES
+             ("biggs",),                             # fast, undocumented
+             ("picard",))                            # damped Picard, last
+    #REORDERED to match the measured ranking rather than the historical one.
+    #"anderson acceleration" was the second tier and no longer exists --
+    #ozLib dropped it as a duplicate of "scipy Anderson" -- so that tier
+    #matched nothing and the cascade silently ran one tier short. Nothing
+    #broke, because the catch-all below picks up anything unlisted, but MDIIS
+    #ended up last by accident rather than placed on merit.
+    #
+    #The order now follows tools/benchmark.py on a 4095-point grid: KIN_FP
+    #0.0049 s, scipy Anderson 0.0077, MDIIS 0.0096, the Newton-Krylov
+    #variants 0.010-0.023, Biggs-Andrews 0.040, Picard 0.049. Picard is last
+    #deliberately: it is both slowest and diverges above phi = 0.42, so it is
+    #a fallback of last resort rather than a step in the cascade.
     order = []
     for tier in tiers:
         for want in tier:

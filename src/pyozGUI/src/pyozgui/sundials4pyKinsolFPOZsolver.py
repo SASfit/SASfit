@@ -108,6 +108,16 @@ class Sundials4pyKinsolFPOZsolver(OZsolver):
           return
 
       err, nfe = kinsol.KINGetNumFuncEvals(kin_mem)
+      #See oZsolver.__init__ for why every solver sets this. The KINSOL
+      #return flag was already checked above -- a failure returns early --
+      #so reaching here means success; the flag just makes that reachable by
+      #a caller rather than only by a human reading stdout.
+      #
+      #It says the ITERATION converged, NOT that the answer is physical.
+      #tools/residual_check.py finds every Newton-Krylov variant converging
+      #to machine precision at min S(Q) = -38.96 on one Lennard-Jones case;
+      #the min S(Q) >= 0 screen is a separate check and both are needed.
+      self.converged = True
       print("sundials4py KINSOL (KIN_FP) converged after", nfe, "function evaluations")
 
       x_fp = np.array(core.N_VGetArrayPointer(u), copy=True)

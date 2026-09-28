@@ -392,6 +392,24 @@ and converges cleanly at $\alpha = 0.5$ on one discretisation, while on
 another the two exchange roles. The fixed point there is simply near the edge
 of stability, and no single choice of $\alpha$ is right everywhere.
 
+What damping cannot do is extend the density range. For hard spheres under
+Percus--Yevick on a 1023-point grid, undamped Picard converges up to
+$\varphi \approx 0.41$ and then fails: walking the density upward in steps of
+$\Delta\varphi = 0.02$ and warm-starting each solve from the last, the
+iteration count grows geometrically --- 41, 49, 60, 74, \ldots, 946 --- and at
+$\varphi = 0.42$ the residual settles at $1.1$ rather than decreasing. The
+map has ceased to be a contraction. Continuation helps when the difficulty is
+the initial guess; here the basin has not moved but vanished, so neither a
+ramp nor arclength continuation reaches further, and starting arbitrarily
+close to the answer diverges just the same.
+
+The accelerated methods are not so limited: scipy's Anderson mixing and
+SUNDIALS' fixed-point iteration both converge at $\varphi = 0.58$, in
+$9$~ms and $60$ function evaluations respectively. They extrapolate from a
+residual history rather than iterating the map, so the loss of contractivity
+does not bind. The practical consequence is that the often-quoted limit of
+Picard iteration is a limit of \emph{that} method and not of the approach.
+
 \subsection{Verification by independent solvers}
 \label{sec:verification}
 
@@ -419,13 +437,22 @@ We observe precisely this. At a Lennard-Jones state well inside that region
 ($k_BT/\varepsilon = 1.25$, $\rho\sigma^3 = 0.57$), nine available solvers
 divide cleanly into two groups according to their \emph{algorithm family}.
 Five fixed-point methods --- SUNDIALS KINSOL's fixed-point iteration, damped
-Picard, two Anderson implementations and a Biggs--Andrews scheme --- all
+Picard, scipy's Anderson mixing, MDIIS and a Biggs--Andrews scheme --- all
 return $g_{\max} = 2.1636$ with $\min S(Q) = +0.21$. Four Newton--Krylov
 methods, three of them SUNDIALS variants differing only in the linear solver,
 instead return $g_{\max} = 1.13$ and $1.22$, every one with $\min S(Q)$ near
 $-38$. All nine have residuals below $10^{-11}$, so these are not failed
 calculations: they are converged solutions on the negative-compressibility
 branches the bifurcation analysis identifies.
+
+Every one of the nine also reports a \code{converged} flag of true. That
+attribute is set by each solver when its iteration meets tolerance, and it is
+worth being explicit that it is not a correctness check: here it reads true
+for the four solutions with $\min S(Q) \approx -38$ as readily as for the
+five correct ones. Every question of the form ``did it converge?'' --- the
+flag, the recomputed residual, and whether the returned point is a fixed
+point at all --- answers yes for all nine. Only the physicality screen
+distinguishes them.
 
 That the split follows the algorithm family rather than the implementation is
 what one would expect from the analysis. At a fold the Jacobian is singular,

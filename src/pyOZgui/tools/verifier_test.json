@@ -5,12 +5,12 @@
       "easy_HS_PY": {
         "gmax": 2.356118,
         "minS": 0.0904,
-        "seconds": 0.0065
+        "seconds": 0.0078
       },
       "hard_LJ_HNC": {
         "gmax": 2.163595,
         "minS": 0.2102,
-        "seconds": 0.0065
+        "seconds": 0.0086
       },
       "finds_correct_root": true,
       "catches_wrong_root": "NO -- accepted the wrong answer"
@@ -19,26 +19,26 @@
       "easy_HS_PY": {
         "gmax": 2.356118,
         "minS": 0.0904,
-        "seconds": 0.0508
+        "seconds": 0.0713
       },
       "hard_LJ_HNC": {
         "gmax": 2.163595,
         "minS": 0.2102,
-        "seconds": 0.0314
+        "seconds": 0.0405
       },
       "finds_correct_root": true,
       "catches_wrong_root": "NO -- accepted the wrong answer"
     },
-    "Anderson acceleration": {
+    "MDIIS": {
       "easy_HS_PY": {
         "gmax": 2.356118,
         "minS": 0.0904,
-        "seconds": 0.0155
+        "seconds": 0.0136
       },
       "hard_LJ_HNC": {
         "gmax": 2.163595,
         "minS": 0.2102,
-        "seconds": 0.0121
+        "seconds": 0.0152
       },
       "finds_correct_root": true,
       "catches_wrong_root": "NO -- accepted the wrong answer"
@@ -47,12 +47,12 @@
       "easy_HS_PY": {
         "gmax": 2.356118,
         "minS": 0.0904,
-        "seconds": 0.0246
+        "seconds": 0.0291
       },
       "hard_LJ_HNC": {
         "gmax": 1.131453,
         "minS": -36.4671,
-        "seconds": 0.2031
+        "seconds": 0.2129
       },
       "finds_correct_root": false,
       "catches_wrong_root": "YES -- disagreement"
@@ -61,12 +61,12 @@
       "easy_HS_PY": {
         "gmax": 2.356118,
         "minS": 0.0904,
-        "seconds": 0.0448
+        "seconds": 0.0432
       },
       "hard_LJ_HNC": {
         "gmax": 2.163595,
         "minS": 0.2102,
-        "seconds": 0.023
+        "seconds": 0.0265
       },
       "finds_correct_root": true,
       "catches_wrong_root": "NO -- accepted the wrong answer"
@@ -75,12 +75,12 @@
       "easy_HS_PY": {
         "gmax": 2.356118,
         "minS": 0.0904,
-        "seconds": 0.0138
+        "seconds": 0.012
       },
       "hard_LJ_HNC": {
         "gmax": 1.221387,
         "minS": -38.9647,
-        "seconds": 0.0147
+        "seconds": 0.0127
       },
       "finds_correct_root": false,
       "catches_wrong_root": "YES -- disagreement"
@@ -89,12 +89,12 @@
       "easy_HS_PY": {
         "gmax": 2.356118,
         "minS": 0.0904,
-        "seconds": 0.0123
+        "seconds": 0.0144
       },
       "hard_LJ_HNC": {
         "gmax": 1.221387,
         "minS": -38.9647,
-        "seconds": 0.0124
+        "seconds": 0.0167
       },
       "finds_correct_root": false,
       "catches_wrong_root": "YES -- disagreement"
@@ -103,12 +103,12 @@
       "easy_HS_PY": {
         "gmax": 2.356118,
         "minS": 0.0904,
-        "seconds": 0.0209
+        "seconds": 0.025
       },
       "hard_LJ_HNC": {
         "gmax": 1.267593,
         "minS": -41.4739,
-        "seconds": 0.0261
+        "seconds": 0.033
       },
       "finds_correct_root": false,
       "catches_wrong_root": "YES -- disagreement"

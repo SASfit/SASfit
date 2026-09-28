@@ -94,6 +94,44 @@ def residualNorm(residual, x):
     return float(np.linalg.norm(residual(np.asarray(x, float))))
 
 
+def makeDeflatedClass(baseClass, roots, p=2.0, alpha=1.0, cap=1e6):
+    """Subclass `baseClass` so its solver sees the DEFLATED residual.
+
+    Works with ANY OZsolver subclass -- it only wraps `rootOperator` -- so
+    deflation is available whichever solver the caller chose, and does not
+    depend on SUNDIALS being installed.
+
+    `cap` bounds the deflation factor. Without it eta -> infinity as x
+    approaches a known root, the residual handed to the solver grows without
+    bound, and the closure's exp(G) overflows -- observed as
+    "RuntimeWarning: overflow encountered in exp" followed by the solve
+    hanging. Capping keeps the known root strongly repulsive while leaving
+    the residual finite; the barrier does not need to be infinite to work.
+
+    MOVED HERE FROM tools/deflation_kinsol.py, which is a standalone script
+    and not importable from the package -- ozLib.solve()'s deflation retry
+    needs it and could not reach it there. The script keeps a re-export so
+    its own callers are unaffected.
+    """
+    import numpy as _np
+
+    class Deflated(baseClass):
+        def rootOperator(self, x):
+            base = super().rootOperator(x)
+            base = _np.asarray(base, float)
+            if base.ndim > 1:            # the operator returns a pair
+                base = base[0]
+            if not roots:
+                return base
+            eta = deflationFactor(_np.asarray(x, float), roots, p, alpha)
+            if not _np.isfinite(eta) or eta > cap:
+                eta = cap
+            return eta*base
+
+    Deflated.__name__ = f"Deflated{baseClass.__name__}"
+    return Deflated
+
+
 def deflationFactor(x, roots, p=2.0, alpha=1.0):
     """eta(x) = prod_i ( 1/||x - r_i||^p + alpha ), shifted deflation.
 

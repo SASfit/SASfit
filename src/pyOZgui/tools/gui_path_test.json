@@ -1,22 +1,26 @@
 {
-  "FAILURES": [],
+  "FAILURES": [
+    "fitThenCompute",
+    "fitThenCompute (chi2 mismatch)",
+    "fitThenCompute.error"
+  ],
   "build": "ok",
   "computeDataSmeared": {
-    "chi2": 233212226141.9403,
+    "chi2": 233212226139.4556,
     "error": null,
-    "seconds": 0.22,
+    "seconds": 0.24,
     "solves": 2
   },
   "computeDataUnsmeared": {
-    "chi2": 253431715204.43143,
+    "chi2": 253431715201.72864,
     "error": null,
-    "seconds": 0.18,
+    "seconds": 0.22,
     "solves": 2
   },
   "computeNoData": {
     "error": null,
     "finite": true,
-    "seconds": 0.18,
+    "seconds": 0.2,
     "solves": 2
   },
   "controlsReachModel": {
@@ -37,10 +41,14 @@
     "srel"
   ],
   "fitThenCompute": {
-    "agree": true,
-    "chi2Compute": 2.827175930396346,
-    "chi2Fit": 2.827175930400144,
-    "error": null
+    "agree": false,
+    "chi2Compute": null,
+    "chi2Fit": 2.8214348193618974,
+    "error": "RuntimeError: Percus-Yevick solve produced no fixpoint for HardSphere at phi=0.532559",
+    "fittedParameters": {
+      "phi": 0.5325594218679457,
+      "srel": 0.39090354466594723
+    }
   },
   "variants": {
     "Core-shell_porodOff": "ok",

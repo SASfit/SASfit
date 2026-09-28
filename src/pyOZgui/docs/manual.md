@@ -147,18 +147,42 @@ coefficient; a = 0 gives plain RY")` — see `ozLib.secondClosureParam`.
 
 ---
 
-## Solvers (5)
+## Solvers
 
-| name | family | note |
-|---|---|---|
-| `scipy Anderson` | fixed point | default |
-| `Anderson acceleration` | fixed point | |
-| `Picard iteration` | fixed point | plainest; diverges above φ ≈ 0.45 |
-| `Biggs-Andrews` | fixed point | |
-| `scipy Newton-Krylov` | Newton–Krylov | **see the warning below** |
+Nine with SUNDIALS installed, five without. Timings are from
+`tools/benchmark.py` on a 4095-point grid; the ranking is what
+`ozLib.SOLVER_CLASSES` lists, fastest first.
 
-SUNDIALS KIN_FP is available through the GUI when built, and is both
-fixed-point and the fastest measured.
+| name | family | seconds | note |
+|---|---|---|---|
+| `sundials4py: Fixed-Point (Anderson)` | fixed point | **0.0049** | the default when built |
+| `scipy Anderson` | fixed point | 0.0077 | the default without SUNDIALS |
+| `MDIIS` | fixed point | 0.0096 | see below |
+| `sundials4py: Newton-Krylov (FGMRES)` | Newton–Krylov | 0.0100 | |
+| `sundials4py: Newton-Krylov (GMRES)` | Newton–Krylov | 0.0108 | |
+| `sundials4py: Newton-Krylov (TFQMR)` | Newton–Krylov | 0.0187 | |
+| `scipy Newton-Krylov` | Newton–Krylov | 0.0232 | **see the warning below** |
+| `Biggs-Andrews` | fixed point | 0.0402 | |
+| `Picard iteration` | fixed point | 0.0493 | plainest; **diverges above φ ≈ 0.42** |
+
+**Picard's limit is 0.42, not the 0.45 this table used to say** — measured on
+a 1023-point grid, where the iteration count grows geometrically (41, 49, 60,
+… 946 in steps of Δφ = 0.02) and then fails outright with a residual of 1.1.
+And **a density ramp does not rescue it**: the contraction factor exceeds 1
+there, so the basin has not moved but ceased to exist, and no starting point
+inside it helps. Continuation methods fail for the same reason.
+
+**`Anderson acceleration` was removed.** It duplicated `scipy Anderson` —
+the same algorithm, hand-written rather than from scipy — and two entries for
+one method cost a choice nobody has a basis to make. The module remains
+importable; it is simply not registered.
+
+**`MDIIS` is a fallback, not a recommendation.** Third of nine here, and it
+fails at φ = 0.58 where KIN_FP and scipy Anderson both converge. Its use is
+on installations without SUNDIALS, where scipy Anderson's iteration count
+swings erratically with density (28, 116, 40, 179) while MDIIS rises
+smoothly — at φ = 0.52 it is the better of the two. Try it when scipy
+Anderson stalls.
 
 **Prefer a fixed-point method.** Near a fold the Jacobian is singular, and
 the Newton–Krylov family is drawn onto negative-compressibility branches
@@ -174,6 +198,24 @@ it is Mann's iteration, slower but convergent where undamped Picard
 diverges — it rescued a Lennard-Jones case at a = 0.5. Set it on the solver
 instance, which `onSolverCreated` exists to let you do.
 
+**Every solver exposes `converged`**, declared in `OZsolver.__init__` and
+defaulting to `False` — so a solver that forgets to set it reports failure
+rather than a success it never established. Until recently only Picard set
+it, and the rest returned `None`, which a caller cannot tell apart from
+"ran and did not converge".
+
+**But it is not a correctness check**, and the distinction matters more here
+than in most numerical work. On one Lennard-Jones state point all four
+Newton–Krylov solvers report `converged = True`, are genuine fixed points,
+and reach residuals of 10⁻¹³ — at **min S(Q) ≈ −38**. Every question of the
+form "did it converge?" answers yes; only the `min S(Q) ≥ 0` screen
+separates them from the correct g_max = 2.1636.
+
+So check both, and recompute the residual yourself if it matters: one
+operator evaluation, and `tools/residual_check.py` shows it is the only thing
+distinguishing a converged solve from a stalled one when a solver's own flag
+is optimistic.
+
 ---
 
 ## Grids and transforms
@@ -186,6 +228,19 @@ so raising the resolution at fixed N *shrinks the box*. Refining that way
 makes the result better near contact and worse at low Q, and a convergence
 test done that way measures nothing. Scale both together. This mistake has
 been made twice in this project and caught both times only by a plot.
+
+**Every precision claim in this documentation was checked against that rule.**
+The transform timings and accuracies, the first-order convergence of type 1,
+the stability of the low-q extrapolation: all compare grids at
+r_max = 40.95–40.96 σ, varying only the density. The one comparison that does
+vary the range — 41 σ to 655 σ at fixed resolution, which changed S(0) in the
+sixth decimal — is described as such, and it is what established that the
+type-1 error is a grid-alignment effect rather than truncation.
+
+When writing a new comparison, pair `bestGridSize(N, transformType)` with a
+proportionally scaled `pointsPerSigma` and the range stays fixed without
+anyone having to remember it. Print `N/pointsPerSigma` if in doubt: it takes
+a second and it is the check that would have caught both earlier mistakes.
 
 **Grid size depends on the transform type**, and the difference is large:
 
@@ -206,6 +261,40 @@ at the same grid, and faster on a power-of-two grid. It is **correct only for
 one size class**: it requires every pair core to fall between grid points,
 which cannot be arranged for a mixture because the σ_ij are irrational.
 
+**How much that costs, measured absolutely.** Percus–Yevick hard spheres have
+a closed form for the compressibility, S(0) = (1−φ)⁴/(1+2φ)², which is the
+only exact answer available anywhere in this package. Against it:
+
+| φ | type 1, pps=100 | type 1, pps=400 | type 4, pps=100 |
+|---|---|---|---|
+| 0.30 | 3.67% | 0.92% | **0.015%** |
+| 0.40 | 5.27% | 1.33% | **0.036%** |
+
+The cause is where the discontinuity lands. A DST-I places nodes at (n+1)Δr,
+so the hard core at r = σ falls **on** a node and is carried by a point that
+is neither inside nor outside; the excluded volume is then wrong at first
+order. A DST-IV places them at (n+½)Δr, the core falls **between** points,
+and the step is resolved to second order.
+
+Two things make this worth knowing rather than filing under "type 4 is
+better". The error is **independent of the real-space range** — extending
+r_max from 41σ to 655σ changed S(0) in the sixth decimal — so the usual
+instinct of giving the solver more room does nothing. And refining the
+resolution *does* reduce it, by a clean factor of 3.96 per fourfold step, so
+a convergence study sees orderly first-order behaviour and concludes the
+method is working. It is, slowly, towards an answer whose leading error is
+set by grid alignment.
+
+S(0) is the isothermal compressibility, so this is a systematic bias in
+exactly the quantity the volume fraction controls: **a fit absorbs it by
+moving φ**, and the denser the sample the more it moves. For one component,
+use type 4. For a mixture there is no such option, and a dense polydisperse
+fit should use the finest affordable resolution with its fitted volume
+fraction read accordingly.
+
+`tools/numerics_test.py` asserts all of this, and
+`tools/validation_table_test.py` reports it per transform and per resolution.
+
 ---
 
 ## `solveWithConsensus()`
@@ -214,7 +303,7 @@ which cannot be arranged for a mixture because the σ_ij are irrational.
 ozLib.solveWithConsensus(potential, potentialArgs=(),
                          closure="doPYclosure", closureParam=None,
                          volumeDensity=0.3,
-                         solvers=("Anderson acceleration", "Biggs-Andrews",
+                         solvers=("scipy Anderson", "Biggs-Andrews",
                                   "Picard iteration"),
                          tolerance=1e-3,
                          gridN=4095, pointsPerSigma=100,
