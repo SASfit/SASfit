@@ -101,7 +101,7 @@ class OZLiquidStructure:
                  closureParam2=None, potential="HardSphere",
                  potentialArgs=(), solverClass=None, gridN=4095,
                  pointsPerSigma=100, maxIterations=6000, transformType=1,
-                 mannAlpha=None):
+                 mannAlpha=None, deflateOnUnphysical=0):
         import ozLib
 
         self.wavevector = np.atleast_1d(np.asarray(wavevector, float))
@@ -178,6 +178,23 @@ class OZLiquidStructure:
         self._applyClosure(sol, ozLib, closure, closureParam, closureParam2)
         sol.solve()
         self._verify(sol)
+
+        #PHYSICALITY SCREEN AND DEFLATION, as in ozLib.solve(). This tab
+        #exists to test DIFFICULT state points against analytic references,
+        #so it is exactly where a solver is most likely to land on a
+        #negative-compressibility branch -- and until now it had no screen at
+        #all. _verify above checks the returned point IS a fixed point; it
+        #says nothing about whether that fixed point describes a fluid.
+        #
+        #Deflation keeps the solver the caller chose rather than switching
+        #family, for the reasons set out in ozLib._deflateUntilPhysical.
+        if deflateOnUnphysical:
+            sol = self._deflateUntilPhysical(
+                sol, solverClass, int(deflateOnUnphysical),
+                lambda cls: self._buildAndSolve(
+                    cls, ozLib, gridN, pointsPerSigma, transformType,
+                    maxIterations, mannAlpha, potential, potentialArgs,
+                    sigmaReduced, x, closure, closureParam, closureParam2))
         self.solver = sol
 
         self._q = np.asarray(sol.getqArray(), float)
@@ -273,6 +290,88 @@ class OZLiquidStructure:
             getattr(sol, setterName)(param)
         else:
             getattr(sol, setterName)()
+
+    def _buildAndSolve(self, cls, ozLib, gridN, pointsPerSigma, transformType,
+                       maxIterations, mannAlpha, potential, potentialArgs,
+                       sigmaReduced, x, closure, closureParam, closureParam2):
+        """Construct and run one solver of class `cls`, as __init__ does.
+
+        Exists so the deflation retry can repeat the construction with a
+        wrapped class. Kept in step with __init__ by being called from it --
+        two inlined copies would drift.
+        """
+        sol = cls(port=0, numberOfRadialSamplingPoints=gridN,
+                  hardSphereDiameterInPoints=pointsPerSigma)
+        sol.transformType = int(transformType)
+        sol.setNumberOfIterations(maxIterations)
+        if mannAlpha is not None:
+            sol.mannAlpha = float(mannAlpha)
+        sol.setVolumeDensity(self.volume_fraction_total)
+        self._buildPotential(sol, potential, potentialArgs, sigmaReduced, x)
+        if sol.transformType == 4:
+            sol.checkTransformAlignment()
+        self._applyClosure(sol, ozLib, closure, closureParam, closureParam2)
+        sol.solve()
+        self._verify(sol)
+        return sol
+
+    @staticmethod
+    def _minSqOf(sol):
+        """min S(Q) of a solved instance, or -inf if it is not finite."""
+        try:
+            y = np.real(np.asarray(sol.getSq(), float))
+        except Exception:
+            return float("inf")
+        return float(np.min(y)) if np.all(np.isfinite(y)) else float("-inf")
+
+    def _deflateUntilPhysical(self, sol, baseClass, maxAttempts, rebuild):
+        """Reject a root with min S(Q) < 0 and re-solve with it deflated.
+
+        Mirrors ozLib._deflateUntilPhysical. The same solver is kept and its
+        residual divided by a factor singular at each root already found, so
+        it cannot return there; switching to a different solver family would
+        often work too but silently hands back a result the caller did not
+        ask for, and relies on a bias that happens to hold at the state
+        points tested rather than on anything guaranteed.
+
+        Raising when no physical root is reachable is the right outcome and
+        not a failure to report: past a spinodal there is none, and the roots
+        found say something about the state point worth keeping.
+        """
+        worst = self._minSqOf(sol)
+        if worst >= 0.0:
+            return sol
+        from deflation import makeDeflatedClass
+        roots, history = [], [("initial", worst)]
+        for attempt in range(max(1, int(maxAttempts))):
+            try:
+                roots.append(np.asarray(sol.packPairs(
+                    sol.gammaMatrixMulticomponent), float).copy())
+            except Exception:
+                break
+            try:
+                sol = rebuild(makeDeflatedClass(baseClass, list(roots)))
+            except Exception as exc:
+                detail = str(exc).split("\n")[0][:120]
+                raise RuntimeError(
+                    f"min S(Q) = {worst:.4g} < 0, and the re-solve with that "
+                    f"root deflated away failed ({type(exc).__name__}). "
+                    f"Roots found: {self._rootSummary(history)}. Detail: "
+                    f"{detail}") from exc
+            worst = self._minSqOf(sol)
+            history.append((f"deflation {attempt + 1}", worst))
+            if worst >= 0.0:
+                return sol
+        raise RuntimeError(
+            f"no physical solution at this state point after {len(roots)} "
+            f"deflation(s): every root found has min S(Q) < 0. These are "
+            f"genuine solutions of the closure equations on "
+            f"negative-compressibility branches, not failed calculations. "
+            f"Roots: {self._rootSummary(history)}.")
+
+    @staticmethod
+    def _rootSummary(history):
+        return ", ".join(f"{n}: min S(Q) = {v:.4g}" for n, v in history)
 
     def _verify(self, sol):
         """Never trust the driver: it reports convergence but returns results

@@ -168,6 +168,7 @@ class RYPolydisperseYukawa:
                  gridN=_GRID_N, pointsPerSigma=_POINTS_PER_SIGMA,
                  maxIterations=8000, converged_tol=1e-6,
                  solverClass=None, checkPhysical=True, _retrying=False,
+                 deflateOnUnphysical=0,
                  closure="Rogers-Young", closureParam2=None):
         sigma = np.atleast_1d(np.asarray(sigma, dtype=float)).ravel()
         rho = np.atleast_1d(np.asarray(rho, dtype=float)).ravel()
@@ -378,6 +379,26 @@ class RYPolydisperseYukawa:
             S_NN = np.einsum('i,ijk,j->k', wv, self._S_AL, wv)
             self.minS = float(np.min(S_NN))
             if self.minS < -1e-6:
+                #DEFLATION FIRST, where asked for. The screen below was
+                #already here and is good -- it names the state point, the
+                #solver and the residual, and points out that a small
+                #residual is exactly what makes a spurious root dangerous.
+                #What it could not do was try again.
+                #
+                #Deflating excludes the root just found and re-solves with
+                #THE SAME solver, so the user's choice is respected; see
+                #ozLib._deflateUntilPhysical for why that is preferred to
+                #switching family. If a physical root turns up, this object
+                #is rebuilt from it and the failure never surfaces.
+                if deflateOnUnphysical and not _retrying:
+                    rescued = self._deflateRetry(
+                        sol, solverClass, int(deflateOnUnphysical),
+                        sigma, rho, z, K, alpha, delta, gridN,
+                        pointsPerSigma, maxIterations, converged_tol,
+                        closure, closureParam2)
+                    if rescued is not None:
+                        self.__dict__.update(rescued.__dict__)
+                        return
                 raise RuntimeError(
                     "RY solution is unphysical: min S_NN(q) = "
                     f"{self.minS:.4g} < 0, at phi={self.phi:.4g}, "
@@ -392,6 +413,51 @@ class RYPolydisperseYukawa:
                     "anyway.")
 
         self.g_contact = None      # not provided by this route
+
+    def _deflateRetry(self, sol, solverClass, maxAttempts, sigma, rho, z, K,
+                      alpha, delta, gridN, pointsPerSigma, maxIterations,
+                      converged_tol, closure, closureParam2):
+        """Re-solve with the unphysical root deflated away.
+
+        Returns a rebuilt RYPolydisperseYukawa on success, or None when no
+        physical root is reachable -- in which case the caller raises its
+        own message, which already says everything useful about the state
+        point.
+
+        `_retrying=True` on the rebuilds stops this recursing: each retry
+        screens its own result, and a second failure should fall through to
+        the next deflation here rather than starting a nested search.
+        """
+        from deflation import makeDeflatedClass
+        base = solverClass if solverClass is not None else type(sol)
+        roots = []
+        for _ in range(max(1, int(maxAttempts))):
+            try:
+                roots.append(np.asarray(
+                    sol.packPairs(sol.gammaMatrixMulticomponent),
+                    float).copy())
+            except Exception:
+                return None
+            try:
+                cand = RYPolydisperseYukawa(
+                    sigma, rho, z, K, alpha, delta,
+                    gridN=gridN, pointsPerSigma=pointsPerSigma,
+                    maxIterations=maxIterations,
+                    converged_tol=converged_tol,
+                    solverClass=makeDeflatedClass(base, list(roots)),
+                    checkPhysical=True, _retrying=True,
+                    closure=closure, closureParam2=closureParam2)
+            except Exception:
+                #Either it would not converge with that root excluded, or
+                #the root it did find is unphysical too and its own screen
+                #rejected it. Both mean "keep looking" if attempts remain,
+                #but we no longer have a solver instance to deflate from, so
+                #stop here and let the caller report.
+                return None
+            if getattr(cand, "minS", -1.0) >= -1e-6:
+                return cand
+            sol = cand.solver
+        return None
 
     # ------------------------------------------------------------------
     def S_matrix(self, q):

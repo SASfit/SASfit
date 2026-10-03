@@ -52,7 +52,7 @@ def sinc_kernel(q: np.ndarray, r: float) -> np.ndarray:
 
     q = np.asarray(q, dtype=float)
     qr = q * r
-    return 4.0 * np.pi * r**2 * spherical_jn(0, qr)
+    return 4.0 * np.pi * spherical_jn(0, qr)
 
 
 def sphere_rayleigh_gans_intensity(q: np.ndarray, r: float) -> np.ndarray:
@@ -98,8 +98,8 @@ def sphere_rayleigh_gans_intensity(q: np.ndarray, r: float) -> np.ndarray:
 
 
 KERNEL_REGISTRY: dict[str, KernelSpec] = {
-    "sinc_4pir2": KernelSpec(
-        label="4\u03c0r\u00b2 j\u2080(qr)  [j\u2080(x)=sin(x)/x, spherical Bessel]",
+    "sinc_4pi": KernelSpec(
+        label="4\u03c0 j\u2080(qr)  [j\u2080(x)=sin(x)/x, spherical Bessel]",
         func=sinc_kernel,
         description="Fourier-sine (Debye/IFT-style) kernel relating a radial "
                      "distribution p(r) to I(q), via the zeroth-order spherical "

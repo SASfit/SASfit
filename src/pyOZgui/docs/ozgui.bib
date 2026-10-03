@@ -37,7 +37,7 @@
   title     = {Equation of State for Hard Spheres},
   year      = {1963},
   issn      = {1089-7690},
-  month     = July,
+  month     = jul,
   number    = {2},
   pages     = {474--479},
   volume    = {39},
@@ -51,7 +51,7 @@
   title     = {Percus-{Y}evick Equation for Hard Spheres with Surface Adhesion},
   year      = {1968},
   issn      = {1089-7690},
-  month     = Sept,
+  month     = sep,
   number    = {6},
   pages     = {2770--2774},
   volume    = {49},
@@ -139,7 +139,7 @@
   title     = {Analysis of small angle neutron scattering spectra from polydisperse interacting colloids},
   year      = {1983},
   issn      = {1089-7690},
-  month     = Sept,
+  month     = sep,
   number    = {5},
   pages     = {2461--2469},
   volume    = {79},
@@ -440,7 +440,7 @@
   title     = {Mean value methods in iteration},
   year      = {1953},
   issn      = {0002-9939},
-  month     = June,
+  month     = jun,
   number    = {3},
   pages     = {506--510},
   volume    = {4},
@@ -533,7 +533,7 @@
   title     = {{SASfit}: a tool for small-angle scattering data analysis using a library of analytical expressions},
   year      = {2015},
   issn      = {1600-5767},
-  month     = Sept,
+  month     = sep,
   number    = {5},
   pages     = {1587--1598},
   volume    = {48},
@@ -558,7 +558,7 @@
 
 @Misc{jscatter,
   author    = {Biehl, R.},
-  month     = June,
+  month     = jun,
   note      = {PLoS ONE 14, e0218789},
   title     = {jscatter: a program for analysis and display of scattering data},
   year      = {2019},
@@ -754,12 +754,17 @@
 % need hand attention -- see the script docstring.
 
 @Article{eurah1999,
-  author  = {B. C. Eu and K. Rah},
-  title   = {A closure for the Ornstein--Zernike relation that gives rise to the thermodynamic consistency},
-  journal = {J. Chem. Phys},
-  volume  = {111},
-  pages   = {3327},
-  year    = {1999},
+  author    = {Eu, Byung Chan and Rah, Kyunil},
+  journal   = {The Journal of Chemical Physics},
+  title     = {A closure for the Ornstein–Zernike relation that gives rise to the thermodynamic consistency},
+  year      = {1999},
+  issn      = {1089-7690},
+  month     = Aug,
+  number    = {8},
+  pages     = {3327--3338},
+  volume    = {111},
+  doi       = {10.1063/1.479658},
+  publisher = {AIP Publishing},
 }
 
 @Comment{DUPLICATE of PihlajamaaJanssen2024 -- removed, that one is fuller.}
@@ -772,6 +777,66 @@
   year    = {2024},
   eprint  = {2407.18680},
   archivePrefix = {arXiv},
+}
+
+@Article{BiggsAndrews1997,
+  author  = {Biggs, David S. C. and Andrews, Mark},
+  title   = {Acceleration of iterative image restoration algorithms},
+  journal = {Appl. Opt.},
+  year    = {1997},
+  volume  = {36},
+  number  = {8},
+  pages   = {1766--1775},
+  doi     = {10.1364/AO.36.001766},
+  note    = {The source of the Biggs-Andrews solver offered here -- and it
+             comes from IMAGE DECONVOLUTION, not liquid-state theory, which
+             is worth saying because a reader meeting the name in a
+             structure-factor package would have no way to guess. The method
+             is vector extrapolation applied to an iterative restoration
+             algorithm, needing no cost function to minimise, which is why
+             it transfers to a fixed-point map it was never written for.
+             The authors call it "automatic acceleration"; in the image
+             literature it remains the standard accelerator for
+             Lucy-Richardson deconvolution},
+}
+
+@Article{Hindmarsh2005,
+  author    = {Hindmarsh, Alan C. and Brown, Peter N. and Grant, Keith E. and
+               Lee, Steven L. and Serban, Radu and Shumaker, Dan E. and
+               Woodward, Carol S.},
+  title     = {{SUNDIALS}: Suite of nonlinear and differential/algebraic
+               equation solvers},
+  journal   = {ACM Trans. Math. Softw.},
+  year      = {2005},
+  volume    = {31},
+  number    = {3},
+  pages     = {363--396},
+  publisher = {ACM},
+  doi       = {10.1145/1089014.1089020},
+  note      = {The SUNDIALS team ASK to be cited in any publication reporting
+               work done with it, so this is an obligation rather than a
+               courtesy. This package's default solver is KINSOL's
+               fixed-point iteration with Anderson acceleration, and the
+               three Newton-Krylov variants (GMRES, FGMRES, TFQMR) are
+               KINSOL's too -- four of the nine solvers offered. A second
+               paper, Gardner, Reynolds, Woodward and Balos, ACM TOMS 48(3),
+               article 31 (2022), doi:10.1145/3539801, covers the redesign
+               that allows third-party solvers and data structures; cite it
+               as well when the flexibility of recent versions matters},
+}
+
+@Article{Gardner2022,
+  author    = {Gardner, David J. and Reynolds, Daniel R. and
+               Woodward, Carol S. and Balos, Cody J.},
+  title     = {Enabling new flexibility in the {SUNDIALS} suite of nonlinear
+               and differential/algebraic equation solvers},
+  journal   = {ACM Trans. Math. Softw.},
+  year      = {2022},
+  volume    = {48},
+  number    = {3},
+  pages     = {31:1--31:24},
+  publisher = {ACM},
+  doi       = {10.1145/3539801},
 }
 
 @Article{sharma1977,
@@ -799,7 +864,7 @@
 }
 
 @Article{pini2002,
-  author  = {D. Pini, A. Parola, and L. Reatto},
+  author  = {D. Pini and A. Parola and L. Reatto},
   title   = {A simple approximation for fluids with narrow attractive potentials},
   journal = {Mol. Phys},
   volume  = {100},
@@ -810,12 +875,12 @@
 }
 
 @Article{santos2012,
-  author    = {A. Santos, S. B. Yuste, and M. L\'opez de Haro},
+  author    = {A. Santos and S. B. Yuste and M. L\'opez de Haro},
   journal   = {Condensed Matter Physics},
   title     = {Rational-function approximation for fluids interacting via piece-wise constant potentials},
   year      = {2012},
   issn      = {1607-324X},
-  month     = June,
+  month     = jun,
   number    = {2},
   pages     = {23602},
   volume    = {15},
@@ -862,7 +927,7 @@ deleted so the pair can be re-checked.}
   title     = {Integral equations for classical fluids: I. The hard sphere case},
   year      = {1980},
   issn      = {1362-3028},
-  month     = Sept,
+  month     = sep,
   number    = {1},
   pages     = {183--190},
   volume    = {41},
@@ -955,30 +1020,45 @@ deleted so the pair can be re-checked.}
 }
 
 @Article{kovalenkohirata1998,
-  author  = {A. Kovalenko and F. Hirata},
-  title   = {Three-dimensional density profiles of water in contact with a solute of arbitrary shape: a RISM approach},
-  journal = {Chem. Phys. Lett},
-  volume  = {290},
-  pages   = {237},
-  year    = {1998},
+  author    = {Kovalenko, Andriy and Hirata, Fumio},
+  journal   = {Chemical Physics Letters},
+  title     = {Three-dimensional density profiles of water in contact with a solute of arbitrary shape: a RISM approach},
+  year      = {1998},
+  issn      = {0009-2614},
+  month     = jun,
+  number    = {1-3},
+  pages     = {237--244},
+  volume    = {290},
+  doi       = {10.1016/s0009-2614(98)00471-0},
+  publisher = {Elsevier BV},
 }
 
 @Article{duhhaymet1995,
-  author  = {D.-M. Duh and A. D. J. Haymet},
-  title   = {Integral equation theory for uncharged liquids: The Lennard-Jones fluid and the bridge function},
-  journal = {J. Chem. Phys},
-  volume  = {103},
-  pages   = {2625},
-  year    = {1995},
+  author    = {Duh, Der-Ming and Haymet, A. D. J.},
+  journal   = {The Journal of Chemical Physics},
+  title     = {Integral equation theory for uncharged liquids: The Lennard-Jones fluid and the bridge function},
+  year      = {1995},
+  issn      = {1089-7690},
+  month     = Aug,
+  number    = {7},
+  pages     = {2625--2633},
+  volume    = {103},
+  doi       = {10.1063/1.470724},
+  publisher = {AIP Publishing},
 }
 
 @Article{choudhuryghosh2002,
-  author  = {N. Choudhury and S. K. Ghosh},
-  title   = {Integral equation theory of Lennard-Jones fluids: A modified Verlet bridge function approach},
-  journal = {J. Chem. Phys},
-  volume  = {116},
-  pages   = {8517},
-  year    = {2002},
+  author    = {Choudhury, Niharendu and Ghosh, Swapan K.},
+  journal   = {The Journal of Chemical Physics},
+  title     = {Integral equation theory of Lennard-Jones fluids: A modified Verlet bridge function approach},
+  year      = {2002},
+  issn      = {1089-7690},
+  month     = May,
+  number    = {19},
+  pages     = {8517--8522},
+  volume    = {116},
+  doi       = {10.1063/1.1467894},
+  publisher = {AIP Publishing},
 }
 
 @Article{likos2002,
@@ -1018,12 +1098,17 @@ deleted so the pair can be re-checked.}
 }
 
 @Article{fernaud2000,
-  author  = {M. J. Fernaud and E. Lomba and L. L. Lee},
-  title   = {A self-consistent integral equation study of the structure and thermodynamics of the penetrable sphere fluid},
-  journal = {J. Chem. Phys},
-  volume  = {112},
-  pages   = {810},
-  year    = {2000},
+  author    = {Fernaud, Maria-Jose and Lomba, Enrique and Lee, Lloyd L.},
+  journal   = {The Journal of Chemical Physics},
+  title     = {A self-consistent integral equation study of the structure and thermodynamics of the penetrable sphere fluid},
+  year      = {2000},
+  issn      = {1089-7690},
+  month     = Jan,
+  number    = {2},
+  pages     = {810--816},
+  volume    = {112},
+  doi       = {10.1063/1.480649},
+  publisher = {AIP Publishing},
 }
 
 @Article{lee1995,
@@ -1056,12 +1141,17 @@ deleted so the pair can be re-checked.}
 }
 
 @Article{gazzillo2004,
-  author  = {D. Gazzillo and A. Giacometti},
-  title   = {Analytic solutions for Baxter's model of sticky hard sphere fluids within closures different from the Percus--Yevick approximation},
-  journal = {J. Chem. Phys},
-  volume  = {120},
-  pages   = {4742},
-  year    = {2004},
+  author    = {Gazzillo, Domenico and Giacometti, Achille},
+  journal   = {The Journal of Chemical Physics},
+  title     = {Analytic solutions for Baxter’s model of sticky hard sphere fluids within closures different from the Percus–Yevick approximation},
+  year      = {2004},
+  issn      = {1089-7690},
+  month     = Mar,
+  number    = {10},
+  pages     = {4742--4754},
+  volume    = {120},
+  doi       = {10.1063/1.1645781},
+  publisher = {AIP Publishing},
 }
 
 @Article{rosenfeld1986,
@@ -1079,12 +1169,17 @@ deleted so the pair can be re-checked.}
 }
 
 @Article{ebato2016,
-  author  = {Y. Ebato and T. Miyata},
-  title   = {A pressure consistent bridge correction of Kovalenko--Hirata closure in Ornstein--Zernike theory for Lennard-Jones fluids by apparently adjusting sigma parameter},
-  journal = {AIP Advances},
-  volume  = {6},
-  pages   = {055111},
-  year    = {2016},
+  author    = {Ebato, Yuki and Miyata, Tatsuhiko},
+  journal   = {AIP Advances},
+  title     = {A pressure consistent bridge correction of Kovalenko-Hirata closure in Ornstein-Zernike theory for Lennard-Jones fluids by apparently adjusting sigma parameter},
+  year      = {2016},
+  issn      = {2158-3226},
+  month     = May,
+  number    = {5},
+  pages     = {055111},
+  volume    = {6},
+  doi       = {10.1063/1.4950703},
+  publisher = {AIP Publishing},
 }
 
 @Comment{DUPLICATE of DAguannoKlein1991 -- removed, that one is fuller.}
@@ -1148,7 +1243,7 @@ deleted so the pair can be re-checked.}
   title     = {The microstructure of polydisperse, charged colloidal suspensions by light and neutron scattering},
   year      = {1991},
   issn      = {1089-7690},
-  month     = July,
+  month     = jul,
   number    = {1},
   pages     = {494--508},
   volume    = {95},
@@ -1190,7 +1285,7 @@ deleted so the pair can be re-checked.}
   title     = {Rheology, self-diffusion, and microstructure of charged colloids under simple shear by massively parallel nonequilibrium Brownian dynamics},
   year      = {1996},
   issn      = {1089-7690},
-  month     = June,
+  month     = jun,
   number    = {22},
   pages     = {9234--9248},
   volume    = {104},
@@ -1204,7 +1299,7 @@ deleted so the pair can be re-checked.}
   title     = {Microstructure and rheology of polydisperse, charged suspensions},
   year      = {1996},
   issn      = {1089-7690},
-  month     = June,
+  month     = jun,
   number    = {22},
   pages     = {9249--9258},
   volume    = {104},
@@ -1218,7 +1313,7 @@ deleted so the pair can be re-checked.}
   title     = {Freezing and clustering transitions for penetrable spheres},
   year      = {1998},
   issn      = {1095-3787},
-  month     = Sept,
+  month     = sep,
   number    = {3},
   pages     = {3135--3144},
   volume    = {58},

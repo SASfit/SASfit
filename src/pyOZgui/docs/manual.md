@@ -216,6 +216,61 @@ operator evaluation, and `tools/residual_check.py` shows it is the only thing
 distinguishing a converged solve from a stalled one when a solver's own flag
 is optimistic.
 
+### Deflation: what to do when the root is unphysical
+
+The screen above tells you the solver landed on a branch that is not a fluid.
+`deflateOnUnphysical` does something about it:
+
+```python
+r = ozLib.solve("LennardJones", potentialArgs=(0.8,), phi=0.30,
+                closure="Hypernetted-Chain",
+                solver="scipy Newton-Krylov",
+                deflateOnUnphysical=2)      # 0 = off, the default
+```
+
+Each attempt divides the residual by a factor singular at every root already
+found, so the solver **cannot** return there and must find something else or
+fail. The same solver is kept throughout.
+
+**Why not simply switch solver?** That would often work — the fixed-point and
+Newton–Krylov families empirically favour different branches, and at the
+state point above a fixed-point solver finds the correct root directly. Two
+reasons against. It silently hands back a result from a solver you did not
+choose. And it leans on a bias that happens to hold where it has been tested
+rather than on anything guaranteed: nothing stops both families landing on
+the same wrong root elsewhere.
+
+**Failure is informative, not a defect.** Past a spinodal there may be no
+physical solution at the state point, and deflation will go on finding
+unphysical ones because that is all there is. The exception therefore lists
+every root found with its min S(Q) rather than reporting a bare
+non-convergence — those numbers say something about the state point. At
+ε = 0.8, φ = 0.30 under HNC with Newton–Krylov you get roots at −18.73 and
+−20.69 and then a refusal, which is the honest answer.
+
+**In the GUI** every tab has a *Deflate if S(Q)<0* control, defaulting to 0.
+On the polydisperse tab it applies to **Compute only, never to Fit**: the
+optimiser calls the solver hundreds of times and wanders into unphysical
+territory routinely, and rescuing some of those points and not others would
+make chi-squared jump between neighbouring parameter values. Least squares
+assumes a smooth residual. The refusal is also a signal to the optimiser to
+back off, and hiding it helps nobody.
+
+The workflow it is actually for runs the other way: fit, get a suspicious
+answer, then recompute at those parameters with deflation on to ask whether a
+second branch exists there.
+
+**A caution on reading too much into a second root.** If deflation finds one
+while S(Q) ≥ 0 — which it will do if you ask it to search rather than only to
+rescue — resist the temptation to pick between them on thermodynamic
+consistency. For a parameter-free closure the compressibility/virial mismatch
+is a property of the closure, not of the branch, and PY hard spheres are
+inconsistent by a large and known amount at every density. For the
+consistency-parameter closures it is circular: α is tuned precisely to make
+the two routes agree, so two roots give two values of α each achieving it.
+Continuity from a known-good state point, or agreement with an analytic limit
+where one exists, discriminates where consistency cannot.
+
 ---
 
 ## Grids and transforms

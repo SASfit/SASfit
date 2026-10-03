@@ -18,19 +18,24 @@ against a user-set absolute tolerance `relerror` (the name is the C
 variable's; despite the name it's used as an absolute, not relative,
 tolerance in this loop). Implemented below as `tol` / `max_steps`.
 
+NOW IMPLEMENTED: Biggs-Andrews acceleration (see acceleration.py, ported
+from Joachim's own pyOZgui/biggsAndrewsOZsolver.py, itself ported from the
+same sasfit_fixed_point_acc.c BIGGS_ANDREWS case referenced above) --
+pass accelerate=True. Off by default so existing behaviour/tests are
+unaffected; the plain Picard loop below remains the reference
+implementation the acceleration is checked against.
+
 NOT yet implemented:
-  - Anderson / Biggs-Andrews acceleration. The C source's BIGGS_ANDREWS
-    case gives the exact pseudocode (also in the JAC 2022 paper, fig. 14) --
-    worth adding since the paper calls it the preferred scheme and plain
-    Picard iteration converges slowly, but not done here yet.
   - The signed/general-kernel (Chae et al. 2018) variant -- see
-    kernels.py docstring.
+    em_general.py (that has since been added there, not here -- plain
+    em.py intentionally stays specific to the non-negative-kernel case).
 """
 from __future__ import annotations
 
 import numpy as np
 
 from .base import SolverResult, chi2_r, g_test
+from . import acceleration
 
 
 def _smoothing_matrix(n: int, h: float) -> np.ndarray:
@@ -62,10 +67,12 @@ def solve(
     b: np.ndarray,
     db: np.ndarray,
     x0: np.ndarray | None = None,
-    max_iterations: int = 10_000,
+    max_iterations: int = 10000,
     smoothing_h: float | None = None,
     double_smoothing: bool = False,
     tol: float = 1e-8,
+    accelerate: bool = True,
+    kin_set_maa: int = 2,
 ) -> SolverResult:
     """
     Parameters
@@ -82,6 +89,12 @@ def solve(
     max_iterations : hard cap on iterations (C code's `maxsteps`).
     tol : stop when ||x_new - x_old|| (Euclidean norm, matching the C
           code's `gNorm`) drops below this (C code's `relerror`).
+    accelerate : if True, wrap the per-iteration update (EM step + any
+          smoothing) in Biggs-Andrews acceleration (acceleration.py)
+          instead of running it as plain Picard iteration. Same final
+          fixed point, typically far fewer iterations.
+    kin_set_maa : Biggs-Andrews extrapolation order/formula, passed
+          through to acceleration.biggs_andrews when accelerate=True.
     """
     n = A.shape[1]
     x = x0.copy() if x0 is not None else np.full(n, 1e-6)
@@ -91,32 +104,52 @@ def solve(
     chi2_history = []
     roughness_history = []
     g_norm_history = []
-    converged = False
-    n_iter = 0
 
-    for n_iter in range(1, max_iterations + 1):
-        x_old = x
-
+    def one_step(x_in: np.ndarray) -> np.ndarray:
+        x_local = x_in
         if S is not None and double_smoothing:
-            # eq. 44: nonlinear smoothing in log-space before the EM step
-            x_safe = np.where(x <= 0, np.finfo(float).eps, x)
-            x = np.exp(S @ np.log(x_safe))
-
-        x = em_step(x, A, b)
-
+            x_safe = np.where(x_local <= 0, np.finfo(float).eps, x_local)
+            x_local = np.exp(S @ np.log(x_safe))
+        x_local = em_step(x_local, A, b)
         if S is not None:
-            x = S @ x  # eq. 42 / 46
+            x_local = S @ x_local
+        return x_local
 
-        g_norm = float(np.sqrt(np.sum((x - x_old) ** 2)))  # C code's gNorm
-        g_norm_history.append(g_norm)
+    if accelerate:
+        x_prev_box = [x.copy()]
 
-        fitted_b = A @ x
-        chi2_history.append(chi2_r(b, fitted_b, db))
-        roughness_history.append(float(np.sum(np.diff(x) ** 2)))
+        def record(x_new: np.ndarray) -> None:
+            g_norm_history.append(float(np.linalg.norm(x_new - x_prev_box[0])))
+            x_prev_box[0] = x_new.copy()
+            fitted_b_local = A @ x_new
+            chi2_history.append(chi2_r(b, fitted_b_local, db))
+            roughness_history.append(float(np.sum(np.diff(x_new) ** 2)))
 
-        if g_norm <= tol:
-            converged = True
-            break
+        result = acceleration.biggs_andrews(
+            one_step, x, max_iterations=max_iterations, tol=tol,
+            kin_set_maa=kin_set_maa, clip_nonnegative=True, clip_floor=0.0,
+            on_iterate=record,
+        )
+        x = result.x
+        n_iter = result.n_iterations
+        converged = result.converged
+    else:
+        converged = False
+        n_iter = 0
+        for n_iter in range(1, max_iterations + 1):
+            x_old = x
+            x = one_step(x)
+
+            g_norm = float(np.sqrt(np.sum((x - x_old) ** 2)))  # C code's gNorm
+            g_norm_history.append(g_norm)
+
+            fitted_b = A @ x
+            chi2_history.append(chi2_r(b, fitted_b, db))
+            roughness_history.append(float(np.sum(np.diff(x) ** 2)))
+
+            if g_norm <= tol:
+                converged = True
+                break
 
     fitted_b = A @ x
     return SolverResult(

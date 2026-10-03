@@ -198,6 +198,20 @@ class MixtureValidationTab(ttk.Frame):
                  "and with 100 points per diameter that is r_max = 41 "
                  "sigma; raise it if the correlations have not decayed by "
                  "there."),
+        "deflate": ("How many times to reject an unphysical root and "
+                    "re-solve with it deflated away. S(Q) is a variance and "
+                    "cannot be negative, but nothing about the iteration "
+                    "detects a negative one: a solver can converge to a "
+                    "residual of 1e-13, report success, and sit on a "
+                    "negative-compressibility branch. Each retry excludes "
+                    "one more root and re-solves with THE SAME solver, so "
+                    "your choice of solver is respected. Zero returns "
+                    "whatever was found -- which is the right default on a "
+                    "validation tab, since the unphysical branch is a real "
+                    "solution worth being able to look at. If no physical "
+                    "root is reachable, the error lists every root found "
+                    "with its min S(Q): past a spinodal there may be none, "
+                    "and that is information rather than a failure."),
         "maxIter": ("Iterations before the solve gives up. Generous by "
                     "default: the residual is reported, and a solve that "
                     "stops early would show as an error floor that does not "
@@ -389,6 +403,19 @@ class MixtureValidationTab(ttk.Frame):
         self.refineVar.trace_add("write", _showN)
         _showN()
         self.maxIterVar = entry("Max iterations:", "60000", help="maxIter")
+        #DEFLATION ON AN UNPHYSICAL ROOT, as on tab 0. This tab exists to
+        #test DIFFICULT state points against analytic references, so it is
+        #where a solver is most likely to land on a
+        #negative-compressibility branch -- min S(Q) < 0 is a genuine
+        #solution of the closure equations that does not describe a fluid,
+        #and no residual or convergence flag detects it.
+        #
+        #Each retry excludes one more root, using the SAME solver rather
+        #than switching family. Zero (the default) returns whatever the
+        #solver found, which is the right default here: seeing the
+        #unphysical branch is a legitimate thing to want on a validation
+        #tab.
+        self.deflateVar = entry("Deflate if S(Q)<0:", "0", help="deflate")
 
         def _syncMann(*_):
             e = self._entryWidgets.get("   damping a:")
@@ -566,6 +593,7 @@ class MixtureValidationTab(ttk.Frame):
             gridK=int(f(self.gridKVar, "Grid exponent k", lo=8, hi=18)),
             maxIter=int(f(self.maxIterVar, "Max iterations",
                           lo=100, hi=10_000_000)),
+            deflate=int(f(self.deflateVar, "Deflate if S(Q)<0", lo=0, hi=5)),
             pps=int(f(self.ppsVar, "Points per sigma", lo=20, hi=4000)),
             refine=int(f(self.refineVar, "Refinement factor", lo=2, hi=16)),
             Qmin=f(self.QminVar, "Q min", lo=1e-12),
@@ -869,7 +897,8 @@ class MixtureValidationTab(ttk.Frame):
                                gridN=gridN,
                                solverClass=p.get("solverClass"),
                                mannAlpha=p.get("mannAlpha"),
-                               maxIterations=p.get("maxIter", 60000))
+                               maxIterations=p.get("maxIter", 60000),
+                               deflateOnUnphysical=p.get("deflate", 0))
         #Mann damping, where the chosen solver honours it. Set after
         #construction is impossible -- OZLiquidStructure solves in its
         #__init__ -- so it goes in through solverClass and the attribute is

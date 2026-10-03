@@ -170,9 +170,46 @@ found 1.13 and 1.22 with min S(Q) ≈ −38, all with residuals below 10⁻¹¹.
 are all correct answers; one is physical.
 
 **Picard / Mann** carries a damping term, x ← (1−a)x + a·T(x). At a = 1 it is
-plain Picard, which diverges above about φ = 0.45; below 1 it is Mann's
+plain Picard, which diverges above about φ = 0.42 — measured on a
+1023-point grid, where the iteration count grows geometrically and then the
+residual settles at 1.1 rather than decreasing. A density ramp does not
+rescue it: the map has ceased to be a contraction, so the basin has not
+moved but vanished. Below 1 it is Mann's
 iteration, slower but convergent where Picard is not. The entry is greyed for
 the other solvers, which choose their own step.
+
+### Deflate if S(Q)<0
+
+Present on every tab, defaulting to 0 (off). S(Q) is a variance and cannot be
+negative, but nothing about the iteration detects a negative one: a solver
+can converge to a residual of 10⁻¹³, report success, and sit on a
+negative-compressibility branch. `tools/residual_check.py` finds all four
+Newton–Krylov variants doing exactly that at one Lennard-Jones state point,
+at min S(Q) = −38.96, where every fixed-point solver finds the correct root.
+
+Each attempt excludes one more root and re-solves with **the same solver**.
+Switching to the other family would often work — the two favour different
+branches — but it would hand back a result from a solver you did not choose,
+and rely on a bias that happens to hold where it has been tested. If no
+physical root is reachable the error lists every root found with its
+min S(Q), because past a spinodal there may be none and that is information
+rather than a failure.
+
+**On the polydisperse tab it governs Compute only, never Fit.** An optimiser
+wanders into unphysical territory as a matter of course, and rescuing some of
+those points and not others makes chi-squared jump between neighbouring
+parameter values — least squares assumes a smooth residual. Fit first, then
+recompute at the fitted parameters with this on if the answer looks wrong.
+
+### Verify against a second solver
+
+On tab 0, on by default. The result is cross-checked against an independent
+solver from a cold start before being returned; the log says
+`verifying with <name>`, and the result returned is always your chosen
+solver's. It costs roughly eight times the solve — 0.0049 s against 0.0396 s
+— which is why it can be switched off for a parameter sweep. For ordinary
+use leave it on: a converged residual is not evidence the answer is right,
+and this is the only check that catches a solver landing on a different root.
 
 ---
 

@@ -384,6 +384,32 @@ class OZgui:
                      state="readonly", width=solverWidth).grid(row=row, column=0, columnspan=2, sticky="w")
         row += 1
 
+        #VERIFICATION, exposed so it can be turned off. It costs a second
+        #full solve on every Calculate -- measured 0.0049 s against 0.0396 s
+        #with it on, so roughly eight times the work -- and someone sweeping
+        #a parameter over many state points may reasonably not want to pay
+        #that on every point.
+        #
+        #On by default, and should stay that way for ordinary use: a
+        #converged residual is not evidence the answer is right, and this is
+        #the only check that catches a solver landing on a different root.
+        self.verifyVar = tk.BooleanVar(value=True)
+        ttk.Checkbutton(left, text="verify against a second solver",
+                        variable=self.verifyVar).grid(
+                            row=row, column=0, columnspan=2, sticky="w")
+        row += 1
+
+        #DEFLATION, as a count of retries rather than a checkbox: zero is a
+        #meaningful setting (accept whatever the solver returns) and so is a
+        #larger number, since each deflation excludes one more root.
+        ttk.Label(left, text="deflate if S(Q)<0:").grid(row=row, column=0,
+                                                        sticky="e")
+        self.deflateVar = tk.StringVar(value="0")
+        ttk.Combobox(left, textvariable=self.deflateVar,
+                     values=["0", "1", "2", "3"], state="readonly",
+                     width=4).grid(row=row, column=1, sticky="w")
+        row += 1
+
         ttk.Label(left, text="X-axis scale:").grid(row=row, column=0, sticky="e")
         self.xScaleVar = tk.StringVar(value="symlog")
         xScaleCombo = ttk.Combobox(left, textvariable=self.xScaleVar, values=["symlog", "linear", "log", "asinh"],
@@ -898,6 +924,27 @@ class OZgui:
                 return
 
         solverName = self.solverVar.get()
+        #DEFLATION ON AN UNPHYSICAL ROOT, read here rather than hardcoded so
+        #it is the user's choice. S(Q) is a variance and cannot be negative,
+        #but nothing about the iteration detects a negative one: four of the
+        #nine solvers converge at one Lennard-Jones state point to a residual
+        #of 1e-13, `converged` true, at min S(Q) = -38.96. Enabling this
+        #screens for that and re-solves with the offending root deflated
+        #away, using THE SAME SOLVER the user selected rather than silently
+        #switching to another.
+        #
+        #Off by default: it changes a result that would otherwise be returned
+        #into an exception, and a user who wants to SEE the unphysical branch
+        #-- which is a legitimate thing to want, since it is a real solution
+        #of the closure equations -- should not have to discover why it
+        #vanished.
+        try:
+            deflateAttempts = int(self.deflateVar.get()) \
+                if getattr(self, "deflateVar", None) is not None else 0
+        except (ValueError, tk.TclError):
+            deflateAttempts = 0
+        verifyResult = bool(self.verifyVar.get()) \
+            if getattr(self, "verifyVar", None) is not None else True
         # Auto-generated label: "<n>: <potential>, <closure>, phi=<value>"
         # -- replaces the previous plain "run <n>" counter, so the run
         # history list and every plot legend entry says what was
@@ -931,6 +978,8 @@ class OZgui:
                                       closureParam2=closureParam2,
                                       findConsistentParameter=findConsistent,
                                       solver=solverName, maxIterations=maxIter,
+                                      deflateOnUnphysical=deflateAttempts,
+                                      verify=verifyResult,
                                       onSolverCreated=captureSolverInstance, **gridKwargs)
 
                 run = RunResult(label, result.r, result.q, potentialName, closureName, phi)

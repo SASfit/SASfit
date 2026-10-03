@@ -116,17 +116,37 @@ def makeDeflatedClass(baseClass, roots, p=2.0, alpha=1.0, cap=1e6):
     import numpy as _np
 
     class Deflated(baseClass):
-        def rootOperator(self, x):
-            base = super().rootOperator(x)
-            base = _np.asarray(base, float)
-            if base.ndim > 1:            # the operator returns a pair
-                base = base[0]
+        #WRAP fixPointOperator, NOT rootOperator.
+        #
+        #rootOperator is defined in OZsolver as fixPointOperator(x) - x, so
+        #wrapping it catches only solvers that call it directly. The
+        #MULTICOMPONENT path does not: it goes through
+        #fixPointOperatorForGammaMulticomponent, so a Deflated class that
+        #wrapped rootOperator was completely INERT there -- same iteration
+        #count, identical result, zero difference after deflating the known
+        #root. It looked like a working feature and did nothing, which is
+        #the worst way for this to fail.
+        #
+        #Wrapping fixPointOperator catches both, since rootOperator is
+        #derived from it.
+        def fixPointOperator(self, x):
+            base = super().fixPointOperator(x)
+            if isinstance(base, tuple):      # some return (new_x, extra)
+                head, rest = base[0], base[1:]
+            else:
+                head, rest = base, ()
+            head = _np.asarray(head, float)
             if not roots:
                 return base
-            eta = deflationFactor(_np.asarray(x, float), roots, p, alpha)
+            xv = _np.asarray(x, float)
+            eta = deflationFactor(xv, roots, p, alpha)
             if not _np.isfinite(eta) or eta > cap:
                 eta = cap
-            return eta*base
+            #Deflate the STEP, x + eta*(T(x) - x), so the deflated map has
+            #the same fixed points as T except at the known roots -- scaling
+            #T itself would move every fixed point.
+            out = xv + eta*(head - xv)
+            return (out,) + rest if rest else out
 
     Deflated.__name__ = f"Deflated{baseClass.__name__}"
     return Deflated

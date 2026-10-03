@@ -1,141 +1,181 @@
 """
-General-kernel EM for signed functions (Chae, Martin & Walker, 2018),
-reconstructed from the `pysasem` notebook's "Known problems and To-Dos ->
-General kernel tests" cell (a loaded script named
-test_neg_pr_general_kernel.py, dated no later than 3 June 2019), NOT from
-the Chae et al. 2018 paper directly -- I have not read that paper itself,
-only the notebook's documented lessons learned from implementing it. If you
-have the paper on hand, it's worth a direct check against this before
-trusting it on real data.
+EM for signed kernels and signed solutions, following Chae, Martin & Walker
+(2018), "On an algorithm for solving Fredholm integrals of the first kind",
+Statistics and Computing, Section 6 ("General Fredholm equation") -- read
+directly from the paper (copy in .../Expectation Maximation/), 2026-09-26.
 
-The notebook's own words (quoted verbatim, since it's your own notebook,
-not third-party material):
+Why this exists: the standard EM / Lucy-Richardson update (em.py) is a
+multiplicative fixed-point iteration that is only valid for a non-negative
+kernel AND a non-negative solution. In this package the sphere form-factor
+kernel is always >= 0, but the j0(qr) = sin(qr)/(qr) kernel (a signed,
+oscillating kernel) is not, and pair-distance-type solutions may be
+negative as well.
 
-    Lessons learned about an algorithm in Chae et al which are not stated
-    clearly in the literature.
-    - Do not normalize the extended kernel.
-    - Initial p(r) can be a constant with a positive value.
-    - It's better to keep non-extended p(r). Extend it when needed
-      preferably in a p(r) updating method/function.
-    - In an iterating routine, you only duplicate p(r) along r axis with
-      the reversed sign.
-    - After update, only p(r) for the positive kernel is needed for the
-      next iteration, which, surprisingly, means you have to discard the
-      half of the result. This is because p(r) for the negative kernel is
-      not guaranteed to be -p(r) of the positive kernel.
-    - When calculating f(x):
-      - subtract the offset value before duplicating p(r) for the negative
-        kernel.
-      - set the negative sign for the negative kernel as in the
-        definition.
+The paper's construction (its Section 6), which this module implements:
 
-Working out the algebra behind that (my reconstruction, not from the
-notebook): for a signed kernel K (M x N), split
+  (a) Signed SOLUTION, non-negative kernel k  (paper eq. 10):
+      shift the unknown by a constant t > 0:
+          p~ = p + t,    f~(x) = f(x) + t * integral k(x,theta) dtheta,
+      so that f~(x) = integral k(x,theta) p~(theta) dtheta with p~ >= 0
+      (needs t > -min p). "The value of t rarely affects the convergence
+      rate in practice", so t can simply be large.
 
-    K_pos = where(K >= 0, K, 0)
-    K_neg = where(K < 0, -K, 0)          # non-negative magnitude
-    K_ext = hstack([K_pos, K_neg])        # M x 2N, entirely non-negative
+  (b) Signed KERNEL: write k = k+ - k-, both >= 0. On Theta=[0,1]:
+          f = int k+ p - int k- p
+      Extend the domain to [0,2] with
+          k~(x,theta) = k+(x,theta)      theta in [0,1]
+                        k-(x,theta-1)    theta in (1,2]
+          p~(theta)   = p(theta)         theta in [0,1]
+                        -p(theta-1)      theta in (1,2]
+      giving f = int_0^2 k~ p~ (paper eq. 12): a NON-NEGATIVE kernel, but
+      the extended unknown p~ = [p, -p] is itself SIGNED -- so step (a)'s
+      shift must be applied on top. (My first reconstruction of this module,
+      written from notebook fragments before I had the paper, did (b) but
+      omitted (a): it ran the multiplicative update directly on the signed
+      vector [p, -p], which is invalid and diverged. The pysasem notebook's
+      "subtract the offset value before duplicating p(r) for the negative
+      kernel" is this same shift.)
 
-Then for ANY p (signed or not), K_ext @ hstack([p, -p]) == K @ p exactly
-(the two halves' contributions recombine to the true signed sum). That
-identity is what lets you run the ordinary non-negative multiplicative EM
-update (same em_step as em.py) on the extended, non-negative system. But
-because K_pos and K_neg are different matrices, the EM correction factors
-for the "p" half and the "-p" half diverge after one update -- hence you
-can only trust one half (the notebook keeps the K_pos-associated half) and
-must reconstruct the extension from scratch each iteration.
+Non-uniqueness caveat, from the paper itself: the extended problem has more
+solutions than [p, -p]-structured ones, so "the restriction of [the
+extended solution] on [0,1] may not be a solution of the original equation.
+... In many examples, however, the simple approach (12) works well."
+Following the pysasem notebook's practical rule, the structure [p, -p] is
+re-imposed after every update by keeping only the first half (the k+ block)
+and rebuilding the second half from it -- `structure="first_half"`; an
+antisymmetrized alternative is available as `structure="antisym"`.
 
-The "subtract the offset value before duplicating p(r) for the negative
-kernel" and "set the negative sign for the negative kernel as in the
-definition" notes (for computing f(x), i.e. the forward/fitted curve, not
-the update itself) are NOT reconstructed here -- I don't have enough
-context from the notebook fragment to be confident I'd get that right, so
-`forward_model` below is a plain K @ p and should be checked against the
-notebook's actual fx-calculation cells before relying on it.
-
-STATUS: FAILS its own sanity check (tests/test_em_general_basic.py) --
-diverges to huge magnitudes with ~0.09 correlation to the known truth, and
-throws a divide-by-zero warning in em_step's column-sum normalization.
-This matches the notebook's own warning ("probably due to lines filled
-with only zero in extended kernels when separated into positive and
-negative kernels") -- some K_neg (or K_pos) columns are entirely zero for
-r values where the kernel never changes sign, making that column's sum
-zero and the EM correction factor blow up. The notebook mentions
-`prenorm=False` as a workaround for a related issue but I don't know
-what `prenorm` actually does without the real source. Do not use this
-module on real data as-is -- it needs either the actual
-`pysasem.distribution_update` source or the Chae et al. (2018) paper
-itself to fix properly, not another guess.
+Implementation details beyond the paper:
+  - Columns of the extended kernel that are entirely zero (e.g. a k- column
+    for a theta where the kernel is never negative) would give 0/0 in the
+    EM correction; those components are simply left unchanged.
+  - Optional smoothing (same tridiagonal operator as em.py, JAC 2022 eq. 43)
+    applied to the signed solution p each iteration, so the usual outer
+    smoothing-parameter searches (lambda_search.py) work unchanged.
+  - Default offset t: from a rough automatic signed estimate (ARLS) as
+    t = 10 * max|p_est| -- generous on purpose, since results are nearly
+    t-independent once t exceeds the solution's magnitude.
 """
 from __future__ import annotations
 
 import numpy as np
 
-from .base import SolverResult, chi2_r
-from .em import em_step
+from .base import SolverResult, chi2_r, g_test
+from .em import _smoothing_matrix
+from . import arls
 
 
-def split_kernel(K: np.ndarray) -> np.ndarray:
-    """Build the non-negative extended kernel K_ext = [K_pos, K_neg]."""
-    K_pos = np.where(K >= 0, K, 0.0)
-    K_neg = np.where(K < 0, -K, 0.0)
-    return np.hstack([K_pos, K_neg])
+def split_kernel(K: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """K = K+ - K-, with K+ = max(K,0) and K- = max(-K,0), both >= 0."""
+    return np.where(K > 0, K, 0.0), np.where(K < 0, -K, 0.0)
 
 
-def forward_model(K: np.ndarray, p: np.ndarray) -> np.ndarray:
-    """
-    Plain forward model K @ p. NOTE: the notebook's fx-calculation for the
-    general-kernel case has additional offset-subtraction / sign handling
-    (see module docstring) that is not reproduced here -- verify against
-    the notebook before trusting this for anything beyond a sanity check
-    on the update rule itself.
-    """
-    return K @ p
+def default_offset(K: np.ndarray, b: np.ndarray, factor: float = 10.0) -> float:
+    """Generous offset t > max|p|, from a rough automatic signed estimate."""
+    p_est = arls.arls(K, b)
+    scale = float(np.max(np.abs(p_est)))
+    if not np.isfinite(scale) or scale == 0.0:
+        scale = float(np.linalg.norm(b) / max(np.linalg.norm(K, 1), 1e-300))
+    return factor * max(scale, 1e-12)
+
+
+def _em_step_safe(u: np.ndarray, A: np.ndarray, b: np.ndarray, col_sums: np.ndarray) -> np.ndarray:
+    """Multiplicative EM update (as em.em_step) that leaves components with a
+    zero kernel column unchanged instead of producing 0/0."""
+    Au = A @ u
+    Au = np.where(Au <= 0, np.finfo(float).eps, Au)
+    ok = col_sums > 0
+    correction = np.ones_like(u)
+    correction[ok] = (A.T @ (b / Au))[ok] / col_sums[ok]
+    return u * correction
 
 
 def solve(
     K: np.ndarray,
     b: np.ndarray,
     db: np.ndarray,
+    t: float | None = None,
     p0: np.ndarray | None = None,
     max_iterations: int = 10_000,
+    smoothing_h: float | None = None,
+    tol: float = 1e-8,
+    structure: str = "first_half",
+    K_pos: np.ndarray | None = None,
+    K_neg: np.ndarray | None = None,
 ) -> SolverResult:
     """
-    General-kernel EM for a signed p(r), per the reconstruction above.
-
     Parameters
     ----------
-    K : (M, N) signed kernel matrix.
-    b : (M,) data.
-    db : (M,) uncertainty on b.
-    p0 : initial p(r); per the notebook, "can be a constant with a positive
-         value" -- defaults to a small positive constant.
+    K : (M, N) signed kernel. Also fine if K >= 0 (then K- is empty and this
+        reduces to the shifted-EM of the paper's eq. 10, allowing a signed p).
+    b, db : data and uncertainties.
+    t : offset (see module docstring); default from `default_offset`.
+    p0 : initial signed solution (default: zeros, i.e. shifted start p~ = t).
+    smoothing_h : if given, smooth p each iteration with the tridiagonal
+        operator of em.py (0 < h <~ 0.3).
+    tol, max_iterations : stop when ||p_new - p_old|| <= tol (same gNorm
+        criterion as em.py / the C code's FP_step).
+    structure : "first_half" (notebook's rule, default) or "antisym".
+    K_pos, K_neg : optional explicit non-negative decomposition K = K_pos -
+        K_neg (the paper's own example uses smooth Gaussians rather than the
+        pointwise positive/negative parts); default is the pointwise split.
     """
+    if structure not in ("first_half", "antisym"):
+        raise ValueError("structure must be 'first_half' or 'antisym'")
+
     n = K.shape[1]
-    K_ext = split_kernel(K)  # (M, 2N), non-negative
+    if K_pos is None or K_neg is None:
+        K_pos, K_neg = split_kernel(K)
+    K_ext = np.hstack([K_pos, K_neg])          # (M, 2N), entirely >= 0
+    col_sums = K_ext.sum(axis=0)
+    row_sums = K_ext.sum(axis=1)
 
-    p = p0.copy() if p0 is not None else np.full(n, 1e-3)
+    if t is None:
+        t = default_offset(K, b)
+    b_shift = b + t * row_sums                  # f~ = f + t * int k~ dtheta
 
-    chi2_history = []
-    roughness_history = []
+    S = _smoothing_matrix(n, smoothing_h) if smoothing_h is not None else None
+    p = np.zeros(n) if p0 is None else np.asarray(p0, dtype=float).copy()
+    lim = 0.999 * t                             # keep p~ = p + t strictly positive
 
-    for _ in range(max_iterations):
-        p_ext = np.hstack([p, -p])              # "duplicate along r with reversed sign"
-        p_ext_updated = em_step(p_ext, K_ext, b)  # ordinary non-negative EM update
-        p = p_ext_updated[:n]                     # "discard the half of the result"
+    chi2_history, roughness_history, g_norm_history = [], [], []
+    converged = False
+    n_iter = 0
 
-        fitted_b = forward_model(K, p)
+    for n_iter in range(1, max_iterations + 1):
+        p_old = p
+        u = np.concatenate([p + t, -p + t])     # shifted [p, -p]  (>= 0)
+        u_new = _em_step_safe(u, K_ext, b_shift, col_sums)
+        p_first = u_new[:n] - t
+        if structure == "antisym":
+            p = 0.5 * (p_first - (u_new[n:] - t))
+        else:
+            p = p_first
+        if S is not None:
+            p = S @ p
+        p = np.clip(p, -lim, lim)
+
+        g_norm = float(np.linalg.norm(p - p_old))
+        g_norm_history.append(g_norm)
+        fitted_b = K @ p
         chi2_history.append(chi2_r(b, fitted_b, db))
         roughness_history.append(float(np.sum(np.diff(p) ** 2)))
+        if g_norm <= tol:
+            converged = True
+            break
 
-    fitted_b = forward_model(K, p)
+    fitted_b = K @ p
+    try:
+        g_final = g_test(np.abs(b) + 1e-300, np.abs(fitted_b) + 1e-300)
+    except Exception:
+        g_final = float("nan")
     return SolverResult(
-        x=p,
-        fitted_b=fitted_b,
-        n_iterations=max_iterations,
-        chi2_r_history=chi2_history,
-        roughness_history=roughness_history,
-        converged=False,
-        diagnostics={"note": "general-kernel EM, reconstructed from pysasem notebook; "
-                              "verify against Chae et al. 2018 directly before trusting on real data"},
+        x=p, fitted_b=fitted_b, n_iterations=n_iter,
+        chi2_r_history=chi2_history, roughness_history=roughness_history,
+        converged=converged,
+        diagnostics={
+            "offset_t": t, "structure": structure,
+            "g_norm_history": g_norm_history, "g_test_final": g_final,
+            "method": "Chae, Martin & Walker 2018, Sec. 6 (kernel split + shift)",
+        },
     )

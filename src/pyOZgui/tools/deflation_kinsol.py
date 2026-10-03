@@ -89,33 +89,21 @@ def _save(d):
         fh.write("\n")
 
 
-def makeDeflatedClass(baseClass, roots, p=2.0, alpha=1.0, cap=1e6):
-    """Subclass `baseClass` so KINSOL sees the DEFLATED residual.
-
-    `cap` bounds the deflation factor. Without it eta -> infinity as x
-    approaches a known root, the residual handed to KINSOL grows without
-    bound, and the closure's exp(G) overflows -- observed as
-    "RuntimeWarning: overflow encountered in exp" followed by the solve
-    hanging. Capping keeps the known root strongly repulsive while leaving
-    the residual finite; the barrier does not need to be infinite to work.
-    """
-    from deflation import deflationFactor
-
-    class Deflated(baseClass):
-        def rootOperator(self, x):
-            base = super().rootOperator(x)
-            base = np.asarray(base, float)
-            if base.ndim > 1:            # the operator returns a pair
-                base = base[0]
-            if not roots:
-                return base
-            eta = deflationFactor(np.asarray(x, float), roots, p, alpha)
-            if not np.isfinite(eta) or eta > cap:
-                eta = cap
-            return eta*base
-
-    Deflated.__name__ = f"Deflated{baseClass.__name__}"
-    return Deflated
+#makeDeflatedClass NOW LIVES IN THE PACKAGE, not here.
+#
+#This script carried its own copy, which was the authoritative one until
+#ozLib.solve() needed deflation and could not import from a standalone
+#script. The copy here then went stale in a way that was invisible: it
+#wrapped `rootOperator`, which the MULTICOMPONENT path never calls, so
+#deflating a mixture solve did precisely nothing -- same iteration count,
+#identical result, zero difference after excluding the known root. A
+#feature that appears to work while doing nothing is the worst way for this
+#to fail, and two copies of one function is how it happened.
+#
+#The package version wraps `fixPointOperator` instead, which both paths go
+#through, and scales the STEP rather than the operator so the deflated map
+#keeps the same fixed points except at the roots excluded.
+from deflation import makeDeflatedClass        # noqa: F401  (re-export)
 
 
 def build(cls, pot, args, clo, par, phi):

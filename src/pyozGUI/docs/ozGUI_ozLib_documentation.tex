@@ -811,7 +811,8 @@ every numerical strategy attempted: Newton--Krylov (\code{scipy.optimize.newton\
 damped fixed-point iteration (multiple damping factors), density continuation
 with warm restarts, dense-Jacobian Newton methods
 (\code{fsolve}/\code{hybr}, Levenberg--Marquardt, Broyden1/2, \code{df-sane}),
-a trust-region-style adaptive step limiter, and SUNDIALS' own KINSOL (via
+a trust-region-style adaptive step limiter, and SUNDIALS' own KINSOL
+\cite{Hindmarsh2005} (via
 \code{sundials4py}) with this project's best-validated tuning parameters
 (Section~\ref{sec:sundials-tuning}) --- the last of these even produced
 low-level crashes (segfault/bus error) rather than merely failing to converge.
@@ -1189,8 +1190,8 @@ since the idealised $\delta\to0$ limit is not the same physical system.
 
 \subsection{Sharma--Sharma square well}
 \label{sec:sharma-sharma}
-The classic first-order perturbative PY square-well solution (Sharma \& Sharma,
-\emph{Physica A} \textbf{89}, 213 (1977)), ported from
+The classic first-order perturbative PY square-well solution
+\cite{sharma1977}, ported from
 \code{sasfit\_sq\_square\_well\_potential.c}:
 \begin{equation}
   S(q) = \frac{1}{1-C(q)}, \qquad
@@ -1236,8 +1237,8 @@ implementation.
 
 \subsection{ORPA (Pini--Parola--Reatto) for square wells}
 A self-consistent optimised random-phase approximation specific to square-well
-potentials (Pini, Parola \& Reatto, \emph{Mol.\ Phys.} \textbf{100}, 1507
-(2002)), compiled as a standalone C library (\code{orpa\_c\_source/}) using
+potentials \cite{pini2002}, compiled as a standalone C library
+(\code{orpa\_c\_source/}) using
 GSL's derivative-free multivariate root solver with continuation in the well
 depth. At a strong-well test case ($\varphi=0.15$, $\varepsilon=-0.5k_BT$,
 $\delta=0.3\sigma$) where the Sharma--Sharma perturbative formula
@@ -1248,8 +1249,8 @@ consistent with ORPA being a genuinely non-perturbative theory.
 \subsection{RFA (Rational Function Approximation)}
 \label{sec:rfa}
 Santos, Yuste \& L\'opez de Haro's rational-function approximation for
-\emph{arbitrary} piecewise-constant potentials (\emph{Condens.\ Matter Phys.}
-\textbf{15}, 23602 (2012)), compiled as a standalone C library
+\emph{arbitrary} piecewise-constant potentials \cite{santos2012}, compiled as
+a standalone C library
 (\code{rfa\_c\_source/}) with a numerically-safe small-$q$ series expansion.
 Because it handles an arbitrary number of piecewise-constant steps, this is
 the only analytical tool validated against both the single-well
@@ -1292,7 +1293,7 @@ respectively, applied to $\mathcal{F}$. Reliable across the full range of
 problems tested here, though can be markedly slower than the alternatives
 below on both easy and hard problems.
 
-\subsection{Biggs--Andrews}
+\subsection{Biggs--Andrews \cite{BiggsAndrews1997}}
 \label{sec:biggs-andrews}
 A hand-written acceleration scheme, ported directly from
 \code{sasfit\_oz\_solver.c}'s own \code{case BIGGS\_ANDREWS:} block (dispatched

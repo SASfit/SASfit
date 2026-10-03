@@ -332,6 +332,16 @@ class RYPolydisperseYukawaTab(PolydisperseTabControls, ttk.Frame):
         self.nQVar = tk.StringVar(value="200")
         row = entry("Points:", self.nQVar, row)
 
+        #DEFLATION ON AN UNPHYSICAL ROOT. This tab is the most likely of the
+        #four to meet one: charged, polydisperse, and with a consistency
+        #search that moves alpha around. The wrapper already screens
+        #min S_NN(q) and raises -- strongly attractive states at appreciable
+        #phi are the usual cause, and the closure genuinely has several
+        #roots there -- but until now it could only refuse. Each retry
+        #excludes one more root and re-solves with the SAME solver.
+        self.deflateVar = tk.StringVar(value="0")
+        row = entry("Deflate if S(Q)<0:", self.deflateVar, row)
+
         # ---- actions ----
         # Standard control set shared with the other polydisperse tabs (see
         # polydisperse_tab_controls.py): Compute / Interrupt / Clear all /
@@ -458,6 +468,8 @@ class RYPolydisperseYukawaTab(PolydisperseTabControls, ttk.Frame):
         p["Qmin"] = f(self.QminVar, "Q min", lo=1e-12)
         p["Qmax"] = f(self.QmaxVar, "Q max", lo=1e-12)
         p["nQ"] = int(f(self.nQVar, "Points", lo=2, hi=5000))
+        p["deflate"] = int(f(self.deflateVar, "Deflate if S(Q)<0",
+                             lo=0, hi=5))
         if p["Qmax"] <= p["Qmin"]:
             raise ValueError("Q max must exceed Q min")
         # Form factor. This was missing, so _computeWorker's own
@@ -544,7 +556,20 @@ class RYPolydisperseYukawaTab(PolydisperseTabControls, ttk.Frame):
             res.alpha_converged = abs(alpha_res) < 1e-3
             progress(f"alpha = {alpha:.4f}" if res.alpha_converged else
                      f"alpha = {alpha:.4f} (NOT consistent, residual {alpha_res:+.3g})")
-            ry = rypw.RYPolydisperseYukawa(sigmas, x_array, p["z"], p["K"], alpha)
+            #PASS THE SELECTED SOLVER. The dropdown was built from
+            #_solverChoices() and the user's choice read back by
+            #selectedSolverClass(), and then not used -- every solve fell
+            #through to rypolydisperseWrapper's own cascade, which starts at
+            #scipy Anderson. So picking "SUNDIALS KIN_FP" in the interface
+            #produced "scipy Anderson converged after N steps" in the log,
+            #and the control had no effect at all.
+            #
+            #None is still meaningful and is what the wrapper expects when
+            #no dropdown is offered: it then chooses from its own ordered
+            #list with a fallback cascade.
+            ry = rypw.RYPolydisperseYukawa(sigmas, x_array, p["z"], p["K"], alpha,
+                                           solverClass=self.selectedSolverClass(),
+                                           deflateOnUnphysical=p.get("deflate", 0))
             
             Q = np.logspace(np.log10(p["Qmin"]), np.log10(p["Qmax"]), p["nQ"])
             res.Q = Q

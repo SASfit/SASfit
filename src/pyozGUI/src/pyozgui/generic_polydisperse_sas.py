@@ -60,6 +60,7 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
                  closure="Percus-Yevick", closureParam=None, closureParam2=None,
                  formfactor=None, meanDiameter=1.0,
                  solverClass=None, gridN=4095, pointsPerSigma=100,
+                 deflateOnUnphysical=0,
                  onSolverCreated=None, mannAlpha=None,
                  maxIterations=6000, converged_tol=1e-6,
                  nFF=None, distribution="Schulz", meanRadius=None,
@@ -144,6 +145,27 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
             raise ValueError(
                 f"transformType must be 1 or 4, got {transformType!r}")
         self._transformType = int(transformType)
+        #DEFLATION ATTEMPTS, stored rather than threaded through because
+        #_verifyPhysical is called from deep in the solve path.
+        #
+        #ZERO IS THE RIGHT DEFAULT, AND THE FIT PATH MUST KEEP IT. Rescuing
+        #an unphysical root during a fit looks helpful and is not: the
+        #optimiser calls this hundreds of times and routinely wanders into
+        #unphysical territory, where three things go wrong. The cost becomes
+        #unpredictable, since each bad point triggers extra solves at
+        #exactly the hardest state points. The refusal is INFORMATION --
+        #it tells the optimiser to back off, and rescuing it hides that. And
+        #worst, if deflation finds a second branch at some parameter values
+        #but not at neighbouring ones, chi-squared JUMPS between adjacent
+        #iterations: a least-squares optimiser assumes a smooth residual,
+        #and the resulting convergence failures look like bad data rather
+        #than like a discontinuous model.
+        #
+        #So this is for Compute, not Fit. The useful workflow is to fit,
+        #get a suspicious answer, then recompute at those parameters with
+        #deflation on to ask whether another branch exists there.
+        self._deflateAttempts = int(deflateOnUnphysical)
+        self._deflating = False
         self._solverKw = dict(solverClass=solverClass, gridN=gridN,
                               pointsPerSigma=pointsPerSigma,
                               maxIterations=maxIterations,
@@ -346,6 +368,49 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         self._verifyPhysical(sol)
         return sol
 
+    def _deflateRetry(self, sol):
+        """Re-solve with the unphysical root deflated away.
+
+        Returns a solver instance on success, or None when no physical root
+        is reachable -- the caller then raises its own message, which
+        already names the state point and explains what an unphysical root
+        means.
+
+        `_deflating` guards against recursion: each retry runs the same
+        screen, and a second unphysical root should feed the next deflation
+        here rather than start a nested search.
+        """
+        from deflation import makeDeflatedClass
+        base = type(sol)
+        kw = dict(self._solverKw)
+        roots = []
+        self._deflating = True
+        try:
+            for _ in range(max(1, self._deflateAttempts)):
+                try:
+                    roots.append(np.asarray(
+                        sol.packPairs(sol.gammaMatrixMulticomponent)
+                        if getattr(sol, "numberOfComponents", 1) > 1
+                        else sol.x_fixpoint, float).copy())
+                except Exception:
+                    return None
+                kw["solverClass"] = makeDeflatedClass(base, list(roots))
+                try:
+                    cand = self._makeSolver(kw["gridN"], kw["pointsPerSigma"],
+                                            kw["solverClass"],
+                                            kw["maxIterations"])
+                except Exception:
+                    return None
+                try:
+                    self._verifyPhysical(cand)
+                except RuntimeError:
+                    sol = cand
+                    continue
+                return cand
+        finally:
+            self._deflating = False
+        return None
+
     def _verifyPhysical(self, sol):
         """Reject a converged but UNPHYSICAL solution.
 
@@ -378,6 +443,16 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         #A small negative excursion is discretisation noise, not a different
         #branch: the wrong branches are negative by tens, not by 1e-9.
         if worst < -1e-6:
+            #DEFLATION, where asked for -- and note that the fit path never
+            #asks. See the deflateOnUnphysical docstring in __init__: a
+            #selectively-rescued root makes the residual discontinuous
+            #between neighbouring parameter values, which a least-squares
+            #optimiser cannot cope with.
+            if getattr(self, "_deflateAttempts", 0) and not getattr(
+                    self, "_deflating", False):
+                rescued = self._deflateRetry(sol)
+                if rescued is not None:
+                    return rescued
             raise RuntimeError(
                 f"{self.closure} converged to an UNPHYSICAL solution for "
                 f"{self.potential} at phi={self.phi:g}: min S(Q) = "

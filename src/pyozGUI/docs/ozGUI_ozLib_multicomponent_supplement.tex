@@ -1625,6 +1625,52 @@ the authors note it is sensitive to $\alpha$, with no a priori guidance.
 Applied to the BPGG state above, deflating the single root yields nothing
 further, consistent with there being only one.
 
+\paragraph{Deflation as a response to an unphysical root.} The analysis above
+is diagnostic; it is now also wired into the solve path. Every route through
+this package screens $\min S(Q)$ and, where asked, deflates the offending
+root and re-solves --- \code{ozLib.solve(deflateOnUnphysical=n)}, with a
+corresponding control on each GUI tab, defaulting to zero.
+
+The alternative, and the more obvious one, is to retry with a solver from the
+other family: fixed-point and Newton--Krylov methods empirically favour
+different branches, and at the Lennard-Jones state point above a fixed-point
+solver reaches $g_{\max} = 2.1636$ directly where all four Newton--Krylov
+variants do not. It was rejected for two reasons. It returns a result from a
+solver the caller did not choose, silently; and it relies on a bias that
+holds at the state points tested rather than on anything guaranteed, so
+nothing prevents both families agreeing on a wrong root elsewhere. Deflation
+keeps the chosen solver and makes the exclusion structural.
+
+Failure is then a result rather than a defect, and is reported as one: the
+exception names every root found with its $\min S(Q)$. At $\varepsilon = 0.8$,
+$\varphi = 0.30$ under HNC with Newton--Krylov the search returns roots at
+$-18.73$ and $-20.69$ and then declines, which is what a state point offering
+no physical solution reachable by that solver looks like.
+
+\paragraph{Not applied during fitting, deliberately.} On the polydisperse tab
+the control governs \code{Compute} and never the fit. An optimiser evaluates
+the model hundreds of times and passes through unphysical territory as a
+matter of course; rescuing some of those points and not others makes
+$\chi^2$ discontinuous between neighbouring parameter values, and a
+least-squares method assumes a smooth residual. The refusal also carries
+information --- it tells the optimiser to retreat --- which a rescue would
+suppress. The intended use runs the other way: fit, obtain a result that
+looks wrong, then recompute at those parameters with deflation enabled to ask
+whether a second branch exists there.
+
+\paragraph{A caution on choosing between two physical roots.} Where deflation
+returns a second root that is \emph{also} physical, it is tempting to prefer
+whichever is more thermodynamically consistent. That criterion does not
+discriminate. For a parameter-free closure the compressibility/virial
+mismatch is a property of the closure rather than of the branch --- PY hard
+spheres are inconsistent by a large and well-known amount at every density
+--- so the comparison is dominated by closure error. For the
+consistency-parameter closures it is circular, since $\alpha$ is tuned
+precisely to make the two routes agree and two roots simply give two values
+of $\alpha$ that each do so. Continuity from a known-good state point, or
+agreement with an analytic limit where one exists, discriminates where
+consistency cannot.
+
 \section{Fitting measured data}
 
 What is fitted is

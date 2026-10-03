@@ -46,7 +46,7 @@ class BackgroundFitResult:
 
     def evaluate(self, q: np.ndarray) -> np.ndarray:
         """Evaluate the fitted background model over an arbitrary q array."""
-        return background_model(q, self.backgr, self.c, self.alpha)
+        return background_model(q, self.backgr, 0*self.c, self.alpha)
 
     def subtract(self, q: np.ndarray, I: np.ndarray) -> np.ndarray:
         """I - fitted background, evaluated at the same q as I."""

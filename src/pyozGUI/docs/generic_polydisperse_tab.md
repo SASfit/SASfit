@@ -377,6 +377,35 @@ costs nothing, since the model shape is already computed, and stops the
 optimiser spending an OZ solve on a scale factor. It is why a three-parameter
 fit converges in about 30 evaluations rather than a few hundred.
 
+### Deflation applies to Compute, not to Fit
+
+The tab has a **Deflate if S(Q)<0** control, defaulting to 0. When a solve
+converges to a root with min S(Q) < 0 — a genuine solution of the closure
+equations on a branch that does not describe a fluid — each attempt excludes
+that root and re-solves with **the same solver**, so your choice of solver is
+respected rather than silently swapped for one from the other family.
+
+**It is deliberately not passed on the fit path**, and that is worth stating
+because it looks like an oversight. Three reasons:
+
+- The optimiser evaluates the model hundreds of times and passes through
+  unphysical territory routinely. Each rescue costs extra solves at exactly
+  the hardest state points, so the cost becomes unpredictable.
+- The refusal is **information**. It tells the optimiser to back off, and
+  rescuing it hides the signal that the parameters are wrong.
+- Worst, it would make the residual **discontinuous**. If deflation finds a
+  second branch at some parameter values and not at neighbouring ones,
+  chi-squared jumps between adjacent iterations. A least-squares optimiser
+  assumes a smooth residual, and the convergence failures that follow look
+  like bad data rather than like a discontinuous model. The same concern
+  appears in the warm-start note above, where branch-switching breaks
+  smoothness — deflation would do it *selectively*, which is worse than
+  doing it consistently.
+
+The workflow it is for runs the other way: fit, get a result that looks
+wrong, then recompute at those parameters with deflation on, to ask whether
+a second branch exists there.
+
 ### Verified
 
 Synthetic hard-sphere data (R = 50, s = 0.22, phi = 0.18, scale 1.7e-3,

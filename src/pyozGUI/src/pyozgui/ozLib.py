@@ -760,6 +760,15 @@ def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closurePara
         check, lastExc = None, None
         for nm in names:
             try:
+                #Announce the verifier before it runs. Its own solve() prints
+                #"<solver> converged after N steps" exactly as the primary
+                #solve does, so the log showed two converged lines with
+                #nothing to say which was which -- it reads as though the
+                #solver had been switched, which is precisely what does NOT
+                #happen: the returned result is always from the solver the
+                #caller chose, and this second solve only cross-checks it.
+                print(f"verifying with {nm} (independent cross-check; the "
+                      f"result returned is still {solver}'s)")
                 check = solve(potential, phi, potentialArgs, closure,
                               closureParam, closureParam2,
                               findConsistentParameter, solver=nm,

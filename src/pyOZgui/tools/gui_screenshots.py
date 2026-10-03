@@ -68,8 +68,17 @@ for _cand in (os.path.join(_HERE, os.pardir, "src", "pyozgui"),
 else:
     raise ImportError("cannot locate ozLib.py")
 
-OUTDIR = os.path.abspath(os.path.join(
-    _HERE, os.pardir, "docs", "manuscript", "figures"))
+#WRITTEN TO BOTH FIGURE DIRECTORIES. The manuscript and the report each have
+#their own, and the GUI screenshots are referenced from both -- plus from
+#docs/gui.md, which reads docs/figures/. Writing to one left the other
+#stale, and a stale screenshot is worse than none because it documents an
+#interface that no longer exists.
+OUTDIRS = [
+    os.path.abspath(os.path.join(_HERE, os.pardir, "docs", "manuscript",
+                                 "figures")),
+    os.path.abspath(os.path.join(_HERE, os.pardir, "docs", "figures")),
+]
+OUTDIR = OUTDIRS[0]          # kept for anything referring to it by name
 GEOMETRY = "1500x1000"
 
 
@@ -143,6 +152,30 @@ def _dpiScale(root, grabbedWidth):
     return 1.0
 
 
+def _warnIfTruncated(root, widget, label):
+    """Warn when a panel is taller than the window can show.
+
+    A screenshot cannot scroll. The parameter panels have grown steadily --
+    tab 1 alone gained the fit block, per-parameter bounds, a kernel
+    selector, a warm-start box and a deflation control -- and a capture that
+    silently loses the bottom rows documents an interface missing precisely
+    the newest parts, which is the opposite of useful.
+    """
+    try:
+        root.update_idletasks()
+        need = widget.winfo_reqheight()
+        have = root.winfo_height()
+        if need > have:
+            _say(f"  WARNING: {label} needs {need}px but the window is "
+                 f"{have}px -- the bottom {need - have}px will be MISSING "
+                 f"from the screenshot. Enlarge the screen, or reduce the "
+                 f"panel, before trusting this figure.")
+            return False
+    except Exception:
+        pass
+    return True
+
+
 def _grab(root, name):
     """Capture the window to docs/manuscript/figures/<name>.png.
 
@@ -205,8 +238,15 @@ def _grab(root, name):
                 img = img.crop(clamped)
         except Exception as exc:
             _say(f"  crop skipped ({type(exc).__name__}); keeping full screen")
-        img.save(path)
-        _say(f"  wrote {path} ({img.size[0]}x{img.size[1]}, dpi scale {s:g})")
+        #SAVE TO EVERY FIGURE DIRECTORY, not just the first.
+        written = []
+        for d in OUTDIRS:
+            os.makedirs(d, exist_ok=True)
+            p = os.path.join(d, f"{name}.png")
+            img.save(p)
+            written.append(p)
+        _say(f"  wrote {name}.png to {len(written)} dir(s) "
+             f"({img.size[0]}x{img.size[1]}, dpi scale {s:g})")
         return True
     except Exception as exc:
         _say(f"  Pillow grab failed: {type(exc).__name__}: {str(exc)[:60]}")
@@ -283,6 +323,21 @@ def shotPolydisperse(root, nb):
     tab = G.GenericPolydisperseTab(nb)
     nb.add(tab, text="1: Polydisperse (any potential)")
     nb.select(nb.index("end") - 1)
+    #Same paned-divider fix as shotExtraTab: the controls live in a
+    #weight=0 pane that can collapse to nothing if laid out before the
+    #window has its real size.
+    _settle(root, 0.4)
+    _paned = getattr(tab, "paned", None)
+    if _paned is not None:
+        try:
+            _panes = _paned.panes()
+            if len(_panes) >= 2:
+                _paned.sashpos(0, max(
+                    _paned.nametowidget(_panes[0]).winfo_reqwidth(), 360))
+                _settle(root, 0.3)
+        except Exception:
+            _say("  tab 1: could not set the sash; the control panel may be "
+                 "missing from the figure")
 
     Q = np.logspace(np.log10(0.05), np.log10(2.0), 60)
     ref = S("HardSphere", (), phi=0.30, srel=0.12, nbins=3,
@@ -304,6 +359,7 @@ def shotPolydisperse(root, nb):
     if not _computeAndSettle(tab, root):
         return
     _selectTab(tab, "I(Q)")
+    _warnIfTruncated(root, tab, "the polydisperse parameter panel")
     _grab(root, "gui_controls")
     if _selectTab(tab, "Approx"):
         _grab(root, "gui_error")
@@ -337,6 +393,26 @@ def shotExtraTab(root, nb, module, cls, label, shortName, compute=False):
         return
     nb.add(widget, text=label)
     nb.select(nb.index("end") - 1)
+    #FORCE THE PANED DIVIDER OPEN.
+    #
+    #Tabs 1 and 3 put their controls in the left pane of a ttk.PanedWindow
+    #with weight=0. Laid out before the window has its real size, that pane
+    #can end up at essentially zero width, and the capture then shows the
+    #plot alone with no interface at all -- which is what happened to tab
+    #3's figure. Setting the sash explicitly after the window is up fixes
+    #it; the widget's own requested width is the right place to put it.
+    _settle(root, 0.4)
+    paned = getattr(widget, "paned", None)
+    if paned is not None:
+        try:
+            panes = paned.panes()
+            if len(panes) >= 2:
+                want = max(paned.nametowidget(panes[0]).winfo_reqwidth(), 360)
+                paned.sashpos(0, want)
+                _settle(root, 0.3)
+        except Exception as exc:
+            _say(f"  {label}: could not set the sash ({type(exc).__name__}); "
+                 f"the control panel may be missing from the figure")
     if compute:
         #The compare/compute entry point differs per tab, so try the known
         #names. Waiting is done by polling for a result rather than by a
@@ -365,7 +441,9 @@ def shotExtraTab(root, nb, module, cls, label, shortName, compute=False):
                      f"capturing the empty panel")
             _settle(root, 2.0)
             break
-    _grab(root, shortName)
+    if not _grab(root, shortName):
+        return
+    _warnIfTruncated(root, widget, label)
 
 
 # ---------------------------------------------------------------------------

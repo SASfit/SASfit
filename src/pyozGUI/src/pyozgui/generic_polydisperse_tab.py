@@ -646,6 +646,20 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         _warmCb.grid(row=r, column=0, columnspan=2, sticky="w")
         self._bindHelp(_warmCb, "warmStart")
         r += 1
+        #DEFLATION, COMPUTE ONLY. Deliberately not applied during a fit --
+        #see the note where it is passed in _worker, and the longer one in
+        #GenericPolydisperseSAS: rescuing a root at some parameter values
+        #but not at neighbouring ones makes chi-squared discontinuous, which
+        #a least-squares optimiser cannot cope with.
+        ttk.Label(left, text="Deflate if S(Q)<0:").grid(row=r, column=0,
+                                                        sticky="e")
+        self.deflateVar = tk.StringVar(value="0")
+        _deflBox = ttk.Combobox(left, textvariable=self.deflateVar,
+                                values=["0", "1", "2", "3"],
+                                state="readonly", width=4)
+        _deflBox.grid(row=r, column=1, sticky="w")
+        self._bindHelp(_deflBox, "deflate")
+        r += 1
         #THE SOLVER SELECTOR LIVES HERE, not in the footer.
         #
         #It belongs with the other numerical choices -- the fitter above it
@@ -1170,6 +1184,27 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         "usePorod": "Add a sloping background, A x Q^(-4+d), to the flat "
                     "one. Its amplitude is linear and solved exactly, so "
                     "this costs one extra fitted parameter, not two.",
+        "deflate": "How many times to reject an unphysical root and "
+                   "re-solve with it deflated away. S(Q) is a variance and "
+                   "cannot be negative, but nothing about the iteration "
+                   "detects a negative one -- a solver can converge to a "
+                   "residual of 1e-13, report success, and sit on a "
+                   "negative-compressibility branch. Each retry excludes one "
+                   "more root and re-solves with THE SAME solver, so your "
+                   "choice of solver is respected.\n\n"
+                   "APPLIES TO COMPUTE ONLY, NOT TO FIT, and that is "
+                   "deliberate rather than an oversight. During a fit the "
+                   "optimiser calls the solver hundreds of times and "
+                   "routinely wanders into unphysical territory; rescuing "
+                   "some of those points and not others would make "
+                   "chi-squared jump between neighbouring parameter values, "
+                   "and a least-squares optimiser assumes a smooth "
+                   "residual. The refusal is also information -- it tells "
+                   "the optimiser to back off.\n\n"
+                   "The useful workflow is the other way round: fit, get a "
+                   "suspicious answer, then recompute at those parameters "
+                   "with this on, to ask whether a second branch exists "
+                   "there.",
         "warmStart": "Seed each OZ solve with the previous converged gamma "
                      "instead of starting from zero. Faster, and keeps the "
                      "fit on one branch -- but can also hold it on a wrong "
@@ -2212,6 +2247,7 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
         p["porodQmin"] = f(self.porodQminVar, "Q clamp", lo=0.0)
         p["fitter"] = self.fitterVar.get()
         p["warmStart"] = bool(self.warmStartVar.get())
+        p["deflate"] = int(self.deflateVar.get() or 0)
         #Ticked means FREE (solved exactly), so "fixed" is the negation --
         #the same convention as scale and background.
         p["fixPorodA"] = not bool(
@@ -2396,6 +2432,12 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                 closureParam=p["closureParam"], closureParam2=p["closureParam2"],
                 distribution=p["distribution"],
                 formfactor=ff, solverClass=p["solverClass"],
+                #COMPUTE ONLY. The fit path above deliberately does not pass
+                #this: a selectively-rescued root makes chi-squared
+                #discontinuous between neighbouring parameter values, which
+                #a least-squares optimiser cannot handle. See the
+                #deflateOnUnphysical note in GenericPolydisperseSAS.
+                deflateOnUnphysical=p.get("deflate", 0),
                 mannAlpha=p.get("mannAlpha"),
                 gridN=p["settings"]["gridN"],
                 pointsPerSigma=p["settings"]["pointsPerSigma"],
