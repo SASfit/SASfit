@@ -461,7 +461,7 @@ def _rootSummary(history):
 def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick", closureParam=None,
           closureParam2=None,
           findConsistentParameter=False,
-          solver=_defaultSolverName, maxIterations=1000,
+          solver=_defaultSolverName, maxIterations=None,
           numberOfRadialSamplingPoints=None, hardSphereDiameterInPoints=None,
           onSolverCreated=None, verify=True,
           verifyWith=("Biggs-Andrews", "Picard iteration"),
@@ -832,7 +832,7 @@ def solveWithConsensus(potential, potentialArgs=(), closure="doPYclosure",
                        solvers=("scipy Anderson", "Biggs-Andrews",
                                 "Picard iteration"),
                        tolerance=1e-3, gridN=4095, pointsPerSigma=100,
-                       maxIterations=8000, transformType=1, quantity="Sq"):
+                       maxIterations=None, transformType=1, quantity="Sq"):
     """Solve with several solvers and return a result only if they AGREE.
 
     A converged residual is not evidence that the answer is right. The

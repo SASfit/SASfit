@@ -100,7 +100,7 @@ class OZLiquidStructure:
                  closure="Percus-Yevick", closureParam=None,
                  closureParam2=None, potential="HardSphere",
                  potentialArgs=(), solverClass=None, gridN=4095,
-                 pointsPerSigma=100, maxIterations=6000, transformType=1,
+                 pointsPerSigma=100, maxIterations=None, transformType=1,
                  mannAlpha=None, deflateOnUnphysical=0):
         import ozLib
 

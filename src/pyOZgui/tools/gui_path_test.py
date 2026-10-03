@@ -299,6 +299,36 @@ def main():
     tab.smearVar.set(False)
     for name, flag in tab.fitFlags.items():
         flag.set(name in ("phi", "srel", "scale", "background"))
+    #BOUND srel AWAY FROM A JOINTLY IMPOSSIBLE CORNER.
+    #
+    #Left at the panel default of [0.001, 0.6] this fit converged on
+    #srel = 0.391 at phi = 0.533 -- each inside its own bounds, and together
+    #meaningless. At three size classes that srel puts the quadrature nodes
+    #at sigma/<sigma> = 0.093, 0.95 and 3.57, so the largest class alone
+    #would need phi*sigma_max^3 = 24 times the available volume. There is no
+    #fluid there, the solver correctly refuses, and this check then read the
+    #refusal as a defect.
+    #
+    #The check exists to catch fit/compute DISAGREEMENT, not to explore the
+    #phase diagram, so the bound keeps it on the question it was written
+    #for. The underlying issue -- that no single-parameter bound can express
+    #phi*(sigma_max/<sigma>)^3 <= 1 -- wants a joint constraint through the
+    #NLopt path, the same way the shell thickness is already handled.
+    _bounds = getattr(tab, "_fitBoundVars", {}).get("srel")
+    if _bounds is not None:
+        _bounds[1].set("0.25")
+    else:
+        _say("  WARNING: could not find the srel bound; the fit may wander "
+             "into an unphysical corner and this check will report a "
+             "failure that is really the solver refusing correctly")
+    #AND THE TABLE, which is what actually governs this check. Setting the
+    #widget above is not enough: _onFit reads _fitBoundVars, but this test
+    #calls _fitWorker directly and builds its own bounds from
+    #tab.FIT_BOUNDS. Setting only the widget looked right, changed nothing,
+    #and the fit went to srel = 0.391 exactly as before -- the widget edit
+    #is kept so the panel agrees with what is being fitted, but this is the
+    #line that bites.
+    _srelCap = 0.25
     #THE FLAGS THEMSELVES. A reset left over from an earlier layout wiped
     #every inline checkbox, so fitFlags held only the potential arguments
     #and a fit varied ONE parameter while ten showed ticked. Assert the
@@ -310,6 +340,8 @@ def main():
         for n in ("phi", "srel"):
             x = tab._currentValue(n)
             lo, hi = tab.FIT_BOUNDS[n]
+            if n == "srel":
+                hi = min(hi, _srelCap)
             params[n] = (x, min(lo, x*0.999), max(hi, x*1.001))
         tab._fitWorker(p, params)
         fit = None

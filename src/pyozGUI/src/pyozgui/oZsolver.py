@@ -46,6 +46,11 @@ from abc import ABCMeta, abstractmethod
 from oZfixpointOperator import OZfixpointOperator
 
 class OZsolver(OZfixpointOperator):
+    #Default iteration limit, overridden per solver. 600 suits every
+    #accelerated method here; PicardOZsolver raises it to 3000. See the note
+    #in __init__ for the measurements behind both numbers.
+    DEFAULT_MAX_ITERATIONS = 600
+
     #Init needs to be given by constructor, all other members can be set via RPC later
     #but port needs to be known in advance by the client. (Will be defined by the client)
     def __init__(self, port, **kwargs):
@@ -55,7 +60,28 @@ class OZsolver(OZfixpointOperator):
       #(or set via setter). It is here (and not in the derived classes) since it is to be equal
       # for all algorithms. (To allow for a fair comparison)
       self.convergenceCriterion = 1e-12
-      self.numberOfIterations = 1000; #Upper bound
+      #ITERATION LIMIT, taken from the solver's own class attribute rather
+      #than fixed here, because the right number differs by two orders of
+      #magnitude between families. Measured counts for a solve that does
+      #converge, hard spheres under PY:
+      #
+      #    SUNDIALS KIN_FP     17 to  60
+      #    scipy Anderson      18 to 179
+      #    MDIIS               30 to  97
+      #    Picard             336 to several thousand
+      #
+      #The old flat default of 1000 -- and the 6000 and 8000 that callers
+      #passed -- were therefore 10 to 100 times what any accelerated solver
+      #needs. That is not free: at an unphysical or near-spinodal state
+      #point during a fit, the solver grinds through thousands of iterations
+      #before giving up, when a few hundred would have reached the same
+      #verdict. Much of the slowness of fits at the edge of parameter space
+      #is this.
+      #
+      #600 for the accelerated solvers leaves roughly a threefold margin
+      #over the worst converging case observed; Picard keeps 3000, since it
+      #genuinely needs the room.
+      self.numberOfIterations = self.DEFAULT_MAX_ITERATIONS
       #CONVERGENCE FLAG, part of the base class so that EVERY solver has one.
       #
       #Until this was added only picardOZsolver set it, so a caller doing
@@ -1450,7 +1476,15 @@ class OZsolver(OZfixpointOperator):
       self.isInterrupted = True
 
     def setNumberOfIterations(self, n):
-      self.numberOfIterations = n
+      #None means "keep the solver's own default". Callers that do not care
+      #about the limit should pass None rather than a number, so each solver
+      #gets the limit suited to it -- 600 for the accelerated family, 3000
+      #for Picard. A caller passing a flat 6000 to every solver, as several
+      #did, gives the accelerated ones a hundred times what they need and
+      #makes a hopeless solve at a bad state point take a hundred times
+      #longer to admit it.
+      if n is not None:
+        self.numberOfIterations = n
 
     #End setter
     #**********************************************************************

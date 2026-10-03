@@ -7,6 +7,15 @@ from oZsolver import OZsolver
 #This class inherits all that is needed to run the 
 #iteration and to communicate with clients from OZsolver
 class PicardOZsolver(OZsolver):
+    #PICARD NEEDS THE ROOM, where the accelerated solvers do not. Measured
+    #on hard spheres under PY it takes 336 iterations at phi = 0.30 against
+    #17 to 60 for SUNDIALS KIN_FP, and the count grows geometrically with
+    #density -- 41, 49, 60, 74, ... 946 in steps of 0.02 -- until it stops
+    #converging altogether above about phi = 0.42. So 600 would cut off
+    #solves that would have succeeded; 3000 does not, while still being a
+    #long way below the 6000 and 8000 that callers used to pass.
+    DEFAULT_MAX_ITERATIONS = 3000
+
     def __init__(self, port, **kwargs):
       #First run constructor of super class
       OZsolver.__init__(self, port, **kwargs)

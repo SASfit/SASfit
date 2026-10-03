@@ -1400,7 +1400,7 @@ result.r, result.q   # the real-/reciprocal-space grids
 \begin{lstlisting}
 def solve(potential, phi, potentialArgs=(), closure="Percus-Yevick",
           closureParam=None, findConsistentParameter=False,
-          solver=_defaultSolverName, maxIterations=1000,
+          solver=_defaultSolverName, maxIterations=None,
           numberOfRadialSamplingPoints=None, hardSphereDiameterInPoints=None,
           onSolverCreated=None):
     ...

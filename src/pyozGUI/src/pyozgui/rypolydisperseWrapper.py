@@ -166,7 +166,7 @@ class RYPolydisperseYukawa:
 
     def __init__(self, sigma, rho, z, K, alpha=0.5, delta=None,
                  gridN=_GRID_N, pointsPerSigma=_POINTS_PER_SIGMA,
-                 maxIterations=8000, converged_tol=1e-6,
+                 maxIterations=None, converged_tol=1e-6,
                  solverClass=None, checkPhysical=True, _retrying=False,
                  deflateOnUnphysical=0,
                  closure="Rogers-Young", closureParam2=None):

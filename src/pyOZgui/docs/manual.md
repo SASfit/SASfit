@@ -59,7 +59,7 @@ ozLib.solve(potential, phi,
             closureParam=None, closureParam2=None,
             findConsistentParameter=False,
             solver="scipy Anderson",
-            maxIterations=1000,
+            maxIterations=None,
             numberOfRadialSamplingPoints=None,
             hardSphereDiameterInPoints=None,
             onSolverCreated=None,
@@ -67,6 +67,22 @@ ozLib.solve(potential, phi,
             verifyWith=("Picard iteration", "Biggs-Andrews"),
             verifyTolerance=1e-3)
 ```
+
+**`maxIterations=None` means the solver's own limit, not "unlimited".** Each
+solver carries a `DEFAULT_MAX_ITERATIONS`: **600** for the accelerated
+family, **3000** for Picard. The difference is justified by measurement — a
+solve that converges takes 17–60 iterations under SUNDIALS KIN_FP, 18–179
+under scipy Anderson and 30–97 under MDIIS, against 336 to several thousand
+for Picard.
+
+Passing a flat number to every solver, which this used to do, gives the
+accelerated ones ten to a hundred times what they need. That costs nothing
+on a solve that converges — it stops at its tolerance long before the ceiling
+— but a great deal on one that does not: at an unphysical or near-spinodal
+state point the solver grinds through thousands of iterations before
+admitting defeat, and during a global search those are exactly the
+evaluations that dominate. Pass a number only if you mean to override the
+solver's judgement.
 
 **`potentialArgs` is positional and its meaning is per-potential.** There is
 no keyword form. `(tau, delta)` for StickyHardSphere, `(K1, z1, K2, z2)` for
@@ -362,7 +378,7 @@ ozLib.solveWithConsensus(potential, potentialArgs=(),
                                   "Picard iteration"),
                          tolerance=1e-3,
                          gridN=4095, pointsPerSigma=100,
-                         maxIterations=8000, transformType=1,
+                         maxIterations=None, transformType=1,
                          quantity="Sq")
 ```
 

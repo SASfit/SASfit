@@ -21,9 +21,10 @@ tolerance in this loop). Implemented below as `tol` / `max_steps`.
 NOW IMPLEMENTED: Biggs-Andrews acceleration (see acceleration.py, ported
 from Joachim's own pyOZgui/biggsAndrewsOZsolver.py, itself ported from the
 same sasfit_fixed_point_acc.c BIGGS_ANDREWS case referenced above) --
-pass accelerate=True. Off by default so existing behaviour/tests are
-unaffected; the plain Picard loop below remains the reference
-implementation the acceleration is checked against.
+ON BY DEFAULT (accelerate=True), per Joachim's explicit preference; pass
+accelerate=False to get the plain Picard loop instead (kept as the
+reference implementation the acceleration is checked against, and still
+used internally whenever accelerate=False).
 
 NOT yet implemented:
   - The signed/general-kernel (Chae et al. 2018) variant -- see

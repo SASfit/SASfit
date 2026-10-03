@@ -62,7 +62,7 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
                  solverClass=None, gridN=4095, pointsPerSigma=100,
                  deflateOnUnphysical=0,
                  onSolverCreated=None, mannAlpha=None,
-                 maxIterations=6000, converged_tol=1e-6,
+                 maxIterations=None, converged_tol=1e-6,
                  nFF=None, distribution="Schulz", meanRadius=None,
                  transformType=1):
         """nFF: number of size classes used for the FORM-FACTOR average.
