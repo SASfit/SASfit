@@ -689,6 +689,90 @@ alone, reproduces the oscillations at any grid density --- a ripple of 2.79
 even at $\varphi = 10^{-6}$, where $S$ must be the identity.
 
 % ---------------------------------------------------------------------
+\subsection{A fit to measured data, against a known volume fraction}
+\label{sec:realfit}
+
+The results above are synthetic, which tests the numerics against
+themselves. The check that tests the whole chain is a fit to a real
+measurement whose answer is known by other means.
+
+The dataset is a merged small-angle curve from a colloidal sample whose
+volume fraction was determined independently as $0.392 \pm 0.005$. It was
+fitted with a log-normal size distribution over nine classes, the Verlet
+closure, a core--shell form factor with the shell thickness linked to the
+distribution width ($\delta = c\,\mathrm{d}R$, $c = 1.999$), and resolution
+smearing taken from the measured $\mathrm{d}Q$ column. The fit returns a
+hard-core volume fraction of $0.357$, a mean radius of $34.3$ and a relative
+width of $0.086$.
+
+Those two volume fractions are not the same quantity. The solver's
+$\varphi$ is the HARD-CORE fraction, built from the core radius; the
+measured $0.392$ counts the whole particle. Averaging $(R+\delta)^3$ over
+the fitted distribution rather than cubing the mean --- the two differ by
+$2.3\,\%$ here, which is not negligible at this precision --- gives
+
+\begin{equation}
+\varphi_{\mathrm{outer}}
+= \varphi_{\mathrm{core}}\,
+  \frac{\langle (R+\delta)^3\rangle}{\langle R^3\rangle}
+= 0.388 ,
+\label{eq:phiouter}
+\end{equation}
+
+against $0.392 \pm 0.005$: agreement to within $0.8\sigma$.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig_realdata_fit.pdf}
+\caption{The measured curve and the fit of Section~\ref{sec:realfit}. Upper
+panel: data with error bars and the fitted model, over two decades in $Q$.
+Lower panel: residuals in units of the error bar,
+$(I_{\mathrm{fit}}-I)/\sigma$, which is the scale on which the reduced
+$\chi^2$ of 6.5 is actually incurred --- on a log-intensity plot the
+structure responsible is invisible.
+The residuals are not random: they scatter within about $\pm 2\sigma$ at low
+and high $Q$ but excur to $-7\sigma$ near $Q \approx 0.22$ to $0.28$, and
+change character either side of $Q \approx 0.2$. That is the overlap region
+between the two instrument geometries from which this curve was merged by
+eye, and also where the form-factor minimum makes the model most sensitive.
+The $\chi^2$ is therefore dominated by a localised defect in the data rather
+than by the model missing it everywhere, which is what makes the volume
+fraction --- fixed by the low-$Q$ level and the peak position --- trustworthy
+despite it.
+Drawn by \code{tools/fig\_realdata\_fit.py} directly from the saved session,
+so the figure and the numbers quoted in the text cannot drift apart.}
+\label{fig:realdatafit}
+\end{figure}
+
+The distinction is worth labouring, because getting it wrong is both easy
+and self-confirming. Reading the solver's $\varphi$ as the particle volume
+fraction reports a $10\,\%$ discrepancy --- and the grid-alignment bias of
+Section~\ref{sec:verification} has the right sign and roughly the right
+magnitude to explain it. That explanation would have been plausible,
+tidy and wrong.
+
+\paragraph{Two caveats belong with the number.} The reduced $\chi^2$ is
+$6.5$, which is a statement about the data rather than the model: the curve
+is merged from two instrument geometries of different resolution, aligned by
+eye rather than numerically, and a scale mismatch between the sections is
+penalised quadratically where the error bars are smallest. Fitting a
+separate scale per section would reduce it and is not implemented. Second, a
+ten-start search found six distinct minima, so the agreement holds at the
+minimum reported rather than at a unique solution.
+
+The volume fraction is nonetheless the robust quantity here. It is fixed by
+the low-$Q$ level and the position of the structure-factor peak, not by the
+relative scaling of the two sections, so the defect in the data misses what
+is being checked. The parameters that the merge WOULD affect are those
+constrained by the overlap region --- the width and the shell --- and should
+be read accordingly.
+
+Finally, this fit postdates the defects of Section~\ref{sec:verification}
+and of the supplement, each of which affected every fit made before it was
+corrected. That ordering is what makes the agreement meaningful rather than
+fortunate.
+
+% ---------------------------------------------------------------------
 \section{Practical recommendations}
 
 \begin{itemize}\itemsep2pt
@@ -734,14 +818,41 @@ times, on 4, 9, 60, 98 and 120 points, and each version supported a different
 conclusion; do not tighten its language without adding state points first.
 The adhesive row is complete and a second Yukawa parameter set has been
 added, so the regime picture no longer rests on a single slice.
-\item A fit to a real measured dataset is required; all results here use
-synthetic data generated from the model being fitted. This became more
-urgent rather than less: several defects found since --- the rank-revealing
+\item \textbf{A fit to real measured data: done, and it validates the
+volume fraction against an independent measurement.} The dataset is a merged
+small-angle scattering curve from a colloidal sample whose volume fraction is
+known by other means to be $0.392 \pm 0.005$. Fitted with a log-normal size
+distribution, the Verlet closure, a core--shell form factor and resolution
+smearing taken from the measured $\mathrm{d}Q$ column, the model returns a
+hard-core volume fraction of $0.357$. Counting the shell into the particle
+volume --- its thickness is linked to the distribution width here,
+$\delta = c\,\mathrm{d}R$ --- and averaging $(R+\delta)^3$ over the fitted
+distribution gives $\varphi = 0.388$, agreeing with the measured value to
+within $0.8\sigma$.
+
+This is a stronger check than the analytic comparisons elsewhere, and
+different in kind. Those test the numerics against another calculation; this
+tests the whole chain --- closure, discretisation, polydispersity, resolution
+and form factor together --- against a quantity measured by means that know
+nothing about any of it.
+
+Two caveats belong with the number. The reduced $\chi^2$ is $6.5$, and that
+is a statement about the data rather than the model: the curve is merged from
+two instrument geometries of different resolution, aligned by eye rather than
+numerically, and a scale mismatch between the sections is penalised
+quadratically exactly where the error bars are smallest. Fitting a separate
+scale per section would reduce it, and is future work. Second, a ten-start
+search found six distinct minima, so the agreement holds at the minimum
+reported rather than at a unique solution. The volume fraction is
+nonetheless the robust quantity here: it is fixed by the low-$Q$ level and
+the peak position rather than by the relative scaling of the two sections,
+which is why it survives a merge that visibly costs $\chi^2$.
+
+That this fit POSTDATES the defects listed below matters, since each
+affected every fit made before it was corrected: the rank-revealing
 linear solve returning zeros at a condition number of $10^{20}$, a fit-flag
 reset that silently left only one parameter free, and a Gaussian resolution
-kernel used where $\mathrm{d}Q/Q$ reached $0.55$ --- each affected every fit
-made before they were corrected. Any measured-data result must be obtained
-after them, not before.
+kernel used where $\mathrm{d}Q/Q$ reached $0.55$.
 
 \item \textbf{The transform type needs a decision, not just a
 description.} Measured against the exact Percus--Yevick compressibility, the

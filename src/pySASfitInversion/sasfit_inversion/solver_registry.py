@@ -93,9 +93,16 @@ def _run_em_general(A: np.ndarray, b: np.ndarray, db: np.ndarray) -> SolverResul
     any kernel that goes negative (e.g. "4pi r^2 j0(qr)") -- the ordinary
     EM solvers above assume a non-negative kernel and silently give
     garbage otherwise. Smoothing strength auto-tuned via the discrepancy
-    principle, same as the default EM solver."""
+    principle, same as the default EM solver.
+
+    ACCELERATED 2026-10-03: em_general.solve is now Biggs-Andrews-accelerated
+    by default (accelerate=True, passed explicitly below for clarity) -- a
+    real stopping tolerance (tol=1e-8) is used instead of the old tol=0
+    (which forced every discrepancy-principle trial to run the full
+    max_iterations with no early exit at all, now unnecessary and wasteful
+    since acceleration converges each trial quickly)."""
     def solve_fn(h):
-        return em_general.solve(A, b, db, max_iterations=10000, smoothing_h=h, tol=0)
+        return em_general.solve(A, b, db, max_iterations=10000, smoothing_h=h, tol=1e-8, accelerate=True)
 
     try:
         search = lambda_search.discrepancy_principle_search(
@@ -208,19 +215,31 @@ def _run_maxent_constant_prior(A: np.ndarray, b: np.ndarray, db: np.ndarray) -> 
     """EM + MaxEnt, fixed uniform prior (JAC 2022 eq. 47-50). lambda is
     auto-selected here via a log-grid search targeting chi2_r near 1 --
     this search is a new heuristic added for the GUI, not part of the
-    validated maxent.py module itself. On the JAC 2022 benchmark dataset,
-    this and the adaptive-prior variant both land at the grid's lambda
-    floor with near-identical chi2_r (~1.065) -- a real finding, not a
-    search-range artifact (confirmed by widening the floor further and
-    seeing the same convergence): the entropy penalty adds little here
-    because plain EM already fits this dataset well, so both variants
-    degenerate toward similar near-zero-entropy-weight behavior."""
+    validated maxent.py module itself.
+
+    ACCELERATED 2026-10-03 + SEMICONVERGENCE FIX: maxent.py's solvers are
+    now Biggs-Andrews-accelerated by default and actually run to
+    convergence (see maxent.py's own IMPORTANT FINDING note) instead of
+    silently stopping at a fixed, small iteration count. That matters here:
+    the previous version of this grid search ran every lambda trial for
+    exactly 10000 *unaccelerated* iterations, so "best lambda" was
+    implicitly tuned against that specific (unconverged) iteration count,
+    not against lambda alone -- a form of accidental extra regularization.
+    Each trial below now runs accelerate=True with a real tol, so every
+    lambda in the grid is compared at its own true fixed point. On the
+    JAC 2022 benchmark dataset, this and the adaptive-prior variant still
+    land at the grid's lambda floor with near-identical chi2_r (~1.06) --
+    unchanged from before the fix, so the entropy penalty genuinely adds
+    little for this dataset; it isn't an artifact of the old iteration cap."""
     n = A.shape[1]
     prior = np.full(n, max(float(np.mean(b)) / n, 1e-6))
     x0 = np.full(n, 1e-6)
     best_result, best_diff = None, np.inf
     for lam in np.geomspace(1e-9, 1.0, 24):
-        result = maxent_em.solve_constant_prior(A, b, db, prior=prior, lam=lam, x0=x0, max_iterations=10000)
+        result = maxent_em.solve_constant_prior(
+            A, b, db, prior=prior, lam=lam, x0=x0,
+            max_iterations=50_000, tol=1e-8, accelerate=True,
+        )
         if not result.chi2_r_history:
             continue
         diff = abs(result.chi2_r_history[-1] - 1.0)
@@ -235,13 +254,20 @@ def _run_maxent_constant_prior(A: np.ndarray, b: np.ndarray, db: np.ndarray) -> 
 def _run_maxent_adaptive_prior(A: np.ndarray, b: np.ndarray, db: np.ndarray) -> SolverResult:
     """EM + MaxEnt, adaptive (self-constructed) prior (JAC 2022 eq. 51-55).
     lambda auto-selected the same way as the constant-prior variant above
-    -- see that function's docstring for the near-identical-result finding
-    on the JAC 2022 benchmark."""
+    -- see that function's docstring for the semiconvergence fix and the
+    near-identical-result finding on the JAC 2022 benchmark. This variant's
+    fixed point can take noticeably more iterations to reach than the
+    constant-prior case (confirmed up to ~800k plain-Picard iterations in
+    testing), which is exactly why running every trial to real convergence
+    here -- rather than a fixed small cap -- matters more for this solver."""
     n = A.shape[1]
     x0 = np.full(n, 1e-6)
     best_result, best_diff = None, np.inf
     for lam in np.geomspace(1e-9, 1.0, 24):
-        result = maxent_em.solve_adaptive_prior(A, b, db, lam=lam, sigma2=1.0, x0=x0, max_iterations=10000)
+        result = maxent_em.solve_adaptive_prior(
+            A, b, db, lam=lam, sigma2=1.0, x0=x0,
+            max_iterations=50_000, tol=1e-8, accelerate=True,
+        )
         if not result.chi2_r_history:
             continue
         diff = abs(result.chi2_r_history[-1] - 1.0)

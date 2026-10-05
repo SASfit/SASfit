@@ -1704,9 +1704,38 @@ class GenericPolydisperseTab(PolydisperseTabControls, ttk.Frame):
                                     dict, list)):
                     saved[k] = v
             state["fit"] = saved
+        #SETTINGS: the grid, the transform type and the iteration limit.
+        #
+        #These were NOT saved, and that made a session file a poor record of
+        #what it claims to record: reloading one silently recomputed on the
+        #defaults rather than on the grid the result was obtained with. The
+        #symptom is worse than a changed number -- a square-well fit saved at
+        #a fine grid reloaded at 100 points per diameter and DIVERGED, since
+        #a narrow well needs points across it (see the under-resolved-well
+        #discussion in the report). A file that cannot reproduce its own
+        #result is not a session file.
+        #
+        #Saved as the merged dict rather than the overrides alone, so the
+        #record is absolute: a later change to SETTINGS_DEFAULTS cannot
+        #retroactively alter what an old session meant.
+        s = dict(self.SETTINGS_DEFAULTS)
+        s.update(getattr(self, "_settings", {}))
+        state["settings"] = s
         return state
 
     def restoreSessionState(self, state):
+        #SETTINGS FIRST, before anything recomputes. The grid, transform type
+        #and iteration limit govern how every subsequent calculation is done,
+        #so restoring them after the entries would leave the first compute
+        #running on the defaults. Older session files have no settings block;
+        #those keep whatever is currently set, which is the best available
+        #guess and is why this is a plain update rather than a replacement.
+        saved = state.get("settings")
+        if isinstance(saved, dict) and saved:
+            cur = dict(getattr(self, "_settings", {}))
+            cur.update({k: v for k, v in saved.items()
+                        if k in self.SETTINGS_DEFAULTS})
+            self._settings = cur
         for name, value in (state.get("entries") or {}).items():
             var = getattr(self, name, None)
             if var is not None:

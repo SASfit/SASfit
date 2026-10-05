@@ -117,7 +117,6 @@ def biggs_andrews(
     converged = False
 
     while n < max_iterations and relative_progress >= tol:
-        print(n)
         n += 1
         beta = float(np.dot(gn1, gn2))
         gamma = float(np.dot(gn2, gn2))

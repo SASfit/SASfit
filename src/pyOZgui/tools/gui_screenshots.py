@@ -43,6 +43,7 @@ ImageMagick's `import` is used as a fallback on X11 systems; it does NOT
 exist under native Windows, which is a mistake this docstring made in an
 earlier version.
 """
+import json
 import os
 import subprocess
 import sys
@@ -80,6 +81,29 @@ OUTDIRS = [
 ]
 OUTDIR = OUTDIRS[0]          # kept for anything referring to it by name
 GEOMETRY = "1500x1000"
+
+#THE SESSION TO ILLUSTRATE, for the polydisperse figure. Point this at the
+#.oz1 holding the measured-data fit the manuscript reports, so that figure
+#shows the real thing rather than a curve this script invented. Overridable
+#by the environment variable of the same name.
+REALDATA_SESSION = os.path.abspath(os.path.join(
+    _HERE, os.pardir, "docs", "manuscript", "data",
+    "testJohan_LogNorm_Verlet.oz1"))
+
+
+def _windowAlive(root):
+    """True while the Tk main window still exists.
+
+    An exception raised inside a tab's compute worker can take the main
+    window down with it, and every Tk call after that fails with "NULL main
+    window" -- which looks like a fault in the later tabs rather than
+    fallout from the earlier one. Checking lets the summary say "skipped"
+    instead.
+    """
+    try:
+        return bool(root.winfo_exists())
+    except Exception:
+        return False
 
 
 def _say(m):
@@ -339,22 +363,51 @@ def shotPolydisperse(root, nb):
             _say("  tab 1: could not set the sash; the control panel may be "
                  "missing from the figure")
 
-    Q = np.logspace(np.log10(0.05), np.log10(2.0), 60)
-    ref = S("HardSphere", (), phi=0.30, srel=0.12, nbins=3,
-            closure="Percus-Yevick", meanRadius=32.0)
-    I = 2.0*ref.I_exact(Q) + 0.05
-    tab.data = (Q, I, 0.02*I)
-    tab.dQ = 0.05*Q + 0.005
-    tab.smearCheck.configure(state="normal")
-    tab.smearVar.set(True)
-    tab.fitBtn.configure(state="normal")
-    tab.dataLabelVar.set("60 points, Q 0.05..2.0, with dI, dQ/Q 0.05..0.10")
-    for var, val in ((tab.meanRadiusVar, "32.0"), (tab.srelVar, "0.12"),
-                     (tab.phiVar, "0.30"), (tab.QminVar, "0.05"),
-                     (tab.QmaxVar, "2.0"), (tab.nQVar, "60"),
-                     (tab.nbinsVar, "3"), (tab.nFFVar, "20"),
-                     (tab.scaleVar, "2.0"), (tab.backgroundVar, "0.05")):
-        var.set(val)
+    #REAL DATA WHERE A SESSION IS AVAILABLE, synthetic only as a fallback.
+    #
+    #This figure is the paper's one picture of the interface in use, and it
+    #showed a curve the generator had invented from the model -- in a paper
+    #whose headline validation is a fit to a MEASURED dataset. Loading the
+    #saved session instead puts the fit that is actually being discussed in
+    #the figure, and the parameter panel then shows the real fitted values
+    #rather than round numbers chosen to look plausible.
+    #
+    #Point REALDATA_SESSION at an .oz1 file, or set the environment variable
+    #of the same name. Falls back to synthetic data with a warning, so the
+    #script still runs anywhere.
+    sessionPath = os.environ.get("REALDATA_SESSION", REALDATA_SESSION)
+    loaded = False
+    if sessionPath and os.path.isfile(sessionPath):
+        try:
+            with open(sessionPath) as fh:
+                state = json.load(fh)
+            tab.restoreSessionState(state.get("session", state))
+            root.update()
+            loaded = True
+            _say(f"  loaded measured data from {os.path.basename(sessionPath)}")
+        except Exception as exc:
+            _say(f"  could not load {sessionPath}: {type(exc).__name__}: "
+                 f"{str(exc)[:70]}")
+    if not loaded:
+        _say("  WARNING: no session loaded -- this figure will show "
+             "SYNTHETIC data, which is wrong for a paper reporting a "
+             "measured-data validation. Set REALDATA_SESSION.")
+        Q = np.logspace(np.log10(0.05), np.log10(2.0), 60)
+        ref = S("HardSphere", (), phi=0.30, srel=0.12, nbins=3,
+                closure="Percus-Yevick", meanRadius=32.0)
+        I = 2.0*ref.I_exact(Q) + 0.05
+        tab.data = (Q, I, 0.02*I)
+        tab.dQ = 0.05*Q + 0.005
+        tab.smearCheck.configure(state="normal")
+        tab.smearVar.set(True)
+        tab.fitBtn.configure(state="normal")
+        tab.dataLabelVar.set("60 points, Q 0.05..2.0, with dI, dQ/Q 0.05..0.10")
+        for var, val in ((tab.meanRadiusVar, "32.0"), (tab.srelVar, "0.12"),
+                         (tab.phiVar, "0.30"), (tab.QminVar, "0.05"),
+                         (tab.QmaxVar, "2.0"), (tab.nQVar, "60"),
+                         (tab.nbinsVar, "3"), (tab.nFFVar, "20"),
+                         (tab.scaleVar, "2.0"), (tab.backgroundVar, "0.05")):
+            var.set(val)
 
     if not _computeAndSettle(tab, root):
         return
@@ -467,27 +520,56 @@ def main():
     nb = ttk.Notebook(root)
     nb.pack(fill="both", expand=True)
 
-    _say("tab 1: polydisperse")
-    shotPolydisperse(root, nb)
+    #EACH TAB IN ITS OWN GUARD, and the window checked between them.
+    #
+    #An exception inside tab 1's compute worker destroyed the Tk main
+    #window, after which tabs 2 and 3 failed with "NULL main window", a
+    #stray "invalid command name ..._poll" from the orphaned after-callback
+    #appeared, NOTHING was captured -- and the script still printed "done".
+    #One tab's trouble should cost that tab's figure and no more, and the
+    #summary should say what was actually written rather than that it
+    #finished.
+    written = []
 
-    _say("tab 2: RY polydisperse Yukawa")
-    shotExtraTab(root, nb, "ry_polydisperse_yukawa_tab",
-                 "RYPolydisperseYukawaTab",
-                 "2: RY Polydisperse Yukawa", "gui_ry_yukawa")
+    def _run(label, fn):
+        if not _windowAlive(root):
+            _say(f"  {label}: SKIPPED, the Tk window is gone -- an earlier "
+                 f"failure took it down")
+            return
+        _say(label)
+        try:
+            fn()
+        except Exception as exc:
+            _say(f"  {label}: FAILED ({type(exc).__name__}: "
+                 f"{str(exc).splitlines()[0][:90]})")
 
-    _say("tab 3: mixture validation")
-    #compute=True: an empty comparison panel shows nothing a reader can use,
-    #and this tab's whole point is the comparison. It costs a handful of OZ
-    #solves -- a minute or so at the default three size classes -- which is
-    #acceptable for a figure that is regenerated rarely.
-    shotExtraTab(root, nb, "mixture_validation_tab", "MixtureValidationTab",
-                 "3: Mixture validation", "gui_mixture_validation",
-                 compute=True)
+    _run("tab 1: polydisperse", lambda: shotPolydisperse(root, nb))
+    _run("tab 2: RY polydisperse Yukawa",
+         lambda: shotExtraTab(root, nb, "ry_polydisperse_yukawa_tab",
+                              "RYPolydisperseYukawaTab",
+                              "2: RY Polydisperse Yukawa", "gui_ry_yukawa"))
+    #compute=True for tab 3: an empty comparison panel shows nothing a
+    #reader can use, and the comparison is the tab's whole point.
+    _run("tab 3: mixture validation",
+         lambda: shotExtraTab(root, nb, "mixture_validation_tab",
+                              "MixtureValidationTab",
+                              "3: Mixture validation",
+                              "gui_mixture_validation", compute=True))
+    _run("tab 0: OZ solver", lambda: shotOZsolver(root, nb))
 
-    _say("tab 0: OZ solver")
-    shotOZsolver(root, nb)
-
-    _say(f"done -- see {OUTDIR}")
+    for d in OUTDIRS:
+        for name in ("gui_controls", "gui_error", "gui_ry_yukawa",
+                     "gui_mixture_validation"):
+            p = os.path.join(d, f"{name}.png")
+            if os.path.isfile(p):
+                written.append(name)
+    got = sorted(set(written))
+    if got:
+        _say(f"wrote or refreshed: {', '.join(got)}")
+    else:
+        _say("WROTE NOTHING -- every capture failed. The figures on disk, if "
+             "any, are the OLD ones.")
+    _say(f"figure directories: {', '.join(OUTDIRS)}")
 
 
 if __name__ == "__main__":

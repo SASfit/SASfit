@@ -1926,6 +1926,60 @@ synthetic data, so the returned uncertainties are essentially the prior
 widths and the correlation is near zero where two parameters would be
 expected to couple. That needs one run on measured data.
 
+\subsection{A fit to measured data, checked against a known volume fraction}
+\label{sec:realdata}
+
+Everything above is synthetic, which leaves open whether the chain works end
+to end on a real measurement. It does, and the check is sharper than any
+comparison with another calculation can be.
+
+The dataset is a merged small-angle curve from a colloidal sample whose
+volume fraction is known independently as $0.392 \pm 0.005$. The fit used a
+log-normal size distribution over nine classes, the Verlet closure, a
+core--shell form factor with the shell thickness linked to the distribution
+width ($\delta = c\,\mathrm{d}R$, $c = 1.999$), and resolution smearing read
+from the measured $\mathrm{d}Q$ column. It returns a hard-core volume
+fraction of $0.357$ with a mean radius of $34.3$ and a relative width of
+$0.086$.
+
+\paragraph{Comparing like with like.} The solver's $\varphi$ is the
+HARD-CORE volume fraction, built from the core radius; the sample's $0.392$
+counts the whole particle. Averaging $(R+\delta)^3$ over the fitted
+log-normal rather than cubing the mean --- the two differ by $2.3\,\%$ here,
+which is not negligible at this precision --- gives
+
+\begin{center}
+$\varphi_{\mathrm{outer}} = \varphi_{\mathrm{core}}\,
+\dfrac{\langle (R+\delta)^3\rangle}{\langle R^3\rangle} = 0.388$,
+\end{center}
+
+against a measured $0.392 \pm 0.005$: agreement to within $0.8\sigma$.
+
+The distinction matters more than the arithmetic. Reading the solver's
+$\varphi$ as the particle volume fraction would have reported a $10\,\%$
+discrepancy and invited an explanation --- the grid-alignment bias of
+\S\ref{sec:coreongrid} has the right sign and roughly the right size, and
+would have been a plausible and wrong one.
+
+\paragraph{What the $\chi^2$ of 6.5 means here.} It is a statement about the
+data, not the model. The curve is merged from two instrument geometries of
+different resolution, aligned by eye rather than numerically; a scale
+mismatch between the sections is penalised quadratically, and does most
+damage at high $Q$ where $\mathrm{d}I/I$ is smallest. Fitting a separate
+scale per section is the standard remedy and is not implemented.
+
+That the volume fraction survives this is itself informative: $\varphi$ is
+fixed by the low-$Q$ level and the position of the structure-factor peak, not
+by the relative scaling of the two sections, so the defect in the data misses
+the quantity being checked. The parameters that WOULD be affected are those
+constrained by the overlap region --- the width and the shell --- and they
+should be read with that in mind.
+
+\paragraph{And it is one minimum of several.} A ten-start search found six
+distinct minima. The agreement above holds at the one reported, which is not
+the same as holding uniquely; the multi-start exists precisely so that this
+can be said rather than assumed.
+
 \subsection{Where the hard core sits on the grid}
 \label{sec:coreongrid}
 

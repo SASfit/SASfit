@@ -7,7 +7,7 @@ Walker 2018, Sec. 6) two ways:
      near-exact accuracy, using the paper's exact k+/k- decomposition.
 
   2. An integration test against this library's own signed j0(qr) kernel
-     (kernel_registry.py's "sinc_4pir2"), recovering a sphere's analytic
+     (kernel_registry.py's "sinc_4pi"), recovering a sphere's analytic
      pair-correlation function gamma(r). Uses a noise floor that doesn't
      vanish at I(q)'s zero-crossings (a purely-proportional error model
      blows up chi2_r near those crossings for reasons that have nothing to
@@ -55,7 +55,7 @@ def test_signed_j0_kernel_sphere_correlation():
     gamma_true = np.where(r < 2 * R, 1 - 3 * r / (4 * R) + r**3 / (16 * R**3), 0.0)
 
     q = np.geomspace(0.004, 0.3, 90)
-    A = build_size_distribution_kernel(q, r, KERNEL_REGISTRY["sinc_4pir2"].func, alpha=0.0)
+    A = build_size_distribution_kernel(q, r, KERNEL_REGISTRY["sinc_4pi"].func, alpha=0.0)
     assert (A < 0).any(), "this kernel is supposed to be signed -- sanity-check the test setup"
 
     rng = np.random.default_rng(1)
