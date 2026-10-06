@@ -124,6 +124,34 @@ def rmsa_compute(radius, screeningLength, chargeParameter, volumeFraction, q):
     1/radius). Returns (structureFactor: np.ndarray same shape as q,
     status: int (>=0 success, rescaleIterations; <0 error, see
     rmsa_error_string(status)), solution: RMSASolution for inspection).
+
+    chargeParameter IS HAYTER-PENFOLD'S gamma, THE AMPLITUDE -- not the
+    contact potential. Their Eq. (3a) writes the reduced pair potential as
+
+        beta U(x) = gamma exp(-k x)/x,   x = r/sigma,  k = kappa sigma,
+
+    so the value AT CONTACT (x = 1) is gamma exp(-k), and Eq. (3a) also
+    gives that as
+
+        gamma exp(-k) = beta pi eps0 eps sigma psi0^2
+                      = beta z^2 / (pi eps0 eps sigma (2 + k)^2)
+
+    using their Eq. (2) for the surface potential. The two differ by exp(k).
+
+    THIS IS WORTH LABOURING because the two are easy to confuse and the
+    symptom is misleading. sasmodels' hayter_msa.c computes the CONTACT
+    POTENTIAL (its gMSAWave[5] is the second expression above); passing that
+    here as gamma gives errors of 6 to 32 per cent that GROW WITH SCREENING
+    -- because the missing factor is exp(k), not a constant. It looks like a
+    disagreement about physics, and it is a units error. An afternoon went
+    into chasing it as the former: root-selection differences, rescaling
+    thresholds, radius-versus-diameter conventions, all plausible and all
+    wrong.
+
+    With the exp(k) applied, this wrapper agrees with BOTH jscatter and
+    sasmodels to 1e-12 across gamma = 3.7 to 816 and kappa*sigma = 1.5 to
+    3.8, including the strongly coupled points where the Hayter-Penfold
+    rescaling engages. See tools/rmsa_vs_sasmodels.py.
     '''
     _load_lib()
     if _lib is None:

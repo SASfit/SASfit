@@ -132,11 +132,19 @@ class MainWindow(QMainWindow):
         self.r_max_spin = QDoubleSpinBox()
         self.r_max_spin.setRange(0.001, 1e6)
         self.r_max_spin.setValue(500.0)
+        self.r_max_spin.setToolTip(
+            "On data load, this is suggested as pi/q_min (the largest Dmax the "
+            "data's low-q reach can actually constrain -- Glatter's consistency "
+            "condition q_min <= pi/Dmax). Feel free to override it."
+        )
         self.r_n_spin = QSpinBox()
         self.r_n_spin.setRange(10, 2000)
         self.r_n_spin.setValue(150)
         solve_form.addRow("r min:", self.r_min_spin)
         solve_form.addRow("r max:", self.r_max_spin)
+        self.r_max_hint_label = QLabel("")
+        self.r_max_hint_label.setWordWrap(True)
+        solve_form.addRow("", self.r_max_hint_label)
         solve_form.addRow("r grid points:", self.r_n_spin)
 
         self.solver_combo = QComboBox()
@@ -202,6 +210,22 @@ class MainWindow(QMainWindow):
         self.solve_button.setEnabled(True)
         self.bg_result = None
         self.bg_fit_label.setText("(not fit yet)")
+
+        # Suggest Dmax from the data's q_min via Glatter's consistency
+        # condition q_min <= pi/Dmax (equivalently Dmax <= pi/q_min): beyond
+        # this Dmax the data doesn't reach low enough in q to actually
+        # constrain p(r) there, and larger-Dmax "improvements" tend to be
+        # the solver overfitting rather than resolving real structure (see
+        # tests/diagnose_hansen_dmax_scan.py for the empirical confirmation
+        # of this on tests/data/test.dat). This is only a starting point --
+        # the user can freely override r max afterwards.
+        suggested_dmax = float(np.pi / self.data.q.min())
+        self.r_max_spin.setValue(suggested_dmax)
+        self.r_max_hint_label.setText(
+            f"suggested from q_min = {self.data.q.min():.4g}: "
+            f"Dmax ≤ π/q_min ≈ {suggested_dmax:.4g} "
+            f"(override freely)"
+        )
 
         self._plot_iq()
         self.status.showMessage(f"Loaded {path}")

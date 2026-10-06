@@ -575,6 +575,54 @@ simply looked like a poor optimiser.
 
 ## 8. Open items
 
+0. **Multi-geometry datasets with fitted per-set scales.** A merged curve is
+   two or more instrument settings stitched together, and stitching them by
+   eye costs real accuracy: the measured dataset used for the validation in
+   the manuscript has `I_low/I_high = 0.883 ± 0.083` over its 16 overlapping
+   points, so the low-Q section sits 12 % below the high-Q one and not even
+   by a constant. At points where `dI/I` is 1–2 %, that alone contributes
+   most of the reduced chi-squared of 6.2.
+
+   **The design, which is cheaper than it looks.** A per-set scale is LINEAR
+   in the model, exactly like the overall scale, the background and the
+   Porod amplitude — so it does not need to be a fitted parameter at all. It
+   becomes another column in `_linearScaleAndBackground`, solved exactly at
+   every iteration:
+
+   ```
+   I = a·model                 over all points    → overall scale
+     + δ_k·model|set k         zeros elsewhere    → extra scale for set k
+     + b                       over all points    → background
+   ```
+
+   The effective scale on set k is `a + δ_k`; on the reference set it is
+   just `a`. The optimiser gains nothing to search, and the solve is already
+   equilibrated against the 1e20 conditioning trap documented there.
+
+   **Take the highest-Q set as the reference** and leave it unscaled, since
+   the background is subtracted from it. The other n−1 get a δ.
+
+   **The real work is resolution per set.** Each geometry has its own dQ, so
+   each needs its own `Resolution` matrix and its own extended Q grid;
+   `PolydisperseFit` currently assumes one of each. That is the part to
+   budget for, not the scales.
+
+   Also needed: loading n files rather than one, a representation that
+   remembers which points belong to which set, a file list in the GUI
+   instead of a single Load button, and somewhere to show the fitted scales.
+   Split test data is in `src/pyOZgui/tests` (`STJ1_lowres.dat`,
+   `STJ1_highres.dat`), separated on `dQ/Q = 0.09`, which divides that file
+   unambiguously — there is a gap between 0.089 and 0.091 with nothing in
+   it.
+
+   **The prediction worth testing when it works**: chi-squared should fall a
+   long way, plausibly toward 1–2, while **phi barely moves**. Phi is fixed
+   by the low-Q level and the peak position, both inside the low-Q set,
+   which is internally consistent. If phi comes out near 0.357 again with
+   the scales fitted, the validation is confirmed AND the chi-squared
+   objection disappears — a considerably stronger result than the current
+   "chi-squared is 6.5, and here is why".
+
 0. **The three documents are not yet consistent with each other.** A check
    across them found tonight's findings landing unevenly:
 

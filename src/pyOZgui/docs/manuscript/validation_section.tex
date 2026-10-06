@@ -54,7 +54,7 @@ Package & Model & Method & Agreement\\
 \midrule
 \code{mixscatter} \citep{DiazMaier2024} & mixture PY \citep{Vrij1979} & analytic & $0.09\,\%$\\
 \code{jscatter} & one-component PY & analytic & $0.02$--$0.12\,\%$\\
-\code{jscatter} & RMSA \citep{HayterPenfold1981} & analytic & see \S\ref{sec:rmsarescale}\\
+\code{sasmodels}, \code{jscatter} & RMSA \citep{HayterPenfold1981} & analytic & $10^{-12}$ (6/6)\\
 \code{two\_yukawa\_reference} & two-Yukawa MSA \citep{Liu2005} & analytic & $0.21\,\%$\\
 \code{jscatter} & adhesive hard spheres & analytic & see \S\ref{sec:welltrap}\\
 \code{jscatter} & OZ solver, PY and HNC & numerical & $0.2$--$0.4\,\%$\\
@@ -158,57 +158,56 @@ paper is about --- carries the first-order figures rather than the quoted
 ones. A reader comparing packages should know which transform produced a
 number before comparing it with their own.
 
-\paragraph{RMSA: exact until the rescaling engages.}
+\paragraph{RMSA, and a units error that imitated a physics disagreement.}
 \label{sec:rmsarescale}
-This row was quoted as exact at all nine state points tested, and that was
-true of the points tested. It was not a useful claim, because at none of
-them did the Hayter--Penfold rescaling actually trigger: the rescale
-iteration count is zero throughout, so all nine agreements are for the
-unrescaled mean spherical approximation and the feature the method is named
-for went unexercised. Agreement to $10^{-16}$ on nine points that never
-invoke the mechanism under test is a weaker result than it appears, and the
-error was ours for choosing conditions gentle enough that plain MSA already
-returns a physical answer.
+This row agrees with \emph{two} independent implementations to $10^{-12}$
+over $\gamma = 3.7$ to $816$ and $\kappa\sigma = 1.5$ to $3.8$, including the
+strongly coupled points at which the Hayter--Penfold rescaling engages.
+Reaching that took an afternoon, and the detour is worth recording because
+the symptom was convincingly misleading.
 
-Repeating the comparison where the rescaling does engage --- dilute, strongly
-charged and long-screened, which is the case Hayter and Penfold wrote it for,
-with the effective volume fraction lifted by factors of $2.3$ to $34$ ---
-gives a different picture. Both implementations find the SAME rescaled volume
-fraction, agreeing to four decimals at eight of the nine points, so the
-rescaling search itself is right. The resulting curves, however, agree only
-to between $10^{-14}$ and $3\times10^{-5}$, and the discrepancy grows
-systematically with coupling strength: $10^{-14}$ at $\gamma = 50$,
-$3\times10^{-5}$ at $\gamma = 500$. That is the signature of an iterative
-tolerance inside the rescaling rather than of two different closed forms, and
-it is small enough to be irrelevant to any fit --- but it is not exactness,
-and the distinction matters because both routes solve the same equations and
-should in principle agree to rounding.
+The earlier claim was ``exact (9/9)'' against \code{jscatter}, which does not
+build under MinGW: unrepeatable on the machine this is developed on.
+\code{sasmodels}' \code{hayter\_msa} is a better reference --- a different
+code lineage, installable with \code{pip} and nothing else --- but comparing
+against it gave disagreements of 6 to 32 per cent that GREW WITH COUPLING.
+That is the signature of a physics difference rather than a units slip, and
+it was pursued as one: root selection between the two solutions the closure
+admits, the rescaling threshold, radius-versus-diameter in $\gamma$. Each
+was plausible, each was testable, each was wrong. No single rescaling of any
+input reconciled the two, and the best-fitting factor itself drifted with
+coupling.
 
-One of the nine does not solve. At $\varphi = 0.1$, $\gamma = 50$ and a
-screening length of $10$ particle radii the library returns
-\emph{``NEWTON ITERATION NON-CONVERGENT while searching for the rescaled
-volume fraction''}, and the array returned alongside that status is the
-unrescaled result --- meaningful to inspect, but not offered as an answer.
-The failure is reported clearly; it was our comparison script that ignored
-the status and compared the array regardless, producing a $168\,\%$
-``discrepancy'' that was nearly written up as a silent fallback to MSA. That
-is the more instructive half of the episode: a check which discards the error
-code it is handed does not find defects, it manufactures them.
+The answer is in Eq.~(3a) of \citet{HayterPenfold1981}. The reduced pair
+potential is written
+\begin{equation}
+\beta U(x) = \gamma\,\frac{e^{-kx}}{x},
+\qquad x = r/\sigma,\quad k = \kappa\sigma,
+\label{eq:hpgamma}
+\end{equation}
+so the value AT CONTACT is $\gamma e^{-k}$, and that --- not $\gamma$ --- is
+what the paper equates to $\beta z^2/[\pi\epsilon_0\epsilon\sigma(2+k)^2]$.
+\code{sasmodels} computes the contact potential; \code{jscatter} and the
+wrapper here take the amplitude $\gamma$. The two differ by $e^{k}$, and
+because $k$ varies with the screening the discrepancy grows with coupling
+--- which is exactly why it read as physics.
 
-The message also explains the drift. The rescaling is not a closed form but a
-ROOT-FIND: Hayter and Penfold solve for the effective volume fraction at
-which the MSA solution becomes physical, and that condition is
-transcendental. Two implementations descending from the same algorithm
-converge to the same root --- hence the four-decimal agreement in
-$\varphi_{\mathrm{eff}}$ --- but stop at different points along the way, and
-the residual difference grows as the root becomes harder to locate, which is
-exactly the observed scaling with $\gamma$. Pushed further the iteration
-fails outright, and it does so in both codes: \code{jscatter} raises the same
-non-convergence at three conditions neighbouring the one that defeats ours.
+Two things are worth taking from this. A discrepancy that scales with a
+physical parameter is NOT evidence that the difference is physical: a
+conversion factor depending on that parameter behaves identically. And the
+arbiter was the original paper rather than either code's documentation ---
+both describe $\gamma$ as ``the contact potential'', and both use the phrase
+loosely for a quantity their own sources define differently.
 
-That makes this the second method examined here whose domain is unmapped. The
-other is the Carbajal--Tinoco bridge function \citep{CarbajalTinoco2022},
-which is implicit, $b = T(\gamma + b)$, and has no solution at all below a
+With the factor applied, \code{tools/rmsa\_vs\_sasmodels.py} reproduces
+\code{sasmodels} at all six state points, and the same inputs reproduce
+\code{jscatter} to the same precision. The claim in the table is therefore
+checkable by any reader with \code{pip install sasmodels}, which the one it
+replaces was not.
+
+\paragraph{A closure whose domain is unmapped.} The Carbajal--Tinoco bridge
+function \citep{CarbajalTinoco2022} is implicit, $b = T(\gamma + b)$, and
+has no solution at all below a
 threshold: substituting $w = \gamma + b$ turns it into the explicit map
 $\gamma(w) = w - T(w)$, whose range is bounded below. Numerically
 $\gamma_{\min} = -0.509$ at $\lambda = 0$, rising towards zero as $\lambda$
@@ -216,16 +215,6 @@ grows, with two solutions above it and none below. Neither the source paper
 nor the comparison of \citet{PihlajamaaJanssen2024} locates that boundary;
 the latter simply excludes closures from its figures ``due to convergence
 issues at this state point''.
-
-In both cases the literature reports the method without stating where it
-stops working, and in both the boundary lies at conditions that are not
-exotic --- here dilute and strongly charged, which is precisely the regime
-RMSA is used for in small-angle scattering, and there a contact value of
-$\gamma$ routinely reached at moderate density. Locating such boundaries is
-open work, and the practical consequence for a user is that a closure or a
-rescaling failing to converge is not necessarily a sign of a bad state point
-or a bad implementation: it may be a region where the method has no answer
-to give.
 
 \subsection{Analytic references implemented in this work}
 \label{sec:analyticrefs}

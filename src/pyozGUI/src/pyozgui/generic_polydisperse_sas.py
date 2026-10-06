@@ -191,6 +191,7 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         #Set BEFORE _solve, since that is where the hook fires.
         if onSolverCreated is not None:
             self.onSolverCreated = onSolverCreated
+        self._checkPackingFeasible(srel, nbins)
         sol = self._solve(srel, nbins, self.phi)
         self.solver = sol
         #Coarse classes: what the OZ equations were actually solved on.
@@ -410,6 +411,68 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         finally:
             self._deflating = False
         return None
+
+    def _checkPackingFeasible(self, srel, nbins):
+        """Refuse combinations of phi, srel and class count that cannot be a
+        fluid, with a message that says which.
+
+        WHY THIS EXISTS. phi and srel each have sensible individual bounds
+        and are jointly capable of nonsense. The quadrature places its
+        outermost node further into the tail as the class count rises -- for
+        a log-normal at srel = 0.086, sigma_max/<sigma> is 1.587 at five
+        classes, 1.665 at seven and 1.713 at nine -- and the largest PAIR
+        diameter is sigma_max itself, so the volume it occupies grows as the
+        cube. Eight per cent more diameter is twenty-six per cent more
+        volume.
+
+        Past a point there is no fluid at that state and the closure has no
+        solution. What the solver then does is correct and uninterpretable:
+        exp(G + B) overflows for one pair, the matrix inverse spreads NaN
+        everywhere, and the iteration reports convergence after two function
+        evaluations because a NaN residual satisfies any tolerance. An hour
+        went into one such case -- srel = 0.391 at phi = 0.533 with nine
+        classes, where sigma_max = 3.57 <sigma> and the largest pair alone
+        would need twenty-four times the available volume -- and the solver
+        default, warm start and session restore were all suspected before
+        the discretisation was.
+
+        The test is cheap and the message is the whole point. A refusal
+        naming phi, srel and the class count is worth a great deal more than
+        a diverged solve, even though both are the same answer.
+
+        DELIBERATELY NOT A HARD PHYSICAL BOUND. phi*(sigma_max/<sigma>)^3
+        exceeding 1 is sufficient for impossibility but not necessary for
+        trouble, and random close packing sets in well below it. The
+        threshold here is therefore generous: it catches the cases that
+        cannot work at all, not the ones that are merely difficult, so that
+        a legitimate dense fit is never blocked.
+        """
+        try:
+            if srel is None or float(srel) <= 0.0 or int(nbins) < 2:
+                return
+            from polydisperse_nodes import quantileClasses
+            sig, _x = quantileClasses(self.distribution, float(srel),
+                                      int(nbins), meanSigma=1.0)
+            ratio = float(np.max(sig))
+        except Exception:
+            #Never let the check itself be the thing that fails: a
+            #distribution it cannot discretise will raise in _solve a moment
+            #later with its own, more specific message.
+            return
+        occupied = float(self.phi)*ratio**3
+        if occupied > 1.0:
+            raise RuntimeError(
+                f"no fluid exists at this state point: with {int(nbins)} "
+                f"size classes and a relative width of {float(srel):.4g}, "
+                f"the largest class sits at {ratio:.3g} times the mean "
+                f"diameter, so at phi = {self.phi:g} it alone would occupy "
+                f"{occupied:.3g} times the available volume.\n\n"
+                f"phi and the width are each within their own bounds; it is "
+                f"the COMBINATION that is impossible, and no solver can "
+                f"find a solution because there is none. Reduce the number "
+                f"of classes (three to five suffice for the structure "
+                f"factor -- use nFF for the form-factor average), or the "
+                f"width, or the volume fraction.")
 
     def _verifyPhysical(self, sol):
         """Reject a converged but UNPHYSICAL solution.

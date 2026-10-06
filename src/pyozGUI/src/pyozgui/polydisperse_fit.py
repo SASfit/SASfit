@@ -1069,6 +1069,28 @@ class PolydisperseFit:
         None -- uncertainties are then omitted rather than invented.
         """
         model = self._modelShape(xbest)
+        #_modelShape RETURNS None WHEN THE SOLVE FAILS, and the best-fit
+        #point is not exempt: a fit can end on parameters the optimiser
+        #reached while the model was still evaluable and the final,
+        #independent re-evaluation then diverges -- a square well at
+        #phi = 0.36 under Verlet overflows exp(G + B) and KINSOL stops after
+        #two function evaluations on a residual full of NaN.
+        #
+        #Passing that None onward made np.asarray(None, float) a 0-d array,
+        #which np.stack rejected with "all input arrays must have the same
+        #shape" from deep inside the linear solve -- a message about array
+        #shapes for what is really a failed physics calculation, and three
+        #frames away from anything that says so.
+        if model is None or np.asarray(model, float).shape != self.I.shape:
+            raise RuntimeError(
+                "the fit finished, but re-evaluating the model at the best "
+                "parameters failed: the Ornstein-Zernike solve did not "
+                "converge there. The parameters are reported below without "
+                "a curve, scale, background or uncertainties, since all of "
+                "those are derived from a model this state point does not "
+                "admit. Strongly attractive potentials at appreciable "
+                "volume fraction are the usual cause; narrowing the bounds "
+                "or starting elsewhere will usually avoid it.")
         cols = self._extraColumns(xbest)
         a, b, extras = _linearScaleAndBackground(
             model, self.I, self.weight, self.fixedScale, self.fixedBackground,

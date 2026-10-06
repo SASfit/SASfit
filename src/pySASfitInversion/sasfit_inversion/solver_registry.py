@@ -30,7 +30,7 @@ from .solvers import (
     em, lambda_search, arls, maxent as maxent_em, svd_methods,
     general_tikhonov, bayesian_evidence, hansen_maxent, em_general,
 )
-from .regularization import second_derivative_operator
+from .regularization import second_derivative_operator, hansen_smoothness_cholesky
 
 
 @dataclass
@@ -205,6 +205,62 @@ def _run_bayesian_evidence(A: np.ndarray, b: np.ndarray, db: np.ndarray) -> Solv
         converged=True,
         diagnostics={
             "lambda_selection": f"Bayesian evidence, lambda={best.lam:.4g}, Ng={best.n_good_params:.1f}",
+        },
+    )
+
+
+def _run_bayesian_evidence_hansen(A: np.ndarray, b: np.ndarray, db: np.ndarray) -> SolverResult:
+    """General-form Tikhonov, lambda chosen by Bayesian evidence
+    (Vestergaard & Hansen, 2006), using Hansen (2000)'s own
+    boundary-constrained smoothness operator (regularization.py's
+    hansen_smoothness_cholesky) instead of the plain second-derivative
+    operator used by _run_bayesian_evidence above.
+
+    ADDED 2026-10-05, specifically to fix a real problem found on this
+    package's own real-data test (test.dat) with the signed j0(qr)/PDDF
+    kernel: the plain second_derivative_operator has a 2-dimensional null
+    space (constant offset, linear ramp -- nothing in the roughness
+    penalty constrains them), and combined with that kernel's extreme
+    ill-conditioning (~1e16 for a 91-point/150-r-point real-data grid),
+    GCV/L-curve/evidence search using that operator could not get chi2_r
+    anywhere near 1 no matter how the smoothing strength was tuned (best
+    found: ~586 via EM+smoothing, ~34600 via plain Tikhonov+GCV).
+
+    Hansen (2000), J. Appl. Cryst. 33, 1415-1421, eq. 19 fixes exactly this
+    by building the assumption p(0)=p(Dmax)=0 directly into the smoothness
+    functional (not via basis functions -- Hansen explicitly calls the
+    small-basis-function restriction of Glatter's original method
+    obsolete once direct point-grid estimation is used, which is what this
+    whole package already does). That removes the 2D null space (Hansen's
+    own regularization matrix is provably full rank, det != 0) and fixes
+    the conditioning: on the same test.dat signed-kernel problem, L^T L's
+    condition number drops from ~1e16 to ~9.2e3, and the evidence search
+    finds a clean interior maximum (not stuck at a grid edge) at
+    chi2_r~1.6 -- a dramatic improvement over every other regularized
+    solver tried on this specific problem (see
+    tests/diagnose_hansen_evidence.py for the full lambda scan).
+
+    This is a real, physically motivated constraint (the pair-distance/
+    size distribution genuinely must vanish at r=0 and at the true maximum
+    dimension) rather than an ad hoc numerical fix, so it's offered here
+    as its own solver choice rather than silently replacing
+    _run_bayesian_evidence's operator -- the plain second-derivative
+    version remains available for cases where the endpoints are not
+    expected to vanish (e.g. a deliberately truncated r-range)."""
+    n = A.shape[1]
+    L = hansen_smoothness_cholesky(n)
+    svd_A = svd_methods.compute_svd(A)
+    scale = float(np.median(svd_A.s)) ** 2
+    lam_grid = np.geomspace(max(scale * 1e-6, 1e-300), scale * 1e6, 60)
+    best, _ = bayesian_evidence.evidence_search(A, b, db, L, lam_grid)
+    fitted_b = A @ best.p_map
+    return SolverResult(
+        x=best.p_map, fitted_b=fitted_b, n_iterations=0,
+        chi2_r_history=[chi2_r(b, fitted_b, db)], roughness_history=[],
+        converged=True,
+        diagnostics={
+            "lambda_selection": f"Bayesian evidence (Hansen boundary-constrained), "
+                                 f"lambda={best.lam:.4g}, Ng={best.n_good_params:.1f}",
         },
     )
 
@@ -405,7 +461,35 @@ SOLVER_REGISTRY: dict[str, SolverSpec] = {
                      "Sec. 6; reproduces their own published benchmark "
                      "exactly (corr=1.00000) and recovers a sphere "
                      "correlation function from this library's own signed "
-                     "kernel with chi2_r~1, corr>0.99.",
+                     "kernel with chi2_r~1, corr>0.99. On real, noisy data with a "
+                     "genuinely ill-conditioned kernel (e.g. this package's "
+                     "own test.dat with the j0 kernel), this solver's chi2_r "
+                     "can plateau far above 1 regardless of smoothing "
+                     "strength -- try 'IFT, Bayesian evidence (Hansen "
+                     "boundary-constrained)' below instead in that case.",
+    ),
+    "bayesian_evidence_hansen": SolverSpec(
+        label="IFT, Bayesian evidence (Hansen boundary-constrained) -- recommended for j0/PDDF kernel",
+        run=_run_bayesian_evidence_hansen,
+        description="General-form Tikhonov with the smoothing strength chosen "
+                     "automatically by Bayesian evidence maximization (Vestergaard "
+                     "& Hansen, 2006), using Hansen (2000)'s own smoothness "
+                     "operator, which builds the assumption p(0)=p(Dmax)=0 "
+                     "directly into the regularization (not via basis functions). "
+                     "Added specifically because the other regularized solvers "
+                     "(plain Tikhonov+GCV, EM+smoothing, signed-kernel EM) could "
+                     "not get anywhere near chi2_r=1 on this package's own "
+                     "real-data test with the signed j0(qr)/PDDF kernel, due to "
+                     "the ~1e16 condition number that comes from the ordinary "
+                     "roughness penalty leaving a constant-offset/linear-ramp "
+                     "null space unconstrained. With Hansen's operator that "
+                     "condition number drops to ~9e3 and the evidence search "
+                     "finds a clean maximum at chi2_r~1.6 on that same test "
+                     "(see tests/diagnose_hansen_evidence.py). This is the "
+                     "recommended starting point for pair-distance-distribution "
+                     "(j0/PDDF kernel) recovery specifically; for the sphere "
+                     "size-distribution kernel, EM+smoothing (discrepancy "
+                     "principle) remains the better-validated default.",
     ),
 }
 

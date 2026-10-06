@@ -1220,7 +1220,43 @@ potential, compiled as a standalone C library (\code{rmsa\_c\_source/}, from
 \code{ctypes} (\code{rmsaWrapper.py}), reusing SASfit's own quartic-root
 selection and small-$\kappa$ Taylor-series logic rather than re-implementing
 it. Validated: the weak-coupling limit reproduces the exact PY hard-sphere
-contact value $g(\sigma^+)=(1+\varphi/2)/(1-\varphi)^2$.
+contact value $g(\sigma^+)=(1+\varphi/2)/(1-\varphi)^2$, and the full
+solution agrees with \emph{two} independent implementations --- SasView's
+\code{sasmodels} \code{hayter\_msa} and \code{jscatter} --- to $10^{-12}$
+across $\gamma = 3.7$ to $816$ and $\kappa\sigma = 1.5$ to $3.8$, including
+the strongly coupled points where the rescaling engages
+(\code{tools/rmsa\_vs\_sasmodels.py}).
+
+\paragraph{Which $\gamma$? Two definitions are in circulation, and they
+differ by $e^{k}$.} \code{rmsa\_compute}'s \code{chargeParameter} is
+Hayter--Penfold's $\gamma$, the AMPLITUDE of the reduced pair potential of
+their Eq.~(3a),
+\begin{equation}
+\beta U(x) = \gamma\,\frac{e^{-kx}}{x},
+\qquad x = r/\sigma,\quad k = \kappa\sigma .
+\label{eq:hpgammarep}
+\end{equation}
+Its value AT CONTACT, $x=1$, is $\gamma e^{-k}$, and it is THAT quantity
+which the same equation sets equal to
+\begin{equation}
+\gamma e^{-k} = \beta\pi\epsilon_0\epsilon\sigma\psi_0^2
+= \frac{\beta z^2}{\pi\epsilon_0\epsilon\sigma\,(2+k)^2}
+\label{eq:hpcontact}
+\end{equation}
+via their Eq.~(2) for the surface potential $\psi_0$. So a code that
+computes the right-hand side of (\ref{eq:hpcontact}) --- \code{sasmodels}
+does --- has the CONTACT POTENTIAL, and must multiply by $e^{k}$ before
+passing it here.
+
+Both quantities get called ``the contact potential'' in the documentation of
+the packages that use them, which is how they come to be confused. The
+consequence is not a constant offset: because the factor is $e^{k}$ and $k$
+varies with the screening, passing one for the other gives an error that
+GROWS WITH COUPLING --- 6 per cent at $k=2$ rising to 32 per cent at
+$k=3.8$. That looks like a disagreement about the physics, and was pursued
+as one through three plausible hypotheses before Eq.~(3a) settled it. If a
+comparison against another RMSA code disagrees in a way that scales with
+$\kappa\sigma$, check this first.
 
 \subsection{One-Yukawa MSA (Blum--H\o ye)}
 A semi-analytical Yukawa-MSA solution, compiled as a standalone C library

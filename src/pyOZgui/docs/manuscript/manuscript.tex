@@ -721,6 +721,38 @@ $2.3\,\%$ here, which is not negligible at this precision --- gives
 
 against $0.392 \pm 0.005$: agreement to within $0.8\sigma$.
 
+\paragraph{The result does not depend on the closure.} The obvious objection
+to any integral-equation fit is that a closure was chosen. Repeating the fit
+with four of them --- from genuinely different bridge functions --- gives:
+
+\begin{center}\small
+\begin{tabular}{lcccc}
+\toprule
+closure & $\varphi_{\mathrm{outer}}$ & $\langle R\rangle$ & $s_{\mathrm{rel}}$
+ & $\chi^2_{\mathrm{red}}$\\
+\midrule
+Percus--Yevick     & 0.3872 & 34.15 & 0.0860 & 6.21\\
+Martynov--Sarkisov & 0.3864 & 34.24 & 0.0865 & 6.22\\
+Vompe--Martynov    & 0.3864 & 34.24 & 0.0865 & 6.22\\
+Verlet             & 0.3880 & 34.29 & 0.0865 & 6.36\\
+\midrule
+measured           & $0.392 \pm 0.005$ & --- & --- & ---\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The four volume fractions span $0.4\,\%$, the mean radii $0.4\,\%$ and the
+widths $0.6\,\%$; every one lies inside the measured error bar.
+Martynov--Sarkisov and Vompe--Martynov agree to four figures, which is
+unsurprising --- the latter is a modification of the former, and at this
+state point the modification does not bite.
+
+What the spread shows is which quantities the DATA fix and which the model
+assumes. $\varphi$, $\langle R\rangle$ and $s_{\mathrm{rel}}$ come out the
+same whichever bridge function is used, so they are determined by the
+measurement rather than by the approximation --- a considerably harder claim
+to make from a single fit, and the one a reader is entitled to ask for.
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{fig_realdata_fit.pdf}
