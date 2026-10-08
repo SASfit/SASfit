@@ -47,15 +47,19 @@ these.
 .. automodule:: sasfit_inversion.regularization
    :members:
 
-sasfit_inversion.lambda_selection -- moved to ``_obsolete/``
-------------------------------------------------------------------
+sasfit_inversion.lambda_selection
+-------------------------------------
 
 Standalone L-curve (Menger-curvature) regularization-parameter selection.
-This module was never imported by ``solver_registry.py`` (which uses
-:mod:`sasfit_inversion.solvers.lambda_search` instead) or by any test, so
-it was an orphaned leftover from development, not a maintained
-alternative -- moved to ``_obsolete/src/sasfit_inversion/lambda_selection.py``
-(see ``_obsolete/README.md``) rather than deleted outright.
+Not imported by ``solver_registry.py`` directly, but it IS imported by
+:mod:`sasfit_inversion.solvers.lambda_search` (``find_corner``,
+``LCurvePoint``), which ``solver_registry.py`` uses throughout -- so this
+module is a required dependency, not an unused leftover (an earlier pass
+of this documentation incorrectly flagged it as obsolete and moved it
+out, which broke the import chain; it has been restored).
+
+.. automodule:: sasfit_inversion.lambda_selection
+   :members:
 
 sasfit_inversion.solver_registry
 ------------------------------------

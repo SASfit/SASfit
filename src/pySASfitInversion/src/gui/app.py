@@ -126,21 +126,24 @@ class MainWindow(QMainWindow):
         solve_form.addRow("\u03b1 (size-weighting exponent):", self.alpha_spin)
         self._on_kernel_changed(0)  # populate default alpha for the first kernel
 
-        self.r_min_spin = QDoubleSpinBox()
-        self.r_min_spin.setRange(0.001, 1e6)
-        self.r_min_spin.setValue(1.0)
+        # r always runs from 0 to r_max -- p(0)=0 is a hard physical
+        # requirement for a pair-distance distribution (p(r) = r^2 * the
+        # pair-correlation function, so it vanishes quadratically at the
+        # origin for ANY particle shape, just like p(Dmax)=0 at the outer
+        # end), not a free choice, so there is no separate "r min" control
+        # -- only r_max and the point count determine the grid.
         self.r_max_spin = QDoubleSpinBox()
         self.r_max_spin.setRange(0.001, 1e6)
         self.r_max_spin.setValue(500.0)
         self.r_max_spin.setToolTip(
             "On data load, this is suggested as pi/q_min (the largest Dmax the "
             "data's low-q reach can actually constrain -- Glatter's consistency "
-            "condition q_min <= pi/Dmax). Feel free to override it."
+            "condition q_min <= pi/Dmax). Feel free to override it. The r grid "
+            "always starts at r=0 (see the r grid points row)."
         )
         self.r_n_spin = QSpinBox()
         self.r_n_spin.setRange(10, 2000)
         self.r_n_spin.setValue(150)
-        solve_form.addRow("r min:", self.r_min_spin)
         solve_form.addRow("r max:", self.r_max_spin)
         self.r_max_hint_label = QLabel("")
         self.r_max_hint_label.setWordWrap(True)
@@ -150,7 +153,24 @@ class MainWindow(QMainWindow):
         self.solver_combo = QComboBox()
         for key, spec in SOLVER_REGISTRY.items():
             self.solver_combo.addItem(spec.label, userData=key)
+        self.solver_combo.currentIndexChanged.connect(self._on_solver_changed)
         solve_form.addRow("Solver:", self.solver_combo)
+
+        self.taper_frac_spin = QDoubleSpinBox()
+        self.taper_frac_spin.setDecimals(3)
+        self.taper_frac_spin.setRange(0.01, 0.95)
+        self.taper_frac_spin.setSingleStep(0.05)
+        self.taper_frac_spin.setValue(0.25)
+        self.taper_frac_spin.setToolTip(
+            "Fraction of the r-range over which p(r) is smoothly tapered to "
+            "zero at the boundary, instead of Hansen's hard p(Dmax)=0 knot "
+            "(regularization.hann_taper). Only used by the Hann-tapered-"
+            "boundary solver. Untuned default: 0.25 -- see docs/theory.rst, "
+            "'Open questions for future work'."
+        )
+        self.taper_frac_row_label = QLabel("taper_frac:")
+        solve_form.addRow(self.taper_frac_row_label, self.taper_frac_spin)
+        self._on_solver_changed(self.solver_combo.currentIndex())
 
         self.solve_button = QPushButton("Solve")
         self.solve_button.clicked.connect(self._on_solve)
@@ -239,6 +259,12 @@ class MainWindow(QMainWindow):
         if key is not None:
             self.alpha_spin.setValue(KERNEL_REGISTRY[key].default_alpha)
 
+    def _on_solver_changed(self, index: int):
+        key = self.solver_combo.itemData(index)
+        is_tapered = key == "bayesian_evidence_hann_tapered"
+        self.taper_frac_row_label.setVisible(is_tapered)
+        self.taper_frac_spin.setVisible(is_tapered)
+
     def _on_fit_background(self):
         if self.data is None:
             return
@@ -290,11 +316,18 @@ class MainWindow(QMainWindow):
             kernel_func = KERNEL_REGISTRY[kernel_key].func
             alpha = self.alpha_spin.value()
 
-            r_grid = np.linspace(self.r_min_spin.value(), self.r_max_spin.value(), self.r_n_spin.value())
+            # r always starts at 0 -- see the comment where r_max_spin is
+            # built for why p(0)=0 isn't an optional/adjustable choice.
+            r_grid = np.linspace(0.0, self.r_max_spin.value(), self.r_n_spin.value())
             A = build_size_distribution_kernel(self.data.q, r_grid, kernel_func, alpha=alpha)
 
             solver_key = self.solver_combo.currentData()
-            result = SOLVER_REGISTRY[solver_key].run(A, I_sub, self.data.dI)
+            if solver_key == "bayesian_evidence_hann_tapered":
+                result = SOLVER_REGISTRY[solver_key].run(
+                    A, I_sub, self.data.dI, taper_frac=self.taper_frac_spin.value()
+                )
+            else:
+                result = SOLVER_REGISTRY[solver_key].run(A, I_sub, self.data.dI)
         except Exception:
             QMessageBox.critical(self, "Solve failed", traceback.format_exc())
             return

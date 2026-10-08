@@ -265,7 +265,9 @@ def _run_bayesian_evidence_hansen(A: np.ndarray, b: np.ndarray, db: np.ndarray) 
     )
 
 
-def _run_bayesian_evidence_hann_tapered(A: np.ndarray, b: np.ndarray, db: np.ndarray) -> SolverResult:
+def _run_bayesian_evidence_hann_tapered(
+    A: np.ndarray, b: np.ndarray, db: np.ndarray, taper_frac: float = 0.25,
+) -> SolverResult:
     """General-form Tikhonov, lambda chosen by Bayesian evidence (Vestergaard
     & Hansen, 2006), but with Hansen (2000)'s HARD p(0)=p(Dmax)=0 boundary
     condition replaced by a soft Hann-window taper (regularization.py's
@@ -316,7 +318,7 @@ def _run_bayesian_evidence_hann_tapered(A: np.ndarray, b: np.ndarray, db: np.nda
     # since hann_taper only needs a monotonic coordinate and a fraction of
     # its range, and the GUI/caller always builds A from a linear r grid.
     idx = np.arange(n, dtype=float)
-    w = hann_taper(idx, idx[-1], taper_frac=0.25)
+    w = hann_taper(idx, idx[-1], taper_frac=taper_frac)
     A_win = A * w[None, :]
 
     L_plain = second_derivative_operator(n).toarray()
@@ -334,7 +336,8 @@ def _run_bayesian_evidence_hann_tapered(A: np.ndarray, b: np.ndarray, db: np.nda
         chi2_r_history=[chi2_r(b, fitted_b, db)], roughness_history=[],
         converged=True,
         diagnostics={
-            "lambda_selection": f"Bayesian evidence (Hann-tapered boundary), "
+            "lambda_selection": f"Bayesian evidence (Hann-tapered boundary, "
+                                 f"taper_frac={taper_frac:.3g}), "
                                  f"lambda={best.lam:.4g}, Ng={best.n_good_params:.1f}",
         },
     )
