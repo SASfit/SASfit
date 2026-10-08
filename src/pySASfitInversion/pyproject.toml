@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sasfit-inversion"
+version = "0.0.1"
+description = "Standalone Fredholm-integral-of-the-first-kind inversion solvers for small-angle scattering (size-distribution and pair-distance-distribution recovery), ported out of SASfit."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary -- PSI internal (license TBD)" }
+authors = [
+    { name = "Joachim Kohlbrecher", email = "joachim.kohlbrecher@psi.ch" },
+]
+keywords = [
+    "small-angle scattering", "SANS", "SAXS", "SASfit",
+    "Fredholm integral", "inverse problem", "size distribution",
+    "pair distance distribution function", "PDDF", "indirect Fourier transform",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+gui = [
+    "PySide6>=6.5",
+    "matplotlib>=3.7",
+]
+dev = [
+    "pytest>=7.0",
+]
+docs = [
+    "sphinx>=7.0",
+    "furo",
+    "sphinx-autodoc-typehints",
+]
+
+[project.scripts]
+sasfit-inversion-gui = "gui.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"

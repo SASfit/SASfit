@@ -1,0 +1,29 @@
+overall chi2_r = 1.56  (n=91)
+
+  region                q range  n_pts  mean chi2 contrib  mean |resid|  std(resid)
+   low q [0.004016, 0.02856]       30              3.217         1.503       1.788
+   mid q [0.03046, 0.1005]         30              1.494        0.9986       1.222
+  high q [0.1079, 0.385]           31            0.01989       0.06833       0.141
+
+Interpretation: mean chi2 contribution and std(resid) should each be
+close to 1 in every region for a correctly-sized fit. Well below 1
+(e.g. <0.3) means the fit is tracking noise there (too little
+regularization locally); well above 1 means underfitting there.
+
+Last 15 data points (highest q) individually:
+         q     I-backgr          fit         dI   resid/dI
+    0.2086      0.01129      0.01121    0.01139  -0.006682
+    0.2165      0.03361      0.03371    0.01123   0.009179
+     0.224      0.02899      0.02865    0.01111   -0.02999
+     0.242    -0.001504   -7.575e-05    0.01093     0.1307
+    0.2485       0.0145      0.01448    0.01083  -0.002276
+    0.2631        0.033      0.03191    0.01074    -0.1016
+    0.2741     0.008981     0.008818    0.01066   -0.01532
+    0.2869    -0.002064     -0.00208    0.01059  -0.001507
+    0.3078      -0.0113     -0.01173    0.01053   -0.04066
+    0.3191      0.01049      0.01053     0.0105   0.003353
+    0.3487      0.01282      0.01196    0.01045   -0.08213
+    0.3494    -0.005741    -0.006067    0.01045   -0.03121
+    0.3675     -0.02039     -0.01928    0.01042     0.1065
+    0.3753     -0.01728     -0.01576    0.01043     0.1454
+     0.385      0.01068     0.009731    0.01039   -0.09165

@@ -1,0 +1,22 @@
+    Dmax   chi2_r     lambda     Ng   p(r) at 0.9*Dmax   p(r) at Dmax   relative to peak
+     500     1.56      441.5   45.3             0.2098        0.07716            0.07317
+     650    2.631       3.09   49.9            -0.5718        -0.1871             0.1551
+     800    363.9      4.554   50.0            -0.1744        -0.6444             0.5322
+    1000    305.6     0.3923   49.9             -1.595        -0.7279               0.14
+    1200    369.9      14.22   49.6            -0.5089         0.3197            0.09782
+    1500      423      8.322   49.8              1.581        -0.1286            0.06507
+    1800    521.6      4.479   49.9            0.07267        -0.4385             0.2095
+    2200    520.5      3.677   49.8             -1.181        -0.2894             0.1024
+    2700      521      1.927   49.2             -4.253         -0.638             0.1093
+
+Interpretation: chi2_r should flatten out once Dmax safely exceeds the
+true particle size. 'relative to peak' (|p(Dmax)|/max|p(r)|) should be
+small (e.g. <0.02-0.05) once Dmax is large enough -- if it's still a
+sizeable fraction of the peak, p(r) has not decayed and Dmax is still
+truncating real structure.
+
+Regional residual breakdown at Dmax=2700:
+  region  n_pts  mean chi2 contrib  std(resid)
+   low q                      1017       15.16
+   mid q                     426.7       15.68
+  high q                     132.3       11.47

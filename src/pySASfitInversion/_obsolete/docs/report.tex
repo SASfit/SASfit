@@ -1,0 +1,510 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={PDDF Regularization Investigation -- sasfit\_inversion},
+  pdfauthor={Joachim Kohlbrecher}
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=flexible,
+  backgroundcolor=\color{gray!8},
+  rulecolor=\color{gray!40}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{PDDF Regularization Investigation}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+\title{\textbf{Regularized Inversion of the PDDF Fredholm Integral in\\
+\texttt{sasfit\_inversion}: Diagnosis, Elimination, and a\\
+Hann-Tapered-Boundary Fix}}
+\author{Joachim Kohlbrecher \\ \small Paul Scherrer Institut (PSI)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+The \texttt{sasfit\_inversion} package inverts small-angle-scattering
+intensity $I(q)$ for the pair-distance-distribution function (PDDF)
+$p(r)$ by solving a Fredholm integral equation of the first kind with
+the signed $4\pi\, j_0(qr)$ kernel. Early regularized solvers on real
+test data (\texttt{tests/data/test.dat}) produced a deceptively
+acceptable aggregate $\chi^2_r$ that concealed a severe, high-$q$
+noise-tracking pathology. This report documents the full
+investigation: adoption of Hansen's (2000) boundary-constrained
+Bayesian-evidence inverse Fourier transform (IFT) to fix a
+rank-deficient smoothness operator; a region-resolved diagnostic
+methodology that exposed the hidden high-$q$ overfitting; four
+independent systematic scans that ruled out regularization strength,
+$D_{max}$, grid density, and the inner boundary radius as the cause;
+a two-hyperparameter adaptive-$\lambda$ experiment that failed for a
+principled reason (the oscillatory kernel's broadband sensitivity to
+all of $r$); an explicitly rejected non-negativity constraint (invalid
+for core--shell and contrast-variation particles); and the eventual
+fix -- replacing Hansen's hard $p(D_{max})=0$ knot with a
+Hann-tapered soft boundary -- validated both on synthetic data with
+known ground truth and on the real pathological dataset, where it
+improved the high-$q$ regional $\chi^2$ contribution by a factor of
+nine (0.023 $\to$ 0.208) while leaving the already-reasonable
+low-$q$ fit unchanged.
+\end{abstract}
+
+\tableofcontents
+
+%=====================================================================
+\section{The inversion problem}
+%=====================================================================
+
+Recovering the pair-distance-distribution function $p(r)$ from
+small-angle scattering intensity $I(q)$ requires solving a Fredholm
+integral equation of the first kind,
+\begin{equation}
+  I(q) \;=\; 4\pi \int_0^{D_{max}} p(r)\, \frac{\sin(qr)}{qr}\, dr ,
+  \label{eq:fredholm}
+\end{equation}
+subject to the physical boundary conditions $p(0) = 0$ and $p(r) = 0$
+for $r > D_{max}$, where $D_{max}$ is the particle's maximum linear
+dimension. Equation~\eqref{eq:fredholm} is discretized on a point grid
+in $r$ (direct grid estimation, superseding Glatter's original
+small-basis-function restriction) and the resulting linear system
+$\mathbf{K}\mathbf{p} = \mathbf{I}$ is classically ill-posed: the
+kernel matrix $\mathbf{K}$ is severely ill-conditioned, so small
+amounts of noise in the measured $I(q)$ map onto large, unphysical
+oscillations in the naively recovered $p(r)$ unless the solution is
+regularized.
+
+An initial attempt used the signed $4\pi\, j_0(qr)$ kernel together
+with a naive second-derivative smoothness penalty. This produced
+catastrophically poor fits (reduced chi-square $\chi^2_r$ in the
+hundreds), which traced to two compounding problems:
+\begin{itemize}[nosep]
+  \item the plain second-derivative operator has a two-dimensional
+    null space -- a constant offset and a linear ramp in $p(r)$ are
+    both invisible to the roughness penalty and therefore completely
+    unconstrained;
+  \item the kernel's own condition number for this dataset's $q$/$r$
+    grid is of order $10^{16}$.
+\end{itemize}
+
+%=====================================================================
+\section{Hansen's boundary-constrained Bayesian-evidence IFT}
+%=====================================================================
+
+Hansen (2000, \emph{J.\ Appl.\ Cryst.} \textbf{33}, 1415--1421) resolves
+the null-space problem by building the physical boundary condition
+$p(0) = p(D_{max}) = 0$ \emph{directly into the smoothness functional}
+(his eq.~19), rather than imposing it through a restricted basis set:
+\begin{equation}
+  S(p) \;=\; \frac{1}{2}\sum_{i=0}^{N-2} (p_i - p_{i+1})^2
+             \;+\; \frac{1}{2}p_0^2 \;+\; \frac{1}{2}p_{N-1}^2 .
+  \label{eq:hansen-penalty}
+\end{equation}
+This operator has a provably full-rank Hessian (asserted at
+construction time in
+\texttt{regularization.hansen\_smoothness\_cholesky}), which drops the
+problem's condition number from $\sim\!10^{16}$ to $\sim\!9.2\times
+10^{3}$ on the real dataset.
+
+The regularization strength $\lambda$ is chosen by \textbf{Bayesian
+evidence maximization} (Vestergaard \& Hansen, 2006, \emph{J.\ Appl.\
+Cryst.} \textbf{39}, 797--804) rather than generalized cross-validation
+(GCV), the L-curve, or the discrepancy principle. The evidence
+machinery is implemented generically in
+\texttt{solvers.bayesian\_evidence} so that any regularization operator
+$\mathbf{L}$ -- not only Hansen's -- can be plugged into the same
+$\lambda$-selection procedure.
+
+This combination is the \texttt{bayesian\_evidence\_hansen} solver.
+On real data it was a dramatic improvement over every regularized
+solver tried previously: $\chi^2_r \approx 1.6$, versus $\approx 586$
+for EM with smoothing and $\approx 34{,}600$ for plain
+Tikhonov regularization with GCV-selected $\lambda$, at the time this
+solver was introduced.
+
+%=====================================================================
+\section{A hidden problem behind a good aggregate $\chi^2_r$: regional overfitting}
+\label{sec:regional}
+%=====================================================================
+
+A good \emph{aggregate} $\chi^2_r$ can conceal a badly imbalanced fit.
+Splitting the fit residuals $(I_{fit}(q) - I_{data}(q))/\delta I(q)$
+into low-, mid-, and high-$q$ terciles and computing the mean squared
+residual (chi-square contribution) per region revealed that the
+Hansen solver's overall $\chi^2_r \approx 1.6$ was in fact a
+compromise between two failures in opposite directions:
+\begin{itemize}[nosep]
+  \item \textbf{low-$q$ was underfit}, with a chi-square contribution
+    of order 3 or more;
+  \item \textbf{high-$q$ was severely overfit}, tracking the noise
+    almost exactly (chi-square contribution $\approx 0.02$ -- i.e.\
+    the fit matched the data roughly seven times more closely than the
+    stated error bars justify).
+\end{itemize}
+
+A single global $\lambda$ cannot, in general, simultaneously be
+correct for a region containing real structural information (which
+wants less smoothing) and a region with little information content
+(which wants more smoothing, to avoid chasing noise). The remainder of
+the investigation asks \emph{why} this happens here, and whether any
+choice of hyperparameter or grid can fix it. This region-resolved
+diagnostic -- computing the mean $\chi^2$ contribution separately for
+low-, mid-, and high-$q$ terciles -- is reused as the evaluation
+methodology for every scan and experiment described below.
+
+%=====================================================================
+\section{Systematically ruling out the usual suspects}
+\label{sec:scans}
+%=====================================================================
+
+Four independent scans were run on the real dataset, each holding
+every other parameter fixed (scripts
+\texttt{tests/diagnose\_hansen\_*.py}).
+
+\subsection{$\lambda$ scan}
+
+Scanning $\lambda$ across six decades showed that the high-$q$
+chi-square contribution approaches 1 only once $\lambda$ is so large
+that low-$q$ is \emph{already} badly underfit ($\chi^2 \gg 1$): there
+is no single value of $\lambda$ that brings low-, mid-, and high-$q$
+all close to 1 simultaneously. Critically, \textbf{low-$q$ chi-square
+never dropped below $\approx 2.16$, even at the smallest $\lambda$
+tested} (essentially unregularized, with 49 of 50 parameters
+effectively free). More freedom does not fix low-$q$ -- the first
+indication that this was not simply a regularization-strength
+problem.
+
+\subsection{$D_{max}$ scan}
+
+$D_{max} = 500$\,\AA\ turned out to be genuinely too small, truncating
+real pair-distance density: low-$q$ chi-square dropped from 3.35 to
+$\approx 0.8$ as $D_{max}$ was increased from 500 to $\approx 800$.
+This motivated checking Glatter's consistency condition,
+\begin{equation}
+  q_{min} \;\le\; \frac{\pi}{D_{max}}
+  \quad\Longleftrightarrow\quad
+  D_{max} \;\le\; \frac{\pi}{q_{min}} ,
+  \label{eq:glatter}
+\end{equation}
+which for this dataset's $q_{min} = 0.004016\,\text{\AA}^{-1}$ gives
+the largest physically constrainable value, $D_{max} \approx 782$\,\AA.
+The GUI now auto-suggests this value on data load (overridable by the
+user).
+
+Beyond the Glatter bound, apparent improvement in the aggregate
+$\chi^2_r$ was shown to be mostly overfitting (mid-$q$ chi-square kept
+sliding well below~1) rather than genuinely improved resolution --
+and, crucially, \textbf{the high-$q$ chi-square contribution stayed
+pinned at $\approx 0.02$ across every $D_{max}$ tested}, confirming
+that $D_{max}$ is not the mechanism either.
+
+\subsection{Grid-density ($n_r$) scan}
+
+This scan tested whether oversampling $r$ -- more grid points than the
+data's Shannon-limited information content supports -- was handing the
+high-$q$ region cheap, extra degrees of freedom with which to fit
+noise. This was refuted: once above the minimum resolved grid density
+($n_r \gtrsim 75$ for this problem), every metric, including the
+high-$q$ chi-square contribution, was flat from $n_r = 75$ to
+$n_r = 200$.
+
+\subsection{Inner-boundary-radius ($r_{min}$) scan}
+
+This scan tested the boundary-condition approximation (the constraint
+$p(0)=0$ is in practice enforced at the grid's first node, $r_{min}$,
+not exactly at $r = 0$) together with possible near-$r=0$ kernel
+degeneracy. Also flat, from $r_{min} = 0.1$ to $r_{min} = 10$\,\AA\ --
+no effect.
+
+\medskip
+\noindent\textbf{Conclusion.} $\lambda$, $D_{max}$, $n_r$, and
+$r_{min}$ were each ruled out individually. The high-$q$
+noise-tracking survived every one of them, unchanged, precisely in the
+regime where the method is otherwise well-resolved.
+
+%=====================================================================
+\section{A failed fix: position-dependent (r-segment) adaptive $\lambda$}
+\label{sec:adaptive}
+%=====================================================================
+
+Reasoning that a single global $\lambda$ was the limiting factor,
+Hansen's penalty~\eqref{eq:hansen-penalty} was split into two additive
+pieces by $r$-index,
+\begin{equation}
+  \mathbf{A}_{\text{Hansen}} \;=\; \mathbf{A}_{lo} + \mathbf{A}_{hi} ,
+\end{equation}
+an exact algebraic partition implemented in
+\texttt{regularization.hansen\_smoothness\_two\_segment}, with an
+independent $\lambda_{lo}$, $\lambda_{hi}$ chosen by a generalized
+two-hyperparameter evidence search
+(\texttt{bayesian\_evidence.log\_evidence\_blocks} /
+\texttt{evidence\_search\_blocks}), the block formulation chosen so
+that it collapses exactly to the single-$\lambda$ evidence formula
+when $\lambda_{lo} = \lambda_{hi}$. Both the split location and the
+two $\lambda$ values were searched jointly.
+
+\textbf{Result: no improvement.} The high-$q$ chi-square contribution
+was unchanged or slightly worse (0.0234 $\to$ 0.0298) regardless of
+where the split was placed, and $\lambda_{lo}$ pinned at the search
+grid's floor for every candidate split location.
+
+The reason, in hindsight, is structural rather than a search-grid
+artifact: the oscillatory $j_0(qr)$ kernel means a single high-$q$
+data point is sensitive to $p(r)$ across the \emph{whole} $r$-range,
+not a contiguous region -- so a noise-fitting wiggle in the recovered
+$p(r)$ can sit anywhere in $r$. Partitioning the regularization
+penalty by $r$-\emph{position} does not target the actual mechanism,
+which turned out to be spatial-frequency content, not position.
+
+%=====================================================================
+\section{A rejected fix: non-negativity}
+\label{sec:nonneg}
+%=====================================================================
+
+$p(r) \ge 0$ is \emph{not} a universal constraint for this package's
+intended scope -- it holds only for a single, homogeneous-contrast
+particle. For core--shell particles, multi-shell/multilamellar
+structures, or contrast-variation (partially deuterated) systems, the
+excess scattering-length density changes sign within the particle, and
+$p(r)$ can legitimately dip negative from cross-correlation between
+oppositely-signed regions. This is a documented diagnostic signature
+of internal structure in the SAXS/SANS literature, not a numerical
+artifact.
+
+Imposing $p(r) \ge 0$ as a hard, default constraint would distort or
+suppress genuine structural signal for exactly this class of system,
+which lies within the package's intended scope. \textbf{It is not
+implemented as a default}; if offered at all, it must be an explicit
+opt-in variant restricted to the homogeneous-contrast case.
+
+%=====================================================================
+\section{The fix: a Hann-tapered boundary}
+\label{sec:hann}
+%=====================================================================
+
+$p(r)$ and $I(q)$ are, in the relevant sense, a Fourier sine-transform
+pair. Hansen's boundary condition is mathematically a \emph{sharp
+edge} in $r$-space: $p$ is pinned to exactly zero at a single grid
+point. By the standard windowing/Gibbs-phenomenon relationship, a
+sharp edge in one domain convolves the conjugate domain's transform
+with a sinc function, whose sidelobes decay slowly ($\sim 1/q$) and
+persist out to high $q$ -- \emph{wherever} the edge is placed. This
+single mechanism explains both negative results above: the $D_{max}$
+scan (Section~\ref{sec:scans}) does not fix the pathology because
+moving the edge does not remove it, and $r$-segment splitting
+(Section~\ref{sec:adaptive}) does not fix it because the resulting
+ringing is not localized to one region of $r$.
+
+The remedy is the standard apodization fix for truncation ringing:
+replace the hard edge with a smooth rolloff. The function
+\texttt{regularization.hann\_taper(r, r\_max, taper\_frac=0.25)}
+returns a weight $w(r) \in [0,1]$, equal to 1 in the interior and
+tapering to 0 with a raised-cosine (Hann-style) profile over the last
+quarter of $[0, D_{max}]$:
+\begin{equation}
+  w(r) =
+  \begin{cases}
+    1, & r \le (1-\tau)\,D_{max} \\[4pt]
+    \dfrac{1}{2}\Bigl(1 + \cos\!\bigl(\pi\, x(r)\bigr)\Bigr), &
+      (1-\tau)\,D_{max} < r \le D_{max} \\[8pt]
+    0, & r > D_{max}
+  \end{cases}
+  \qquad
+  x(r) = \frac{r - (1-\tau)D_{max}}{\tau\, D_{max}} ,
+  \label{eq:hann-taper}
+\end{equation}
+with taper fraction $\tau = \texttt{taper\_frac} = 0.25$. Reparametrizing
+\begin{equation}
+  p(r) \;=\; w(r)\, p_{free}(r)
+\end{equation}
+and solving for $p_{free}$ with a \emph{plain} (non-boundary-constrained)
+second-derivative smoothness penalty replaces Hansen's hard knot with
+a soft decay. The plain second-derivative operator's null space --
+harmless when combined with Hansen's own boundary fix -- needed a
+tiny numerical ridge stabilizer in this variant, since nothing else
+constrains it (the \texttt{ridge} parameter threaded through
+\texttt{bayesian\_evidence.py}'s \texttt{\_map\_solution},
+\texttt{log\_evidence}, and \texttt{evidence\_search}).
+
+\subsection{Validation on synthetic data (known ground truth)}
+
+A homogeneous-sphere PDDF ($D_{true} = 380$\,\AA, with the standard
+analytic form $p(r) = r^2\bigl(1 - \tfrac{3}{2}\tfrac{r}{D} +
+\tfrac{1}{2}(\tfrac{r}{D})^3\bigr)$ for $0 \le r \le D$) was
+forward-transformed to $I(q)$ on a $q$-grid matching the real
+dataset's span and point count, with realistic relative-plus-floor
+noise added, across five independent noise draws. Table~\ref{tab:synth}
+compares the recovered $p(r)$'s RMSE against the known true $p(r)$,
+and the high-$q$ chi-square contribution, for the hard (Hansen)
+boundary versus the Hann-tapered boundary.
+
+\begin{table}[h]
+\centering
+\caption{Synthetic sphere validation, 5 independent noise seeds.
+Lower RMSE and a high-$q$ chi-square contribution closer to 1 are both
+better.}
+\label{tab:synth}
+\begin{tabular}{@{}c c c c c@{}}
+\toprule
+ & \multicolumn{2}{c}{RMSE vs.\ true $p(r)$} & \multicolumn{2}{c}{high-$q$ $\chi^2$ contribution} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+seed & hard boundary & Hann-tapered & hard & tapered \\
+\midrule
+1 & 0.0474 & 0.0409 & 0.614 & 0.633 \\
+2 & 0.0381 & 0.0233 & 0.839 & 0.885 \\
+3 & 0.0434 & 0.0266 & 1.141 & 1.196 \\
+4 & 0.0362 & 0.0295 & 1.192 & 1.260 \\
+5 & 0.0566 & 0.0240 & 0.477 & 0.580 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Hann-tapered version had lower RMSE against the known true $p(r)$
+in \emph{every single trial} (by roughly 35--58\% in several cases),
+and a high-$q$ chi-square contribution consistently, if modestly,
+closer to 1 (i.e.\ less overfitting) in every trial as well. This
+synthetic test -- a smooth, textbook sphere PDDF -- is inherently
+better-conditioned than the real particle's actual shape, so it
+validates the \emph{mechanism and its direction}, not the full
+\emph{severity} seen on real data.
+
+\subsection{Validation on real data}
+
+Table~\ref{tab:real} shows the region-resolved chi-square breakdown on
+the actual pathological dataset
+(\texttt{tests/diagnose\_hansen\_tapered.py}), comparing the
+\texttt{bayesian\_evidence\_hansen} (hard boundary) and
+\texttt{bayesian\_evidence\_hann\_tapered} solvers.
+
+\begin{table}[h]
+\centering
+\caption{Region-resolved $\chi^2$ contribution on the real test
+dataset. The ideal value for a correctly weighted region is 1.}
+\label{tab:real}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+region & hard boundary (\texttt{bayesian\_evidence\_hansen}) &
+  Hann-tapered (\texttt{bayesian\_evidence\_hann\_tapered}) \\
+\midrule
+low-$q$ $\chi^2$  & 0.797 & 0.807 \\
+mid-$q$ $\chi^2$  & 0.343 & 0.491 \\
+\textbf{high-$q$ $\chi^2$} & \textbf{0.023} & \textbf{0.208} \\
+\midrule
+overall $\chi^2_r$ & 0.384 & 0.499 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+On the actual pathological dataset, the high-$q$ chi-square
+contribution moved \textbf{nine times} closer to the ideal value of 1
+($0.023 \to 0.208$), mid-$q$ also improved ($0.343 \to 0.491$), and
+low-$q$ -- which was already reasonable -- was essentially unchanged.
+This is a genuine, substantial improvement in regional balance, not
+merely the synthetic test's direction holding up in principle.
+
+It is \textbf{not a complete fix}: a high-$q$ chi-square contribution
+of 0.208 is still well below the ideal value of 1, so some residual
+overfitting remains. The taper fraction $\tau$ (currently a fixed,
+untuned 0.25) has not been scanned for an optimum, and doing so is a
+natural next step for anyone picking this work back up
+(Section~\ref{sec:future}).
+
+%=====================================================================
+\section{Current recommendation}
+%=====================================================================
+
+For the $j_0(qr)$/PDDF kernel on real data:
+\begin{itemize}[nosep]
+  \item Use \texttt{bayesian\_evidence\_hann\_tapered} as the primary
+    choice -- it consistently gives better regional balance than the
+    hard-boundary version, validated on both synthetic (known ground
+    truth) and real data.
+  \item \texttt{bayesian\_evidence\_hansen} (hard boundary) remains
+    available, in particular as a simpler/more classical baseline to
+    compare against, or for cases where the taper's extra
+    approximation (the ridge stabilizer) is undesirable.
+  \item Both are registered in
+    \texttt{sasfit\_inversion.solver\_registry.SOLVER\_REGISTRY} and
+    therefore automatically available in the GUI's solver dropdown,
+    with their full trade-offs documented in each
+    \texttt{SolverSpec.description}.
+  \item For the sphere/size-distribution kernel (non-negative, not
+    PDDF), EM with smoothing and discrepancy-principle $\lambda$
+    selection remains the better-validated default -- none of this
+    investigation concerned that kernel.
+\end{itemize}
+
+%=====================================================================
+\section{Open questions for future work}
+\label{sec:future}
+%=====================================================================
+
+\begin{itemize}[nosep]
+  \item \textbf{Tune \texttt{taper\_frac}.} Not yet scanned for an
+    optimum; the current value of 0.25 is a reasonable but untuned
+    default.
+  \item \textbf{Check high-$q$ error-bar calibration.} Compare raw
+    point-to-point $I(q)$ scatter against the quoted $\delta I$,
+    independent of any inversion. If $\delta I$ is overestimated at
+    high $q$, part of the apparent ``overfitting'' signature may be
+    the solver correctly reporting that the data contain less noise
+    than their stated error bars claim, rather than a regularization
+    failure. Not yet checked.
+  \item \textbf{Frequency-domain (rather than position-domain) adaptive
+    regularization.} E.g.\ a higher-order roughness penalty targeting
+    short-wavelength ripples specifically, wherever they occur in $r$,
+    was proposed but not implemented; it may compound usefully with
+    the Hann taper rather than replace it.
+  \item \textbf{Total-variation (L1-on-the-gradient) regularization}
+    as an alternative to Hansen's L2 smoothness was proposed
+    (sparsity-promoting, suppresses ringing without a sign assumption,
+    unlike non-negativity) but not implemented -- it would require
+    moving from a closed-form quadratic solve to an IRLS/QP
+    formulation.
+\end{itemize}
+
+%=====================================================================
+\section*{References}
+\addcontentsline{toc}{section}{References}
+%=====================================================================
+\begin{itemize}[nosep]
+  \item Hansen, S. (2000). \emph{Bayesian estimation of hyperparameters
+    for indirect Fourier transformation of small-angle scattering
+    data.} J.\ Appl.\ Cryst.\ \textbf{33}, 1415--1421.
+  \item Vestergaard, B. \& Hansen, S. (2006). \emph{Application of
+    Bayesian analysis to indirect Fourier transformation in
+    small-angle scattering.} J.\ Appl.\ Cryst.\ \textbf{39}, 797--804.
+  \item Glatter, O. (1977). \emph{A new method for the evaluation of
+    small-angle scattering data.} J.\ Appl.\ Cryst.\ \textbf{10},
+    415--421.
+\end{itemize}
+
+\end{document}

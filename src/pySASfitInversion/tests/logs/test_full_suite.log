@@ -1,0 +1,64 @@
+[maa=0 vs plain Picard] relative diff = 0.00e+00
+plain:  n_iter=200000 converged=False chi2_r=0.9540
+accel:  n_iter=2764 converged=True chi2_r=0.9539
+relative solution difference: 0.016
+OK
+---tests/test_acceleration_basic.py exit:0---
+[single Gaussian] arls:   correlation=0.840, min=-0.0496 (negative excursions allowed)
+[single Gaussian] arlsnn: correlation=0.836, min=0.0000 (should be >= 0)
+[bimodal] arls:   correlation=0.658, min=-0.0322 (negative excursions allowed)
+[bimodal] arlsnn: correlation=0.654, min=0.0000 (should be >= 0)
+OK
+---tests/test_arls_basic.py exit:0---
+[Bayesian evidence] lambda=455.23, correlation=0.889, Ng=15.4 (N=100, M=60)
+OK
+---tests/test_bayesian_evidence_basic.py exit:0---
+final chi2_r = 12.608
+correlation with true distribution = 0.903
+chi2_r trend (first vs last 5 iters): 1745509.176 -> 12.608
+OK
+---tests/test_em_basic.py exit:0---
+[paper Fig. 7] corr=1.00000 max|err|=0.0090 chi2_r=0.0001102
+[signed j0 kernel] chi2_r=0.681 corr=0.9950
+OK
+---tests/test_em_general_basic.py exit:0---
+L shape: (98, 100) (n=100, expect n-2 rows -> null space dim 2)
+[General-form Tikhonov + GCV] lambda=14.17474, correlation=0.797
+objective match: transform=8.944046, direct=8.944046
+OK (transform verified exact; see docstring re: correlation ceiling)
+---tests/test_general_tikhonov_basic.py exit:0---
+loaded 91 points via the GUI's load_file()
+GUI solve produced chi2_r=1.0000
+main peak at r=78.0nm (expect ~75-85nm)
+OK -- GUI smoke test passed: load -> fixed background -> kernel/solver selection -> solve -> plots, all via the real MainWindow class
+---tests/test_gui_smoke.py exit:0---
+bayesian_evidence_hansen: chi2_r=1.593
+  Bayesian evidence (Hansen boundary-constrained), lambda=763.8, Ng=43.9
+  p(r) range: [9.293e-05, 1.06]
+OK
+---tests/test_hansen_bayesian_evidence.py exit:0---
+[Hansen CG MaxEnt] best lambda=1, correlation=0.654, iterations=3, converged=True, final chi2_r=203989.536
+OK (gradient verified correct; see docstring re: robustness limitation)
+---tests/test_hansen_maxent_basic.py exit:0---
+[discrepancy principle] h=0.00618, chi2_r=1.000, correlation=0.998, n_evals=14
+[L-curve corner] h=0.01127, chi2_r=1.762, correlation=0.996
+OK
+---tests/test_lambda_search_basic.py exit:0---
+[constant prior] accel: n_iter=109 converged=True chi2_r=93.9064
+[constant prior] plain (100k iters): chi2_r=93.9064
+[constant prior] chi2_r agreement: 1.93e-05, solution correlation: 1.000000
+[adaptive prior] accel: n_iter=3716 converged=True chi2_r=0.7105
+[adaptive prior] plain (100k iters): chi2_r=0.7104
+[adaptive prior] chi2_r agreement: 3.02e-05, solution correlation: 0.994317
+OK
+---tests/test_maxent_basic.py exit:0---
+smoothing h=0.0003645, chi2_r=1.0000
+main peak at r=78.0nm (paper's Fig. 5: ~75-85nm)
+secondary hump near r=165.1nm (paper's Fig. 5: ~180-220nm)
+OK -- reproduces the qualitative shape of the paper's own Figure 5
+---tests/test_pipeline_end_to_end.py exit:0---
+singular values span: 1.066e+02 to 9.977e-15 (condition number 1.07e+16)
+[TSVD + GCV] k=9, correlation=0.855
+[Tikhonov + GCV] lambda=0.70672, correlation=0.894
+OK
+---tests/test_svd_methods_basic.py exit:0---

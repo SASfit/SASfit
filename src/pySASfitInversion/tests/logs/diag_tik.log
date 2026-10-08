@@ -1,0 +1,12 @@
+--- n_r=150: A condition number = 1.145e+16 ---
+  closest-to-1 over lambda grid: lambda=6.261e-05, chi2_r=43.1
+  chi2_r range over lambda grid: [43.1, 4.665e+06]
+
+--- n_r=61: A condition number = 1.469e+16 ---
+  closest-to-1 over lambda grid: lambda=9.617e-06, chi2_r=37.75
+  chi2_r range over lambda grid: [37.75, 6.846e+06]
+
+--- n_r=40: A condition number = 3.409e+03 ---
+  closest-to-1 over lambda grid: lambda=108.1, chi2_r=1384
+  chi2_r range over lambda grid: [1384, 9.12e+06]
+

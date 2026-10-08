@@ -55,7 +55,7 @@ Package & Model & Method & Agreement\\
 \code{mixscatter} \citep{DiazMaier2024} & mixture PY \citep{Vrij1979} & analytic & $0.09\,\%$\\
 \code{jscatter} & one-component PY & analytic & $0.02$--$0.12\,\%$\\
 \code{sasmodels}, \code{jscatter} & RMSA \citep{HayterPenfold1981} & analytic & $10^{-12}$ (6/6)\\
-\code{two\_yukawa\_reference} & two-Yukawa MSA \citep{Liu2005} & analytic & $0.21\,\%$\\
+\code{sasmodels} & two-Yukawa MSA \citep{Liu2005} & analytic & $0.21\,\%$\\
 \code{jscatter} & adhesive hard spheres & analytic & see \S\ref{sec:welltrap}\\
 \code{jscatter} & OZ solver, PY and HNC & numerical & $0.2$--$0.4\,\%$\\
 \code{OrnsteinZernike.jl} & 4 bridge functions & analytic & $\sim10^{-16}$\\
@@ -114,13 +114,49 @@ affordable resolution, with its fitted volume fraction read accordingly.
 \paragraph{Reproducibility of the figures and of the table.} Three gaps are
 recorded here rather than left to be discovered.
 
-The remaining \code{jscatter} rows above --- one-component PY, RMSA, adhesive
+The remaining \code{jscatter} rows above --- one-component PY, adhesive
 hard spheres and the numerical OZ comparison --- were measured where
 \code{jscatter} was installed. Its dependency chain does not build under
-MinGW, so they cannot be re-run on the machine this work is written on. The
-two-Yukawa row was brought back within reach by extracting that solver into
-\code{tools/two\_yukawa\_reference.py}, which needs \code{numpy} alone; the
-others deserve the same treatment before submission.
+MinGW, so they cannot be re-run on the machine this work is written on. Two
+rows have since been brought back within reach, and by the same move:
+replacing a reference that has to be obtained with one that can be
+installed.
+
+\paragraph{Two reference solvers replaced by \code{sasmodels}.} The RMSA
+and two-Yukawa rows are now measured against SasView's \code{sasmodels},
+which is 3-clause BSD and installs with \code{pip} alone. Both previously
+depended on something a reader could not simply obtain --- \code{jscatter},
+which will not build here, and a 97\,kB vendored copy of the two-Yukawa
+solver used under a citation-ware grant the authors gave in writing. A
+licence governs an implementation rather than a method, so \citet{Liu2005}
+is cited exactly as before; what changes is that anyone can now repeat the
+comparison.
+
+Agreement is to $2\times10^{-8}$, $7\times10^{-8}$ and $3\times10^{-8}$ on
+the three two-Yukawa state points where both solve cleanly. Of the
+remaining two, \code{sasmodels} returns a physical $S(q)$ at
+$\varphi = 0.10$ where the vendored solver reports no root found --- a
+root-finder limitation rather than a statement about the physics, since the
+same parameters at HIGHER volume fraction solve in both. The last,
+$Z_1 = 6$ against $Z_2 = 4$, agrees only to $2\times10^{-3}$, with the
+discrepancy peaking at the structure-factor maximum; the two inverse ranges
+are close there, which is where the quartic's roots crowd together and two
+implementations may select marginally differently. Both results are
+physical and both are defensible.
+
+\paragraph{The sign of $K$, and where the inconsistency actually was.}
+\citet{Liu2005} write the tail as $-K\exp[-Z(r-1)]/r$, so positive $K$ is
+ATTRACTIVE. This package's solver follows that convention, and so does
+\code{sasmodels}. The vendored reference file did not: reproducing its
+output required flipping both signs, after which the two agree to
+$10^{-8}$, where every other candidate (length unit, pair ordering, $Z$
+scaling) stayed above 20 per cent at every state point.
+
+So the inconsistency was in the comparison apparatus rather than in the
+solver being compared --- which is the more flattering of the two
+possibilities, and was not the one assumed while the discrepancy was being
+chased. Retiring the vendored file removes it entirely, and is a further
+reason to prefer \code{sasmodels}: one fewer convention in the tree.
 
 \code{fig3\_oscillation.pdf} has no generator in the repository. The figure
 exists and nothing can reproduce it, which means a referee asking for any

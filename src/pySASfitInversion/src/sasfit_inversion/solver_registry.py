@@ -30,7 +30,7 @@ from .solvers import (
     em, lambda_search, arls, maxent as maxent_em, svd_methods,
     general_tikhonov, bayesian_evidence, hansen_maxent, em_general,
 )
-from .regularization import second_derivative_operator, hansen_smoothness_cholesky
+from .regularization import second_derivative_operator, hansen_smoothness_cholesky, hann_taper
 
 
 @dataclass
@@ -265,6 +265,81 @@ def _run_bayesian_evidence_hansen(A: np.ndarray, b: np.ndarray, db: np.ndarray) 
     )
 
 
+def _run_bayesian_evidence_hann_tapered(A: np.ndarray, b: np.ndarray, db: np.ndarray) -> SolverResult:
+    """General-form Tikhonov, lambda chosen by Bayesian evidence (Vestergaard
+    & Hansen, 2006), but with Hansen (2000)'s HARD p(0)=p(Dmax)=0 boundary
+    condition replaced by a soft Hann-window taper (regularization.py's
+    hann_taper): p(r) = w(r) * p_free(r), with w(r) smoothly rolling off
+    to 0 over the last quarter of the r-range instead of being pinned to
+    exactly 0 at a single hard edge.
+
+    ADDED 2026-10-07, as an alternative to 'bayesian_evidence_hansen' above
+    -- not a replacement, since the two make different tradeoffs (see
+    below). Motivation: p(r) and I(q) are related by (essentially) a
+    Fourier sine transform, and a sharp edge in one domain is expected to
+    leak oscillatory "ringing" into the conjugate domain with slowly
+    decaying (~1/q) sidelobes -- a plausible mechanism for the high-q
+    noise-tracking found on this package's own real test.dat data, which
+    a systematic empirical scan (diagnose_hansen_lambda_balance.py,
+    diagnose_hansen_dmax_scan.py, diagnose_hansen_nr_scan.py) showed was
+    essentially unchanged across global lambda, Dmax, n_r, and r_min
+    individually -- i.e. not fixable by any of Hansen's own hard-boundary
+    hyperparameters.
+
+    Validated on a synthetic sphere test with known ground truth (5
+    independent noise draws): the tapered version had LOWER RMSE against
+    the true p(r) than the hard boundary in every single trial, and its
+    roughness (sum-of-squared-second-differences, a ringing proxy) matched
+    the true curve's own smoothness far more closely. High-q chi2
+    contribution was also consistently, if modestly, closer to 1 (less
+    overfit) under tapering. CAVEAT: that synthetic test did not reproduce
+    the SEVERITY of the real test.dat high-q pathology (chi2 contribution
+    there sits around 0.02 under the hard boundary; the synthetic test's
+    worst case was ~0.48), so this is validated as a real, reproducible
+    improvement in the right direction, not a guarantee that it closes
+    the real-data gap to the same degree -- see
+    tests/diagnose_hansen_tapered.py for the direct real-data comparison,
+    which should be checked before treating this as the new default.
+
+    Implementation note: without Hansen's boundary fix, the plain
+    second-derivative operator used here for p_free's smoothness penalty
+    has a 2-dimensional null space (constant offset, linear ramp -- see
+    second_derivative_operator's own docstring), which on this package's
+    kernels can leave the evidence Hessian singular for the whole lambda
+    grid. A tiny ridge stabilizer (bayesian_evidence.py's new `ridge`
+    parameter, added specifically for this solver) removes the exact
+    singularity without materially changing the result -- see that
+    module's docstring for why this is an approximation, not exact."""
+    n = A.shape[1]
+    # r is not directly available here (only the kernel matrix A), so the
+    # taper is built in INDEX space (0..n-1) rather than physical r -- fine
+    # since hann_taper only needs a monotonic coordinate and a fraction of
+    # its range, and the GUI/caller always builds A from a linear r grid.
+    idx = np.arange(n, dtype=float)
+    w = hann_taper(idx, idx[-1], taper_frac=0.25)
+    A_win = A * w[None, :]
+
+    L_plain = second_derivative_operator(n).toarray()
+    svd_Awin = svd_methods.compute_svd(A_win)
+    scale = float(np.percentile(svd_Awin.s, 75)) ** 2
+    lam_grid = np.geomspace(max(scale * 1e-6, 1e-300), scale * 1e6, 60)
+    ridge_eps = 1e-8 * scale  # relative to A_win's own singular-value scale, not an absolute constant
+
+    best, _ = bayesian_evidence.evidence_search(A_win, b, db, L_plain, lam_grid, ridge=ridge_eps)
+    p_free = best.p_map
+    x = w * p_free
+    fitted_b = A_win @ p_free  # == A @ x
+    return SolverResult(
+        x=x, fitted_b=fitted_b, n_iterations=0,
+        chi2_r_history=[chi2_r(b, fitted_b, db)], roughness_history=[],
+        converged=True,
+        diagnostics={
+            "lambda_selection": f"Bayesian evidence (Hann-tapered boundary), "
+                                 f"lambda={best.lam:.4g}, Ng={best.n_good_params:.1f}",
+        },
+    )
+
+
 # ------------------------------------------------------------- MaxEnt family
 
 def _run_maxent_constant_prior(A: np.ndarray, b: np.ndarray, db: np.ndarray) -> SolverResult:
@@ -422,6 +497,28 @@ SOLVER_REGISTRY: dict[str, SolverSpec] = {
                      "number of resolved parameters. Has an unresolved "
                      "factor-of-2 ambiguity noted in bayesian_evidence.py "
                      "between the paper's eq. 3 and eq. 6.",
+    ),
+    "bayesian_evidence_hann_tapered": SolverSpec(
+        label="IFT, Bayesian evidence (Hann-tapered boundary) -- alternative to Hansen boundary-constrained",
+        run=_run_bayesian_evidence_hann_tapered,
+        description="Same Bayesian-evidence-chosen general-form Tikhonov as "
+                     "'IFT, Bayesian evidence (Hansen boundary-constrained)', but "
+                     "replaces Hansen's HARD p(0)=p(Dmax)=0 boundary condition with "
+                     "a soft Hann-window taper over the last quarter of the r-range. "
+                     "Motivation: p(r) and I(q) are related by a Fourier sine "
+                     "transform, so a sharp r-space edge is expected to leak "
+                     "oscillatory ringing into I(q) with slowly-decaying sidelobes "
+                     "reaching high q -- a plausible mechanism for the high-q "
+                     "noise-tracking this package's own empirical scans found "
+                     "unchanged across global lambda, Dmax, n_r, and r_min "
+                     "individually. Validated on a synthetic sphere test (known "
+                     "ground truth): consistently lower RMSE and a high-q fit size "
+                     "closer to the expected chi2 contribution of 1 than the hard "
+                     "boundary, across every noise realization tried -- but that "
+                     "synthetic test did not reproduce the severity of the real "
+                     "test.dat high-q pathology, so check "
+                     "tests/diagnose_hansen_tapered.py's real-data comparison before "
+                     "treating this as better than the hard-boundary version here.",
     ),
     "maxent_constant_prior": SolverSpec(
         label="EM + MaxEnt, constant prior (auto lambda)",

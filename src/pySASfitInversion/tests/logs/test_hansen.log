@@ -1,0 +1,4 @@
+bayesian_evidence_hansen: chi2_r=1.593
+  Bayesian evidence (Hansen boundary-constrained), lambda=763.8, Ng=43.9
+  p(r) range: [9.293e-05, 1.06]
+OK

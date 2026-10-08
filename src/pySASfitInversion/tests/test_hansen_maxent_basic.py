@@ -1,6 +1,6 @@
 import numpy as np
 import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from sasfit_inversion.kernels import build_size_distribution_kernel
 from sasfit_inversion.solvers import hansen_maxent

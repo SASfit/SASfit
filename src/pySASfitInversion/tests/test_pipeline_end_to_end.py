@@ -1,6 +1,6 @@
 import numpy as np
 import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from sasfit_inversion.io_utils import load_sas_data
 from sasfit_inversion.kernel_registry import KERNEL_REGISTRY

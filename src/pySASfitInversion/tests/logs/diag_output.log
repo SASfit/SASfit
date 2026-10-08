@@ -1,0 +1,39 @@
+kernel shape: (91, 150), has negative entries: True
+b range: [-0.02039, 3497], db range: [0.01039, 90.73]
+
+h scan, accelerate=True, tol=1e-8, max_iterations=20000:
+         h       chi2_r   n_iter  converged     offset_t
+    0.0001    1.171e+04      910       True        9.945
+ 0.0001848         9626     1172       True        9.945
+ 0.0003415         7435      560       True        9.945
+  0.000631         5520      604       True        9.945
+  0.001166         4115      575       True        9.945
+  0.002154         3159      473       True        9.945
+  0.003981         2449      380       True        9.945
+  0.007356         1863      307       True        9.945
+   0.01359         1391      228       True        9.945
+   0.02512         1034      123       True        9.945
+   0.04642        774.5       90       True        9.945
+   0.08577        618.6       68       True        9.945
+    0.1585        586.2       74       True        9.945
+    0.2929        941.5       76       True        9.945
+    0.5412         2562      448       True        9.945
+         1     1.21e+08    20000      False        9.945
+
+Same scan, no smoothing applied via em_general's own operator but
+comparing accelerate=True vs accelerate=False at h=0.3 (the search's
+param_start) to see if acceleration itself (not just h) changed the
+converged answer at a fixed h:
+  accelerate=True  max_iterations=  20000 -> n_iter=     76 converged=True chi2_r=971.6
+  accelerate=False max_iterations= 300000 -> n_iter=   1040 converged=True chi2_r=971.6
+
+Sanity check: can ANY linear solver fit this same kernel matrix A well?
+(general-form Tikhonov doesn't care whether the kernel is signed --
+ if this also can't reach chi2_r~1, the problem is the kernel/data
+ setup, not something EM-specific.)
+  general_tikhonov_gcv: lambda=3.083e+04, chi2_r=3.462e+04
+
+Also: unregularized least-squares solve of A x = b directly (no
+positivity, no smoothing at all) -- the best ANY linear model fit to
+this kernel could possibly do:
+  plain lstsq: chi2_r=0.506
