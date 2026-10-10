@@ -76,10 +76,35 @@ def build_size_distribution_kernel(
 
     A = np.empty((q.size, s.size))
     for j, (sj, dsj) in enumerate(zip(s, ds)):
-        A[:, j] = dsj * sj ** (-alpha) * form_factor_squared(q, sj)
+        # s_j^-alpha blows up at s_j=0 for alpha>0 (e.g. the sphere_rg
+        # kernel's default alpha=6 -> 0**-6). The substitution
+        # x_j = N(s_j)*s_j^alpha is itself only meaningful for s_j>0 when
+        # alpha!=0 -- there is no finite s^-alpha to assign at the exact
+        # origin. Physically the ds-weighted contribution of an
+        # infinitesimally thin bin right at s=0 is negligible anyway, so
+        # this column is just set to 0 rather than left as inf/nan (which
+        # would otherwise poison every solve that includes r=0 in the
+        # grid, e.g. the GUI's r-grid always starting at r=0 for p(0)=0).
+        if sj == 0 and alpha > 0:
+            A[:, j] = 0.0
+        else:
+            A[:, j] = dsj * sj ** (-alpha) * form_factor_squared(q, sj)
     return A
 
 
 def recover_N_from_x(x: np.ndarray, s: np.ndarray, alpha: float) -> np.ndarray:
-    """Undo the x_j = N(s_j) * s_j^alpha substitution."""
-    return x / (s ** alpha)
+    """Undo the x_j = N(s_j) * s_j^alpha substitution.
+
+    At s=0 with alpha!=0 the substitution itself is singular (0**-alpha or
+    0**alpha depending on sign); N(0) is reported as 0 there rather than
+    inf/nan, matching build_size_distribution_kernel's treatment of that
+    same point (see its comment).
+    """
+    s = np.asarray(s, dtype=float)
+    x = np.asarray(x, dtype=float)
+    if alpha == 0:
+        return x.copy()
+    with np.errstate(divide="ignore", invalid="ignore"):
+        N = x / (s ** alpha)
+    N = np.where(s == 0, 0.0, N)
+    return N

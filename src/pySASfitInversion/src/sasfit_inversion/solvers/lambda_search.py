@@ -44,6 +44,10 @@ class ParameterSearchResult:
     param: float
     result: SolverResult
     trace: list[tuple[float, SolverResult]]
+    # False when the target could not be bracketed (e.g. chi2_r saturates
+    # above/below the target over the whole parameter range): `param` and
+    # `result` are then the closest achievable point, not a root.
+    reachable: bool = True
 
 
 def discrepancy_principle_search(
@@ -89,6 +93,91 @@ def discrepancy_principle_search(
         )
 
     param_opt = brentq(objective, hi, lo, xtol=1e-6)
+    result_opt = solve_fn(param_opt)
+    trace.append((param_opt, result_opt))
+
+    return ParameterSearchResult(param=param_opt, result=result_opt, trace=trace)
+
+
+def discrepancy_principle_search_bidirectional(
+    solve_fn: Callable[[float], SolverResult],
+    target_chi2_r: float = 1.0,
+    param_start: float = 1.0,
+    factor: float = 2.0,
+    param_floor: float = 1e-12,
+    param_ceil: float = 1e12,
+) -> ParameterSearchResult:
+    """
+    Like discrepancy_principle_search, but does not assume which direction
+    (increasing or decreasing `param`) raises chi2_r toward the target --
+    instead walks whichever direction the sign of the objective at
+    param_start indicates, geometrically, until the root is bracketed, then
+    refines with Brent's method.
+
+    Needed for the Bayesian-evidence solvers' lambda: discrepancy_principle_
+    search above always starts over-smoothed (EM's smoothing_h at
+    param_start) and walks DOWN to find where chi2_r first drops to the
+    target. The Bayesian-evidence solvers' own evidence-maximizing lambda
+    is not constructed to hit any particular chi2_r at all -- on a given
+    problem it can land on EITHER side of chi2_r=target (this package's own
+    real-data test.dat case lands well under-regularized, chi2_r~0.38,
+    needing lambda increased to reach chi2_r=1; a different dataset could
+    just as easily land over-regularized instead), so the search direction
+    has to be decided from the sign of the objective rather than assumed.
+
+    This is deliberately opt-in (see solver_registry.py's
+    target_chi2_r=None default for the Bayesian-evidence solvers) rather
+    than replacing evidence-maximization outright: maximizing the evidence
+    and hitting chi2_r=1 exactly are two different, individually
+    well-motivated criteria (see bayesian_evidence.py's own docstring), and
+    which one is more trustworthy on a given real dataset is a judgment
+    call the evidence-based lambda's own chi2_r value (reported regardless)
+    lets you make, not something to silently decide for you.
+    """
+    trace: list[tuple[float, SolverResult]] = []
+
+    def objective(param: float) -> float:
+        result = solve_fn(param)
+        trace.append((param, result))
+        return result.chi2_r_history[-1] - target_chi2_r
+
+    p0 = param_start
+    f0 = objective(p0)
+    if f0 == 0:
+        return ParameterSearchResult(param=p0, result=trace[-1][1], trace=trace)
+
+    # f0 < 0 means chi2_r < target (under-regularized/overfitting) -> more
+    # regularization is needed -> walk param UP. f0 > 0 means over-
+    # regularized -> walk DOWN.
+    grow = f0 < 0
+    p1, f1 = p0, f0
+    n_flat = 0
+    while (f0 * f1 > 0) and (param_floor < p1 < param_ceil):
+        p0, f0 = p1, f1
+        p1 = p1 * factor if grow else p1 / factor
+        f1 = objective(p1)
+        # chi2_r plateau: further walking cannot reach the target (e.g. a
+        # coarse spline basis whose unregularized fit still has chi2_r >
+        # target). Stop after a few flat steps instead of walking 24 decades.
+        if abs(f1 - f0) <= 1e-6 * (abs(f0) + target_chi2_r):
+            n_flat += 1
+            if n_flat >= 4:
+                break
+        else:
+            n_flat = 0
+
+    if f0 * f1 > 0:
+        # Target not reachable: return the closest achievable point instead
+        # of failing, flagged reachable=False so callers can report it.
+        p_best, r_best = min(
+            trace, key=lambda pr: abs(pr[1].chi2_r_history[-1] - target_chi2_r)
+        )
+        return ParameterSearchResult(
+            param=p_best, result=r_best, trace=trace, reachable=False
+        )
+
+    lo, hi = (p0, p1) if p0 < p1 else (p1, p0)
+    param_opt = brentq(objective, lo, hi, xtol=1e-6)
     result_opt = solve_fn(param_opt)
     trace.append((param_opt, result_opt))
 

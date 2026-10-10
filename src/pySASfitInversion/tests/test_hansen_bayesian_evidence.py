@@ -24,8 +24,18 @@ def main():
     r = np.linspace(1.0, 500.0, 150)
     A = build_size_distribution_kernel(q, r, KERNEL_REGISTRY["sinc_4pi"].func, alpha=0.0)
 
-    assert "bayesian_evidence_hansen" in SOLVER_REGISTRY, "new solver not registered"
-    result = SOLVER_REGISTRY["bayesian_evidence_hansen"].run(A, b, dI)
+    from sasfit_inversion.solver_registry import run_solver
+    result = run_solver("bayesian_evidence", A, b, dI, penalty="hansen_printed")
+    # old key still works as an alias
+    alias = run_solver("bayesian_evidence_hansen", A, b, dI)
+    assert np.allclose(alias.x, result.x)
+    # default penalty is Hansen eq. 19 (curvature)
+    default = run_solver("bayesian_evidence", A, b, dI)
+    assert default.diagnostics["penalty"] == "hansen_eq19"
+    print(f"default (eq. 19): chi2_r={default.chi2_r_history[-1]:.4g}, "
+          f"ln Z={default.diagnostics['log_evidence_normalized']:.1f} vs printed "
+          f"{result.diagnostics['log_evidence_normalized']:.1f}")
+    assert default.diagnostics["log_evidence_normalized"] > result.diagnostics["log_evidence_normalized"]
     chi2 = result.chi2_r_history[-1]
     print(f"bayesian_evidence_hansen: chi2_r={chi2:.4g}")
     print(f"  {result.diagnostics.get('lambda_selection')}")

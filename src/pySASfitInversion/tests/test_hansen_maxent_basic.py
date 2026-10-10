@@ -45,7 +45,24 @@ def main():
     # NOTE: correlation ceiling here is genuinely low (~0.65) -- see the
     # module docstring's PERFORMANCE FINDING. Not asserting a high bar.
     assert best_corr > 0.5, "should recover the truth at least loosely at some lambda"
-    print("OK (gradient verified correct; see docstring re: robustness limitation)")
+    # Fixed solver (2026-10-10): same functional, 1/dI-weighted, flat
+    # default model, L-BFGS-B + Newton polish, lambda by discrepancy principle.
+    from sasfit_inversion.solver_registry import run_solver
+    res = run_solver("hansen_maxent", A, b, db)
+    corr_new = np.corrcoef(res.x, N_true)[0, 1]
+    print(f"[MaxEnt, L-BFGS-B, discrepancy] chi2_r={res.chi2_r_history[-1]:.4f}, "
+          f"correlation={corr_new:.3f}  ({res.diagnostics['lambda_selection']})")
+    assert abs(res.chi2_r_history[-1] - 1.0) < 1e-3
+    assert corr_new > 0.9 and corr_new > best_corr + 0.2
+    assert np.all(res.x > 0)
+
+    # Monotonic chi2_r(lambda^2) at fixed default model (was not before the
+    # Newton polish on the ill-conditioned j0 kernel).
+    lam2s = np.geomspace(1e-3, 1e2, 8) * 1.0
+    m = hansen_maxent.flat_prior_level(A, b, db)
+    c2 = [hansen_maxent.solve_lbfgsb(A, b, db, l2, m).chi2_r_history[-1] for l2 in lam2s]
+    assert np.all(np.diff(c2) > -1e-6 * np.max(c2)), c2
+    print("OK")
 
 
 if __name__ == "__main__":

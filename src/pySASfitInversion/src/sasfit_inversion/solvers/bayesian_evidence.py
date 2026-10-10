@@ -128,6 +128,37 @@ def evidence_search(
     return best, results
 
 
+def posterior_covariance(
+    K: np.ndarray, sigma: np.ndarray, L: np.ndarray, lam: float, ridge: float = 0.0,
+) -> np.ndarray:
+    """
+    Laplace-approximation posterior covariance of p around its MAP point,
+    Cov(p) ~= hessian^-1, where `hessian = lam*A_hess + B_hess` is exactly
+    the same curvature matrix log_evidence() already builds and takes the
+    log-determinant of for the evidence score itself -- this is the
+    standard GNOM/Hansen-IFT way of turning the already-computed evidence
+    machinery into pointwise error bars on p(r), at essentially zero extra
+    cost (one matrix inverse at the already-selected best lambda, not a
+    per-lambda-grid-point cost).
+
+    Pointwise uncertainty: sigma_j = sqrt(diag(Cov(p)))[j]. This is a
+    LOCAL/linearized (Gaussian, single-lambda) uncertainty around the MAP
+    solution -- it does not capture the discrete choice of lambda itself,
+    nor any nonlinearity from a positivity constraint (this solver family
+    has none; p is allowed to go negative, consistent with the general-
+    form Tikhonov formulation used throughout bayesian_evidence_hansen/
+    _hann_tapered). For a solver-agnostic, nonlinearity-aware alternative
+    (e.g. for the EM/MaxEnt solvers, or to also propagate lambda-selection
+    uncertainty), see uncertainty.bootstrap_uncertainty instead.
+    """
+    n = K.shape[1]
+    W = 1.0 / sigma**2
+    A_hess = 2 * (L.T @ L + ridge * np.eye(n))
+    B_hess = K.T @ (W[:, None] * K)
+    hessian = lam * A_hess + B_hess
+    return np.linalg.inv(hessian)
+
+
 @dataclass
 class BlockEvidenceResult:
     lams: tuple[float, ...]
@@ -235,3 +266,27 @@ def evidence_search_blocks(
         results.append(log_evidence_blocks(K, b, sigma, A_blocks, n_terms, lam_combo))
     best = max(results, key=lambda r: r.log_evidence)
     return best, results
+
+
+def posterior_covariance_blocks(
+    K: np.ndarray,
+    sigma: np.ndarray,
+    A_blocks: tuple[np.ndarray, ...],
+    lams: tuple[float, ...],
+) -> np.ndarray:
+    """
+    Multi-block analog of posterior_covariance() above: Laplace-approximation
+    covariance Cov(p) ~= hessian^-1 at the block-MAP point, where
+    `hessian = sum_k lam_k*(2*A_k) + B_hess` is exactly the curvature matrix
+    log_evidence_blocks() already forms and takes the logdet of. Same
+    caveats as posterior_covariance (local/linearized, doesn't propagate
+    lambda-selection uncertainty).
+    """
+    n = K.shape[1]
+    W = 1.0 / sigma**2
+    B_hess = K.T @ (W[:, None] * K)
+    A_total = np.zeros((n, n))
+    for lam_k, A_k in zip(lams, A_blocks):
+        A_total += lam_k * A_k
+    hessian = 2 * A_total + B_hess
+    return np.linalg.inv(hessian)

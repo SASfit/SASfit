@@ -57,6 +57,14 @@ def _smoothing_matrix(n: int, h: float) -> np.ndarray:
 def em_step(x: np.ndarray, A: np.ndarray, b: np.ndarray) -> np.ndarray:
     """One plain EM/Lucy-Richardson update, eq. 36-37."""
     col_sums = A.sum(axis=0)  # sum_m A_mj
+    # A column can be all-zero -- e.g. the r=0 column of a size-weighted
+    # kernel (alpha>0, see kernels.py), which is forced to 0 because
+    # s^-alpha is singular at s=0. 0/0 would otherwise be NaN here; since
+    # the numerator (A.T @ (b/Ax)) is also exactly 0 for an all-zero
+    # column, guarding the denominator keeps that component's correction
+    # at 0 (i.e. x stays pinned at 0 there), which is in fact the
+    # physically correct behavior at r=0 anyway (p(0)=0).
+    col_sums = np.where(col_sums == 0, np.finfo(float).eps, col_sums)
     Ax = A @ x                # sum_n A_in x_n
     Ax = np.where(Ax == 0, np.finfo(float).eps, Ax)  # guard div-by-zero
     correction = (A.T @ (b / Ax)) / col_sums
