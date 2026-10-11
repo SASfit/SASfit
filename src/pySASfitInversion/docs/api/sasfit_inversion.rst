@@ -39,12 +39,39 @@ sasfit_inversion.kernel_registry
 sasfit_inversion.regularization
 -----------------------------------
 
-The regularization operators, including Hansen's boundary-constrained
-smoothness operator and the Hann-tapered-boundary extension -- see
-:doc:`../theory` for the derivations and the investigation that produced
-these.
+Regularization operators: identity, first and second difference,
+Hansen's (2000) boundary-constrained matrix (``hansen_smoothness_cholesky``,
+the "printed" variant; eq. 19 itself is built in
+``solver_registry._hansen_eq19_factor``), and the retired Hann taper and
+two-segment split -- see :doc:`../theory_regularization`.
 
 .. automodule:: sasfit_inversion.regularization
+   :members:
+
+sasfit_inversion.spline_basis
+---------------------------------
+
+Clamped cubic B-spline basis with :math:`B(0)=B(r_{max})=0` and uniform,
+quadratic or logarithmic knots -- see :doc:`../theory_discretization`.
+
+.. automodule:: sasfit_inversion.spline_basis
+   :members:
+
+sasfit_inversion.goodness_of_fit
+------------------------------------
+
+Error models for data without uncertainties and alternative fit
+statistics -- see :doc:`../theory_forward_model`.
+
+.. automodule:: sasfit_inversion.goodness_of_fit
+   :members:
+
+sasfit_inversion.uncertainty
+--------------------------------
+
+Parametric bootstrap -- see :doc:`../theory_uncertainty`.
+
+.. automodule:: sasfit_inversion.uncertainty
    :members:
 
 sasfit_inversion.lambda_selection
@@ -61,17 +88,17 @@ out, which broke the import chain; it has been restored).
 .. automodule:: sasfit_inversion.lambda_selection
    :members:
 
+.. _solver-registry:
+
 sasfit_inversion.solver_registry
 ------------------------------------
 
-.. _solver-registry:
-
-The GUI-facing, auto-tuned solver presets -- every entry in
-``SOLVER_REGISTRY`` is a self-contained ``callable(A, b, db) -> SolverResult``
-and automatically appears in the GUI's solver dropdown. See :doc:`../theory`
-for the reasoning behind the two Bayesian-evidence IFT solvers
-(``bayesian_evidence_hansen`` and ``bayesian_evidence_hann_tapered``)
-specifically.
+The GUI-facing, auto-tuned solvers. ``run_solver(key, A, b, dI,
+spline=None, **options)`` runs any of them, optionally on a B-spline basis
+(``SplineOptions``). Every entry of ``SOLVER_REGISTRY`` appears in the GUI;
+``SolverSpec.options`` become drop-downs. ``SOLVER_ALIASES`` and
+``RETIRED_SOLVERS`` keep old keys working. See :doc:`../usage` for the list
+of solvers and options.
 
 .. automodule:: sasfit_inversion.solver_registry
    :members:

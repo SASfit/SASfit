@@ -138,7 +138,7 @@ def _em_fallback(solve_fn, fallback: str) -> SolverResult:
 def _run_em_general(
     A: np.ndarray, b: np.ndarray, db: np.ndarray, fallback: str = "lcurve",
 ) -> SolverResult:
-    """EM for signed kernels/solutions (Chae, Martin & Walker 2018, Sec. 6).
+    """EM for signed kernels/solutions (Chae, Martin & Walker 2019, Sec. 6).
     FIXED 2026-09-26 -- the earlier version omitted the paper's positivity
     shift (its eq. 10) and diverged; now reproduces the paper's own Fig. 7
     benchmark to corr=1.00000, and recovers a sphere correlation function
@@ -167,6 +167,44 @@ def _run_em_general(
         return result
     except RuntimeError:
         return _em_fallback(solve_fn, fallback)
+
+
+def _run_em_general_regularized(
+    A: np.ndarray, b: np.ndarray, db: np.ndarray,
+    regularization: str = "smoothing", fallback: str = "lcurve",
+) -> SolverResult:
+    """Signed-kernel EM with a choice of regularization (2026-10-10):
+    "smoothing" -- the tridiagonal smoothing operator (as EM + smoothing),
+    strength h by the discrepancy principle (former behaviour);
+    "maxent_adaptive" / "maxent_constant" -- positive/negative entropy
+    correction (em_general.solve(entropy_lam=...)), the signed analogue of
+    SASfit's EM + MaxEnt with adaptive (p pulled towards its Gaussian-
+    smoothed self) or constant (p pulled towards 0) default model; lambda
+    by the discrepancy principle (bidirectional search, closest achievable
+    fit if chi2_r = 1 cannot be reached). test.dat, j0, 95 points:
+    smoothing chi2_r 1.01 / adaptive MaxEnt 1.00, both corr 0.994 with the
+    Bayesian-evidence p(r); constant prior does not converge within the
+    iteration budget (slow null-space modes) and gives corr ~0.93."""
+    if regularization == "smoothing":
+        return _run_em_general(A, b, db, fallback=fallback)
+    if regularization not in ("maxent_adaptive", "maxent_constant"):
+        raise ValueError(f"unknown regularization {regularization!r}")
+    prior = regularization.split("_")[1]
+    t = em_general.default_offset(A, b)
+
+    def solve_fn(lam):
+        return em_general.solve(A, b, db, t=t, max_iterations=10000, tol=1e-8,
+                                accelerate=True, entropy_lam=lam, entropy_prior=prior)
+
+    search = lambda_search.discrepancy_principle_search_bidirectional(
+        solve_fn, target_chi2_r=1.0, param_start=1e-5, param_floor=1e-12, param_ceil=1.0)
+    result = search.result
+    note = f"discrepancy principle, MaxEnt ({prior} prior) lambda={search.param:.4g}"
+    if not search.reachable:
+        note += (f" -- chi2_r=1 not reachable, closest achievable "
+                 f"chi2_r={result.chi2_r_history[-1]:.4g}")
+    result.diagnostics["lambda_selection"] = note
+    return result
 
 
 def _weighted(A: np.ndarray, b: np.ndarray, db: np.ndarray):
@@ -983,9 +1021,51 @@ def _normalized_log_evidence(A, b, db, L, lam):
     return 0.5 * ld1 - 0.5 * ld2 - lam * float(p @ P @ p) - c2 / 2
 
 
+def _penalty_operator(penalty: str, n: int) -> np.ndarray:
+    if penalty == "hansen_eq19":
+        return _hansen_eq19_factor(n)
+    if penalty == "hansen_printed":
+        return hansen_smoothness_cholesky(n)
+    if penalty == "second_derivative":
+        return second_derivative_operator(n).toarray()
+    raise ValueError(f"unknown penalty {penalty!r}; use one of {list(_EVIDENCE_PENALTIES)}")
+
+
+def estimate_noise_scale(
+    A: np.ndarray, b: np.ndarray, db: np.ndarray, L: np.ndarray,
+    s_range: tuple[float, float] = (1e-2, 1e2),
+) -> tuple[float, float]:
+    """Overall error scale s (sigma_i = s * db_i) maximizing the Bayesian
+    evidence jointly with lambda (2026-10-10).
+
+    For fixed s the evidence is maximized over lambda on the usual grid;
+    the likelihood normalization contributes -M ln s, so
+
+        E(s) = max_lambda ln P(d | lambda, s*db) - M ln s
+
+    is maximized over ln s (bounded scalar search). Meaningful when the
+    *relative* errors are right but their overall level is not (estimated
+    errors, a guessed relative error, counts with an unknown factor).
+    Returns (s, E(s))."""
+    from scipy.optimize import minimize_scalar
+    M = len(b)
+    scale = float(np.median(svd_methods.compute_svd(A).s)) ** 2
+    lam_grid = np.geomspace(max(scale * 1e-8, 1e-300), scale * 1e8, 80)
+
+    def neg_E(ln_s):
+        s = float(np.exp(ln_s))
+        best, _ = bayesian_evidence.evidence_search(A, b, db * s, L, lam_grid)
+        return -(best.log_evidence - M * np.log(s))
+
+    res = minimize_scalar(neg_E, bounds=(np.log(s_range[0]), np.log(s_range[1])),
+                          method="bounded", options={"xatol": 1e-3})
+    return float(np.exp(res.x)), float(-res.fun)
+
+
 def _run_bayesian_evidence_merged(
     A: np.ndarray, b: np.ndarray, db: np.ndarray,
     penalty: str = "hansen_eq19", target_chi2_r: float | None = None,
+    noise_scale: str = "given",
 ) -> SolverResult:
     """Tikhonov/IFT with lambda by Bayesian evidence (Vestergaard & Hansen
     2006), smoothness penalty selectable:
@@ -999,7 +1079,26 @@ def _run_bayesian_evidence_merged(
                            bayesian_evidence (improper prior: no normalized
                            evidence)
     The diagnostics report the normalized log-evidence so penalties can be
-    compared on the same data."""
+    compared on the same data.
+
+    noise_scale="estimate": the errors are taken as s*db with the overall
+    scale s chosen by the evidence (estimate_noise_scale), then the solve
+    runs with s*db. chi2_r is reported for the ORIGINAL db (= s^2 times the
+    value for the scaled errors); "noise_scale" in the diagnostics."""
+    if noise_scale == "estimate":
+        n = A.shape[1]
+        s_est, _ = estimate_noise_scale(A, b, db, _penalty_operator(penalty, n))
+        res = _run_bayesian_evidence_merged(A, b, db * s_est, penalty=penalty,
+                                            target_chi2_r=target_chi2_r)
+        c2_scaled = res.chi2_r_history[-1]
+        res.chi2_r_history = list(res.chi2_r_history[:-1]) + [chi2_r(b, res.fitted_b, db)]
+        res.diagnostics["noise_scale"] = s_est
+        res.diagnostics["lambda_selection"] += (
+            f"; error scale estimated by the evidence: s={s_est:.3g} "
+            f"(chi2_r={c2_scaled:.3g} with s*dI)")
+        return res
+    if noise_scale != "given":
+        raise ValueError("noise_scale must be 'given' or 'estimate'")
     n = A.shape[1]
     if penalty == "hansen_printed":
         return _with_logz(_run_bayesian_evidence_hansen(A, b, db, target_chi2_r=target_chi2_r),
@@ -1187,21 +1286,14 @@ _LEGACY_SPECS: dict[str, SolverSpec] = {
     "em_general_signed_kernel": SolverSpec(
         label="Signed-kernel EM (required for j0/sinc kernel)",
         run=_run_em_general,
-        description="Use this instead of the plain EM solvers above whenever "
-                     "the kernel can go negative -- e.g. the '4\u03c0r\u00b2 "
-                     "j0(qr)' kernel, where j0(x)=sin(x)/x is negative for "
-                     "x>\u03c0. The ordinary EM update is only valid for a "
-                     "non-negative kernel and silently gives garbage "
-                     "otherwise. Implements Chae, Martin & Walker (2018) "
-                     "Sec. 6; reproduces their own published benchmark "
-                     "exactly (corr=1.00000) and recovers a sphere "
-                     "correlation function from this library's own signed "
-                     "kernel with chi2_r~1, corr>0.99. On real, noisy data with a "
-                     "genuinely ill-conditioned kernel (e.g. this package's "
-                     "own test.dat with the j0 kernel), this solver's chi2_r "
-                     "can plateau far above 1 regardless of smoothing "
-                     "strength -- try 'IFT, Bayesian evidence (Hansen "
-                     "boundary-constrained)' below instead in that case.",
+        description="EM for signed kernels and signed solutions (Chae, Martin & "
+                     "Walker 2019, Sec. 6: kernel split K = K+ - K- plus a constant "
+                     "shift), with chi2 row weighting (2026-10-10) so that the "
+                     "fixed point fits the data within their error bars; "
+                     "smoothing by the discrepancy principle. For the j0/PDDF "
+                     "kernel; with B-splines it agrees with the Bayesian-evidence "
+                     "result. Allows negative values, so for non-negative "
+                     "kernels/size distributions use EM + smoothing instead.",
         spline_kwargs={"fallback": "least_smoothed"},
     ),
     "bayesian_evidence_two_segment": SolverSpec(
@@ -1344,15 +1436,35 @@ SOLVER_REGISTRY: dict[str, SolverSpec] = _Registry({
             "penalties (higher is better; not available for the 2nd "
             "derivative, whose prior is improper). Works with signed "
             "kernels; recommended for j0/PDDF."),
-        options={"penalty": [(k, v) for k, v in _EVIDENCE_PENALTIES.items()]},
-        option_labels={"penalty": "Smoothness penalty:"},
+        options={"penalty": [(k, v) for k, v in _EVIDENCE_PENALTIES.items()],
+                 "noise_scale": [("given", "as given"),
+                                 ("estimate", "overall scale estimated (evidence)")]},
+        option_labels={"penalty": "Smoothness penalty:", "noise_scale": "Error bars:"},
     ),
     "general_tikhonov_gcv": _LEGACY_SPECS["general_tikhonov_gcv"],
     "tikhonov_standard_gcv": _LEGACY_SPECS["tikhonov_standard_gcv"],
     "tsvd_gcv": _LEGACY_SPECS["tsvd_gcv"],
     "arlsnn": _LEGACY_SPECS["arlsnn"],
-    "em_general_signed_kernel": replace(_LEGACY_SPECS["em_general_signed_kernel"],
-                                        label="EM for signed kernels (Chae et al. 2018)"),
+    "em_general_signed_kernel": replace(
+        _LEGACY_SPECS["em_general_signed_kernel"],
+        label="EM for signed kernels (Chae et al. 2019)",
+        run=_run_em_general_regularized,
+        description=(
+            "EM for signed kernels and signed solutions (Chae, Martin & "
+            "Walker 2019, Sec. 6: kernel split K = K+ - K- plus a constant "
+            "shift), chi2 row weighting, Biggs-Andrews accelerated. "
+            "Regularization: smoothing operator (as EM + smoothing) or "
+            "MaxEnt with the positive/negative entropy of a signed p "
+            "(Skilling & Gull), adaptive prior (p pulled towards its "
+            "smoothed self, as in SASfit's adaptive EM + MaxEnt) or constant "
+            "prior (p pulled towards 0); strength by the discrepancy "
+            "principle. Required for the j0/PDDF kernel; also usable for "
+            "size distributions when negative values are allowed."),
+        options={"regularization": [
+            ("smoothing", "smoothing (discrepancy principle)"),
+            ("maxent_adaptive", "MaxEnt, adaptive prior"),
+            ("maxent_constant", "MaxEnt, constant prior (slow)")]},
+        option_labels={"regularization": "Regularization:"}),
 })
 
 # No longer offered in the GUI; kept so that old scripts/keys still run.

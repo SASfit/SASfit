@@ -43,7 +43,7 @@ intersphinx_mapping = {
 }
 
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "report_build", "Thumbs.db", ".DS_Store"]
 
 # PySide6/matplotlib aren't needed to build the docs and may not be
 # installed in a docs-only environment -- mock them out rather than

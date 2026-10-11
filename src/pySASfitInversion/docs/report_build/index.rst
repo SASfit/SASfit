@@ -1,10 +1,10 @@
 sasfit-inversion
 =================
 
-Standalone Python library (+ a thin Qt GUI) for solving Fredholm integrals
-of the first kind arising in small-angle scattering analysis: recovering a
-**size distribution** or a **pair-distance-distribution function (PDDF)**,
-p(r), from measured I(q).
+Standalone Python library (+ a Qt GUI) for solving Fredholm integrals of
+the first kind arising in small-angle scattering analysis: recovering a
+**pair-distance distribution function (PDDF)** p(r) or a **size
+distribution** from measured I(q).
 
 This is the standalone PDF-report build (narrative pages only -- see
 ``../index.rst`` for the full docs build, which also includes the API
@@ -16,7 +16,9 @@ reference).
 
    installation
    usage
+   gui
    theory
+   references
 
 Indices and tables
 -------------------

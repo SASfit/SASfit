@@ -1,7 +1,7 @@
 """
 EM for signed kernels and signed solutions, following Chae, Martin & Walker
-(2018), "On an algorithm for solving Fredholm integrals of the first kind",
-Statistics and Computing, Section 6 ("General Fredholm equation") -- read
+(2019), "On an algorithm for solving Fredholm integrals of the first kind",
+Statistics and Computing 29, 645-654, Section 6 ("General Fredholm equation") -- read
 directly from the paper (copy in .../Expectation Maximation/), 2026-09-26.
 
 Why this exists: the standard EM / Lucy-Richardson update (em.py) is a
@@ -122,6 +122,11 @@ def solve(
     K_neg: np.ndarray | None = None,
     accelerate: bool = True,
     kin_set_maa: int = 2,
+    weighting: str = "chi2",
+    entropy_lam: float | None = None,
+    entropy_prior: str = "constant",
+    sigma2: float = 1.0,
+    entropy_m: float | None = None,
 ) -> SolverResult:
     """
     Parameters
@@ -146,6 +151,32 @@ def solve(
         handling this requires.
     kin_set_maa : Biggs-Andrews extrapolation order/formula, passed through
         to acceleration.biggs_andrews when accelerate=True.
+    weighting : "chi2" (default, 2026-10-10) scales every row of the
+        extended kernel and the shifted data by w_i = b~_i / db_i^2, so that
+        the Poisson/KL misfit that the multiplicative EM update minimizes
+        becomes, to second order, chi2 = sum((K p - b)/db)^2. "none" is the
+        original unweighted update. Why: EM's implicit weights are ~1/b~_i,
+        and after the shift b~ = b + t*sum|K| is dominated by t*sum|K|; for
+        the j0 kernel (row sums do not decay with q) the real signal is
+        only 1e-5..1e-4 of b~ at high q, so the unweighted update was blind
+        to those data (test.dat, j0, no smoothing: chi2_r >= 5200 for any t).
+        Row scaling keeps the kernel non-negative, so EM stays valid.
+    entropy_lam : if given, add an entropy correction to every EM step
+        (2026-10-10), in the same spirit as SASfit's EM + MaxEnt
+        (Kohlbrecher & Bressler 2022, eq. 48-53, maxent.py), but with the
+        positive/negative entropy of a signed p (Skilling & Gull; p = h - g
+        with h, g >= 0, default model m for both channels):
+            S(p) = sum psi - 2m - p asinh(p / 2m),  psi = sqrt(p^2 + 4 m^2),
+        dS/dp = -asinh(p/2m). The correction ds = lam * psi * dS/dp uses psi
+        as metric, the signed analogue of the x-metric of maxent.py
+        (ds = lam * x * dS/dx). For |p| << m it is a ridge pull -lam*p, for
+        |p| >> m the usual -lam |p| log(|p|/m) of MaxEnt.
+    entropy_prior : "constant" -- default model: p is pulled towards 0 with
+        level m = entropy_m; "adaptive" -- p is pulled towards Pi p, the
+        Gaussian point-spread smoothing of maxent.py (eq. 55, width sigma2):
+        ds = lam * psi * (asinh(Pi p / 2m) - asinh(p / 2m)).
+    entropy_m : default-model level m (> 0). Default 0.1 * max|p_est|,
+        with p_est the same rough ARLS estimate used for the offset t.
     """
     if structure not in ("first_half", "antisym"):
         raise ValueError("structure must be 'first_half' or 'antisym'")
@@ -160,8 +191,33 @@ def solve(
     if t is None:
         t = default_offset(K, b)
     b_shift = b + t * row_sums                  # f~ = f + t * int k~ dtheta
+    if weighting == "chi2":
+        w = b_shift / np.asarray(db, dtype=float) ** 2
+        K_ext = K_ext * w[:, None]
+        b_shift = b_shift * w
+        col_sums = K_ext.sum(axis=0)
+    elif weighting != "none":
+        raise ValueError("weighting must be 'chi2' or 'none'")
 
     S = _smoothing_matrix(n, smoothing_h) if smoothing_h is not None else None
+    if entropy_prior not in ("constant", "adaptive"):
+        raise ValueError("entropy_prior must be 'constant' or 'adaptive'")
+    Pi = None
+    if entropy_lam is not None:
+        if entropy_prior == "adaptive":
+            from .maxent import _prior_smoothing_matrix
+            Pi = _prior_smoothing_matrix(n, sigma2)
+        if entropy_m is None:
+            entropy_m = 0.01 * t   # t = 10 max|p_est| -> m = 0.1 max|p_est|
+    eps = np.finfo(float).eps
+
+    def entropy_step(p_in: np.ndarray) -> np.ndarray:
+        """ds = lam * psi * (asinh(target/2m) - asinh(p/2m)), target 0 or Pi p."""
+        two_m = 2.0 * entropy_m
+        psi = np.sqrt(p_in ** 2 + two_m ** 2)
+        target = 0.0 if Pi is None else np.arcsinh((Pi @ p_in) / two_m)
+        return entropy_lam * psi * (target - np.arcsinh(p_in / two_m))
+
     p0 = np.zeros(n) if p0 is None else np.asarray(p0, dtype=float).copy()
     lim = 0.999 * t                             # keep p~ = p + t strictly positive
 
@@ -174,33 +230,54 @@ def solve(
             p_out = 0.5 * (p_first - (u_new[n:] - t))
         else:
             p_out = p_first
+        if entropy_lam is not None:
+            p_out = p_out + entropy_step(p_in)
         if S is not None:
             p_out = S @ p_out
         return np.clip(p_out, -lim, lim)
 
     chi2_history, roughness_history, g_norm_history = [], [], []
 
+    accel_fallback = False
+    p_start, it_offset, plain_budget = p0.copy(), 0, max_iterations
     if accelerate:
         p_prev_box = [p0.copy()]
+        best = {"chi2": np.inf, "p": p0.copy()}
 
         def on_iterate(p_new):
             g_norm_history.append(float(np.linalg.norm(p_new - p_prev_box[0])))
             p_prev_box[0] = p_new.copy()
             fitted_b_local = K @ p_new
-            chi2_history.append(chi2_r(b, fitted_b_local, db))
+            c2 = chi2_r(b, fitted_b_local, db)
+            chi2_history.append(c2)
             roughness_history.append(float(np.sum(np.diff(p_new) ** 2)))
+            if c2 < best["chi2"]:
+                best["chi2"], best["p"] = c2, p_new.copy()
 
+        # SAFEGUARD (2026-10-10): the kernel-split EM with the "first_half"
+        # rebuild is not a monotone EM map, and Biggs-Andrews extrapolation
+        # can then stall or drift away from the fixed point (test.dat, j0,
+        # 13 spline coefficients: accelerated chi2_r went down to 1.68 and
+        # then up to 260 without converging, while plain iteration
+        # converges to 1.87 for every offset t). If the accelerated run
+        # ends unconverged AND clearly worse than the best iterate it passed
+        # (drift), continue with plain Picard iteration from that best
+        # iterate (extra budget of max_iterations).
         result = acceleration.biggs_andrews(
             one_step, p0, max_iterations=max_iterations, tol=tol,
             kin_set_maa=kin_set_maa, clip_nonnegative=False,
             on_iterate=on_iterate,
         )
         p, n_iter, converged = result.x, result.n_iterations, result.converged
-    else:
-        p = p0.copy()
+        if not converged and chi2_history and chi2_history[-1] > 1.05 * best["chi2"]:
+            accel_fallback = True
+            p_start, it_offset = best["p"], n_iter
+            plain_budget = max_iterations
+    if not accelerate or accel_fallback:
+        p = p_start.copy()
         converged = False
-        n_iter = 0
-        for n_iter in range(1, max_iterations + 1):
+        n_iter = it_offset
+        for n_iter in range(it_offset + 1, it_offset + plain_budget + 1):
             p_old = p
             p = one_step(p)
             g_norm = float(np.linalg.norm(p - p_old))
@@ -222,8 +299,11 @@ def solve(
         chi2_r_history=chi2_history, roughness_history=roughness_history,
         converged=converged,
         diagnostics={
-            "offset_t": t, "structure": structure,
+            "offset_t": t, "structure": structure, "weighting": weighting,
+            "entropy_lam": entropy_lam, "entropy_prior": entropy_prior if entropy_lam is not None else None,
+            "entropy_m": entropy_m,
+            "acceleration_fallback": accel_fallback,
             "g_norm_history": g_norm_history, "g_test_final": g_final,
-            "method": "Chae, Martin & Walker 2018, Sec. 6 (kernel split + shift)",
+            "method": "Chae, Martin & Walker 2019, Sec. 6 (kernel split + shift)",
         },
     )

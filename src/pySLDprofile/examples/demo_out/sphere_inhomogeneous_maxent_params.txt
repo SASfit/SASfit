@@ -1,0 +1,9 @@
+Density profile (Hansen 2016)  geometry=sphere  regularisation=maxent
+------------------------------------------------------------
+  r_max      = 5.0584 +/- 0.2   (best 5.0243)
+  log alpha  = 5.443 +/- 0.8
+  Rg         = 4.003 +/- 0.0043
+  background = 0 +/- 0
+  chi2/M     = 0.9539
+  N_good     = 3.99
+  log Ev     = -40.6295

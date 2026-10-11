@@ -29,6 +29,12 @@ class KernelSpec:
     func: Callable[[np.ndarray, float], np.ndarray]
     description: str
     default_alpha: float = 0.0  # default size-weighting exponent (see kernels.py eq. 32-34)
+    # False for kernels whose unknown is not a size distribution (e.g. the
+    # PDDF p(r) with the j0 kernel): no size weighting, alpha is fixed at 0
+    # and the GUI hides the alpha field.
+    uses_alpha: bool = True
+    # y-axis label for the recovered function when uses_alpha is False
+    result_label: str = "p(r)"
 
 
 def sinc_kernel(q: np.ndarray, r: float) -> np.ndarray:
@@ -105,6 +111,8 @@ KERNEL_REGISTRY: dict[str, KernelSpec] = {
                      "distribution p(r) to I(q), via the zeroth-order spherical "
                      "Bessel function j0(qr).",
         default_alpha=0.0,
+        uses_alpha=False,
+        result_label="p(r)",
     ),
     "sphere_rg": KernelSpec(
         label="Sphere (Rayleigh-Gans)",

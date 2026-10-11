@@ -41,7 +41,7 @@
     "pass": true
   },
   "dream_completes": {
-    "detail": "chi2_red=2.4985132452990055e-07, 3697 evaluations, 0 failed",
+    "detail": "chi2_red=2.822885570459447e-07, 3697 evaluations, 0 failed",
     "pass": true
   },
   "dream_correlationPresent": {
@@ -53,19 +53,19 @@
     "pass": true
   },
   "dream_correlationValid": {
-    "detail": "diagonal [1. 1.], max |off-diagonal| 0.0659",
+    "detail": "diagonal [1. 1.], max |off-diagonal| 0.0924",
     "pass": true
   },
   "dream_parametersByLabel": {
-    "detail": "returned {'phi': np.float64(0.24203022127851725), 'srel': np.float64(0.0624540003362537)}; bumps order was ['phi', 'srel']",
+    "detail": "returned {'phi': np.float64(0.25567891898495815), 'srel': np.float64(0.08176188470668404)}; bumps order was ['phi', 'srel']",
     "pass": true
   },
   "dream_uncertaintyPositive": {
-    "detail": "{'phi': 0.09800074978370092, 'srel': 0.086564983722903}",
+    "detail": "{'phi': 0.09906043980258138, 'srel': 0.08488763620576892}",
     "pass": true
   },
   "dream_uncertaintyPresent": {
-    "detail": "{'phi': 0.09800074978370092, 'srel': 0.086564983722903}",
+    "detail": "{'phi': 0.09906043980258138, 'srel': 0.08488763620576892}",
     "pass": true
   },
   "highQ_tendsToIdentity": {

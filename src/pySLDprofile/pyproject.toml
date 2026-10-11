@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pysldprofile"
+version = "0.1.0"
+description = "Direct Bayesian estimation of radial scattering-length-density profiles (sphere, cylinder, lamella) from small-angle scattering data (Hansen, J. Appl. Cryst. 49 (2016) 856-865)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary -- PSI internal (license TBD)" }
+authors = [
+    { name = "Joachim Kohlbrecher", email = "joachim.kohlbrecher@psi.ch" },
+]
+keywords = [
+    "small-angle scattering", "SANS", "SAXS", "SASfit",
+    "scattering length density profile", "density distribution",
+    "maximum entropy", "Bayesian", "inverse problem",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy>=2.0",
+    "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.7"]
+gui = ["PySide6>=6.5", "matplotlib>=3.7"]
+dev = ["pytest>=7.0", "matplotlib>=3.7"]
+
+[project.scripts]
+pysldprofile-gui = "pysldprofile.gui:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

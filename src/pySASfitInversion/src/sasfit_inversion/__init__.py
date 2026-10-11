@@ -5,7 +5,7 @@ sasfit_inversion
 Standalone Python reimplementation of the Fredholm-integral-of-the-first-kind
 inversion solvers from SASfit (originally in src/sasfit_old/sasfit_extrapol.c),
 extended with the signed/general-kernel EM variant (Chae, Martin & Walker,
-2018) that was present in the earlier `pysasem` prototype but not carried
+2019) that was present in the earlier `pysasem` prototype but not carried
 into the C code.
 
 Design goals

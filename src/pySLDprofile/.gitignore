@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+docs/_build/
+docs/report_build/_build/
+.venv/
+venv/
+# Note: tests/logs/*.log are intentionally tracked (saved diagnostic
+# output referenced from docs/theory.rst) -- don't blanket-ignore *.log.

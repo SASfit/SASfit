@@ -132,7 +132,8 @@ def bestGridSize(n, transformType=1):
 class OZfixpointOperator:
     #Init needs to be given by constructor, all other members can be set via RPC later
     #but port needs to be known in advance by the client. (Will be defined by the client)
-    def __init__(self, port, numberOfRadialSamplingPoints=None, hardSphereDiameterInPoints=None):
+    def __init__(self, port, numberOfRadialSamplingPoints=None,
+                 hardSphereDiameterInPoints=None, transformType=None):
       #First computational stuff...
       #global constants
       #*******************************************************************************
@@ -161,6 +162,30 @@ class OZfixpointOperator:
       #(gridsize = 2^n-1) rather than a direct point count.
       self.numberOfRadialSamplingPoints = (numberOfRadialSamplingPoints
                                             if numberOfRadialSamplingPoints is not None else 2**12 - 1)   #n=12 -> N=4095, N+1=4096=2^12
+      #SNAP THE GRID TO THE TRANSFORM, when the transform is known here.
+      #
+      #The two want different sizes: type 1 goes through an FFT of length
+      #2(N+1) and wants N = 2^k - 1; type 4 is a length-N transform and
+      #wants N = 2^k. Getting it wrong costs speed, not accuracy -- but it
+      #can cost a lot of it, since a size with large prime factors is the
+      #worst case for an FFT.
+      #
+      #ONLY WHEN transformType IS PASSED EXPLICITLY. The grid is allocated
+      #here, while the component count -- which decides the transform by
+      #default, 4 for one component and 1 for a mixture -- is not known
+      #until the potential is set later. So the default grid stays at
+      #2^12 - 1, which is right for a mixture and merely suboptimal for a
+      #single component. A caller who knows which they want should say so
+      #and get the matching grid.
+      _tt = transformType
+      if _tt is not None:
+          try:
+              _n = int(self.numberOfRadialSamplingPoints)
+              _k = max(4, int(round(np.log2(_n + 1))))
+              self.numberOfRadialSamplingPoints = bestGridSize(_k, int(_tt))
+              self.transformType = int(_tt)
+          except Exception:
+              pass
       #self.hardSphereDiameterInPoints = self.numberOfRadialSamplingPoints/2**3
       self.hardSphereDiameterInPoints = (hardSphereDiameterInPoints
                                           if hardSphereDiameterInPoints is not None else 100)
@@ -853,7 +878,7 @@ class OZfixpointOperator:
       #every accuracy figure in the documentation. Set transformType = 4 to
       #try it; see docs/NEXT_SESSION.md for the staged plan.
       numberOfSamplingPoints = f.shape[-1]
-      tType = getattr(self, 'transformType', 1)
+      tType = self.resolvedTransformType()
       if tType == 4:
           lr = np.arange(numberOfSamplingPoints).astype('float') + 0.5
           delta_q = np.pi/(numberOfSamplingPoints*delta_r)
@@ -865,9 +890,44 @@ class OZfixpointOperator:
       f_hat *= 2*np.pi*delta_r**2/delta_q
       return f_hat
       
+    def resolvedTransformType(self):
+      """The transform to use: 4 for one component, 1 for a mixture.
+
+      WHY THEY DIFFER. The hard core sits at r = sigma, and what matters is
+      where the grid puts that discontinuity. A DST-I places nodes at
+      (n+1)dr, so the core lands ON a node -- carried by a point that is
+      neither inside the particle nor outside it -- and the excluded volume
+      is wrong at FIRST order. A DST-IV places them at (n+1/2)dr, the core
+      falls BETWEEN points, and the step is resolved to second order.
+
+      Measured against the exact Percus-Yevick compressibility at
+      phi = 0.40, on the same grid: type 1 gives S(0) low by 5.27 per cent,
+      type 4 by 0.036. A factor of 148, for a change of half a grid spacing.
+
+      WHY THE MIXTURE CANNOT HAVE IT. Type 4 needs EVERY pair core
+      sigma_ij = (sigma_i + sigma_j)/2 to fall between grid points, and the
+      sigma_ij of a moment-matched quadrature are mutually incommensurate:
+      no single half-spacing offset places them all. A misaligned type-4
+      grid is not merely no better, it is three orders WORSE, which is why
+      checkTransformAlignment() raises rather than warning.
+
+      So the asymmetry is forced, not chosen. One component gets the
+      accurate transform; a mixture gets the one that works.
+
+      An explicit `transformType` set by the caller always wins -- this only
+      supplies the default where none was given.
+      """
+      explicit = getattr(self, 'transformType', None)
+      if explicit is not None:
+          return int(explicit)
+      try:
+          return 1 if int(getattr(self, 'numberOfComponents', 1)) > 1 else 4
+      except Exception:
+          return 1
+
     def inverseHankelTransform(self, f, delta_r):
       numberOfSamplingPoints = f.shape[-1]
-      if getattr(self, 'transformType', 1) == 4:
+      if self.resolvedTransformType() == 4:
           delta_q = np.pi/(numberOfSamplingPoints*delta_r)
       else:
           delta_q = np.pi/((numberOfSamplingPoints + 1.0)*delta_r)
@@ -890,7 +950,7 @@ class OZfixpointOperator:
       Call it after the components are set and before solving. Use
       suggestPointsPerSigma() to find a resolution that passes.
       """
-      if getattr(self, 'transformType', 1) != 4:
+      if self.resolvedTransformType() != 4:
           return 0.5, None
       #GRID SIZE. Type 4 is a length-N transform, so it wants N = 2^k;
       #type 1 goes through an FFT of length 2(N+1) and wants N = 2^k - 1.

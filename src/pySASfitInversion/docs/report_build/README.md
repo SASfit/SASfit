@@ -2,12 +2,12 @@
 
 This folder builds a single standalone PDF report (`sasfit-inversion.pdf`)
 from the project's real documentation sources -- `installation.rst`,
-`usage.rst`, and `theory.rst` one directory up -- via Sphinx's LaTeX
-builder, rather than a hand-maintained separate `.tex` file. Each `.rst`
-file here (`installation.rst`, `usage.rst`, `theory.rst`) is just a
-one-line `.. include:: ../<name>.rst`, so this report always reflects
-whatever is currently in `docs/`; there is nothing to keep in sync by
-hand.
+`usage.rst`, `gui.rst`, `theory.rst` and the `theory_*.rst` chapters one
+directory up -- via Sphinx's LaTeX builder, rather than a hand-maintained
+separate `.tex` file. Each `.rst` file here is just a one-line
+`.. include:: ../<name>.rst`, so this report always reflects whatever is
+currently in `docs/`; when a new page is added to `docs/`, add the
+matching one-line include file here as well.
 
 The API reference pages (`docs/api/*.rst`) are intentionally **not**
 included here, since they use Sphinx autodoc and require the real
@@ -27,7 +27,7 @@ make.bat latexpdf     # Windows
 
 The PDF is written to `_build/latex/sasfit-inversion.pdf`.
 
-A quick HTML preview of the same three pages (no LaTeX required) is also
+A quick HTML preview of the same pages (no LaTeX required) is also
 available via `make html` / `make.bat html`.
 
 ## Notes

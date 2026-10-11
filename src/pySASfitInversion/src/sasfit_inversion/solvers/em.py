@@ -27,7 +27,7 @@ reference implementation the acceleration is checked against, and still
 used internally whenever accelerate=False).
 
 NOT yet implemented:
-  - The signed/general-kernel (Chae et al. 2018) variant -- see
+  - The signed/general-kernel (Chae et al. 2019) variant -- see
     em_general.py (that has since been added there, not here -- plain
     em.py intentionally stays specific to the non-negative-kernel case).
 """

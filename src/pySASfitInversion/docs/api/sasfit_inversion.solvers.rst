@@ -29,9 +29,11 @@ sasfit_inversion.solvers.em
 sasfit_inversion.solvers.em_general
 ------------------------------------------
 
-EM for signed kernels (Chae, Martin & Walker, 2018, Sec. 6) -- required
-for the ``4*pi*j0(qr)`` PDDF kernel, since the ordinary EM update above is
-only valid for a non-negative kernel.
+EM for signed kernels (Chae, Martin & Walker, 2019, Sec. 6) with
+:math:`\chi^2` row weighting, acceleration safeguard and smoothing or
+positive/negative-entropy MaxEnt regularization -- required for the
+``4*pi*j0(qr)`` PDDF kernel, since the ordinary EM update above is only
+valid for a non-negative kernel. See :doc:`../theory_em_maxent`.
 
 .. automodule:: sasfit_inversion.solvers.em_general
    :members:
@@ -67,10 +69,9 @@ sasfit_inversion.solvers.bayesian_evidence
 
 Bayesian evidence maximization (Vestergaard & Hansen, 2006) for choosing
 the regularization weight -- generic over the regularization operator
-``L``, including the two-hyperparameter block extension
-(``log_evidence_blocks`` / ``evidence_search_blocks``) used by the
-(ultimately unsuccessful, see :doc:`../theory`) r-segment adaptive-lambda
-experiment.
+``L``; also the Laplace posterior covariance. The two-hyperparameter block
+extension (``log_evidence_blocks`` / ``evidence_search_blocks``) belongs
+to the retired two-segment solver (see :doc:`../theory_investigation`).
 
 .. automodule:: sasfit_inversion.solvers.bayesian_evidence
    :members:
@@ -84,8 +85,7 @@ from development, moved to
 ``_obsolete/README.md``) rather than deleted outright. Hansen's
 boundary-constrained operator itself is not gone -- it lives on in
 :func:`sasfit_inversion.regularization.hansen_smoothness_cholesky`, used by
-the ``bayesian_evidence_hansen`` and ``bayesian_evidence_hann_tapered``
-solvers (see :doc:`../theory`).
+``bayesian_evidence`` with ``penalty="hansen_printed"``.
 
 sasfit_inversion.solvers.lambda_search
 -----------------------------------------------

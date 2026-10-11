@@ -446,20 +446,62 @@ class GenericPolydisperseSAS(PolydisperseSASBase):
         threshold here is therefore generous: it catches the cases that
         cannot work at all, not the ones that are merely difficult, so that
         a legitimate dense fit is never blocked.
+
+        DISABLED. The reasoning is kept because the mistake is instructive.
+        The first version compared phi*(sigma_max/<sigma>)^3 against 1,
+        which treats the largest class as if it were the whole sample. It is
+        not -- it carries its own number fraction, a few per cent -- so that
+        test overstates the volume by more than an order of magnitude. It
+        refused phi = 0.25 at srel = 0.15 with three classes, an ordinary
+        system that solves perfectly well, and broke two tests.
+
+        Weighting by the number fraction fixes the arithmetic and destroys
+        the test: the corrected packing of the largest class comes out
+        between 0.12 and 0.21 for every case tried, INCLUDING the one that
+        failed. So it never fires and guards nothing.
+
+        Which means the original diagnosis was wrong. That solve did not
+        fail because the volume was impossible; it failed for some other
+        reason at a wide distribution, and what that reason is remains open.
+        A check whose criterion cannot be justified is worse than none -- it
+        refuses valid work and lends false confidence to what it passes --
+        so this returns immediately until someone establishes what actually
+        goes wrong there.
         """
+        return
         try:
             if srel is None or float(srel) <= 0.0 or int(nbins) < 2:
                 return
             from polydisperse_nodes import quantileClasses
-            sig, _x = quantileClasses(self.distribution, float(srel),
-                                      int(nbins), meanSigma=1.0)
-            ratio = float(np.max(sig))
+            sig, x = quantileClasses(self.distribution, float(srel),
+                                     int(nbins), meanSigma=1.0)
+            sig = np.asarray(sig, float)
+            x = np.asarray(x, float)
         except Exception:
             #Never let the check itself be the thing that fails: a
             #distribution it cannot discretise will raise in _solve a moment
             #later with its own, more specific message.
             return
-        occupied = float(self.phi)*ratio**3
+        #WEIGHT BY NUMBER FRACTION. The first version of this test compared
+        #phi*(sigma_max/<sigma>)^3 against 1, which treats the largest class
+        #as if it were the whole sample. It is not -- it carries only its own
+        #number fraction, typically a few per cent -- so that test overstates
+        #the volume by more than an order of magnitude and refused ordinary
+        #systems: phi = 0.25 with srel = 0.15 and three classes, which solves
+        #perfectly well, came out at "1.38 times the available volume".
+        #
+        #The quantity that means something is the volume the largest class
+        #ACTUALLY occupies, x_max*sigma_max^3 as a share of the mean cube,
+        #scaled by phi. That is a real packing fraction and comparing it
+        #against 1 is a real test.
+        if sig.size != x.size or not np.all(np.isfinite(sig)):
+            return
+        iMax = int(np.argmax(sig))
+        meanCube = float(np.sum(x*sig**3))
+        if meanCube <= 0.0:
+            return
+        occupied = float(self.phi)*float(x[iMax])*float(sig[iMax])**3/meanCube
+        ratio = float(sig[iMax])
         if occupied > 1.0:
             raise RuntimeError(
                 f"no fluid exists at this state point: with {int(nbins)} "

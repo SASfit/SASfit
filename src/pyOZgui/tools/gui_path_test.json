@@ -4,19 +4,19 @@
   "computeDataSmeared": {
     "chi2": 233212226139.4556,
     "error": null,
-    "seconds": 0.22,
+    "seconds": 0.2,
     "solves": 2
   },
   "computeDataUnsmeared": {
     "chi2": 253431715201.72864,
     "error": null,
-    "seconds": 0.23,
+    "seconds": 0.19,
     "solves": 2
   },
   "computeNoData": {
     "error": null,
     "finite": true,
-    "seconds": 0.24,
+    "seconds": 0.2,
     "solves": 2
   },
   "controlsReachModel": {
