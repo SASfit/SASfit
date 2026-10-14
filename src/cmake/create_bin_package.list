@@ -2,6 +2,11 @@ data/test.dat
 doc/manual/sasfit.pdf
 doc/manual/sasfit.bib
 examples/notebooks/Load plugin function.ipynb
+plugins/groups.form_fac.def
+plugins/groups.general.def
+plugins/groups.peaks.def
+plugins/groups.struct_fac.def
+plugins/groups.size_distrib.def
 plugins/groups_example.def
 plugins/cp2cb.ps1
 plugins/FrolovPoints/Frolov_2_1_basic.dat.gz

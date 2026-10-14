@@ -1,9 +1,0 @@
-Density profile (Hansen 2016)  geometry=sphere  regularisation=smooth  represented: r^2*rho
-------------------------------------------------------------
-  r_max      = 463.96 +/- 16   (best 458.71)
-  log alpha  = 14.72 +/- 0.29
-  Rg         = 208.55 +/- 2.7
-  bg Constant.c           = 0.1   (fixed)
-  chi2/M     = 0.969
-  N_good     = 21.6
-  log Ev     = -114.801

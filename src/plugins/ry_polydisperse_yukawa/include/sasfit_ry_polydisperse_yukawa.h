@@ -33,7 +33,7 @@
 /* ################ start ff_RYPolydisperseYukawa ################ */
 /**
  * \defgroup ff_RYPolydisperseYukawa RY polydisperse hard-core Yukawa
- * \ingroup ff_plugins_user1
+ * \ingroup ff_user1
  *
  * \brief Measured structure factor of a size- and charge-polydisperse
  *        hard-core Yukawa (charged colloid) dispersion, from a numerical
@@ -136,7 +136,7 @@
 /**
  * \ingroup ff_RYPolydisperseYukawa
  *
- * \sa sasfit_ry_polydisperse_yukawa.h, ff_plugins_user1
+ * \sa sasfit_ry_polydisperse_yukawa.h, ff_user1
  */
 sasfit_ry_polydisperse_yukawa_DLLEXP scalar sasfit_ff_RYPolydisperseYukawa(scalar q, sasfit_param * p);
 
@@ -148,7 +148,7 @@ sasfit_ry_polydisperse_yukawa_DLLEXP scalar sasfit_ff_RYPolydisperseYukawa(scala
  * average exactly, inside, coupled to the interaction. See the note on the
  * group above.
  *
- * \sa sasfit_ry_polydisperse_yukawa.h, ff_plugins_user1
+ * \sa sasfit_ry_polydisperse_yukawa.h, ff_user1
  */
 sasfit_ry_polydisperse_yukawa_DLLEXP scalar sasfit_ff_RYPolydisperseYukawa_f(scalar q, sasfit_param * p);
 
@@ -158,7 +158,7 @@ sasfit_ry_polydisperse_yukawa_DLLEXP scalar sasfit_ff_RYPolydisperseYukawa_f(sca
  * Returns 0: the volume serves the same simplified schemes as the amplitude
  * and is unavailable for the same reason.
  *
- * \sa sasfit_ry_polydisperse_yukawa.h, ff_plugins_user1
+ * \sa sasfit_ry_polydisperse_yukawa.h, ff_user1
  */
 sasfit_ry_polydisperse_yukawa_DLLEXP scalar sasfit_ff_RYPolydisperseYukawa_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop ff_RYPolydisperseYukawa ################ */

@@ -14,6 +14,14 @@ if(IS_DIRECTORY ${SASFIT_VFS_PLUGINS})
 		               ${SASFIT_VFS_PLUGINS}/${DEF_FILE}
 		               COPYONLY
 		)
+#
+# groups.*.def files are also copied to plugin directory and delivered with the binary packaged
+# so that SASstudio the gui structure can be reproduced by other external tools like SASstudio.
+#
+		configure_file(${CURRENT_DIR}/${DEF_FILE} 
+		               ${CURRENT_DIR}/../../plugins/def/${DEF_FILE}
+		               COPYONLY
+		)
 	endforeach(DEF_FILE)
 endif(IS_DIRECTORY ${SASFIT_VFS_PLUGINS})
 
