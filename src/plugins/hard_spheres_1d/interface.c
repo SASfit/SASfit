@@ -8,7 +8,7 @@
 
 // functions to mark for export
 SASFIT_PLUGIN_EXP_BEGIN(2)
-SASFIT_PLUGIN_EXP_ADD( ff_one_d_hard_spheres_aligned )
+SASFIT_PLUGIN_EXP_ADD( sq_one_d_hard_spheres_aligned )
 SASFIT_PLUGIN_EXP_ADD( sq_one_d_hard_spheres_random_orient )
 
 SASFIT_PLUGIN_EXP_END

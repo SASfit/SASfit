@@ -38,7 +38,7 @@
 
 /* ################ start ff_one_d_hard_spheres_aligned ################ */
 /**
- * \defgroup ff_one_d_hard_spheres_aligned 1D hard spheres (aligned)
+ * \defgroup sq_one_d_hard_spheres_aligned 1D hard spheres (aligned)
  * \ingroup sq_plugins_hard_sphere
  *
  * \brief \<some brief description of 1D hard spheres (aligned) function\>
@@ -67,26 +67,26 @@
  */
 
 /**
- * \ingroup ff_one_d_hard_spheres_aligned
+ * \ingroup sq_one_d_hard_spheres_aligned
  *
  * \sa sasfit_hard_spheres_1d.h, sq_plugins_hard_sphere
  */
-sasfit_hard_spheres_1d_DLLEXP scalar sasfit_ff_one_d_hard_spheres_aligned(scalar q, sasfit_param * p);
+sasfit_hard_spheres_1d_DLLEXP scalar sasfit_sq_one_d_hard_spheres_aligned(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_one_d_hard_spheres_aligned
+ * \ingroup sq_one_d_hard_spheres_aligned
  *
  * \sa sasfit_hard_spheres_1d.h, sq_plugins_hard_sphere
  */
-sasfit_hard_spheres_1d_DLLEXP scalar sasfit_ff_one_d_hard_spheres_aligned_f(scalar q, sasfit_param * p);
+sasfit_hard_spheres_1d_DLLEXP scalar sasfit_sq_one_d_hard_spheres_aligned_f(scalar q, sasfit_param * p);
 
 /**
- * \ingroup ff_one_d_hard_spheres_aligned
+ * \ingroup sq_one_d_hard_spheres_aligned
  *
  * \sa sasfit_hard_spheres_1d.h, sq_plugins_hard_sphere
  */
-sasfit_hard_spheres_1d_DLLEXP scalar sasfit_ff_one_d_hard_spheres_aligned_v(scalar q, sasfit_param * p, int dist);
-/* ################ stop ff_one_d_hard_spheres_aligned ################ */
+sasfit_hard_spheres_1d_DLLEXP scalar sasfit_sq_one_d_hard_spheres_aligned_v(scalar q, sasfit_param * p, int dist);
+/* ################ stop sq_one_d_hard_spheres_aligned ################ */
 
 /* ################ start sq_one_d_hard_spheres_random_orient ################ */
 /**

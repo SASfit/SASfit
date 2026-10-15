@@ -87,7 +87,7 @@ sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series1_v(scalar q, sasfit
 /* ################ start sd_fractal_series1 ################ */
 /**
  * \defgroup sd_fractal_series1 size distr.: fractal series1
- * \ingroup ff_fractals
+ * \ingroup sd_fractals
  *
  * \brief \<some brief description of fractal series1 function\>
  *
@@ -113,21 +113,21 @@ sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series1_v(scalar q, sasfit
 /**
  * \ingroup sd_fractal_series1
  *
- * \sa sasfit_fractal_series.h, ff_fractals
+ * \sa sasfit_fractal_series.h, sd_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series1(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series1
  *
- * \sa sasfit_fractal_series.h, ff_fractals
+ * \sa sasfit_fractal_series.h, sd_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series1_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series1
  *
- * \sa sasfit_fractal_series.h, ff_fractals
+ * \sa sasfit_fractal_series.h, sd_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series1_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_fractal_series1 ################ */
@@ -189,7 +189,7 @@ sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series2_v(scalar q, sasfit
 /* ################ start sd_fractal_series2 ################ */
 /**
  * \defgroup sd_fractal_series2 size distr.: fractal series2
- * \ingroup ff_fractals
+ * \ingroup sd_fractals
  *
  * \brief \<some brief description of fractal series2 function\>
  *
@@ -221,21 +221,21 @@ sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series2_v(scalar q, sasfit
 /**
  * \ingroup sd_fractal_series2
  *
- * \sa sasfit_fractal_series.h, ff_fractals
+ * \sa sasfit_fractal_series.h, sd_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series2(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series2
  *
- * \sa sasfit_fractal_series.h, ff_fractals
+ * \sa sasfit_fractal_series.h, sd_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series2_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series2
  *
- * \sa sasfit_fractal_series.h, ff_fractals
+ * \sa sasfit_fractal_series.h, sd_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series2_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_fractal_series2 ################ */
@@ -303,7 +303,7 @@ sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series3_v(scalar q, sasfit
 /* ################ start sd_fractal_series3 ################ */
 /**
  * \defgroup sd_fractal_series3 size distr.: fractal series3
- * \ingroup ff_fractals
+ * \ingroup sd_fractals
  *
  * \brief \<some brief description of fractal series3 function\>
  *
@@ -341,21 +341,21 @@ sasfit_fractal_series_DLLEXP scalar sasfit_ff_fractal_series3_v(scalar q, sasfit
 /**
  * \ingroup sd_fractal_series3
  *
- * \sa sasfit_fractal_series.h, ff_plugins
+ * \sa sasfit_fractal_series.h, sd_plugins
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series3(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series3
  *
- * \sa sasfit_fractal_series.h, ff_fractals
+ * \sa sasfit_fractal_series.h, sd_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series3_f(scalar q, sasfit_param * p);
 
 /**
  * \ingroup sd_fractal_series3
  *
- * \sa sasfit_fractal_series.h, ff_fractals
+ * \sa sasfit_fractal_series.h, sd_fractals
  */
 sasfit_fractal_series_DLLEXP scalar sasfit_sd_fractal_series3_v(scalar q, sasfit_param * p, int dist);
 /* ################ stop sd_fractal_series3 ################ */

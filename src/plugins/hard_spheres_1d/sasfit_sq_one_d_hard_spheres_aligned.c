@@ -14,7 +14,7 @@
 #define PSI_DEG param->p[4]
 #define Q param->p[MAXPAR-1]
 
-scalar sasfit_ff_one_d_hard_spheres_aligned(scalar q, sasfit_param * param)
+scalar sasfit_sq_one_d_hard_spheres_aligned(scalar q, sasfit_param * param)
 {
     scalar D,cQ,Sq,nn, xi, tmp, xq, psi, cosgamma;
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
@@ -43,7 +43,7 @@ scalar sasfit_ff_one_d_hard_spheres_aligned(scalar q, sasfit_param * param)
 	return Sq;
 }
 
-scalar sasfit_ff_one_d_hard_spheres_aligned_f(scalar q, sasfit_param * param)
+scalar sasfit_sq_one_d_hard_spheres_aligned_f(scalar q, sasfit_param * param)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 
@@ -51,7 +51,7 @@ scalar sasfit_ff_one_d_hard_spheres_aligned_f(scalar q, sasfit_param * param)
 	return 0.0;
 }
 
-scalar sasfit_ff_one_d_hard_spheres_aligned_v(scalar q, sasfit_param * param, int dist)
+scalar sasfit_sq_one_d_hard_spheres_aligned_v(scalar q, sasfit_param * param, int dist)
 {
 	SASFIT_ASSERT_PTR(param); // assert pointer param is valid
 

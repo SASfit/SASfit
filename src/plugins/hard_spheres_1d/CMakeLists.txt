@@ -10,7 +10,7 @@ set(LIBS_EXT
 
 # source files
 set(SOURCE_${PRJ_NAME}
-	sasfit_ff_one_d_hard_spheres_aligned.c
+	sasfit_sq_one_d_hard_spheres_aligned.c
 	sasfit_sq_one_d_hard_spheres_random_orient.c
 	interface.c
 )
