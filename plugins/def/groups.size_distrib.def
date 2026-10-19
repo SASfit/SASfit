@@ -1,0 +1,187 @@
+/*
+ * src/plugins/groups.size_distrib.def
+ *
+ * Copyright (c) 2008-2009, Paul Scherrer Institute (PSI)
+ *
+ * This file is part of SASfit.
+ *
+ * SASfit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASfit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Author(s) of this file:
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   Ingo Bressler (ingo.bressler@bam.de)
+ */
+
+/*
+ * In this file are all group definitions including their documentation listed.
+ *
+ * For reference on the syntax, see the doxygen documentation:
+ * http://www.stack.nl/~dimitri/doxygen/grouping.html
+ */
+
+// first level group mounted in the GUI
+/**
+ * \defgroup size_distrib Size Distributions
+ * \ingroup model_functions
+ *
+ * \brief In this library distribution functions \f$n(x)\f$ are collected.
+ * A size distribution describes the number of particles in a sample according
+ * to their size.
+ * These function are used to describe the distribution of a parameter
+ * \f$a_i\f$ of a form factor \f$P(Q,\{a_i\})\f$.
+ * \f[
+ *              I(Q) = \int_0^\infty n(a_j)\, P\left(Q,\{\dots, a_j, \dots\}\right) \, da_j
+ * \f] 
+ *
+ * \toplvldescr{size distribution,sasfit_sd,size_distrib}
+ */
+
+/** 
+ * \defgroup sd_plugins by plugins
+ * \ingroup size_distrib
+ *
+ * This group contains size distributions from plugins.
+ *
+ * \modname{sd_plugins}
+ */
+
+/** 
+ * \defgroup sd_plugins_devel under development
+ * \ingroup sd_plugins
+ *
+ * This group contains size distributions under development
+ *
+ * \modname{sd_plugins_devel}
+ */
+
+/** 
+ * \defgroup sd_plugins_try T-R{Y} family
+ * \ingroup sd_plugins_devel
+ *
+ * This group contains the different types of distributions belonging to T-R{Y} family
+ *
+ * \modname{sd_plugins_try}
+ */
+ 
+/** 
+ * \defgroup sd_plugins_metalog metalog
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of metalog distributions
+ *
+ * \modname{sd_plugins_metalog}
+ */
+
+/** 
+ * \defgroup sd_plugins_normal normal
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of normal distributions
+ *
+ * \modname{sd_plugins_normal}
+ */
+
+/** 
+ * \defgroup sd_plugins_lognormal lognormal
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of lognormal distributions
+ *
+ * \modname{sd_plugins_lognormal}
+ */
+
+/** 
+ * \defgroup sd_plugins_gamma gamma
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of gamma distributions
+ *
+ * \modname{sd_plugins_gamma}
+ */
+ 
+/** 
+ * \defgroup sd_plugins_generalized generalized
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of generalized distributions
+ *
+ * \modname{sd_plugins_generalized}
+ */
+
+
+/** 
+ * \defgroup sd_plugins_johnson Johnson
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of Johnson distributions
+ *
+ * \modname{sd_plugins_johnson}
+ */
+
+/** 
+ * \defgroup sd_plugins_beta beta
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of beta distributions
+ *
+ * \modname{sd_plugins_beta}
+ */
+
+
+/** 
+ * \defgroup sd_plugins_quantile quantile distribution functions
+ * \ingroup sd_plugins_devel
+ *
+ * This group contains size distributions for wich next to the PDF also  the CDF as well as QDF are known
+ *
+ * \modname{sd_plugins_quantile}
+ */
+
+/** 
+ * \defgroup sd_plugins_quantile_unbounded unbounded
+ * \ingroup sd_plugins_quantile
+ *
+ * This group contains unbounded size distributions for wich next to the PDF also  the CDF as well as QDF are known
+ *
+ * \modname{sd_plugins_quantile_unbounded}
+ */
+ 
+ /** 
+ * \defgroup sd_plugins_quantile_semibounded semibounded
+ * \ingroup sd_plugins_quantile
+ *
+ * This group contains semibounded size distributions for wich next to the PDF also  the CDF as well as QDF are known
+ *
+ * \modname{sd_plugins_quantile_semibounded}
+ */
+ 
+ /** 
+ * \defgroup sd_plugins_quantile_bounded bounded
+ * \ingroup sd_plugins_quantile
+ *
+ * This group contains bounded size distributions for wich next to the PDF also  the CDF as well as QDF are known
+ *
+ * \modname{sd_plugins_quantile_bounded}
+ */
+
+/** 
+ * \defgroup sd_fractals fractal sd
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of distributions belonging to T-R{Y} family
+ *
+ * \modname{sd_fractals}
+ */

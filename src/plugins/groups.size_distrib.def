@@ -176,3 +176,12 @@
  *
  * \modname{sd_plugins_quantile_bounded}
  */
+
+/** 
+ * \defgroup sd_fractals fractal sd
+ * \ingroup sd_plugins
+ *
+ * This group contains the different types of distributions belonging to T-R{Y} family
+ *
+ * \modname{sd_fractals}
+ */

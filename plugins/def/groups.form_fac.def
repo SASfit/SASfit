@@ -1,0 +1,558 @@
+/*
+ * plugins/groups.form_fac.def
+ *
+ * Copyright (c) 2008-2013, Paul Scherrer Institute (PSI)
+ *
+ * This file is part of SASfit.
+ *
+ * SASfit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASfit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASfit.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+ * Author(s) of this file:
+ *   Joachim Kohlbrecher (joachim.kohlbrecher@psi.ch)
+ *   Ingo Bressler (ingo.bressler@bam.de)
+ */
+
+/*
+ * In this file are all group definitions including their documentation listed.
+ *
+ * For reference on the syntax, see the doxygen documentation:
+ * http://www.stack.nl/~dimitri/doxygen/grouping.html
+ */
+
+// first level group mounted in the GUI
+/**
+ * \defgroup form_fac Form Factors
+ * \ingroup model_functions
+ *
+ * A form factor describes the shape and inner structure of a particle.
+ *
+ * \toplvldescr{form factor,sasfit_ff,form_fac}
+ */
+
+/** 
+ * \defgroup ff_plugins by plugins
+ * \ingroup form_fac
+ *
+ * This group contains form factors from plugins.
+ *
+ * \modname{ff_plugins}
+ */
+
+/** 
+ * \defgroup ff_plugins_spheres_shells Spheres & Shells
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for spheres and spherical shells with many different radial profiles.
+ *
+ * \modname{ff_plugins_spheres_shells}
+ */
+
+ /** 
+ * \defgroup ff_plugins_fuzzy_obj fuzzy obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors with many different fuzzy cross-sectional profiles.
+ *
+ * \modname{ff_plugins_fuzzy_obj}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_fuzzy_sph Fuzzy Spheres
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains spherical form factor with a radial fuzzy profiles.
+ *
+ * \modname{ff_plugins_fuzzy_sph}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_fuzzy_cyl Fuzzy Cylinders
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains Cylindrical form factor with a radial fuzzy profiles.
+ *
+ * \modname{ff_plugins_fuzzy_cyl}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_fuzzy_planar Fuzzy XS of Planar Obj.
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains form factor of planar or local planar opjects with a fuzzy cross-section profiles.
+ *
+ * \modname{ff_plugins_fuzzy}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_fuzzy_profiles Fuzzy SLD cross-section profiles
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains fuzzy scattering length density cross-section profiles.
+ *
+ * \modname{ff_plugins_fuzzy_profiles}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_sd_spheres homog. sph. with SD
+ * \ingroup ff_plugins_fuzzy_obj
+ *
+ * This group contains FF of homogeneous spheres with a size distribution.
+ *
+ * \modname{ff_plugins_fuzzy_profiles}
+ */ 
+ 
+ /** 
+ * \defgroup ff_plugins_mie Mie Scattering
+ * \ingroup ff_plugins_spheres_shells
+ *
+ * This group contains form factors for spheres and spherical shells in Mie approximation.
+ *
+ * \modname{ff_plugins_mie}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_ellipsoidal_obj ellipsoidal obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for ellipsoidal objects.
+ *
+ * \modname{ff_plugins_ellipsoidal_obj}
+ */
+   
+ /** 
+ * \defgroup ff_spheroid_obj ellipsoid of revolution
+ * \ingroup ff_plugins_ellipsoidal_obj
+ *
+ * This group contains form factors for spheroids or ellipsoids of revolution.
+ *
+ * \modname{ff_spheroid_obj}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_triax_ellshells triaxial elliptical shell
+ * \ingroup ff_plugins_ellipsoidal_obj
+ *
+ * This group contains form factors for triaxial elliptical shells.
+ *
+ * \modname{ff_plugins_triax_ellshells}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_cylindrical_obj cylindrical obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for cylindrical objects.
+ *
+ * \modname{ff_plugins_cylindrical_obj}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_helix helical obj.
+ * \ingroup ff_plugins_cylindrical_obj
+ *
+ * This group contains form factors for helical objects.
+ *
+ * \modname{ff_plugins_helix}
+ */
+ 
+ /** 
+ * \defgroup ff_clusters clusters 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of clusters.
+ *
+ * \modname{ff_clusters}
+ */
+
+ /** 
+ * \defgroup ff_fractals fractals 
+ * \ingroup ff_clusters
+ *
+ * This group contains form factors for fractal.
+ *
+ * \modname{ff_fractals}
+ */
+ 
+ /** 
+ * \defgroup ff_non-particulate non-particulate structures 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of non-particulate structures.
+ *
+ * \modname{ff_non-particulate}
+ */
+
+  /** 
+ * \defgroup ff_stochastic stochastic models 
+ * \ingroup ff_non-particulate
+ *
+ * This group contains form factors for stochastic models.
+ *
+ * \modname{ff_stochastic}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_thin_objects thin obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of very thin shapes like local planar and local cylindrical objects.
+ *
+ * \modname{ff_plugins_thin_objects}
+ */
+
+ 
+/** 
+ * \defgroup ff_plugins_deformed_textured deformed and partly oriented obj.
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of deformed, stretched and textured objects.
+ *
+ * \modname{ff_plugins_deformed_textured}
+ */
+  
+/** 
+ * \defgroup ff_plugins_partly_aligned_cylsh partly aligned cylinders
+ * \ingroup ff_plugins_deformed_textured
+ *
+ * This group contains form factors of textured (e.g. by shear) cylindrical objects.
+ *
+ * \modname{ff_plugins_partly_aligned_cylsh}
+ */
+ 
+ /** 
+ * \defgroup ff_plugins_partly_aligned_ellsh partly aligned spheroids
+ * \ingroup ff_plugins_deformed_textured
+ *
+ * This group contains form factors of textured (e.g. by shear) ellipsoidal objects.
+ *
+ * \modname{ff_plugins_partly_aligned_ellsh}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_oriented_primitive_objects oriented primitive objects
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors of oriented primitive objects.
+ *
+ * \modname{ff_plugins_oriented_primitive_objects}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_localplanar local planar obj.
+ * \ingroup ff_plugins_thin_objects
+ *
+ * This group contains form factors for different of local planar obj.
+ *
+ * \modname{ff_plugins_localplanar}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_localcylindrical local cylindrical obj. 
+ * \ingroup ff_plugins_thin_objects
+ *
+ * This group contains form factors for different of local cylindrical obj.
+ *
+ * \modname{ff_plugins_localcylindrical}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_pcslocalplanar Pcs(Q) for planar obj.
+ * \ingroup ff_plugins_thin_objects
+ *
+ * This group contains cross section factors for different of of local planar obj.
+ *
+ * \modname{ff_plugins_pcslocalplanar}
+ */
+ 
+/** 
+ * \defgroup ff_plugins_pcslocalcylindrical Pcs(Q) for cylindrical obj. 
+ * \ingroup ff_plugins_thin_objects
+ *
+ * This group contains cross section factors for different of local cylindrical obj.
+ *
+ * \modname{ff_plugins_pcslocalcylindrical}
+ */ 
+
+ /** 
+ * \defgroup ff_plugins_polyhedra polyhedra 
+ * \ingroup ff_plugins_thin_objects
+ *
+ * This group contains cross section factors for polyhedra
+ *
+ * \modname{ff_plugins_polyhedra}
+ */ 
+ 
+/** 
+ * \defgroup ff_polymer_micelles polymers & micelles 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for polymers & micelles.
+ *
+ * \modname{ff_polymer_micelles}
+ */
+
+/** 
+ * \defgroup ff_polymer_chains polymer chains 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for polymer chains.
+ *
+ * \modname{ff_polymer_chains}
+ */
+
+/** 
+ * \defgroup ff_polymer_stars polymer stars 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for polymer stars.
+ *
+ * \modname{ff_polymer_stars}
+ */
+
+/** 
+ * \defgroup ff_polymer_rings polymer rings 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for polymer rings.
+ *
+ * \modname{ff_polymer_rings}
+ */
+ 
+/** 
+ * \defgroup ff_polymer_worm wormlike polymers
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for wormlike polymer chains.
+ *
+ * \modname{ff_polymer_worm}
+ */
+
+/** 
+ * \defgroup ff_polymer_branched branched polymers
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for branched polymers.
+ *
+ * \modname{ff_polymer_branched}
+ */
+ 
+/** 
+ * \defgroup ff_spherical_micelles spherical&ellipsoidal micelles 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for micelles of spherical or ellipsoidal  geometry.
+ *
+ * \modname{ff_spherical_micelles}
+ */
+
+/** 
+ * \defgroup ff_local_cyl_micelles cylindrical&rod-like micelles 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for micelles with local cylindrical geometry.
+ *
+ * \modname{ff_local_cyl_micelles}
+ */
+
+/** 
+ * \defgroup ff_local_planar_micelles local planar micelles 
+ * \ingroup ff_polymer_micelles
+ *
+ * This group contains form factors for micelles with local planar geometry.
+ *
+ * \modname{ff_local_planar_micelles}
+ */
+
+/** 
+ * \defgroup ff_magnetic_objects magnetic objects 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors for magnetic objects.
+ *
+ * \modname{ff_magnetic_objects}
+ */
+
+/** 
+ * \defgroup ff_plugins_stroboscopic_superparamagnet stroboscopically measured superparamagnets
+ * \ingroup ff_magnetic_objects
+ *
+ * This group contains form factors for stroboscopically measured superparamagnetic particles.
+ *
+ * \modname{ff_plugins_stroboscopic_superparamagnet}
+ */
+ 
+/** 
+ * \defgroup ff_magnetic_spinmisalignment magn. spin misalignment 
+ * \ingroup ff_magnetic_objects
+ *
+ * This group contains form factors and correlation function of magnetic spin misalignment.
+ *
+ * \modname{ff_magnetic_spinmisalignment}
+ */
+
+/** 
+ * \defgroup ff_plugins_ferrofluid ferrofluid form factors 
+ * \ingroup ff_magnetic_objects
+ *
+ * This group contains form factors for different ferrofluid particles.
+ *
+ * \modname{ff_plugins_ferrofluid}
+ */
+ 
+/** 
+ * \defgroup ff_azimuthal azimuthal 
+ * \ingroup ff_plugins
+ *
+ * This group should contains form factors from users (1).
+ *
+ * \modname{ff_user1}
+ */ 
+
+/** 
+ * \defgroup ff_sans specially for SANS 
+ * \ingroup ff_plugins
+ *
+ * This group should contains tools specially for SANS.
+ *
+ * \modname{ff_sans}
+ */
+ 
+/** 
+ * \defgroup ff_user1 user plugins 1 
+ * \ingroup ff_plugins
+ *
+ * This group should contains form factors from users (1).
+ *
+ * \modname{ff_user1}
+ */
+
+/** 
+ * \defgroup ff_user2 user plugins 2 
+ * \ingroup ff_plugins
+ *
+ * This group should contains form factors from users (2).
+ *
+ * \modname{ff_user2}
+ */
+
+/** 
+ * \defgroup ff_devel devel plugins 
+ * \ingroup ff_plugins
+ *
+ * This group contains form factors under development.
+ *
+ * \modname{ff_devel}
+ */
+
+ /** 
+ * \defgroup ff_sesans SESANS 
+ * \ingroup ff_plugins
+ *
+ * This group contains SESANS functions.
+ *
+ * \modname{ff_sesans}
+ */
+ 
+/** 
+ * \defgroup ff_msas MSAS
+ * \ingroup ff_plugins
+ *
+ * This group contains msas functions.
+ *
+ * \modname{ff_msas}
+ */
+ 
+/** 
+ * \defgroup ff_peaks Peaks 
+ * \ingroup ff_plugins
+ *
+ * This group contains peak functions (probability distributions).
+ *
+ * \modname{ff_peaks}
+ */
+ 
+/** 
+ * \defgroup ff_peak_amplitudes Amplitude Functions 
+ * \ingroup ff_peaks
+ *
+ * This group contains peak functions normalized on amplitude.
+ *
+ * \modname{ff_peak_amplitudes}
+ */
+
+/** 
+ * \defgroup ff_peak_amplitudes_generalized generalized 
+ * \ingroup ff_peak_amplitudes
+ *
+ * This group contains peak functions using generalized distribution functions which than are normalized on amplitude.
+ *
+ * \modname{ff_peak_amplitudes_generalized}
+ */
+
+
+/** 
+ * \defgroup ff_peak_amplitudes_a_m A-M 
+ * \ingroup ff_peak_amplitudes
+ *
+ * This group contains peak functions A-M normalized on amplitude.
+ *
+ * \modname{ff_peak_amplitudes_a_m}
+ */
+
+/** 
+ * \defgroup ff_peak_amplitudes_n_z N-Z 
+ * \ingroup ff_peak_amplitudes
+ *
+ * This group contains peak functions N-Z normalized on amplitude.
+ *
+ * \modname{ff_peak_amplitudes_n_z}
+ */ 
+ 
+/** 
+ * \defgroup ff_peak_area Area Functions 
+ * \ingroup ff_peaks
+ *
+ * This group contains peak functions normalized on area.
+ *
+ * \modname{ff_peak_area}
+ */
+ 
+ /** 
+ * \defgroup ff_peak_area_generalized generalized 
+ * \ingroup ff_peak_area
+ *
+ * This group contains peak functions using generalized distribution functions which than are normalized on area.
+ *
+ * \modname{ff_peak_area_generalized}
+ */
+ 
+ /** 
+ * \defgroup ff_peak_area_a_m A-M 
+ * \ingroup ff_peak_area
+ *
+ * This group contains peak functions A-M normalized on area.
+ *
+ * \modname{ff_peak_area_a_m}
+ */
+ 
+ /** 
+ * \defgroup ff_peak_area_n_z N-Z
+ * \ingroup ff_peak_area
+ *
+ * This group contains peak functions N-Z normalized on area.
+ *
+ * \modname{ff_peak_area_n_z}
+ */
